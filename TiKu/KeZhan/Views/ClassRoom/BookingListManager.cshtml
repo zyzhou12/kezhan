@@ -1,0 +1,107 @@
+﻿@model TiKuBll.Model.ClassRoomListModel
+@{
+  ViewBag.Title = "课站";
+}
+
+@if (Model.classRoomList != null && Model.classRoomList.Count > 0) { 
+<section class="section-room-detail bg-white">
+            <div class="container">
+                
+            
+                <!-- TAB -->
+                <div class="room-detail_tab">                    
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="room-detail_tab-header">
+                                @foreach (var classRoom in Model.classRoomList)
+                                {                                
+                                  <li onclick="showPanel('@classRoom.fClassRoomCode')"><a href="#" style=" width:100%;" data-toggle="tab">@classRoom.fClassRoomTitle</a></li>
+                                }                                
+                            </ul>
+                        </div>
+                                        
+                        <div class="col-md-9">
+                            <div class="room-detail_tab-content tab-content" id="panelBooking">                                
+                              
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- END / TAB -->
+
+              
+            </div>
+        </section>
+}
+else
+{
+    <section class="section-room-detail bg-white">
+        <div class="container">
+
+
+            <!-- TAB -->
+            <div class="room-detail_tab">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="room-detail_tab-content tab-content" id="panelBooking">
+                            没有课程信息，请先发布课程
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END / TAB -->
+
+        </div>
+    </section>
+    <p style="height:200px;"></p>
+}
+@if (Model.classRoomList != null && Model.classRoomList.Count > 0)
+{
+  <script type="text/javascript">
+    var classRoomCode = "@Model.classRoomList[0].fClassRoomCode";
+
+    $(document).ready(function () {
+      showPanel(classRoomCode);
+    });
+
+
+    function showPanel(code) {
+      classRoomCode = code;
+      $.ajax({
+        url: "/ClassRoom/QueryBookingList",
+        type: this.method,
+        data: { "strClassRoomCode": classRoomCode },
+        success: function (msg) {
+          $('#panelBooking').html(msg);
+        }
+      });
+
+    }
+
+    function UpdatePayStatus(strBookingNo, strStatus) {
+      $.ajax({
+        url: "/classRoom/DoUpdateBookingStatus",
+        data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
+        type: "POST",
+        dataType: "json",
+        success: function (rst) {
+          if (rst.iResult >= 0) {
+            alert("修改成功");
+            $.ajax({
+              url: "/ClassRoom/QueryBookingList",
+              type: this.method,
+              data: { "strClassRoomCode": classRoomCode },
+              success: function (msg) {
+                $('#panelBooking').html(msg);
+              }
+            });
+          }
+        }
+
+      });
+    }
+  </script>
+}

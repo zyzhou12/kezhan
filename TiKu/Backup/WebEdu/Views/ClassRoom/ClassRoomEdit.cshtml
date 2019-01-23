@@ -1,0 +1,524 @@
+﻿@model TiKuBll.Model.ClassRoomModel
+@{
+  ViewBag.Title = "课站";
+}
+
+<section class="section-reservation-page bg-white">
+
+            <div class="container">
+                <div class="reservation-page">                   
+                  
+
+                    <div class="row">
+                       <div class="col-md-3">
+                            <ul class="room-detail_tab-header">
+                                <li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">详细信息</a></li>
+                                 @if (Model.fID > 0)
+                                 {
+                                  <li onclick="showPanel('booking')"><a href="#"  style=" width:100%;" data-toggle="tab">报名记录</a></li>
+                                 }
+                            </ul>
+                        </div>
+                       
+                        
+                        <!-- CONTENT -->
+                        <div class="col-md-8 col-lg-9">
+
+                            <div class="reservation_content">
+                                
+                                <div class="reservation-billing-detail" id="panelData">
+
+                                
+                                    <h4>课程信息</h4>
+                                    @Html.HiddenFor(m => m.fID)
+                                       <label>标题<sup>*</sup></label>
+                                    <input type="text" id="txtTitle" value="@Model.fClassRoomTitle" class="input-text">
+                                   
+                                   
+                                       <label>封面<sup>*</sup></label>
+                                    
+                                         <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fCoverImg?x-oss-process=style/fang" id="imgCover"  data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomCover','hidConver','','imgCover')" alt="">
+                                         <input type="hidden" id="hidConver"  value="@Model.fCoverImg" />
+                                        
+
+                                        <label>简介</label>
+                                    <textarea class="input-textarea" id="txtInfo"  placeholder="Notes about your order, eg. special notes for delivery">@Model.fInfo</textarea>
+
+                                      <label>详情介绍</label>
+                                       @if (Model.descList != null)
+                                       {
+                                         foreach (var desc in Model.descList)
+                                         {
+                                           if (desc.fType == "text")
+                                           {
+                                           <span>@desc.fContent</span>
+                                         <br />
+                                           }
+                                           else if (desc.fType == "img")
+                                           {
+                                           <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@desc.fContent?x-oss-process=style/fang" alt="" />
+                                         <br />
+                                           }
+                                        <a class="awe-btn awe-btn-13"  onclick="DelDesc(@desc.fID)">删除当前段</a> 
+                                        <a class="awe-btn awe-btn-13"  onclick="UpdateDesc(@desc.fID,'@desc.fType','@desc.fContent',@desc.fOrder)">修改当前段</a> 
+                                         
+                                         <br />
+                                         }
+                                       }                        
+                                        <button class="awe-btn awe-btn-13" id="btnDescAdd" onclick="AddDesc()">新增介绍</button>
+                                        <div id="divDesc" style=" display:none ; border:2px solid #EFEFEF;">
+                                            <input type="hidden" id="hidDescID" />
+                                            <br />
+                                            <label>类型</label>
+                                            <select id="cmbType" onchange="changeType(this)">
+                                              <option value="text">文字</option>
+                                              <option value="img">图片</option>
+                                            </select>
+                                            <br />
+                                            <textarea cols=="50" rows="5"  id="txtContent"  placeholder="请输入内容"></textarea>
+                                           
+                                        <br />
+                                         <img id="fileUploadDesc" style=" display:none;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgDesc"  data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomDesc','hidDesc','','imgDesc')" alt="">
+                                         <input type="hidden" id="hidDesc"  />
+                                            <label>排序</label>
+                                            <input type="number" id="txtDescOrder" class="input-text">
+                                             
+                                        <button class="awe-btn awe-btn-13" onclick="SaveDesc()">保存</button>
+                                        </div>
+                                        <br />
+                                 
+                                 
+                                       <label>课程类型<sup>*</sup></label>
+                                      @Html.Partial("../ClassRoom/TeacherValidSelect", new TiKuBll.Model.TeacherValidModel { fID = @Model.fTeacherValidID, fUserName=@Model.fTecharUserName })
+
+                                    
+                                       <label>知识点<sup>*</sup></label>
+                                    <input type="text" id="txtKnowLedge" value="@Model.fKnowLedge" class="input-text">
+
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>原价<sup>*</sup></label>
+                                            <input type="number" id="txtBasePrice" value="@Model.fBasePrice" class="input-text">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>售价<sup>*</sup></label>
+                                            <input type="number" id="txtPrice"  value="@Model.fPrice" class="input-text">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>截止报名时间<sup>*</sup></label>
+                                <input type="text" class="awe-calendar" id="txtDeadLineDate"  value="@Model.fDeadLineDate.ToShortDateString()" placeholder="Arrival Date">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>开课时间<sup>*</sup></label>
+                                <input type="text" class="awe-calendar" id="txtClassRoomDate"  value="@Model.fClassRoomDate.ToShortDateString()" placeholder="Arrival Date">
+                                        </div>
+                                    </div>
+                                    
+                                   
+
+                                      <label>最大人数</label>
+                                            <input type="number" id="txtMaxNumber"  value="@Model.fMaxNumber" class="input-text">
+
+                                            
+                                       <label>微信群二维码<sup>*</sup></label>
+                                     
+                                        @if (string.IsNullOrEmpty(Model.fQrCode))
+                                        {
+                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgQrCode"  data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomWeiXinQrCode','hidQrCode','','imgQrCode')" alt="" />
+                                        }
+                                        else
+                                        {
+                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/fang" id="imgQrCode"  data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomWeiXinQrCode','hidQrCode','','imgQrCode')" alt="" />
+                                        }
+                                         <input type="hidden" id="hidQrCode"  value="@Model.fQrCode" />
+
+
+                                      
+                                      <label>支付类型</label>
+                                          @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                                                                                              new SelectListItem { Text = "在线支付", Value = "在线支付" },
+                                                                                              new SelectListItem { Text = "线下支付", Value = "线下支付" }}, new { @class = "awe-select", id = "cmbPayType" })
+                                     
+                                     @*   <select class="awe-select" id="cmbPayType">
+                                            <option value="">请选择</option>
+                                            <option value="在线支付">在线支付</option>
+                                            <option value="线下支付">线下支付</option>
+                                        </select>*@
+
+                                      <label>是否可退</label>
+                                         @Html.DropDownListFor(m => m.fPayType, new[] { 
+                                                                                              new SelectListItem { Text = "是", Value = "1" },
+                                                                                              new SelectListItem { Text = "否", Value = "0" }}, new { @class = "awe-select", id = "cmbIsReturn" })
+                                     
+                                       @* <select class="awe-select" id="cmbIsReturn">
+                                            <option value="">请选择</option>
+                                            <option value="是">是</option>
+                                            <option value="否">否</option>
+                                        </select>*@
+
+                                      <label>是否录屏回看</label>
+                                      @Html.DropDownListFor(m => m.fPayType, new[] { 
+                                                                                              new SelectListItem { Text = "是", Value = "1" },
+                                                                                              new SelectListItem { Text = "否", Value = "0" }}, new { @class = "awe-select", id = "cmbIsRecord" })
+                                     
+                                     @*   <select class="awe-select" id="cmbIsRecord">
+                                            <option value="">请选择</option>
+                                            <option value="是">是</option>
+                                            <option value="否">否</option>
+                                        </select>*@
+
+                                      <label>章节</label>
+                                         <div class="reservation-room_package">
+                                            <a data-toggle="collapse" href="#reservation-room_package-1" class="reservation-room_package-more" aria-expanded="true">章节</a>
+                                            <button class="awe-btn awe-btn-default" id="btnAdd" onclick="AddCurse()">新增</button>
+                                            <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+                                            
+                                      @if (Model.courseList != null)
+                                      {
+                                                <!-- ITEM PACKAGE -->
+                                        foreach (var course in Model.courseList)
+                                        {
+                                                <div class="reservation-package_item">
+                                                     @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                                     {
+                                                       if (course.fStatus == "已转码")
+                                                       {
+                                                    <div class="reservation-package_img">
+                                                        <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl"   data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fTecharUserName','ClassRoom',@course.fID)" alt="">
+                                              
+                                                    </div>
+                                                       }
+                                                     }
+                                                     else
+                                                     {
+                                                    <div class="reservation-package_img">
+                                                     <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang"   data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fTecharUserName','ClassRoom',@course.fID)" alt="" />
+                                                    </div>
+                                                     }
+
+                                                    <div class="reservation-package_text">
+
+                                                        <h4><a href="#">@course.fDictTitle</a></h4>
+                                                        <p>@course.fCourseTitle
+                                                        <br />
+                                                        <span>上课时间：@course.fClassDate.ToString()</span>
+                                                        </p>
+                                                        
+                                                        <div class="reservation-package_book-price">
+                                                         @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                                         {
+                                                           if (course.fStatus == "已转码")
+                                                           {
+                                                             <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
+                                                       
+                                                           }
+                                                         }
+                                                         <button class="awe-btn awe-btn-default" onclick="UpdateCurse(@course.fID,'@course.fDictTitle','@course.fCourseTitle','@course.fClassDate.ToString()',@course.fOrder)">修改</button>
+                                                          </div>
+                                                    </div>
+
+                                                </div>
+                                        }
+                                                
+                                                <div class="reservation-package_item" id="divCourse" style=" display:none">
+                                                   
+
+                                                    <div class="reservation-package_text">
+
+                                                        <input type="hidden" id="hidCourseID"
+                                                        <p>
+                                                        
+                                            <span>第几章：<input type="text" id="txtDictTitle" class="input-text"></span>
+                                            <br />
+                                                       <span> 第几节：<input type="text" id="txtCourseTitle" class="input-text"></span>
+                                                        <br />
+                                                        <span>上课时间：<input type="text" class="awe-calendar" id="txtCourseDate"  placeholder="Arrival Date"></span>
+                                                        
+                                                        <br />
+                                                        <span>排序：<input type="number" id="txtOrder" class="input-text"></span>
+                                                        
+                                                        </p>
+                                                        
+                                                        <div class="reservation-package_book-price">
+                                                        
+                                                         <button class="awe-btn awe-btn-13" onclick="SaveCurse()">保存章节</button>
+                                                          </div>
+                                                    </div>
+
+                                                </div>
+                                                
+                                      }      
+                                            </div>
+                                        </div>
+                                        
+                                      
+                                                        
+                                        @*<div id="divCourse" style=" display:none">
+                                            <input type="hidden" id="hidCourseID"
+                                            <label>第几章</label>
+                                            <input type="text" id="txtDictTitle" class="input-text">
+                                            <label>第几节</label>
+                                            <input type="text" id="txtCourseTitle" class="input-text">
+                                            <label>上课时间</label>
+                                            <input type="text" class="awe-calendar" id="txtCourseDate"  placeholder="Arrival Date">
+                                            <label>排序</label>
+                                            <input type="number" id="txtOrder" class="input-text">
+                                             
+                                        <button class="awe-btn awe-btn-13" onclick="SaveCurse()">保存章节</button>
+                                        </div>*@
+                                        <br />
+                                        @if (Model.fStatus == "保存")
+                                        {
+                                        <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
+                                          <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('发布')">发布</button>
+                                        }
+                                        else if (Model.fStatus == "发布")
+                                        {
+                                        <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('下线')">下线</button>
+                                        }
+                                    
+                                </div>
+
+                                   <div class="reservation-billing-detail" id="panelBooking">
+
+                                  </div>
+                            </div>
+
+                        </div>
+                        <!-- END / CONTENT -->
+                        
+                    </div>
+                </div>
+            </div>
+
+        </section>
+<script type="text/javascript">
+  var username = "@Model.fTecharUserName";
+
+
+
+  function SaveClassRoomInfo(status) {
+    
+    var ClassRoomModel = {
+      "fID": $("#fID").val(),
+      "fTecharUserName": username,
+      "fClassRoomTitle": $("#txtTitle").val(),
+      "fCoverImg": $("#hidConver").val(),
+      "fInfo": $("#txtInfo").val(),
+      "fDesc": $("#txtDesc").val(),
+      "fQrCode": $("#hidQrCode").val(),
+      "fTeacherValidID": $("#cmbTeacherValid").val(),
+      "fKnowLedge": $("#txtKnowLedge").val(),
+      "fMaxNumber": $("#txtMaxNumber").val(),
+      "fClassRoomDate": $("#txtClassRoomDate").val(),
+      "fDeadLineDate": $("#txtDeadLineDate").val(),
+      "fPrice": $("#txtPrice").val(),
+      "fBasePrice": $("#txtBasePrice").val(),
+      "fPayType": $("#cmbPayType").val(),
+      "fIsReturn": $("#cmbIsReturn").val(),
+      "fIsRecord": $("#cmbIsRecord").val(),
+      "fStatus": status
+    };
+
+    $.ajax({
+      url: "/classRoom/DoSaveClassRoom",
+      data: ClassRoomModel,
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          alert("保存成功");
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+        </script>
+<script type="text/javascript">
+
+  function changeType(obj) {
+    if ($(obj).val() == "text") {
+      $("#txtContent").show();
+      $("#fileUploadDesc").hide();
+    } else {
+      $("#fileUploadDesc").show();
+      $("#txtContent").hide();
+    }
+  }
+
+  function AddDesc(descID) {
+    $("#hidDescID").val(0);
+    $("#divDesc").show();
+    $("#btnDescAdd").hide();
+  }
+
+  function DelDesc(descID) {
+   
+    $.ajax({
+      url: "/classRoom/DoDelClassRoomDesc",
+      data: { "iDescID": descID },
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          alert("保存成功");
+          window.location.reload();
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+
+  function UpdateDesc(descID, type, content, order) {
+    $("#hidDescID").val(descID);
+    if (type == "text") {
+      $("#txtContent").val(content);
+    } else {
+      $("#hidDesc").val(content);
+      $("#cmbType").val("img");
+      $("#fileUploadDesc").show();
+      $("#txtContent").hide();
+    }
+    $("#txtDescOrder").val(order);
+    $("#divDesc").show();
+    $("#btnDescAdd").hide();
+  }
+
+  function SaveDesc() {
+    var type = $("#cmbType").val();
+    var content = "";
+
+    if (type == "text") {
+      content = $("#txtContent").val();
+    } else {
+      content = $("#hidDesc").val();
+    }
+
+    var DescModel = {
+      "fID": $("#hidDescID").val(),
+      "fType": type,
+      "fClassRoomCode": classRoomCode,
+      "fContent": content,
+      "fOrder": $("#txtDescOrder").val()
+    }
+    $.ajax({
+      url: "/classRoom/DoSaveClassRoomDesc",
+      data: DescModel,
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          alert("保存成功");
+          window.location.reload();
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+
+  }
+</script>
+<script type="text/javascript">
+  var classRoomCode = '@Model.fClassRoomCode';
+
+  function AddCurse(courseID) {
+    $("#hidCourseID").val(0);
+    $("#divCourse").show();
+    $("#btnAdd").hide();
+  }
+
+  function UpdateCurse(courseID, dictTitle, courseTitle, date, order) {
+    $("#hidCourseID").val(courseID);
+    $("#txtDictTitle").val(dictTitle);
+    $("#txtCourseTitle").val(courseTitle);
+    $("#txtCourseDate").val(date);
+    $("#txtOrder").val(order);
+    $("#divCourse").show();
+    $("#btnAdd").hide();
+  }
+
+  function SaveCurse() {
+    var CourseModel = {
+      "fID": $("#hidCourseID").val(),
+      "fClassType": "ClassRoom",
+      "fClassRoomCode": classRoomCode,
+      "fDictTitle": $("#txtDictTitle").val(),
+      "fCourseTitle": $("#txtCourseTitle").val(),
+      "fClassDate": $("#txtCourseDate").val(),
+      "fOrder": $("#txtOrder").val()
+    }
+    $.ajax({
+      url: "/classRoom/DoSaveClassRoomCourse",
+      data: CourseModel,
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          alert("保存成功");
+          $("#divCourse").hide();
+          $("#btnAdd").show();
+          window.location.reload();
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+
+  }
+</script>
+<script type="text/javascript">
+  var ClassRoomCode = "@Model.fClassRoomCode";
+
+  function showPanel(div) {
+    if (div == "info") {
+      $(".reservation-billing-detail").hide();
+      $("#panelData").show();
+    } else if (div == "booking") {
+      $(".reservation-billing-detail").hide();
+      $("#panelBooking").show();
+
+      $.ajax({
+        url: "/ClassRoom/QueryBookingList",
+        type: this.method,
+        data: { "strClassRoomCode": ClassRoomCode },
+        success: function (msg) {
+          $('#panelBooking').html(msg);
+        }
+      });
+    }
+  }
+
+  function UpdatePayStatus(strBookingNo, strStatus) {
+    $.ajax({
+      url: "/classRoom/DoUpdateBookingStatus",
+      data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          alert("修改成功");
+          $.ajax({
+            url: "/ClassRoom/QueryBookingList",
+            type: this.method,
+            data: { "strClassRoomCode": ClassRoomCode },
+            success: function (msg) {
+              $('#panelBooking').html(msg);
+            }
+          });
+        }
+      }
+
+    });
+  }
+
+</script>

@@ -1,0 +1,164 @@
+﻿@model TiKuBll.Model.ClassRoomListModel
+@{
+  ViewBag.Title = "课站";
+}
+
+
+<!-- ACTIVITI -->
+<section class="section-activiti bg-white">
+            <div class="container">
+
+                <div class="activiti">
+
+                    <div class="gallery-cat activiti-cat ">
+                       
+                        <ul class="list-inline">                          
+                            <li>学段：</li>
+                            <li onclick="CheckPharse(this,'小学')"><a href="#">小学</a></li>
+                            <li  onclick="CheckPharse(this,'初中')"><a href="#">初中</a></li>
+                            <li onclick="CheckPharse(this,'高中')"><a href="#">高中</a></li>
+                        </ul>
+                        <ul class="list-inline"  id="gradeXX" style=" display:none;">                          
+                            <li>年级：</li>
+                            <li><a href="#">一年级</a></li>
+                            <li><a href="#">二年级</a></li>
+                            <li><a href="#">三年级</a></li>
+                            <li><a href="#">四年级</a></li>
+                            <li><a href="#">五年级</a></li>
+                            <li><a href="#">六年级</a></li>
+                        </ul>
+                        <ul class="list-inline"  id="gradeCZ" style=" display:none;">                          
+                            <li>年级：</li>
+                            <li><a href="#">初一</a></li>
+                            <li><a href="#">初二</a></li>
+                            <li><a href="#">初三</a></li>
+                        </ul>
+                        <ul class="list-inline"  id="gradeGZ" style=" display:none;">                          
+                            <li>年级：</li>
+                            <li><a href="#">高一</a></li>
+                            <li><a href="#">高二</a></li>
+                            <li><a href="#">高三</a></li>
+                        </ul>
+                        <ul class="list-inline" id="subjectXX" style=" display:none;">                          
+                            <li>学科：</li>
+                            <li onclick="CheckSubject(this,'语文')"><a href="#">语文</a></li>
+                            <li onclick="CheckSubject(this,'数学')"><a href="#">数学</a></li>
+                            <li onclick="CheckSubject(this,'英语')"><a href="#">英语</a></li>
+                        </ul>
+                        <ul class="list-inline"  id="subjectZX" style=" display:none;">                          
+                            <li>学科：</li>
+                            <li onclick="CheckSubject(this,'语文')" ><a href="#">语文</a></li>
+                            <li onclick="CheckSubject(this,'数学')"><a href="#">数学</a></li>
+                            <li onclick="CheckSubject(this,'英语')"><a href="#">英语</a></li>
+                            <li onclick="CheckSubject(this,'物理')"><a href="#">物理</a></li>
+                            <li onclick="CheckSubject(this,'化学')"><a href="#">化学</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="activiti_content">
+                        
+                        <div class="row" id="divClassRoom">
+
+                          
+
+   @foreach (var classRoom in Model.classRoomList)
+   {
+                            <div class="col-md-4 col-xs-6">
+                              <div class="activiti_item">
+                                <div class="img">
+                                  <a href="/Open/ClassRoomDetail?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt=""></a>
+                                </div>
+                                <div class="text">
+                                  <h2>
+                                    <a href="#">@classRoom.fClassRoomTitle</a></h2>
+                                  <p>
+                                    
+                                    @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+                                    <br />
+                                    <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
+                                    <br />
+                                    <span>讲师：@classRoom.TeacherName</span>
+                                    </p>
+                                     <h2>￥ @classRoom.fPrice.ToString()</h2>
+                                </div>
+                              </div>
+                            </div>
+   }
+                           
+
+                        </div>
+
+                        <!-- PAGE NAVIGATION   -->
+                        @*<ul class="page-navigation text-center">
+                            <li class="first"><a href="#"><i class="fa fa-arrow-left"></i></a></li>
+                            <li><a href="#">1</a></li>
+                            <li class="current-page"><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li><a href="#">6</a></li>
+                            <li class="last"><a href="#"><i class="fa fa-arrow-right"></i></a></li>
+                        </ul>*@
+                        <!-- END / PAGE NAVIGATION   -->
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+<!-- END / ACTIVITI -->
+
+
+<script type="text/javascript">
+  var strPharse = "";
+  var strGrade = "";
+  var strSubjet = "";
+
+  function CheckPharse(obj,pharse) {
+    strPharse = pharse;
+    strGrade = "";
+    strSubjet = "";
+
+    $(obj).parent().children("li").removeClass("active");
+    $(obj).addClass("active");
+
+    if (pharse == "小学") {
+      $("#subjectXX").show();
+      $("#subjectZX").hide();
+      $("#subjectZX").children("li").removeClass("active");
+    } else {
+      $("#subjectZX").show();
+      $("#subjectXX").hide();
+      $("#subjectXX").children("li").removeClass("active");
+    }
+    QueryClassRoom();
+  }
+
+  function CheckGrade(grade) {
+    strGrade = grade;
+    strSubjet = "";
+    QueryClassRoom();
+  }
+
+  function CheckSubject(obj,subject) {
+
+    $(obj).parent().children("li").removeClass("active");
+    $(obj).addClass("active");
+    strSubjet = subject;
+    QueryClassRoom();
+  }
+
+  function QueryClassRoom() {
+    $.ajax({
+      url: "/open/QueryClassRoom",
+      type: this.method,
+      data: { "strCity": "上海", "strPharse": strPharse, "strGrade": strGrade, "strSubjet": strSubjet },
+      success: function (msg) {
+        $('#divClassRoom').html(msg);
+      }
+    });
+
+  }
+</script>

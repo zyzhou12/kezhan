@@ -1,0 +1,386 @@
+﻿@model KeZhan.Models.LoginModel
+@{
+  ViewBag.Title = "课站";
+}
+
+<section class="section-account parallax bg-11" style=" padding-top:60px;">
+            <div class="awe-overlay"></div>
+            <div class="container">
+                <div class="login-register">
+                    <div class="text text-center">
+                        <h2>登录</h2>
+                         
+                        <div class="account_form">
+                          <div class="field-form" id="divLoginType" style=" display:none">
+                              <p>                        
+                                            <button class="awe-btn awe-btn-13" id="aPass"  onclick="showPass()">密码登录</button>
+                                            <button class="awe-btn awe-btn-12" id="aCode"  onclick="showCode()">验证码登录</button>
+                               </p>
+                         </div>
+
+                            <div class="field-form">
+                                <input type="text" class="field-text" id="txtMobile"  onkeyup="inputMobile(this)" placeholder="请输入手机号" />
+                            </div>
+                            <div id="divCode"  style=" display:none;">
+                            <div class="field-form" style=" margin-top:1px;">
+                                <span class="account-desc" style=" margin-top:1px;" >
+                                <p   style=" text-align:right; width:100%; font-size:12px;" >                                 
+                                      <a href="#" id="btnCode" onclick="DoSendCode()">发送验证码</a>
+                                </p>
+                                </span>
+                             </div>
+
+                             
+                            <div class="field-form">
+                                <input type="text" class="field-text" id="txtCode" disabled="disabled" onkeyup="inputCode(this)"  placeholder="请输入验证码" />                                
+                            </div>
+                            <div class="field-form" style=" margin-top:1px;">
+                                <span class="account-desc" style=" margin-top:1px;" >
+                                <p style=" text-align:right; width:100%; font-size:12px;" > 
+                                <a href="#"  onclick="showPass()">密码登录</a>
+                                @*<a href="#" onclick="showCode()">验证码登录</a>*@
+                                </p>
+                                </span>
+                            </div>
+                            <div class="field-form" style=" display:none" id="divRole">                                
+                                   <input type="hidden" id="hidRole" value="Student" />
+                                   <p style=" display:none">
+                                      <button class="awe-btn awe-btn-12" id="aTeacher"  onclick="ChkTeacher()">我是老师</button>
+                                      <button class="awe-btn awe-btn-12" id="aStudent"  onclick="ChkStudent()">我是学生</button>
+                                   </p>
+                                   <br />
+                                  <span class="account-desc" id="bTeacherDesc" style=" display:none">
+                                      <input type="checkbox" id="chkReg" /><a href="/open/KeZhanDesc" >&nbsp;&nbsp;课站平台服务协议</a>
+                                      <input type="checkbox" id="chkTea" /><a href="/open/KeZhanTeachDesc">&nbsp;&nbsp;课站平台教师服务协议</a>
+                                  </span>
+                                  
+                                  
+                                  
+                            </div>
+                            <div class="field-form" style=" display:none" id="bStudentDesc">
+                            <span class="account-desc" ><input type="checkbox" id="chksReg" /><a href="/open/KeZhanDesc" >&nbsp;&nbsp;课站平台服务协议</a></span>
+
+                            </div>
+                           
+                            <div class="field-form">
+                                <button class="awe-btn awe-btn-12" id="btnLogin" onclick="DoLogin()">登录</button>
+                                <button style=" display:none;" class="awe-btn awe-btn-12" id="btnUpdatePass" onclick="DoUpdatePass()"> 找回密码</button>
+                            </div>
+                            </div>
+                            <div id="divPass">
+                               <div class="field-form">
+                                <input type="password" class="field-text" id="txtPass"placeholder="请输入密码" />
+                                <span class="view-pass"><i class="lotus-icon-view"></i></span>
+                                </div>
+                            <div class="field-form" style=" margin-top:1px;">
+                                <span class="account-desc" style=" margin-top:1px;" >
+                                    <p style=" text-align:right; width:100%; font-size:12px;" > 
+                                      <a href="#" onclick="showGetPass()">忘记密码</a>
+                                      @*<a href="#" onclick="showRegin()">免费注册</a>*@
+                                      <a href="/open/StudentRegsiter">免费注册</a>
+                                    </p>
+                                  </span>
+                                </div>
+                                <div class="field-form">
+                                    <button class="awe-btn awe-btn-12" id="btnLogin"onclick="DoPassLogin()">登录</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+<script type="text/javascript">
+  var redirect_uri = "@Model.redirect_uri";
+  var isNewUser = 0;
+  var loginType = "code";
+
+  var flag = 0;
+  var time_ok = get_time_add(0);
+  var time_hd = 0;
+
+  function left_time() {
+    var rst = 0;
+    var now = get_time_add(0);
+    if (now < time_ok) rst = Math.floor((time_ok - now) / 1000);
+    return rst;
+  }
+
+  function get_time_add(val) {
+    val = parseInt(val);
+    var rst = (new Date()).getTime() + val * 1000;
+    return rst;
+  }
+
+
+  function time_fun() {
+    updateLabNo();
+  }
+
+  function updateLabNo() {
+    var str = "";
+    if (flag == 0) {
+      str = "获取验证码";
+    } else if (flag == 1) {
+      str = "验证码已发送";
+    }
+
+    var tm = left_time();
+    if (tm > 0) {
+      str = str + "(" + tm + ")";
+    } else if (flag == 1) {
+      str = "重新获取验证码";
+    }
+
+    $("#btnCode").text(str);
+  }
+
+
+  $(document).ready(function () {
+    updateLabNo();
+    time_hd = setInterval("time_fun()", 1000);
+  });
+
+  function showPass() {
+    loginType = "pass";
+    $("h2").text("登录");
+    $("#aCode").removeClass("awe-btn-13");
+    $("#aCode").addClass("awe-btn-12");
+    $("#aPass").removeClass("awe-btn-12");
+    $("#aPass").addClass("awe-btn-13");
+    $("#divPass").show();
+    $("#divCode").hide();
+    $("#txtMobile").attr("placeholder", "请输入用户名或手机号");
+    $("#bStudentDesc").hide();
+  }
+
+  function showRegin() {
+    loginType = "regin";
+    $("h2").text("注册");
+    $("#btnLogin").text("注册");
+    $("#aPass").removeClass("awe-btn-13");
+    $("#aPass").addClass("awe-btn-12");
+    $("#aCode").removeClass("awe-btn-12");
+    $("#aCode").addClass("awe-btn-13");
+    $("#divCode").show();
+    $("#divPass").hide();
+    $("#bStudentDesc").show();
+  }
+
+  function showCode() {
+    loginType = "code";
+    $("h2").text("登录");
+    $("#btnLogin").text("登录");
+    $("#aPass").removeClass("awe-btn-13");
+    $("#aPass").addClass("awe-btn-12");
+    $("#aCode").removeClass("awe-btn-12");
+    $("#aCode").addClass("awe-btn-13");
+    $("#divCode").show();
+    $("#divPass").hide();
+    $("#bStudentDesc").hide();
+  }
+
+  function showGetPass() {
+    showCode();
+    $("#divLoginType").hide();
+    $("h2").text("找回密码");
+    $("#btnLogin").hide();
+    $("#btnUpdatePass").show();
+  }
+
+  function inputMobile(obj) {
+    //    if ($(obj).val().length == 11) {
+    //      $("#btnCode").removeClass("awe-btn-12");
+    //      $("#btnCode").addClass("awe-btn-13");
+    //    } else {
+    //      $("#btnCode").removeClass("awe-btn-13");
+    //      $("#btnCode").addClass("awe-btn-12");
+    //      $("#txtCode").val("");
+    //    }
+    if (loginType == "pass") {
+
+    }
+  }
+
+  function inputCode(obj) {
+    if ($(obj).val().length == 6) {
+      $("#btnLogin").removeClass("awe-btn-12");
+      $("#btnLogin").addClass("awe-btn-13");
+      // $("#btnLogin").attr("disabled", false);
+    } else {
+      $("#btnLogin").removeClass("awe-btn-13");
+      $("#btnLogin").addClass("awe-btn-12");
+    }
+  }
+
+  function DoSendCode() {
+    var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
+
+    if ($("#txtMobile").val() == "") {
+      alert("请输入联系手机");
+      $("#txtMobile").focus();
+      return;
+    } else if (!reg.test($("#txtMobile").val())) {
+      alert("手机号格式错误，请重新输入");
+      $("#txtMobile").focus();
+      return;
+    }
+
+
+    var tm = left_time();
+    if (tm > 0) {
+      alert("请在 " + tm + " 秒后再次点击发送");
+      return;
+    }
+
+    $.ajax({
+      url: "/open/DoSendCode",
+      data: { "strMobile": $("#txtMobile").val() },
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+
+        if (rst.iResult >= 0) {
+          if (rst.iResult == 1) {
+            isNewUser = 1;
+            $("#divRole").show();
+          } else {
+            if (loginType == "regin") {
+              alert("该手机号已注册");
+            }
+          }
+          $("#txtCode").attr("disabled", false);
+          flag = 1;
+          time_ok = get_time_add(30);
+          updateLabNo();
+
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+
+  function ChkTeacher() {
+    $("#hidRole").val("Teacher");
+    $("#bTeacherDesc").show();
+    $("#bStudentDesc").hide();
+
+    $("#aStudent").removeClass("awe-btn-13");
+    $("#aStudent").addClass("awe-btn-12");
+    $("#aTeacher").removeClass("awe-btn-12");
+    $("#aTeacher").addClass("awe-btn-13");
+  }
+
+
+  function ChkStudent() {
+    $("#hidRole").val("Student");
+    $("#bTeacherDesc").hide();
+    $("#bStudentDesc").show();
+    $("#aTeacher").removeClass("awe-btn-13");
+    $("#aTeacher").addClass("awe-btn-12");
+    $("#aStudent").removeClass("awe-btn-12");
+    $("#aStudent").addClass("awe-btn-13");
+  }
+
+  function DoLogin() {
+    if (isNewUser == 1) {
+      if ($("#hidRole").val() == "") {
+        alert("请选择您的身份");
+        //$("#cmbRole").focus();
+        return;
+      } else if ($("#hidRole").val() == "Student") {
+
+        if (!$("#chksReg").is(':checked')) {
+          alert("请阅读并同意注册条款");
+          //$("#cmbRole").focus();
+          return;
+        }
+      } else {
+        
+        if (!$("#chkReg").is(':checked')) {
+          alert("请阅读并同意注册条款");
+          //$("#cmbRole").focus();
+          return;
+        } 
+        if (!$("#chkTea").is(':checked')) {
+          alert("请阅读并同意老师条款");
+          //$("#cmbRole").focus();
+          return;
+        }
+      }
+      
+    }
+
+
+    $.ajax({
+      url: "/open/DoValidCode",
+      data: { "strMobile": $("#txtMobile").val(), "strCode": $("#txtCode").val(), "strRole": $("#hidRole").val() },
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          if (rst.iResult == 1) {
+            window.location.href = "/user/userinfoedit";
+          } else if (rst.iResult == 2) {
+            window.location.href = "/user/updatepassword?redirect_uri=" + redirect_uri;
+          } else {
+            window.location.href = redirect_uri;
+          }
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+
+  function DoUpdatePass() {
+    if (isNewUser == 1) {
+      alert("您输入的手机为新用户，请先注册");
+      return;
+
+    }
+
+
+    $.ajax({
+      url: "/open/DoValidCode",
+      data: { "strMobile": $("#txtMobile").val(), "strCode": $("#txtCode").val(), "strRole": $("#hidRole").val() },
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+
+          window.location.href = "/user/UpdatePassWord";
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+
+  function DoPassLogin() {
+
+
+    $.ajax({
+      url: "/open/DoValidPass",
+      data: { "strMobile": $("#txtMobile").val(), "strPass": $("#txtPass").val() },
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          if (rst.iResult == 1) {
+            window.location.href = "/user/userinfoedit";
+          } else {
+            window.location.href = redirect_uri;
+          }
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+</script>

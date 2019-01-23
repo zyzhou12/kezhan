@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "课站课堂",
+  "usingComponents": {
+    "webrtc-room": "/components/webrtc-room/webrtc-room",
+    "tic-component": "/components/tic-component/tic-component"
+  }
+}

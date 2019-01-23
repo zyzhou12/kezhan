@@ -1,0 +1,73 @@
+﻿@model TiKuBll.Model.ClassRoomListModel
+@{
+  ViewBag.Title = "课站";
+}
+
+
+<!-- ACTIVITI -->
+<section class="section-activiti bg-white">
+            <div class="container">
+
+                <div class="activiti">
+
+                    <div class="activiti_content">
+                        
+                        <div class="row" id="divClassRoom">
+
+                            @if (Model.classRoomList.Count > 0)
+                            {
+
+                                foreach (var classRoom in Model.classRoomList)
+                                {
+                                    <div class="col-md-4 col-xs-6">
+                                        <div class="activiti_item">
+                                            <div class="img">
+                                                <a href="/Open/ClassRoomDetail?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">
+                                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="text">
+                                                <h2>
+                                                    <a href="#">@classRoom.fClassRoomTitle</a>
+                                                </h2>
+                                                <p>
+
+                                                    @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+                                                    <br />
+                                                    <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
+                                                    <br />
+                                                    <span>讲师：@classRoom.TeacherName</span>
+                                                </p>
+                                                <h2>￥ @classRoom.fPrice.ToString()</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="col-md-4 col-xs-6">
+                                    <div class="activiti_item">
+                                        <div class="img">
+                                            <a href="#" class="view-more">
+                                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ClassRoom-bg.jpg?x-oss-process=style/title" alt="" />
+                                            </a>
+                                        </div>
+                                        <div class="text">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+<!-- END / ACTIVITI -->
+

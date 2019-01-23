@@ -1,0 +1,278 @@
+﻿@model TiKuBll.Model.BookingModel
+@{
+  ViewBag.Title = "课站";
+}
+
+<section class="section-reservation-page bg-white">
+
+            <div class="container">
+                <div class="reservation-page">
+                    
+                 
+                    <div class="row">
+
+                        <!-- SIDEBAR -->
+                        <div class="col-md-4 col-lg-3">
+                            <div class="sidebar">
+
+
+
+                                @if (!string.IsNullOrEmpty(Model.ClassRoom.TeacherQrCode))
+                                {
+
+
+                                    <div class="widget widget_recent_entries has_thumbnail">
+                                        <h4 class="widget-title">老师微信二维码</h4>
+                                        <div class="guest-book_item guest-book_item-2">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.ClassRoom.TeacherQrCode?x-oss-process=style/zheng" alt="" />
+
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (Model.fIsPay)
+                                {
+                                    if (!string.IsNullOrEmpty(Model.ClassRoom.fQrCode))
+                                    {
+
+                                        <div class="widget widget_recent_entries has_thumbnail">
+                                            <h4 class="widget-title">课程微信群</h4>
+                                            <div class="guest-book_item guest-book_item-2">
+                                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.ClassRoom.fQrCode?x-oss-process=style/zheng" alt="" />
+
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                        </div>
+                        <!-- END / SIDEBAR -->
+                        
+                        <!-- CONTENT -->
+                        <div class="col-md-8 col-lg-9">
+
+                            <div class="reservation_content">
+                                
+                                <div class="reservation-billing-detail">
+
+                                  
+                                    <h4>订单信息</h4>
+
+                                        <label>课程名称<sup> </sup></label>
+                                    <span>@Model.ClassRoom.fClassRoomTitle</span>
+                                    <label>价格<sup></sup></label>
+                                    <span>@Model.fAmount </span>
+                                    <label>开课时间<sup> </sup></label>
+                                    <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
+
+                                    <label>课程明细<sup> </sup></label>
+                                    @foreach (var c in Model.ClassRoom.courseList)
+                                    {
+                                        <span>@c.fDictTitle</span>
+                                        <span>@c.fCourseTitle</span>
+                                        <span>@c.fClassDate.ToString()</span>
+                                        <br />
+                                    }
+                                  
+                                      <br />     
+                                   
+                                    @if (!Model.fIsPay && Model.fStatus=="提交")
+                                    {
+                                      @*<span>账户余额：@Model.UserAccountAmount</span>
+                                      if (Model.UserAccountAmount > Model.fAmount)
+                                      {                 
+                                    <button class="awe-btn awe-btn-13" onclick="PayOrder('@Model.fBookingNo')">支付订单</button>
+                                      }
+                                      else
+                                      {
+                                        var leftAmount = Model.fAmount - Model.UserAccountAmount;
+                                        <span>账户余额不足请先充值</span>*@
+                                      <label>支付方式</label>
+                                       <ul class="option-bank">                                
+
+                                        <li id="liAli">
+                                            <label class="label-radio">
+                                                <input type="radio" class="input-radio" name="rPayType" value="alipay" >
+                                                支付宝
+                                            </label>
+                                            
+                                           @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                        </li>
+                                          <li>
+                                            <label class="label-radio">
+                                                <input type="radio" class="input-radio"  name="rPayType" value="weixinpay" >
+                                                微信
+                                            </label>
+                                            
+                                           @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                        </li>
+                                    </ul>
+                                      <img id="imgQrCode" style=" display:none;" src="" />
+                                      <div id="divQrCode" style=" display:none;"  >
+                                      </div>
+                                      <br />
+                                    <button class="awe-btn awe-btn-13" id="btnPay" onclick="UserPay('@Model.fBookingNo',@Model.fAmount)">支付订单</button>
+                                    //}
+                                    }
+                                  
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- END / CONTENT -->
+                        
+                    </div>
+                </div>
+            </div>
+
+        </section>
+<script type="text/javascript">
+  var username = '@Model.UserName';
+
+  $(document).ready(function () {
+    if (is_weixn()) {
+      $("#liAli").hide();
+    }
+  })
+
+  function PayOrder(bookingNo) {
+    var tradePass="";   
+      tradePass = prompt("请输入交易密码")
+      if (tradePass == "") {
+        alert("请输入交易密码");
+        return;
+      }
+
+      $.ajax({
+        url: "/Booking/BookingPay",
+        data: { "strBookingNo": bookingNo, "strTradePass": tradePass },
+        type: "POST",
+        dataType: "json",
+        success: function (rst) {
+          if (rst.iResult >= 0) {
+            alert("支付成功");
+            window.location.reload();
+          } else {
+            alert(rst.strMsg);
+          }
+        }
+
+      });
+    }
+
+
+    function UserPay(bookingNo, leftAmount) {
+
+      if (IsPC()) {
+        PCPay(bookingNo, leftAmount);
+      } else {
+        // if (is_weixn()) {
+
+        //  } else {
+        WapPay(bookingNo, leftAmount);
+        // }
+      }
+    }
+
+    function PCPay(bookingNo, leftAmount) {
+        var payType = $("input[name='rPayType']:checked").val();
+        if (payType == "weixinpay") {
+           
+
+        $.ajax({
+          url: "/weixinpay/UserPay",
+          data: { "strUserName": username, "strBookingNo": bookingNo, "strFee": leftAmount },
+          type: "POST",
+          dataType: "json",
+          success: function (rst) {
+            if (rst.iResult >= 0) {
+              $("#imgQrCode").attr("src", "http://qr.liantu.com/api.php?text=" + rst.strMsg);
+              $("#imgQrCode").show();
+              $("#btnPay").hide();
+
+              setTimeout("GetBookingNo('" + bookingNo + "')", 2000);//获取支付结果
+            } else {
+              alert(rst.strMsg);
+            }
+          }
+
+        });
+      } else {
+        $.ajax({
+          url: "/alipay/UserPay",
+          data: { "strUserName": username,"strBookingNo":bookingNo, "strFee": leftAmount },
+          type: "POST",
+          dataType: "json",
+          success: function (rst) {
+            if (rst.iResult >= 0) {
+              $("#divQrCode").html(rst.strMsg);
+              $("#divQrCode").show();
+              $("#btnPay").hide();
+            } else {
+              alert(rst.strMsg);
+            }
+          }
+
+        });
+      }
+    }
+
+    function WapPay(bookingNo, leftAmount) {
+      var payType = $("input[name='rPayType']:checked").val();
+      if (payType == "weixinpay") {
+        $.ajax({
+          url: "/weixinpay/UserWapPay",
+          data: { "strUserName": username, "strBookingNo": bookingNo, "strFee": leftAmount },
+          type: "POST",
+          dataType: "json",
+          success: function (rst) {
+            if (rst.iResult >= 0) {
+              window.location.href = rst.strMsg;
+            } else {
+              alert(rst.strMsg);
+            }
+          }
+
+        });
+      } else {
+        $.ajax({
+          url: "/alipay/UserWapPay",
+          data: { "strUserName": username, "strBookingNo": bookingNo, "strFee": leftAmount },
+          type: "POST",
+          dataType: "json",
+          success: function (rst) {
+
+            if (rst.iResult >= 0) {
+              $("#divQrCode").html(rst.strMsg);
+              $("#divQrCode").show();
+            } else {
+              alert(rst.strMsg);
+            }
+          }
+
+        });
+      }
+    }
+
+    function GetBookingNo(bookingno)
+    {
+        $.ajax({
+            url: "/weixinpay/GetBookingStatus",
+            data: { "strBookingNo": bookingno },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult == 0) {
+                    alert("支付成功")
+                    window.location.reload();
+                } else {
+                    setTimeout("GetBookingNo('" + bookingno + "')", 2000);
+                }
+            }
+
+        });
+        
+    }
+</script>

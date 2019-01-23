@@ -1,0 +1,346 @@
+﻿@model KeZhan.Models.UserBaseModel
+@{
+  ViewBag.Title = "课站";
+}
+<section class="section-reservation-page bg-white">
+
+            <div class="container">
+                <div class="reservation-page">
+                    
+                    <!-- STEP -->
+                    <div class="reservation_step">
+                        <ul>
+                            <li><a href="#"><span>1.</span>  注册</a></li>
+                            @if (Model.userRole == "Teacher")
+                            {
+                              if (string.IsNullOrEmpty(Model.teacherInfo.fStatus))
+                              {
+                            <li  class="active"><a href="#"><span>2.</span> 基本信息</a></li>
+                            <li><a href="#"><span>3.</span> 提交认证</a></li>
+                            <li><a href="#"><span>4.</span> 完成</a></li>
+                              }
+                              else if (Model.teacherInfo.fStatus == "未认证")
+                              {
+                            <li><a href="#"><span>2.</span> 基本信息</a></li>
+                            <li  class="active"><a href="#"><span>3.</span> 提交认证</a></li>
+                            <li><a href="#"><span>4.</span> 完成</a></li>
+                              }
+                              else
+                              {
+                            <li><a href="#"><span>2.</span> 基本信息</a></li>
+                            <li ><a href="#"><span>3.</span> 提交认证</a></li>
+                            <li  class="active"><a href="#"><span>4.</span> 完成</a></li>
+                                
+                              }
+
+                            }
+                            else
+                            {
+                            <li  class="active"><a href="#"><span>2.</span> 基本信息</a></li>
+                            <li><a href="#"><span>3.</span> 完成</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <!-- END / STEP -->
+
+                    <div class="row">
+
+                        <!-- SIDEBAR -->
+                        <div class="col-md-4 col-lg-3">
+
+                            
+
+                        </div>
+                        <!-- END / SIDEBAR -->
+                        
+                        <!-- CONTENT -->
+                        <div class="col-md-8 col-lg-9">
+                            <div class="reservation_content">                                
+                                <div class="reservation-billing-detail">
+
+                                    @if (Model.userRole == "Teacher")
+                                    {
+                                      if (string.IsNullOrEmpty(Model.teacherInfo.fStatus))
+                                      {
+                                       <h4>老师基本资料</h4>
+                                   
+                                  
+
+                                     <label>详细介绍</label>
+                                    <textarea class="input-textarea" id="txtTeacherDesc" placeholder="请输入老师介绍信息"></textarea>
+
+
+                                    
+                                     <label>开通功能</label>
+                                       <ul class="option-bank">
+                                        <li>
+                                            <label class="label-radio">
+                                                <input type="checkbox" class="input-radio" id="chkClassRoom">
+                                                在线课堂
+                                            </label>
+                                            <p>在线课堂介绍</p>
+                                           
+                                        </li>
+
+                                        <li>
+                                            <label class="label-radio">
+                                                <input type="checkbox" class="input-radio" id="chkLives">
+                                                一对一辅导
+                                            </label>
+                                            <p>一对一介绍，开通需缴纳押金才能使用</p>
+                                           
+                                            <label>收费价格<sup>*</sup></label>
+                                            <input type="number" id="txtVideoFee" class="input-text">
+                                        
+                                        </li>
+
+                                        <li>
+                                            <label class="label-radio">
+                                                <input type="checkbox" class="input-radio" id="chkProblem">
+                                                在线答疑
+                                            </label>
+                                            
+                                            <label>收费价格<sup>*</sup></label>
+                                            <input type="text" id="txtProblemFee" class="input-text">
+                                           @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                        </li>
+
+                                    </ul>
+                                      
+                                    <button class="awe-btn awe-btn-13" onclick="SaveInfo('@Model.userRole')">保存</button>
+                                      }
+                                      else if (Model.teacherInfo.fStatus == "未认证")
+                                      {
+                                       
+                                        
+
+                                    <h4>认证</h4>
+                                      
+                                           <label>身份证正面</label>
+                                
+                                      
+                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgIDCard1"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','TeacherValid','txtIDCard1','','imgIDCard1')" alt="" />
+                                      
+                                         <input type="hidden" id="txtIDCard1"  value="" />
+                                          <label>身份证反面</label>
+                                    
+                                       
+                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgIDCard2"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','TeacherValid','txtIDCard2','','imgIDCard2')" alt="" />
+                                      
+                                         <input type="hidden" id="txtIDCard2"  value="" />
+
+                                          <label>学段 <sup>*</sup></label>
+                                    <div class="shortcode-select">
+                                        <select class="awe-select" id="cmbPharse">
+                                            <option value="">请选择</option>
+                                            <option value="小学教育">小学教育</option>
+                                            <option value="初中教育">初中教育</option>
+                                            <option value="高中教育">高中教育</option>
+                                            <option value="成人教育">成人教育</option>
+                                            <option value="其他">其他</option>
+                                        </select>
+                                    </div>
+                                     <label>学科 <sup>*</sup></label>
+                                    <div class="shortcode-select">
+                                        <select class="awe-select" id="cmbSubject">
+                                            <option value="">请选择</option>
+                                            <option value="小学">语文</option>
+                                            <option value="数学">数学</option>
+                                            <option value="英语">英语</option>
+                                            <option value="物理">物理</option>
+                                            <option value="化学">化学</option>
+                                            <option value="音乐">音乐</option>
+                                            <option value="美术">美术</option>
+                                            <option value="编程">编程</option>
+                                        </select>
+                                    </div>
+                                     <label>证书类型 <sup>*</sup></label>
+                                    <div class="shortcode-select">
+                                        <select class="awe-select" id="cmbCertType">
+                                            <option value="">请选择</option>
+                                            <option value="教师证">教师证</option>
+                                            <option value="职业资格证">职业资格证</option>
+                                            <option value="其他">其他</option>
+                                        </select>
+                                    </div>
+
+
+                                          <label>证书1</label>
+                                    
+                                      
+                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgTeacherCert1"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','TeacherValid','txtTeacherCert1','','imgTeacherCert1')" alt="" />
+                                       
+                                         <input type="hidden" id="txtTeacherCert1"  value="" />
+                                          <label>证书2</label>
+                                     
+                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgTeacherCert2"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','TeacherValid','txtTeacherCert2','','imgTeacherCert2')" alt="" />
+                                        
+                                         <input type="hidden" id="txtTeacherCert2"  value="" />
+                                    <br />
+                                    <button class="awe-btn awe-btn-13" onclick="TeacherValid()">提交认证</button>
+                                    
+                                      }
+                                      else
+                                      {                                       
+                                      
+                                
+                                        <div class="reservation-chosen-message bg-gray text-center">
+                                            <h4>您已提交认证资料，请等待认证结果 </h4>
+                                            <p>大概需要7个工作日?</p>
+                                            <a href="/open/ClassRoomList" class="awe-btn awe-btn-6">确定</a>
+                                        </div>
+
+                                      }
+
+                                     <script type="text/javascript">
+
+                                       var username = '@Model.userInfo.fUserName';
+
+
+
+                                       function TeacherValid() {
+                                         var TeacherValidModel = {
+                                           fPharse: $("#cmbPharse").val(),
+                                           fSubject: $("#cmbSubject").val(),
+                                           fCertType: $("#cmbCertType").val(),
+                                           fIDCard1: $("#txtIDCard1").val(),
+                                           fIDCard2: $("#txtIDCard2").val(),
+                                           fTeachCert1: $("#txtTeacherCert1").val(),
+                                           fTeachCert2: $("#txtTeacherCert2").val()
+                                         };
+                                         $.ajax({
+                                           url: "/user/SaveTeacherValidFile",
+                                           data: TeacherValidModel,
+                                           type: "POST",
+                                           dataType: "json",
+                                           success: function (rst) {
+                                             if (rst.iResult >= 0) {
+                                               alert("提交成功，等待审核");
+                                               window.location.reload();
+
+                                             } else {
+                                               alert(rst.strMsg);
+                                             }
+                                           }
+
+                                         });
+                                       }
+                                      </script>
+
+
+                                    }
+                                    else if (Model.userRole == "Student")
+                                    {
+                                    <h4>基本资料</h4>
+                                    
+                                  
+                                    <label>学段 <sup>*</sup></label>
+                                    <div class="shortcode-select">
+                                        <select class="awe-select" id="cmbPharse">
+                                            <option value="">请选择</option>
+                                            <option value="小学">小学</option>
+                                            <option value="初中">初中</option>
+                                            <option value="高中">高中</option>
+                                        </select>
+                                    </div>
+
+                                      
+                                     <label>学校</label>
+                                     <input type="text" id="txtSchool" class="input-text" />
+                                    
+                                    <label>年级 <sup>*</sup></label>
+                                    <div class="shortcode-select">
+                                        <select class="awe-select" id="cmgGrade">
+                                            <option value="">请选择</option>
+                                            <option value="1">一年级</option>
+                                            <option value="2">二年级</option>
+                                            <option value="3">三年级</option>
+                                            <option value="4">四年级</option>
+                                            <option value="5">五年级</option>
+                                            <option value="6">六年级</option>
+                                            <option value="7">七年级</option>
+                                            <option value="8">八年级</option>
+                                            <option value="9">九年级</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button class="awe-btn awe-btn-13" onclick="SaveInfo('@Model.userRole')">保存</button>
+                                    }
+                                    else if (Model.userRole == "Parents")
+                                    {
+
+                                    }
+                                  
+
+
+                                  
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <!-- END / CONTENT -->
+                        
+                    </div>
+                </div>
+            </div>
+
+        </section>
+<script type="text/javascript">
+  function SaveInfo(userRole) {
+
+    if (userRole == "Teacher") {
+      var TeacherBaseModel = {
+        fDesc: $("#txtTeacherDesc").val(),
+        fIsClassRoom: $("#chkClassRoom").prop('checked'),
+        fIsLive: $("#chkLives").prop('checked'),
+        fIsProblem: $("#chkProblem").prop('checked'),
+        fVideoFee: $("#txtVideoFee").val(),
+        fProblemFee: $("#txtProblemFee").val()
+      };
+
+      $.ajax({
+        url: "/user/DoSaveTeacherInfo",
+        data: TeacherBaseModel,
+        type: "POST",
+        dataType: "json",
+        success: function (rst) {
+          if (rst.iResult >= 0) {
+            alert("保存成功");
+            window.location.reload();
+          } else {
+            alert(rst.strMsg);
+          }
+        }
+
+      });
+    }
+    else if (userRole == "Student") {
+      var StudentBaseModel = {
+        Pharse: $("#cmbPharse").val(),
+        School: $("#txtSchool").val(),
+        Grade: $("#cmgGrade").val()
+      };
+
+      $.ajax({
+        url: "/user/DoSaveStudentInfo",
+        data: StudentBaseModel,
+        type: "POST",
+        dataType: "json",
+        success: function (rst) {
+          if (rst.iResult >= 0) {
+
+            alert("保存成功");
+            window.location.reload();
+          } else {
+            alert(rst.strMsg);
+          }
+        }
+
+      });
+    }
+  }
+
+
+
+</script>

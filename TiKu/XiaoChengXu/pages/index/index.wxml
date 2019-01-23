@@ -1,0 +1,9 @@
+<view class="container">
+  <view class="camera-box">
+    <webrtc-room id="webrtcroom" wx:if="{{!!template}}" template="{{template}}" roomID="{{roomID}}" userID="{{userID}}" userSig="{{userSig}}" sdkAppID="{{sdkAppID}}" privateMapKey="{{privateMapKey}}" smallViewLeft="{{smallViewLeft}}" smallViewTop="{{smallViewTop}}" smallViewWidth="{{smallViewWidth}}" smallViewHeight="{{smallViewHeight}}" enableCamera="{{enableCamera}}" enableIM="{{false}}" bindRoomEvent="onRoomEvent"></webrtc-room>
+  </view>
+  <view class="board_container">
+      <tic-component id="tx_board" bindIMEvent="onIMEvent" bindBoardEvent="onBoardEvent">
+      </tic-component>
+    </view>
+</view>

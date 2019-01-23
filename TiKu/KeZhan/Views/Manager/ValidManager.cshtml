@@ -1,0 +1,116 @@
+﻿@model TiKuBll.Model.ValidListModel
+@{
+  ViewBag.Title = "课站";
+}
+
+
+        <section class="section-reservation-page bg-white">
+
+            <div class="container">
+                <div class="reservation-page">                   
+                  
+
+                    <div class="row">
+
+                        <!-- SIDEBAR -->
+                        <div class="col-md-4 col-lg-3">
+
+                            <div class="reservation-sidebar">
+
+                                <!-- RESERVATION DATE -->
+                                <div class="reservation-date bg-gray">
+
+                                    <!-- HEADING -->
+                                   @* <h2 class="reservation-heading" onclick="showPanel('info')">基本资料</h2>
+                                   *@
+                                    <!-- END / HEADING -->                                 
+
+                                </div>
+                                <!-- END / RESERVATION DATE --> 
+                            </div>
+
+                        </div>
+                        <!-- END / SIDEBAR -->
+                        
+                        <!-- CONTENT -->
+                        <div class="col-md-8 col-lg-9">
+
+                            <div class="reservation_content">
+                                
+                              
+                                   <div class="reservation-billing-detail" id="panelList">
+                                   
+                                    @if (Model.validList != null && Model.validList.Count > 0)
+{
+<div id="comments">
+  <ul class="commentlist">
+    @foreach (var v in Model.validList)
+    {
+      <li>
+        <div class="comment-body">
+          <a class="comment-avatar">
+            @*<img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@b.UserHead?x-oss-process=style/width" alt="">*@</a>
+          <h4 class="comment-subject">
+            @v.fUserName</h4>
+          <p>
+           </p>
+          <span class="comment-meta">
+           
+
+          </span>
+          <div class="action">
+           
+            <button class="awe-btn awe-btn-14" onclick="showDetail(@v.fID)">去认证</button> 
+            
+          </div>
+        </div>
+      </li>
+    }
+  </ul>
+</div>
+}
+else
+{
+<span>暂时没有需要认证用户</span>
+}
+
+                                  </div>
+
+                                  
+  <div class="reservation-billing-detail" style=" display:none" id="panelValid">
+                                   
+                                   </div>
+                            </div>
+
+                        </div>
+                        <!-- END / CONTENT -->
+                        
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <script type="text/javascript">
+          function showList() {
+            $(".reservation-billing-detail").hide();
+            $("#panelList").show();
+          }
+
+          function showDetail(iValidFid) {
+            $(".reservation-billing-detail").hide();
+            $("#panelValid").show();
+
+          
+
+            $.ajax({
+              url: "/Manager/TeacherValid",
+              type: this.method,
+              data: { "iValidFid": iValidFid },
+              success: function (msg) {
+                $('#panelValid').html(msg);
+              }
+            });
+          }
+        </script>

@@ -1,0 +1,4 @@
+E:\VS2013\TiKu\TiKuEntity\bin\x64\Release\TiKuEntity.dll
+E:\VS2013\TiKu\TiKuEntity\bin\x64\Release\TiKuEntity.pdb
+E:\VS2013\TiKu\TiKuEntity\obj\x64\Release\TiKuEntity.dll
+E:\VS2013\TiKu\TiKuEntity\obj\x64\Release\TiKuEntity.pdb

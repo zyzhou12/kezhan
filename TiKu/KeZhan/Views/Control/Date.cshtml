@@ -1,0 +1,19 @@
+﻿@model WebEdu.Models.DateModel
+<input id="@Model.dateID" placeholder="@Model.datePlaceholder" name="@Model.dateID" value="@Model.date" class="form-control layer-date">
+
+<script src="../../Scripts/plugins/layer/laydate/laydate.js"></script>
+<script>
+     var @Model.dateID = {
+       elem: "#@Model.dateID",
+       format: 'YYYY-MM-DD hh:mm:ss',
+       min: "2019-01-01 00:00:00", //设定最小日期为当前日期
+       max: '2099-06-16 23:59:59', //最大日期
+       istime: @Model.isTime,
+       istoday: true,
+       choose: function (datas) {
+         end.min = datas; //开始日选好后，重置结束日的最小日期
+         end.start = datas //将结束日的初始值设定为开始日
+       }
+     };
+     laydate(@Model.dateID);
+</script>

@@ -1,0 +1,13 @@
+﻿@model TiKuBll.Model.UserAccountListModel
+@{
+  ViewBag.Title = "课站";
+}
+
+@foreach (var a in Model.accountList)
+{
+  <span>@a.fNote</span>
+  <span>@a.fDate.ToString()</span>
+  <span>@a.fAmount</span>
+  <span>@a.fTradingType</span>
+  <br />
+}

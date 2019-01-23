@@ -1,0 +1,122 @@
+﻿@model TiKuBll.Model.ClassRoomModel
+@{
+    ViewBag.Title = "ClassRoomCourse";
+}
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+                
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail" id="panelData">
+
+                            <div class="reservation-room_package">
+                                <a data-toggle="collapse" href="#reservation-room_package-1" class="reservation-room_package-more" aria-expanded="true">章节</a>
+                                
+                                <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+
+                                    @if (Model.courseList != null)
+                                    {
+                                                <!-- ITEM PACKAGE -->
+                                        foreach (var course in Model.courseList)
+                                        {
+                                            <div class="reservation-package_item">
+                                                @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                                {
+                                                    if (course.fStatus == "已转码")
+                                                    {
+                                                        <div class="reservation-package_img">
+                                                            <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal"  alt="">
+
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="reservation-package_img">
+                                                        <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fTecharUserName','ClassRoom',@course.fID)" alt="" />
+                                                    </div>
+                                                }
+
+                                                <div class="reservation-package_text">
+
+                                                    <h4><a href="#">@course.fDictTitle</a></h4>
+                                                    <p>
+                                                        @course.fCourseTitle
+                                                    <br />
+                                                    <span>上课时间：@course.fClassDate.ToString()</span>
+                                                </p>
+
+                                                <div class="reservation-package_book-price">
+                                                    @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                                    {
+                                                        if (course.fStatus == "已转码")
+                                                        {
+                                                            <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
+
+                                                        }
+                                                    }
+                                                    @if (course.CourseStatus == 1)
+                                                    {
+                                                        <a href="#" class="awe-btn awe-btn-default">未开始</a>
+                                                    }
+                                                    else if (course.CourseStatus == 2)
+                                                    {
+                                                        <a href="#" class="awe-btn awe-btn-default">已结束</a>
+                                                    }
+                                                    else if (course.CourseStatus == 3)
+                                                    {
+                                                        <a href="#" onclick="OpenClassRoom(@course.fID)" class="awe-btn awe-btn-default">开始上课</a>
+                                                    }
+                                                </div>
+                                                    
+                                            </div>
+
+                                        </div>
+                                        }
+
+                                   
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+    function OpenClassRoom(iCourdeID) {
+        $.ajax({
+            url: "/Home/OpenClassRoom",
+            data: { "iCourseID": iCourdeID },
+            type: "Post",
+            success: function (rst) {
+                
+                if (rst.iResult >= 0) {
+                    window.location.href = "/Home/Index?iCourseID=" + iCourdeID+"&strRole=Teacher";
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+</script>

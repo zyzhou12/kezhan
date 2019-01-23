@@ -1,0 +1,56 @@
+﻿@model TiKuBll.Model.TeacherValidModel
+@{
+  ViewBag.Title = "课站";
+}
+
+
+  <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard1?x-oss-process=style/width" alt="" />
+  <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard2?x-oss-process=style/width" alt="" />
+  <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert1?x-oss-process=style/width" alt="" />
+  <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert2?x-oss-process=style/width" alt="" />
+
+  <br />
+  
+  <input type="text" id="txtName" placeholder="真实姓名"  class="input-text" />
+  <input type="text" id="txtID" placeholder="身份证号"  class="input-text" />
+  <input type="text" id="txtTeacherNo" placeholder="教师证编号"  class="input-text" />
+  <input type="text" id="txtSubject" placeholder="学科"  class="input-text" />
+
+  <button class="awe-btn awe-btn-14" onclick="ValidTeacher(@Model.fID)">认证通过</button>
+  <br />
+  <input type="text" id="txtValidMessage"  class="input-text" />
+  <button class="awe-btn awe-btn-14" onclick="ReturnValidTeacher(@Model.fID)">认证未通过</button>
+
+  <script type="text/javascript">
+    function ValidTeacher(iValidFid) {
+
+      alert(iValidFid);
+
+      $.ajax({
+        url: "/Manager/DoTeacherValid",
+        type: "POST",
+        data: { "iValidFid": iValidFid, "ValidResult": true, "ValidMessage": "认证通过" },
+        success: function (msg) {
+          alert("认证成功");
+          window.location.reload();
+        }
+      });
+    }
+
+    function ReturnValidTeacher(iValidFid) {
+      var ValidMessage = $("#txtValidMessage").val();
+      $.ajax({
+        url: "/Manager/DoTeacherValid",
+        type: this.method,
+        data: { "iValidFid": iValidFid, "ValidResult": false, "ValidMessage": ValidMessage },
+        success: function (msg) {
+          alert("认证未通过");
+          window.location.reload();
+        },
+        fail: function (msg) {
+          alert(msg);
+          window.location.reload();
+        }
+      });
+    }       
+  </script>

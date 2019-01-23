@@ -1,0 +1,29 @@
+﻿@model TiKuBll.Model.TeacherValidModel
+<input type="hidden" id="hidTeacherValidValue" value="@Model.fID" />
+<select id="cmbTeacherValid" name="fTeacherValidID" style="width: 150px"> 
+                </select> 
+<script type="text/javascript">
+  $(document).ready(function () {
+
+    $.getJSON("/ClassRoom/GetTeacherValidList?strUserName=@Model.fUserName", function (data) {
+      $("#cmbTeacherValid").append("<option value=''>请选择</option>");
+
+      $.each(data, function (i, item) {
+        if (item["fID"] == $("#hidTeacherValidValue").val()) {
+          $("<option></option>")
+                    .val(item["fID"])
+                    .text(item["fPharse"] + item["fSubject"])
+                    .attr("selected", "selected")
+                    .appendTo($("#cmbTeacherValid"));
+        } else {
+          $("<option></option>")
+                    .val(item["fID"])
+                    .text(item["fPharse"] + item["fSubject"])
+                    .appendTo($("#cmbTeacherValid"));
+
+        }
+      });
+
+    });
+  })
+</script>

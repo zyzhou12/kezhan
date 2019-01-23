@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4EFD1340-E4E9-45C6-983D-1BD51DAEC8DE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TiKuEntity</RootNamespace>
+    <AssemblyName>TiKuEntity</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="tAnswerEntity.cs" />
+    <Compile Include="tBookingEntity.cs" />
+    <Compile Include="tChapterEntity.cs" />
+    <Compile Include="tClassRoomDetailEntity.cs" />
+    <Compile Include="tClassRoomEntity.cs" />
+    <Compile Include="tCourseEntity.cs" />
+    <Compile Include="tDiffTypeEntity.cs" />
+    <Compile Include="tEditionEntity.cs" />
+    <Compile Include="tEmailEntity.cs" />
+    <Compile Include="tGradeEntity.cs" />
+    <Compile Include="tHistoryEntity.cs" />
+    <Compile Include="tKnowLedgeBasicEntity.cs" />
+    <Compile Include="tKonwLedgeLevelEntity.cs" />
+    <Compile Include="tMediaEntity.cs" />
+    <Compile Include="tMessageEntity.cs" />
+    <Compile Include="tPaperTypeEntity.cs" />
+    <Compile Include="tParentsInfoEntity.cs" />
+    <Compile Include="tPharseEntity.cs" />
+    <Compile Include="tPharseGradeEntity.cs" />
+    <Compile Include="tProblemEntity.cs" />
+    <Compile Include="tQTypeEntity.cs" />
+    <Compile Include="tQuestionEntity.cs" />
+    <Compile Include="tQuestionKnowLedgeBasicEntity.cs" />
+    <Compile Include="tResourceEntity.cs" />
+    <Compile Include="tRoomEntity.cs" />
+    <Compile Include="tSMSMessageEntity.cs" />
+    <Compile Include="tStudentInfoEntity.cs" />
+    <Compile Include="tSubjectEntity.cs" />
+    <Compile Include="tSubQuestionEntity.cs" />
+    <Compile Include="tSystemConfigEntity.cs" />
+    <Compile Include="tTeachInfoEntity.cs" />
+    <Compile Include="tTeachValidEntity.cs" />
+    <Compile Include="tUserAccountEntity.cs" />
+    <Compile Include="tUserEntity.cs" />
+    <Compile Include="tUserPayEntity.cs" />
+    <Compile Include="tUserRefundEntity.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

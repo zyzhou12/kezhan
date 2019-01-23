@@ -1,0 +1,103 @@
+﻿@model KeZhan.Models.TeacherClassRoomListModel
+@{
+    ViewBag.Title = "课站";
+}
+
+<!-- ACTIVITI -->
+<section class="section-activiti bg-white">
+    <div class="container">
+        <div class="activiti">
+            @* <div class="gallery-cat activiti-cat text-center">
+                    <ul class="list-inline">
+                        <li class="active"><a href="#">ALL</a></li>
+                        <li><a href="#">PARK</a></li>
+                        <li><a href="#">COFFE</a></li>
+                        <li><a href="#">MARKET</a></li>
+                        <li><a href="#">SWIMMING</a></li>
+                    </ul>
+                </div>*@
+
+            <div class="activiti_content">
+
+                <div class="row">
+
+                    @if (Model.list.classRoomList.Count > 0)
+                    {
+
+                        foreach (var classRoom in Model.list.classRoomList)
+                        {
+                            <div class="col-md-4 col-xs-6">
+                                <div class="activiti_item">
+                                    <div class="img">
+                                        <a href="#">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="text">
+                                        <h2>
+                                            <a href="#">@classRoom.fClassRoomTitle</a>
+                                        </h2>
+                                        <p>
+                                            @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+                                        </p>
+                                        <a href="/ClassRoom/ClassRoomCourse?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">课程详情 <i class="fa fa-chevron-right"></i></a>
+                                        <a href="/ClassRoom/ClassRoomEdit?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">编辑 <i class="fa fa-chevron-right"></i></a>
+
+                                        <!-- 章节-->
+                                        @if (classRoom.courseList != null)
+                                  {
+                                    foreach (var c in classRoom.courseList)
+                                    {
+                                      if (c.fOrder > 0)
+                                      {
+                                        if (c.fClassDate < DateTime.Now.AddMinutes(30))
+                                        {
+
+                                          return;
+                                        }
+                                      }
+                                    }
+                                  }
+
+                                    @*@if (classRoom.fClassRoomDate < DateTime.Now.AddMinutes(30))
+                                        {
+                                          <br />
+                                          <a href="/Home/Index?iCourseID=@classRoom.fClassRoomCode" class="view-more">进入课堂 <i class="fa fa-chevron-right"></i></a>
+                                        }
+                                        else
+                                        {
+                                          <a href="/Home/Index?iCourseID=@classRoom.fClassRoomCode" class="view-more">进入课堂 <i class="fa fa-chevron-right"></i></a>
+                                        }*@
+                                </div>
+                            </div>
+                        </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-md-4 col-xs-6">
+                            <div class="activiti_item">
+                                <div class="img">
+                                    <a href="#" class="view-more">
+                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ClassRoom-bg.jpg?x-oss-process=style/title" alt="" />
+                                    </a>
+                                </div>
+                                <div class="text">
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- END / ACTIVITI -->

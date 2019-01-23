@@ -1,0 +1,41 @@
+﻿<body>
+	<div id="app" style=""><!----> <div class="edu-header clearfix"><h1><a href="" title="腾讯云教育直播"><img srcset="./css/img/logo.png 1x, ./css/img/logo@2x.png 2x" src="./css/img/logo.png" alt="腾讯云教育直播"></a></h1> <div class="edu-class-title">yrn（ID:33607）</div> <div class="edu-header-login"><a href="javascript:;">rt</a> <a href="#js-code-tips" rel="modal:open">联系我们</a> <a href="javascript:;">退出</a></div></div> <div class="edu-container"><div class="edu-container-inner"><div class="edu-main edu-main-student" style=""><div class="edu-main-inner edu-scroll"><div class="edu-area-main edu-scroll"><h2 class="edu-student-title">当前画面：<span>老师端摄像头或者屏幕</span></h2> <div class="edu-member-list"><ul class="edu-member-list-inner edu-scroll"><!----></ul></div> <div class="tab-panel edu-main-tab-video" style="display: block;"><div class="edu-main-video"><div class="edu-main-video-bd"><div class="edu-main-video-box"><div class="edu-video-play"><video id="video" autoplay="autoplay" playsinline="" style="width: 100%; height: 100%; position: absolute; z-index: 20;"></video> <div style="width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; z-index: 11; background-color: black;"></div> <div id="sketch_pad" style="width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; z-index: 10;"><canvas width="1126" height="22" style="z-index:10;position:absolute; top:0; left:0;"></canvas>                                <img style="display:none; position:absolute; top:0; left:0;z-index:5;" width="1126" height="22">                                <div class="tic_board_bg" style="z-index:4;position:absolute; top:0; left:0;background-color:rgba(255,255,255,1);width:1126px;height:22px;"></div></div></div></div></div> <div class="edu-main-video-ft"><div class="edu-col eda-col-operation"><a href="javascript:;" title="发言" class="edu-head-btn edu-ft-btn"></a></div></div></div></div></div></div> <div class="edu-right-sidebar"><div class="edu-right-chatroom" style="display: flex; flex-direction: column; overflow: hidden;"><div class="edu-chatroom-notification"><h4>消息</h4></div> <div class="edu-chatroom-list" style="overflow-y: auto; flex-shrink: 1; flex-grow: 1;"><ul><!----><li></li><!----> <li class="edu-chatroom-student">rt加入了房间</li><li></li><li class="edu-chatroom-student"><span>rt：</span>678</li><li></li><!----> <!----><li></li><!----><li></li><!----> <li class="edu-chatroom-student">昵称91加入了房间</li><li></li><!----><li></li><!----> <li class="edu-chatroom-student">昵称91离开了房间</li><li></li><!----><li></li><!----> <li class="edu-chatroom-student">web_383加入了房间</li><li></li><!----><li></li><!----> <li class="edu-chatroom-student">web_383离开了房间</li><li></li><!----><li></li><!----> <li class="edu-chatroom-student">昵称276加入了房间</li><li></li></ul></div> <div class="edu-chatroom-speaking" style="position: static; flex-shrink: 0;"><textarea placeholder="在此输入消息，按回车键发送" class="tc-15-input-textarea"></textarea> <div class="edu-expression-icon"><button class="tc-15-btn m weak">发送</button></div></div></div></div></div></div></div> <!----> <div class="mask" style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; background-color: black; z-index: 0; opacity: 0.5; display: none;"></div> <div role="alertdialog" class="tc-15-rich-dialog m" style="z-index: 101; position: absolute; top: 50%; left: 50%; margin-top: -150px; margin-left: -225px; display: none;"><div class="tc-15-rich-dialog-hd"><button title="关闭" class="tc-15-btn-close">关闭</button></div> <div class="tc-15-rich-dialog-bd"><div class="tc-icon-box"><div class="col"><h3 class="tc-dialog-title"></h3> <p></p></div></div></div> <div class="tc-15-rich-dialog-ft"><div class="tc-15-rich-dialog-ft-btn-wrap"><button class="tc-15-btn">确定</button> <button class="tc-15-btn weak">取消</button></div></div></div></div>
+
+
+	<div id="js-code-tips" class="modal">
+		<div class="edu-index-tips">
+			获取技术支持，可关注公众号“腾讯教育云”
+		</div>
+		<div class="edu-index-code">
+			<img src="https://main.qcloudimg.com/raw/e2a3739fd21a3571140e6a28ed90b9ac.jpg" alt="腾讯教育云" width="100">
+		</div>
+	</div>
+
+
+	<script src="https://pingjs.qq.com/h5/stats.js?v2.0.2" name="MTAH5" sid="500611043"></script><script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.bootcss.com/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
+	<script src="./libs/vue.min.js"></script>
+	<script src="./libs/axios.min.js"></script>
+	<script src="./libs/md5.min.js"></script>
+	<script src="./libs/vue-toastr-2.js"></script>
+	<script src="./libs/webim.min.js"></script>
+	<script src="https://sqimg.qq.com/expert_qq/edu/1.2.7/sketchpad_sdk.mini.js"></script>
+	<!-- <script src="https://sqimg.qq.com/expert_qq/webrtc/2.0/WebRTCAPI.min.js"></script> -->
+	<script src="./libs/WebRTCAPI.cloud.min.js"></script>
+	<script src="./js/main.js?t=20180413"></script>
+
+	<script>
+	  var _mtac = {};
+	  (function () {
+	    var mta = document.createElement("script");
+	    mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.2";
+	    mta.setAttribute("name", "MTAH5");
+	    mta.setAttribute("sid", "500611043");
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(mta, s);
+	  })();
+	</script>
+
+
+</body>

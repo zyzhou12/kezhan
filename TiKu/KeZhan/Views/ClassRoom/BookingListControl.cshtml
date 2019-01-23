@@ -1,0 +1,76 @@
+﻿@model TiKuBll.Model.BookingListModel
+@{
+    ViewBag.Title = "课站";
+}
+@if (Model.list != null && Model.list.Count > 0)
+{
+    <div id="comments">
+        <ul class="commentlist">
+            @foreach (var b in Model.list)
+            {
+                if (Model.fPayType == "在线支付" && b.fIsPay)
+                {
+                    <li>
+                        <div class="comment-body">
+                            <a class="comment-avatar">
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@b.UserHead?x-oss-process=style/head" alt="">
+                            </a>
+                            <h4 class="comment-subject">
+                                @b.fBookingNo
+                            </h4>
+                            <p>
+                                <span>手机号：@b.Mobile</span>
+                                <br />
+                                <span>用户昵称：@b.UserName</span>
+                                <br />
+                                <span>下单时间：@b.fBuyDate.ToString()</span>
+                                <br />
+                                <span>订单状态：@b.fStatus</span>
+                            </p>
+
+                        </div>
+                    </li>
+                }
+                else if (Model.fPayType == "线下支付")
+                {
+                    <li>
+                        <div class="comment-body">
+                            <a class="comment-avatar">
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@b.UserHead?x-oss-process=style/head" alt="">
+                            </a>
+                            <h4 class="comment-subject">
+                                @b.fBookingNo
+                            </h4>
+                            <p>
+                                <span>手机号：@b.Mobile</span>
+                                <br />
+                                <span>用户昵称：@b.UserName</span>
+                                <br />
+                                <span>下单时间：@b.fBuyDate.ToString()</span>
+                            </p>
+                            <span class="comment-meta">
+                                @if (b.fIsPay)
+                                { <a href="#">已支付</a>}
+                                else
+                                {
+                                    <a href="#">未支付</a>
+                                }
+                            </span>
+                            <div class="action">
+                                @if (b.fStatus != "已支付")
+                                {
+                                    <button class="awe-btn awe-btn-14" onclick="UpdatePayStatus('@b.fBookingNo','已支付')">线下已支付</button>
+                                }
+                            </div>
+                        </div>
+                    </li>
+
+                }
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <span>暂时没有报名记录</span>
+}

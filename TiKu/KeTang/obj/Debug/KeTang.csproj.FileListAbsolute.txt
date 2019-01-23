@@ -1,0 +1,6 @@
+E:\TiKu\KeTang\bin\KeTang.dll
+E:\TiKu\KeTang\bin\KeTang.pdb
+E:\TiKu\KeTang\bin\EntityFramework.dll
+E:\TiKu\KeTang\bin\EntityFramework.xml
+E:\TiKu\KeTang\obj\Debug\KeTang.dll
+E:\TiKu\KeTang\obj\Debug\KeTang.pdb
