@@ -339,7 +339,7 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database 
 healthchecksdb
-TiKu/TiKuEntity/obj
 TiKu/KeZhan/bin
 TiKu/KeZhan/obj
-TiKu/TiKuEntity/obj
+TiKu/TiKuApi/bin
+TiKu/TiKuApi/obj
