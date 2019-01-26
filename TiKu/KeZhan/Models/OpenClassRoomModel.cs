@@ -10,8 +10,10 @@ namespace KeZhan.Models
       public string TeacherUserName { get; set; }
     public string UserName { get; set; }
     public string NickName { get; set; }
+    public string HeadImg { get; set; }
     public string UserSig { get; set; }
     public string Role { get; set; }
+    public string RoomNo { get; set; }
     public string ClassRoomCode { get; set; }
     public string ClassRoomType { get; set; }
 

@@ -6,26 +6,27 @@ var app = new Vue({
     step: 'first',
     pushModel: 0, // 1  自动推流 0 手动推流
     account: '',
-    userID: sessionStorage.getItem('IIC_USERNAME'),
-    sdkAppId: '1400178589',
-    userSig: '',
-    nickName: sessionStorage.getItem('IIC_NICKNAME'),
-    roomInfo: '',
-    roomID: Math.floor(Math.random() * 1000000000),
-    isTeacher: 1,    
-    enableHand: false,
-    enableCamera: true,
-    enableMic: true,
-    msgs: [],
-    showDialog: false,
-    dialogTitle: '',
-    dialogContent: '',
-    dialogAction: '',
-    dialogInfo: [],
-    groupuser:[],
-    isPushing: 0, // 是否正在推流
-    isPushCamera: 0, // 是否推摄像头流
-    ishand:false,
+userID: sessionStorage.getItem('IIC_USERNAME'),
+sdkAppId: '1400178589',
+userSig: '',
+nickName: sessionStorage.getItem('IIC_NICKNAME'),
+headImage:'',
+roomInfo: '',
+roomID: Math.floor(Math.random() * 1000000000),
+isTeacher: 1,    
+enableHand: false,
+enableCamera: true,
+enableMic: true,
+msgs: [],
+showDialog: false,
+dialogTitle: '',
+dialogContent: '',
+dialogAction: '',
+dialogInfo: [],
+groupuser:[],
+isPushing: 0, // 是否正在推流
+isPushCamera: 0, // 是否推摄像头流
+ishand:false,
 devices: {
     camera: [],
     mic: []
@@ -107,10 +108,12 @@ methods: {
       }
       this.step = 'two';
   },
-  initLogin2(username,sig,role,roomid) {
+  initLogin2(username,sig,role,roomid,nick,image) {
       this.account = username;
       this.userSig=sig;
       this.roomID=roomid;
+      this.nickName=nick;
+      this.headImage=image;
       if(role=="Teacher")
       {
           this.isTeacher=1;
@@ -123,6 +126,8 @@ methods: {
       }
       this.step = 'second';
       this.init();
+
+   
   },
   techerStart(){
       this.isTeacher=1;
@@ -248,6 +253,10 @@ if (this.isTeacher) {
     // 有了课堂后就直接加入
     this.roomID && this.ticSdk.joinClassroom(this.roomID, this.webrtcConfig, this.boardConfig);
 }
+
+
+
+
 });
 
 this.ticSdk.on(TICSDK.CONSTANT.EVENT.IM.LOGIN_ERROR, err => {
@@ -349,13 +358,39 @@ this.ticSdk.on(TICSDK.CONSTANT.EVENT.TIC.ROOMID_NOT_FOUND, data => {
 this.ticSdk.on(TICSDK.CONSTANT.EVENT.TIC.JOIN_CLASS_ROOM_SUCC, data => {
     this.showTip('加入课堂成功');
 
-this.groupuser = [];
+var profile_item = [
+     {
+         "Tag": "Tag_Profile_IM_Nick",
+         "Value": this.nickName
+     },
+     {
+         "Tag": "Tag_Profile_IM_Image",
+         "Value": this.headImage
+     }
+];
+var options = {
+    'ProfileItem': profile_item
+};
+
+webim.setProfilePortrait(
+        options,
+        function (resp) {
+            this.showTip('设置个人资料成功');
+            //alert('设置个人资料成功');
+        },
+        function (err) {
+            alert("设置头像出错"+err.ErrorInfo);
+        }
+);
+
+setTimeout(()=>{
+    this.groupuser = [];
 
 //读取群组成员
 var options = {
     'GroupId': this.roomID,
     'Offset': 0, //必须从0开始
-    'Limit': 20,
+    'Limit': 60,
     'MemberInfoFilter': [
         'Account',
         'Role',
@@ -366,20 +401,76 @@ var options = {
 };
 webim.getGroupMemberInfo(
         options,
-        function (resp) {               
+        function (resp) {   
+            var userList=[];
             for (var i in resp.MemberList) {
 
                 var account = resp.MemberList[i].Member_Account;
-                app.groupuser.push({
-                    content: account
-                });
-            }                
+                //app.groupuser.push({
+                //    content: account
+                //});
+                userList.push(account);
+            }  
+            var tag_list = [
+       "Tag_Profile_IM_Nick",//昵称
+       "Tag_Profile_IM_Image"//头像
+            ];
+            var options = {
+                'To_Account': userList,
+                'TagList': tag_list
+            };
+            webim.getProfilePortrait(
+                    options,
+                    function (resp) {
+                        if (resp.UserProfileItem && resp.UserProfileItem.length > 0) {
+                            for (var i in resp.UserProfileItem) {
+                                var to_account = resp.UserProfileItem[i].To_Account;
+                                var nick = null, gender = null, allowType = null,imageUrl=null;
+                                for (var j in resp.UserProfileItem[i].ProfileItem) {
+                                    switch (resp.UserProfileItem[i].ProfileItem[j].Tag) {
+                                        case 'Tag_Profile_IM_Nick':
+                                            nick = resp.UserProfileItem[i].ProfileItem[j].Value;
+                                            break;                                      
+                                        case 'Tag_Profile_IM_AllowType':
+                                            switch (resp.UserProfileItem[i].ProfileItem[j].Value) {
+                                                case 'AllowType_Type_AllowAny':
+                                                    allowType = '允许任何人';
+                                                    break;
+                                                case 'AllowType_Type_NeedConfirm':
+                                                    allowType = '需要确认';
+                                                    break;
+                                                case 'AllowType_Type_DenyAny':
+                                                    allowType = '拒绝任何人';
+                                                    break;
+                                                default:
+                                                    allowType = '需要确认';
+                                                    break;
+                                            }
+                                            break;
+                                        case 'Tag_Profile_IM_Image':
+                                            imageUrl = resp.UserProfileItem[i].ProfileItem[j].Value;
+                                            break;
+                                    }
+                                }
+                                app.groupuser.push({
+                                    'content': to_account,
+                                    'Nick': webim.Tool.formatText2Html(nick),
+                                    'Image': "https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/"+imageUrl+"?x-oss-process=style/head"
+                                });
+                            }
+                        }
+                    },
+                    function (err) {
+                        alert("获取列表出错1"+err.ErrorInfo);
+                    }
+            );
         },
         function (err) {
-            alert(err.ErrorInfo);
+            alert("获取列表出错2"+err.ErrorInfo);
         }
 );
 
+},3000)
 window.board = app.ticSdk.getBoardInstance();
 window.WebRTC = this.ticSdk.getWebRTCInstance();
 
@@ -421,32 +512,90 @@ if (msgs.getFromAccount() === '@TIM#SYSTEM') { // 接收到系统消息
             send: '群消息提示：',
             content: content.getOpUserId() + '进群了'
         });
-        if(this.account!=content.getOpUserId()){
-            this.groupuser.push({
-                content: content.getOpUserId()
-            });
-        }
-    } else if (opType === webim.GROUP_TIP_TYPE.QUIT) { // 退群通知
-        this.msgs.push({
-            send: '群消息提示：',
-            content: content.getOpUserId() + '退群了'
-        });
-        for(var i=0;i<this.groupuser.length;i++){
-            if( this.groupuser[i].content==content.getOpUserId()){
-                this.groupuser.splice(i,1);
-            }
-        }
-    } else if (opType === webim.GROUP_TIP_TYPE.KICK) { // 踢人通知
-
-    } else if (opType === webim.GROUP_TIP_TYPE.SET_ADMIN) { // 设置管理员通知
-
-    } else if (opType === webim.GROUP_TIP_TYPE.CANCEL_ADMIN) { // 取消管理员通知
-
-    } else if (opType === webim.GROUP_TIP_TYPE.MODIFY_GROUP_INFO) { // 群资料变更
-
-    } else if (opType === webim.GROUP_TIP_TYPE.MODIFY_MEMBER_INFO) { //群成员资料变更
-
+        
+        setTimeout(()=>{
+            if(this.account!=content.getOpUserId()){
+            var userList=[];
+        userList.push(content.getOpUserId());
+        var tag_list = [
+  "Tag_Profile_IM_Nick",//昵称
+  "Tag_Profile_IM_Image"//头像
+        ];
+        var options = {
+            'To_Account':userList ,
+            'TagList': tag_list
+        };
+        webim.getProfilePortrait(
+                options,
+                function (resp) {
+                    if (resp.UserProfileItem && resp.UserProfileItem.length > 0) {
+                        for (var i in resp.UserProfileItem) {
+                            var to_account = resp.UserProfileItem[i].To_Account;
+                            var nick = null, gender = null, allowType = null,imageUrl=null;
+                            for (var j in resp.UserProfileItem[i].ProfileItem) {
+                                switch (resp.UserProfileItem[i].ProfileItem[j].Tag) {
+                                    case 'Tag_Profile_IM_Nick':
+                                        nick = resp.UserProfileItem[i].ProfileItem[j].Value;
+                                        break;                                      
+                                    case 'Tag_Profile_IM_AllowType':
+                                        switch (resp.UserProfileItem[i].ProfileItem[j].Value) {
+                                            case 'AllowType_Type_AllowAny':
+                                                allowType = '允许任何人';
+                                                break;
+                                            case 'AllowType_Type_NeedConfirm':
+                                                allowType = '需要确认';
+                                                break;
+                                            case 'AllowType_Type_DenyAny':
+                                                allowType = '拒绝任何人';
+                                                break;
+                                            default:
+                                                allowType = '需要确认';
+                                                break;
+                                        }
+                                        break;
+                                    case 'Tag_Profile_IM_Image':
+                                        imageUrl = resp.UserProfileItem[i].ProfileItem[j].Value;
+                                        break;
+                                }
+                            }
+                            app.groupuser.push({
+                                'content': to_account,
+                                'Nick': webim.Tool.formatText2Html(nick),
+                                'Image': "https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/"+imageUrl+"?x-oss-process=style/head"
+                            });
+                        }
+                    }
+                },
+                function (err) {
+                    alert("新进群错误"+err.ErrorInfo);
+                }
+        );
+        //this.groupuser.push({
+        //    content: content.getOpUserId()
+        //});
     }
+},2000);
+} else if (opType === webim.GROUP_TIP_TYPE.QUIT) { // 退群通知
+    this.msgs.push({
+        send: '群消息提示：',
+        content: content.getOpUserId() + '退群了'
+    });
+    for(var i=0;i<this.groupuser.length;i++){
+        if( this.groupuser[i].content==content.getOpUserId()){
+            this.groupuser.splice(i,1);
+        }
+    }
+} else if (opType === webim.GROUP_TIP_TYPE.KICK) { // 踢人通知
+
+} else if (opType === webim.GROUP_TIP_TYPE.SET_ADMIN) { // 设置管理员通知
+
+} else if (opType === webim.GROUP_TIP_TYPE.CANCEL_ADMIN) { // 取消管理员通知
+
+} else if (opType === webim.GROUP_TIP_TYPE.MODIFY_GROUP_INFO) { // 群资料变更
+
+} else if (opType === webim.GROUP_TIP_TYPE.MODIFY_MEMBER_INFO) { //群成员资料变更
+
+}
 } else { // 接收到群聊天消息
     var type = msg.getType();
     if (type === 'TIMTextElem') {
@@ -454,26 +603,28 @@ if (msgs.getFromAccount() === '@TIM#SYSTEM') { // 接收到系统消息
             send: msgs.getFromAccount() + '：',
             content: content.getText()
         });
+        var div = document.getElementById('chat-msg-list');
+        
+        div.scrollTop = div.scrollHeight;
     } else if (type === 'TIMCustomElem') {
-        this.msgs.push({
-            send: msgs.getFromAccount() + '：',
-            content: `data: ${content.getData()} desc: ${content.getDesc()} ext: ${content.getExt()}`
+        //    this.msgs.push({
+        //        send: msgs.getFromAccount() + '：',
+        //        content: `data: ${content.getData()} desc: ${content.getDesc()} ext: ${content.getExt()}`
            
-    });
-    //老师开放举手
-    if (content.getExt() == 'invite_interact_notify') {
-        if (content.getData() == 0) {
-                   
-            this.showTip("老师已开放举手");
-            this.ishand=true
-            return;
-        }else if (content.getData() == 1) {
-            this.showTip("老师已关闭举手");
-            this.ishand=false
-            return;
+        //});
+        //老师开放举手
+        if (content.getExt() == 'invite_interact_notify') {
+            if (content.getData() == 0) {
+                this.showTip("老师已开放举手");
+                this.ishand=true
+                return;
+            }else if (content.getData() == 1) {
+                this.showTip("老师已关闭举手");
+                this.ishand=false
+                return;
+            }
         }
     }
-}
 }
 });
 });
@@ -489,6 +640,9 @@ if (type === 'TIMTextElem') {
         send: msgs.getFromAccount() + '：',
         content: content.getText()
     });
+   
+    var div = document.getElementById('chat-msg-list');
+    div.scrollTop = div.scrollHeight;
 } else if (type === 'TIMCustomElem') {
     //    this.msgs.push({
     //        send: msgs.getFromAccount() + '：',
@@ -504,11 +658,16 @@ if (type === 'TIMTextElem') {
         //    "member": msgs.getFromAccount(),
         //    "permission": content.getData()
         //}
+        for(var i=0;i<this.dialogInfo.length;i++){
+            if( this.dialogInfo[i].member==msgs.getFromAccount()){
+                return;
+            }
+        }
         
         this.dialogInfo.push({
-                "conf_id": content.getDesc(),
-                "member": msgs.getFromAccount(),
-                "permission": content.getData()
+            "conf_id": content.getDesc(),
+            "member": msgs.getFromAccount(),
+            "permission": content.getData()
         });
 
         this.triggerDialog({
@@ -518,12 +677,15 @@ if (type === 'TIMTextElem') {
         });
     }else if (content.getExt() == 'invite_interact_notify') {
         console.log('收到老师请求');
-            this.showTip("收到老师互动请求");
+        this.showTip("收到老师互动请求");
         this.triggerDialog({
             title: '是否接受老师连麦？',
             content: '收到老师连麦请求，是否接受？',
             action: 'acceptTeacher'
         })
+        setTimeout(()=>{
+            this.showDialog = false;
+    },10000)
     } else if (content.getExt() == 'grant_permission_notify') {
         console.log('老师批准请求');
         if (content.getData() == 0) {
@@ -872,6 +1034,8 @@ switchMic() {
             desc: "test",
             ext: "apply_permission_notify"
         }, teacherUserName);
+        
+        this.ishand=false;
     },
 
 triggerDialog: function (opt) {
@@ -901,13 +1065,32 @@ acceptStudent: function () {
     }, this.dialogInfo.member);
 },
 permissionStudent: function (studentUserId,permission) { 
-    
+  
+    //alert(Object.keys(this.remoteVideos).length);
+    if(permission==6)
+    {
+        //老师同意举手
+        for(var i=0;i<this.dialogInfo.length;i++){
+            if( this.dialogInfo[i].member==studentUserId){
+                this.dialogInfo.splice(i,1);
+            }
+        }
+        if(this.dialogInfo.length==0){            
+            this.showDialog = false;
+        }
+        if(Object.keys(this.remoteVideos).length==3){
+            alert("已达到最大连接数");
+            this.showDialog = false;
+            return;
+        }
+    }
+
     this.ticSdk.sendCustomTextMessage({
         data: permission,
         desc: "test",
         ext: "grant_permission_notify"
     }, studentUserId);
-   // this.dialogCancel();
+    // this.dialogCancel();
 },
 permissionTeacher: function (studentUserId,permission) { 
     
@@ -927,6 +1110,8 @@ teacherOpenHand: function () {
     }else{
         this.showTip("已关闭学生举手");
     }
+    
+    this.dialogInfo=[];
     this.ticSdk.sendCustomTextMessage({
         data: permission,
         desc: "test",
@@ -1117,7 +1302,8 @@ prevBoard() {
  */
     quit() {
         this.ticSdk.quitClassroom();
-        history.back(-1);
+        this.showTip(`正在退出课堂`);
+       
     },
 
 /**

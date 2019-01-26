@@ -176,7 +176,6 @@ namespace KeZhan.Controllers
       }
       catch (Exception ex)
       {
-
         WriteFile("Error.txt", "回调失败" + ex.Message);
       }
 

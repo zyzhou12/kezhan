@@ -1,0 +1,518 @@
+﻿@model WebEdu.Models.UserBaseModel
+@{
+  ViewBag.Title = "课站";
+}
+<section class="section-reservation-page bg-white">
+
+            <div class="container">
+                <div class="reservation-page">                   
+                  
+
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <ul class="room-detail_tab-header">
+                                <li class="active" onclick="showPanel('user')"><a href="#" style=" width:100%;" data-toggle="tab">用户信息</a></li>
+                                 @if (Model.userRole == "Teacher")
+                                 {
+                                  <li onclick="showPanel('teacher')"><a href="#"  style=" width:100%;" data-toggle="tab">老师资料</a></li>
+                                  <li onclick="showPanel('valid')"><a href="#"  style=" width:100%;" data-toggle="tab">认证信息</a></li>
+                                 }
+                                 else
+                                 {
+                                  <li onclick="showPanel('student')"><a href="#"  style=" width:100%;" data-toggle="tab">学生资料</a></li>
+                                 @* <li onclick="showPanel('valid')"><a href="#"  style=" width:100%;" data-toggle="tab">成为老师</a></li>*@
+                                 }
+                            </ul>
+                        </div>
+
+                        
+                        <!-- CONTENT -->
+                        <div class="col-md-8 col-lg-9" >
+
+                            <div class="reservation_content">
+                                
+                                <div class="reservation-billing-detail" id="panelUser">
+                                                 <label>昵称<sup>*</sup></label>
+                                       <span id="spanNickName">@Model.userInfo.fNickName</span><a href="#" id="aNickName" onclick="updateNickName()">修改</a>
+                                    <input type="text" style=" display:none" id="txtNickName" value="@Model.userInfo.fNickName" class="input-text">
+                                    <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnNickName" style="width:20%;" onclick="DoSaveNickName()">昵称保存</a>
+
+
+                                   
+                                       <label>头像<sup>*</sup></label>
+                                    
+                                        @if (string.IsNullOrEmpty(Model.userInfo.fHeadImg))
+                                        {
+                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgHead"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
+                                        }
+                                        else
+                                        {
+                                         <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.userInfo.fHeadImg?x-oss-process=style/fang" id="imgHead"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
+                                        }
+                                         <input type="hidden" id="hidHead" value="@Model.userInfo.fHeadImg" />
+                                        <a href="#" class="awe-btn awe-btn-13" id="btnHeadImg" style=" display:none;width:20%;" onclick="DoSaveHeadImg()">头像保存</a>
+
+                                                           
+                                       <label>所在城市<sup>*</sup></label>
+                                       <span id="spanCity">@Model.userInfo.fCity</span><a href="#" id="aCity" onclick="updateCity()">修改</a>
+                                    <input type="text" style=" display:none" id="txtCity" value="@Model.userInfo.fCity" class="input-text">
+                                    <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnCity" style="width:20%;" onclick="DoSaveCity()">保存</a>
+
+                                       <label>手机<sup>*</sup></label>
+                                       <span id="spanMobile">@Model.userInfo.fMobile</span><a href="#" id="aMobile" onclick="updateMobile()">修改</a>
+                                    <input type="text" style=" display:none" id="txtMobile" value="@Model.userInfo.fMobile" class="input-text">
+
+                                    <input type="text" style=" display:none" id="txtCode" value="@Model.userInfo.fMobile" class="input-text">
+                                    @*<a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnMobile" style="width:20%;" onclick="DoSaveMobile()">保存</a>*@
+
+                                       <label>邮箱<sup>*</sup></label>
+                                    <input type="text" id="txtEmail" value="@Model.userInfo.fEmail" class="input-text">
+
+                                       <label>密码<sup>*</sup></label>
+                                      <span id="spanPass">******</span><a href="#" id="aPass" onclick="updatePass()">修改</a>
+                                    <input type="text" style=" display:none" id="txtPass" value="" placeholder="请输入密码" class="input-text" />
+                                    <br />
+                                    <input type="text" style=" display:none" id="txtPass2" value="" placeholder="请再次输入密码" class="input-text" />
+                                    <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnPass" style="width:20%;" onclick="DoSavePass()">保存</a>
+
+                                      
+
+                                   @*   <label>交易密码<sup>*</sup></label>
+                                       <span id="spanTradePass">******</span><a href="#" id="aTradePass" onclick="updateTradePass()">修改</a>
+                                    <input type="text" style=" display:none" id="txtTradePass" value="" class="input-text" />
+                                    <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnTradePass" style="width:20%;" onclick="DoSaveTradePass()">保存</a>
+*@
+                                      
+                                    
+                                        
+                                      
+
+
+
+                                </div>
+                                 @if (Model.userRole == "Teacher")
+                                 {
+                          <div class="reservation-billing-detail" id="panelTeacher" style=" display:none">
+                                        
+                                  
+
+                                     <label>详细介绍</label>
+                                    <textarea class="input-textarea" id="txtTeacherDesc" placeholder="请输入老师介绍信息">@Model.teacherInfo.fDesc</textarea>
+
+                                      <label>微信二维码<sup>*</sup></label>
+                                    
+                                       <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.teacherInfo.fQrCode?x-oss-process=style/width" id="imgQrCode"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
+                                       
+                                        <input type="hidden" id="hidQrCode"  value="@Model.teacherInfo.fQrCode" />
+                                        
+                                    
+                                     <label>开通功能</label>
+                                       <ul class="option-bank">
+                                        <li>
+                                            <label class="label-radio">
+                                              @if (Model.teacherInfo.fIsClassRoom)
+                                              {
+                                              <input type="checkbox" class="input-radio" checked="checked" id="chkClassRoom"/>
+                                              }
+                                              else
+                                              {
+                                                <input type="checkbox" class="input-radio" id="chkClassRoom" />
+                                              }
+                                                
+                                                在线课堂
+                                            </label>
+                                            <p>在线课堂介绍</p>
+                                           
+                                        </li>
+
+                                        <li>
+                                            <label class="label-radio">
+                                              @if (Model.teacherInfo.fIsLive)
+                                              {
+                                                 <input type="checkbox" class="input-radio" checked="checked" id="chkLives" />
+                                              }
+                                              else
+                                              {
+                                                <input type="checkbox" class="input-radio" id="chkLives" />
+                                              }
+                                                一对一辅导
+                                            </label>
+                                            <p>一对一介绍，开通需缴纳押金才能使用</p>
+                                           
+                                            <label>收费价格<sup>*</sup></label>
+                                            <input type="number" id="txtVideoFee" value="@Model.teacherInfo.fVideoFee" class="input-text" />
+                                        
+                                        </li>
+
+                                        <li>
+                                            <label class="label-radio">
+                                             @if (Model.teacherInfo.fIsProblem)
+                                             {
+                                                <input type="checkbox" class="input-radio" checked="checked" id="chkProblem" />
+                                             }
+                                             else
+                                             {
+                                                <input type="checkbox" class="input-radio" id="chkProblem" />
+                                             }
+                                                在线答疑
+                                            </label>
+                                            
+                                            <label>收费价格<sup>*</sup></label>
+                                            <input type="text" id="txtProblemFee" value="@Model.teacherInfo.fProblemFee" class="input-text"/>
+                                           @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                        </li>
+
+                                    </ul>
+                                      
+                                    <button class="awe-btn awe-btn-13" onclick="SaveTeacherInfo()">保存</button>   
+                          
+
+                                </div>
+                                   
+                                   
+                                 <div class="reservation-billing-detail" id="panelValid" style=" display:none"> 
+                                  <a href="/ClassRoom/ValidUploadFile" class="awe-btn awe-btn-default">新增认证</a>
+                                 @if (Model.validInfo.validList != null)
+                                 {
+                                       <div class="reservation-room_package">
+
+                                            <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+
+                                                <!-- ITEM PACKAGE -->
+                                                @foreach (var valid in Model.validInfo.validList)
+                                                {
+                                                <div class="reservation-package_item">
+@*
+                                                    <div class="reservation-package_img">
+                                                        <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
+                                                    </div>*@
+
+                                                    <div class="reservation-package_text">
+
+                                                        <h4><a href="#">@valid.fPharse @valid.fSubject</a></h4>
+                                                        <p>上传时间 @valid.fUploadDate.ToString();
+                                                        <br />
+                                                        <span>状态：@valid.fStatus</span>
+                                                        @if (valid.fValidDate > DateTime.MinValue)
+                                                        {
+                                                         <span>审核时间：@valid.fValidDate.ToString()</span> 
+                                                          <span>@valid.fNote</span>
+                                                        }
+                                                        </p>
+
+                                                        <div class="reservation-package_book-price">
+                                                            <a href="/user/validinfo?iValidID=@valid.fID" class="awe-btn awe-btn-default">详情</a>
+                                                        </div>
+
+                                                    </div>
+                                              
+                                                </div>
+                                                }
+                                                <!-- END / ITEM PACKAGE -->
+                                            </div>
+
+                                        </div>
+                                 }
+
+                                @* @if (Model.validInfo != null)
+                                 {
+                                   if (!string.IsNullOrEmpty(Model.validInfo.fIDCard1))
+                                   {
+                                      <div class="activiti_item">
+                              
+                                        <div class="img">
+                                          <a href="#" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.validInfo.fIDCard1?x-oss-process=style/width" alt="" /></a>
+                                        </div>
+                                        <div class="text">
+                                          <h2>
+                                            <a href="#">身份证正面</a></h2>                                
+                                        </div>
+                                      </div>
+                                   }
+                                   if (!string.IsNullOrEmpty(Model.validInfo.fIDCard2))
+                                   {
+                                      <div class="activiti_item">
+                              
+                                        <div class="img">
+                                          <a href="#" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.validInfo.fIDCard2?x-oss-process=style/width" alt="" /></a>
+                                        </div>
+                                        <div class="text">
+                                          <h2>
+                                            <a href="#">身份证反面</a></h2>                                
+                                        </div>
+                                      </div>
+                                   }
+                                   if (!string.IsNullOrEmpty(Model.validInfo.fTeachCert1))
+                                   {
+                                      <div class="activiti_item">
+                              
+                                        <div class="img">
+                                          <a href="#" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.validInfo.fTeachCert1?x-oss-process=style/width" alt="" /></a>
+                                        </div>
+                                        <div class="text">
+                                          <h2>
+                                            <a href="#">教师证1</a></h2>                                
+                                        </div>
+                                      </div>
+                                   }
+                                   if (!string.IsNullOrEmpty(Model.validInfo.fTeachCert2))
+                                   {
+                                      <div class="activiti_item">
+                              
+                                        <div class="img">
+                                          <a href="#" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.validInfo.fTeachCert2?x-oss-process=style/width" alt="" /></a>
+                                        </div>
+                                        <div class="text">
+                                          <h2>
+                                            <a href="#">教师证2</a></h2>                                
+                                        </div>
+                                      </div>
+                                   }
+                                   if (!string.IsNullOrEmpty(Model.validInfo.fTeachCert1))
+                                   {
+                                      <div class="activiti_item">
+                              
+                                        <div class="img">
+                                          <a href="#" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.validInfo.fTeachCert1?x-oss-process=style/width" alt="" /></a>
+                                        </div>
+                                        <div class="text">
+                                          <h2>
+                                            <a href="#">学位证书1</a></h2>                                
+                                        </div>
+                                      </div>
+                                   }
+                                   if (!string.IsNullOrEmpty(Model.validInfo.fTeachCert2))
+                                   {
+                                      <div class="activiti_item">
+                              
+                                        <div class="img">
+                                          <a href="#" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.validInfo.fTeachCert2?x-oss-process=style/width" alt="" /></a>
+                                        </div>
+                                        <div class="text">
+                                          <h2>
+                                            <a href="#">学位证书2</a></h2>                                
+                                        </div>
+                                      </div>
+                                   }
+                                 }*@
+                            </div>
+                                   
+                                   
+                       
+                                 }
+                                 else if (Model.userRole == "Student")
+                                 {
+                                
+                                    
+                          <div class="reservation-billing-detail" id="panelStudent" style=" display:none">
+                          <label>学段<sup>*</sup></label>
+                          <div class="shortcode-select">
+                                      @Html.DropDownListFor(m => m.studentInfo.Pharse, new[] { new SelectListItem { Text = "请选择", Value = "" },
+                                                                                              new SelectListItem { Text = "小学", Value = "小学" },
+                                                                                              new SelectListItem { Text = "初中", Value = "初中" },
+                                                                                              new SelectListItem { Text = "高中", Value = "高中" }}, new { @class = "awe-select", id = "cmbPharse" })
+                                     
+                                    </div>
+                           <label>学校<sup>*</sup></label>
+                            <input type="text" id="txtSchool" value="@Model.studentInfo.School" class="input-text">
+                           <label>年级<sup>*</sup></label>
+                           <input type="text" id="txtGrade" value="@Model.studentInfo.Grade" class="input-text">
+                            
+                              
+                              <button class="awe-btn awe-btn-13" onclick="SaveStudentInfo()">保存</button>   
+                          
+                                </div>
+                                 }
+                                 else if (Model.userRole == "Parents")
+                                 {
+                                 
+                          <div class="reservation-billing-detail" id="panelParents" style=" display:none">
+
+                          
+                                </div>
+                                 }
+                            </div>
+
+                        </div>
+                        <!-- END / CONTENT -->
+                        
+                       
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+<script type="text/javascript">
+  function showPanel(div) {
+    if (div == "user") {
+      $(".reservation-billing-detail").hide();
+      $("#panelUser").show();
+    } else if (div == "teacher") {
+      $(".reservation-billing-detail").hide();
+      $("#panelTeacher").show();
+    } else if (div == "valid") {
+      $(".reservation-billing-detail").hide();
+      $("#panelValid").show();
+    } else if (div == "student") {
+      $(".reservation-billing-detail").hide();
+      $("#panelStudent").show();
+    } else if (div == "parents") {
+      $(".reservation-billing-detail").hide();
+      $("#panelParents").show();
+    }
+  }
+
+  function updateMobile() {
+    $("#spanMobile").hide();
+    $("#aMobile").hide();
+    $("#txtMobile").show();
+    $("#btnMobile").show();
+    $("#txtMobile").focus();
+  }
+
+  function DoSaveMobile() {
+
+  }
+
+  function updateNickName() {
+    $("#spanNickName").hide();
+    $("#aNickName").hide();
+    $("#txtNickName").show();
+    $("#btnNickName").show();
+    $("#txtNickName").focus();
+  }
+
+  function DoSaveNickName() {
+    SaveData("fNickName", $("#txtNickName").val());
+  }
+
+  function DoSaveHeadImg() {
+    SaveData("fHeadImg", $("#hidHead").val());
+  }
+
+
+  function updatePass() {
+    $("#spanPass").hide();
+    $("#aPass").hide();
+    $("#txtPass").show();
+    $("#txtPass2").show();
+    $("#btnPass").show();
+    $("#txtPass").focus();
+  }
+
+  function DoSavePass() {
+    if ($("#txtPass").val() == "") {
+      alert("请输入新密码");
+    } else if ($("#txtPass2").val() == "") {
+      alert("请再次输入密码");
+    } else if ($("#txtPass").val() == $("#txtPass2").val()) {
+      SaveData("fPassWord", $("#txtPass").val());
+    } else {
+      alert("两次密码不一致，请重新输入");
+    }
+  }
+
+  function updateTradePass() {
+    $("#spanTradePass").hide();
+    $("#aTradePass").hide();
+    $("#txtTradePass").show();
+    $("#btnTradePass").show();
+    $("#txtTradePass").focus();
+  }
+
+  function DoSaveTradePass() {
+    SaveData("fTradePassWord", $("#txtTradePass").val());
+  }
+
+
+  function updateCity() {
+    $("#spanCity").hide();
+    $("#aCity").hide();
+    $("#txtCity").show();
+    $("#btnCity").show();
+    $("#txtCity").focus();
+  }
+
+  function DoSaveCity() {
+    SaveData("fCity", $("#txtCity").val());
+  }
+
+  function SaveData(type, value) {
+    $.ajax({
+      url: "/user/DoSaveInfo",
+      data: { "strType": type, "strInfo": value },
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          alert("保存成功");
+          window.location.reload();
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+
+  function SaveTeacherInfo() {
+    var TeacherBaseModel = {
+      fDesc: $("#txtTeacherDesc").val(),
+      fQrCode: $("#hidQrCode").val(),
+      fIsClassRoom: $("#chkClassRoom").prop('checked'),
+      fIsLive: $("#chkLives").prop('checked'),
+      fIsProblem: $("#chkProblem").prop('checked'),
+      fVideoFee: $("#txtVideoFee").val(),
+      fProblemFee: $("#txtProblemFee").val()
+    };
+
+    $.ajax({
+      url: "/user/DoSaveTeacherInfo",
+      data: TeacherBaseModel,
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+          alert("保存成功");
+          window.location.reload();
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+
+  function SaveStudentInfo() {
+    var StudentBaseModel = {
+      Pharse: $("#cmbPharse").val(),
+      School: $("#txtSchool").val(),
+      Grade: $("#txtGrade").val()
+    };
+
+    $.ajax({
+      url: "/user/DoSaveStudentInfo",
+      data: StudentBaseModel,
+      type: "POST",
+      dataType: "json",
+      success: function (rst) {
+        if (rst.iResult >= 0) {
+
+          alert("保存成功");
+          window.location.reload();
+        } else {
+          alert(rst.strMsg);
+        }
+      }
+
+    });
+  }
+</script>

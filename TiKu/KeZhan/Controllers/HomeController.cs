@@ -62,13 +62,16 @@ namespace KeZhan.Controllers
                 if (cr.IsBuy > 0 || cr.fTecharUserName == userInfo.fUserName)//老师本人不用管是否支付
                 {
                     OpenClassRoomModel model = new OpenClassRoomModel();
-                    model.ClassRoomCode = cr.fClassRoomCode + iCourseID.ToString();//课堂房间号
+                    model.RoomNo = cr.fClassRoomCode + iCourseID.ToString();//课堂房间号
+                    model.ClassRoomCode = cr.fClassRoomCode;
                     model.UserName = userInfo.fUserName;
                     model.UserSig = UserSig.GetSig(userInfo.fUserName);//获取签名
                     model.Role = strRole;
 
                     model.TeacherUserName = cr.fTecharUserName;
                     model.NickName = userInfo.fNickName;
+                    
+                    model.HeadImg = userInfo.fHeadImg;
 
                     string u = Request.ServerVariables["HTTP_USER_AGENT"];
                     Regex b = new Regex(@"(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino", RegexOptions.IgnoreCase | RegexOptions.Multiline);
