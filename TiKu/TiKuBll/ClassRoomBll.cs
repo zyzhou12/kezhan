@@ -310,6 +310,43 @@ namespace TiKuBll
 
             return i;
         }
+
+
+
+        public static int DoColassRoomApplySubmit(string strClassRoomCode,string strStatus,string strUserName)
+        {
+            tClassRoomApplyEntity apply = new tClassRoomApplyEntity();
+            apply.fClassRoomCode = strClassRoomCode;
+            apply.fStatus = strStatus;
+            apply.fSubmitDate = DateTime.Now;
+            apply.fSubmitOpr = strUserName;
+            List<tClassRoomApplyEntity> list=new List<tClassRoomApplyEntity>();
+            list.Add(apply);
+            int i = tClassRoomApplyDal.Modify(list, "insert", null, null);
+            return i;
+        }
+
+        public static List<ClassRoomApplyModel> getApplyList()
+        {
+            List<ClassRoomApplyModel> lstRst = PubFun.DataTableToObjects<ClassRoomApplyModel>(tClassRoomApplyDal.GettClassRoomApplyList());
+
+
+            return lstRst;
+        }
+
+        public static int DoAgreeClassRoomApply(int id,string strApplyNote,string strApplyOpr)
+        {
+            int i=tClassRoomApplyDal.DoAgreeClassRoomApply(id,strApplyNote,strApplyOpr,DateTime.Now);
+            return i;
+
+        }
+        public static int DoRefuseClassRoomApply(int id, string strApplyNote, string strApplyOpr)
+        {
+            int i = tClassRoomApplyDal.DoRefuseClassRoomApply(id, strApplyNote, strApplyOpr, DateTime.Now);
+            return i;
+
+        }
+
         public static ClassRoomListModel GetMyClassRoom(string strUserName)
         {
             List<tClassRoomEntity> list = tClassRoomDal.GetMyClassRoomList(strUserName);

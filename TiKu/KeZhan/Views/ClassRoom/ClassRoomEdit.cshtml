@@ -256,29 +256,12 @@
                                         </div>
                                         
                                       
-                                                        
-                                        @*<div id="divCourse" style=" display:none">
-                                            <input type="hidden" id="hidCourseID"
-                                            <label>第几章</label>
-                                            <input type="text" id="txtDictTitle" class="input-text">
-                                            <label>第几节</label>
-                                            <input type="text" id="txtCourseTitle" class="input-text">
-                                            <label>上课时间</label>
-                                            <input type="text" class="awe-calendar" id="txtCourseDate"  placeholder="Arrival Date">
-                                            <label>排序</label>
-                                            <input type="number" id="txtOrder" class="input-text">
-                                             
-                                        <button class="awe-btn awe-btn-13" onclick="SaveCurse()">保存章节</button>
-                                        </div>*@
                                         <br />
                                         @if (Model.fStatus == "保存")
                                         {
-                                        <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
-                                          <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('发布')">发布</button>
-                                        }
-                                        else if (Model.fStatus == "发布")
-                                        {
-                                        <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('下线')">下线</button>
+                                          <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
+                                            <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('提交')">提交</button>
+
                                         }
                                     
                                 </div>

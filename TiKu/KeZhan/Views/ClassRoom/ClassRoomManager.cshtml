@@ -41,33 +41,15 @@
                                             @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
                                         </p>
                                         <a href="/ClassRoom/ClassRoomCourse?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">课程详情 <i class="fa fa-chevron-right"></i></a>
-                                        <a href="/ClassRoom/ClassRoomEdit?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">编辑 <i class="fa fa-chevron-right"></i></a>
-
-                                        <!-- 章节-->
-                                        @if (classRoom.courseList != null)
-                                  {
-                                    foreach (var c in classRoom.courseList)
-                                    {
-                                      if (c.fOrder > 0)
-                                      {
-                                        if (c.fClassDate < DateTime.Now.AddMinutes(30))
-                                        {
-
-                                          return;
+                                        <br />
+                                        @if (classRoom.fStatus == "保存") { 
+                                            <a href="/ClassRoom/ClassRoomEdit?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">编辑 <i class="fa fa-chevron-right"></i></a>
                                         }
-                                      }
-                                    }
-                                  }
-
-                                    @*@if (classRoom.fClassRoomDate < DateTime.Now.AddMinutes(30))
-                                        {
-                                          <br />
-                                          <a href="/Home/Index?iCourseID=@classRoom.fClassRoomCode" class="view-more">进入课堂 <i class="fa fa-chevron-right"></i></a>
+                                        else if (classRoom.fStatus == "审核通过") {
+                                            <a href="/ClassRoom/ClassRoomView?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">查看 <i class="fa fa-chevron-right"></i></a>
                                         }
-                                        else
-                                        {
-                                          <a href="/Home/Index?iCourseID=@classRoom.fClassRoomCode" class="view-more">进入课堂 <i class="fa fa-chevron-right"></i></a>
-                                        }*@
+
+                                      
                                 </div>
                             </div>
                         </div>

@@ -59,6 +59,16 @@ namespace KeZhan.Controllers
         return View(model);
     }
 
+
+    public ActionResult ClassRoomView(string strClassRoomCode)
+    {
+        ClassRoomModel model = null;
+        UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+        
+        model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName); ;
+        
+        return View(model);
+    }
      public JsonResult GetTeacherValidList(string strUserName)
       {
         TeacherValidListModel model = UserBll.GettTeachValidList(strUserName,"已审核");

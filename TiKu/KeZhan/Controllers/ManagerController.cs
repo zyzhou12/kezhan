@@ -43,5 +43,23 @@ namespace KeZhan.Controllers
           return jr;
         }
 
+        public ActionResult ClassRoomApplyManager()
+        {
+            TeacherValidModel model = ClassRoomBll.getApplyList();
+            return PartialView("TeacherValid", model);
+        }
+
+
+        [HttpPost]
+        public JsonResult DoTeacherValid(int iValidFid, bool ValidResult, string strName, string strUID, string strCertNo, string strEffect, string ValidMessage)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            response.iResult = ManagerBll.TeacherValid(userInfo.fUserName, iValidFid, ValidResult, strName, strUID, strCertNo, strEffect, ValidMessage);
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
     }
 }

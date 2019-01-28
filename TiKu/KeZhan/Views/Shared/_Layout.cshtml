@@ -154,10 +154,10 @@
                                         { <text>class="current-menu-item"</text>  }><a href="../ClassRoom/ClassRoomEdit">新增课程</a></li>
                                     <li @if (controller == "ClassRoom" && action == "BookingListManager")
                                         { <text>class="current-menu-item"</text>  }><a href="../ClassRoom/BookingListManager">报名记录</a></li>
-                                  @*  <li @if (controller == "User" && action == "UserPay")
+                                    <li @if (controller == "User" && action == "UserPay")
                                         { <text>class="current-menu-item"</text>  }><a href="../User/UserPay">充值</a></li>
                                     <li @if (controller == "User" && action == "交易明细")
-                                        { <text>class="current-menu-item"</text>  }><a href="../User/UserAccount">交易明细</a></li>*@
+                                        { <text>class="current-menu-item"</text>  }><a href="../User/UserAccount">交易明细</a></li>
                                 </ul>
                             </li>
                               }
@@ -200,10 +200,10 @@
                             }
                             else
                             {
-                            <li  @if (controller == "Open" && action == "RegsiterLogin")
+                            @*<li  @if (controller == "Open" && action == "RegsiterLogin")
                                  { <text>class="current-menu-item"</text>  }>
                                 <a href="/Open/RegsiterLogin?redirect_uri=@Request.Url.ToString()">登录 </a>
-                            </li>
+                            </li>*@
                             }
                             
                             <li  @if (controller == "Open" && action == "About")
