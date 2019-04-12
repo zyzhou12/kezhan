@@ -7,78 +7,91 @@
 <section class="section-activiti bg-white">
     <div class="container">
         <div class="activiti">
-            @* <div class="gallery-cat activiti-cat text-center">
-                    <ul class="list-inline">
-                        <li class="active"><a href="#">ALL</a></li>
-                        <li><a href="#">PARK</a></li>
-                        <li><a href="#">COFFE</a></li>
-                        <li><a href="#">MARKET</a></li>
-                        <li><a href="#">SWIMMING</a></li>
-                    </ul>
-                </div>*@
+            <div class="gallery-cat activiti-cat ">
 
-            <div class="activiti_content">
+                <ul class="list-inline">
+                    <li>状态：</li>
+                    <li @if (Model.strStatus == "") { <text> class="active" </text>}><a href="/ClassRoom/ClassRoomManager?strStatus=&strPayType=@Model.strPayType">全部</a></li>
+                    <li @if (Model.strStatus == "保存") { <text> class="active" </text>}><a href="/ClassRoom/ClassRoomManager?strStatus=保存&strPayType=@Model.strPayType">草稿</a></li>
 
-                <div class="row">
+                    <li @if (Model.strStatus == "发布") { <text> class="active" </text>}><a href="/ClassRoom/ClassRoomManager?strStatus=发布&strPayType=@Model.strPayType">发布</a></li>
 
-                    @if (Model.list.classRoomList.Count > 0)
-                    {
+                    <li @if (Model.strStatus == "下线") { <text> class="active" </text>}><a href="/ClassRoom/ClassRoomManager?strStatus=下线&strPayType=@Model.strPayType">下线</a></li>
 
-                        foreach (var classRoom in Model.list.classRoomList)
+                </ul>
+                <ul class="list-inline">
+                    <li>付款方式：</li>
+                    <li @if (Model.strPayType == "") { <text> class="active" </text>}><a href="/ClassRoom/ClassRoomManager?strStatus=@Model.strStatus&strPayType=">全部</a></li>
+                    <li @if (Model.strPayType == "在线支付")
+                        { <text> class="active" </text>       }><a href="/ClassRoom/ClassRoomManager?strStatus=@Model.strStatus&strPayType=在线支付">在线支付</a></li>
+
+                    <li @if (Model.strPayType == "线下支付")
+                        { <text> class="active" </text>       }><a href="/ClassRoom/ClassRoomManager?strStatus=@Model.strStatus&strPayType=线下支付">线下支付</a></li>
+
+                </ul>
+                </div>
+
+                <div class="activiti_content">
+
+                    <div class="row">
+
+                        @if (Model.list.classRoomList.Count > 0)
+                        {
+
+                            foreach (var classRoom in Model.list.classRoomList)
+                            {
+                                var editurl = "/ClassRoom/ClassRoomEdit?strClassRoomCode="+classRoom.fClassRoomCode;
+                                
+                                <div class="col-md-4 col-xs-6">
+                                    <div class="activiti_item">
+                                        <div class="img">
+                                            <a href="@editurl">
+                                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="text">
+                                            <h2>
+                                                <a href="#">@classRoom.fClassRoomTitle</a>
+                                            </h2>
+                                            <p>
+                                                @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+                                            </p>
+                                          
+                                            @*@if (classRoom.fStatus == "下线")
+                                            {
+                                                <a href="/ClassRoom/ClassRoomEdit?strClassRoomCode=@classRoom.fClassRoomCode&strType=copy" class="view-more">重新上线 <i class="fa fa-chevron-right"></i></a>
+                                            }*@
+
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
                         {
                             <div class="col-md-4 col-xs-6">
                                 <div class="activiti_item">
                                     <div class="img">
-                                        <a href="#">
-                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt="">
+                                        <a href="#" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ClassRoom-bg.jpg?x-oss-process=style/title" alt="" />
                                         </a>
                                     </div>
                                     <div class="text">
-                                        <h2>
-                                            <a href="#">@classRoom.fClassRoomTitle</a>
-                                        </h2>
-                                        <p>
-                                            @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
-                                        </p>
-                                        <a href="/ClassRoom/ClassRoomCourse?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">课程详情 <i class="fa fa-chevron-right"></i></a>
-                                        <br />
-                                        @if (classRoom.fStatus == "保存") { 
-                                            <a href="/ClassRoom/ClassRoomEdit?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">编辑 <i class="fa fa-chevron-right"></i></a>
-                                        }
-                                        else if (classRoom.fStatus == "审核通过") {
-                                            <a href="/ClassRoom/ClassRoomView?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">查看 <i class="fa fa-chevron-right"></i></a>
-                                        }
 
-                                      
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         }
-                    }
-                    else
-                    {
-                        <div class="col-md-4 col-xs-6">
-                            <div class="activiti_item">
-                                <div class="img">
-                                    <a href="#" class="view-more">
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ClassRoom-bg.jpg?x-oss-process=style/title" alt="" />
-                                    </a>
-                                </div>
-                                <div class="text">
 
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    
+
+                    </div>
+
+
 
                 </div>
 
-
-
             </div>
-
-        </div>
 
     </div>
 </section>

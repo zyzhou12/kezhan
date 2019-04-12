@@ -95,6 +95,17 @@ namespace TiKu.Dal
         return rst;
     }
 
+    public static string GetPayNoByBookingNo(string strBookingNo)
+    {
+        string strSQL = "select fOrderNo  from tuserpay where fType='BuyClass' and fPayNo is not null and fRemark=@BookingNo";
+        List<DbParameter> lstParam = new List<DbParameter>();
+        lstParam.Add(new DBParam("@BookingNo", strBookingNo));
+
+        object dt = DBHelper.ExecuteScalar("TiKu", strSQL, lstParam);
+
+        return dt.ToString();
+    }
+
     public static List<tBookingEntity> GettBookingListByUserName(string strUserName)
     {
       StringBuilder bufSQL = new StringBuilder();
@@ -148,11 +159,12 @@ namespace TiKu.Dal
     }
 
 
-    public static int BookingPay(string strUserName,string strTradePass,string strBookingNo,string strSystem,ref string strMsg)
+    public static int BookingPay(string strUserName,string strTradePass,string strBookingType,string strBookingNo,string strSystem,ref string strMsg)
     {
       List<DbParameter> lstParam = new List<DbParameter>();
       lstParam.Add(new DBParam("@UserName", strUserName));
       lstParam.Add(new DBParam("@TradePass", strTradePass));
+      lstParam.Add(new DBParam("@BookingType", strBookingType));
       lstParam.Add(new DBParam("@BookingNo", strBookingNo));
       lstParam.Add(new DBParam("@System", strSystem));
 

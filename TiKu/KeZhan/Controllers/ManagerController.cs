@@ -24,39 +24,140 @@ namespace KeZhan.Controllers
           return View(model);
         }
 
-        public ActionResult TeacherValid(int iValidFid)
+        public ActionResult TeacherValid(int iValidFid,int iDetailID)
         {
-          TeacherValidModel model = UserBll.GetTeacherValid(iValidFid);
+            ValidModel model = UserBll.GetTeacherValid(iValidFid, iDetailID);
           return PartialView("TeacherValid", model);
         }
 
 
         [HttpPost]
-        public JsonResult DoTeacherValid(int iValidFid, bool ValidResult, string strName, string strUID, string strCertNo, string strEffect, string ValidMessage)
+        public JsonResult DoTeacherValid(int iValidFid, int iValidDetailID, bool ValidResult, string strName, string strIDType, string strUID, string strCertType, string strCertNo, string strEffect, string strPharse, string strSubject, string ValidMessage)
         {
           UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
           ResponseBaseModel response = new ResponseBaseModel();
-          response.iResult = ManagerBll.TeacherValid(userInfo.fUserName, iValidFid, ValidResult,strName,strUID,strCertNo,strEffect, ValidMessage);
+          response.iResult = ManagerBll.TeacherValid(userInfo.fUserName, iValidFid, iValidDetailID, ValidResult, strName,strIDType, strUID,strCertType, strCertNo, strEffect,strPharse,strSubject, ValidMessage);
 
           JsonResult jr = new JsonResult();
           jr.Data = response;
           return jr;
         }
 
+        /// <summary>
+        /// 课程发布管理
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ClassRoomApplyManager()
         {
-            TeacherValidModel model = ClassRoomBll.getApplyList();
-            return PartialView("TeacherValid", model);
+            ClassRoomApplyListModel model = ManagerBll.ClassRoomApplyQuery();
+            return View(model);
         }
 
+        public ActionResult ClassRoomApplyDetail(int fid)
+        {
+            ClassRoomApplyModel apply= ManagerBll.GetClassRoomApply(fid);
 
-        [HttpPost]
-        public JsonResult DoTeacherValid(int iValidFid, bool ValidResult, string strName, string strUID, string strCertNo, string strEffect, string ValidMessage)
+            ClassRoomModel model = null;
+            if (string.IsNullOrEmpty(apply.fClassRoomCode))
+            {
+                return View(model);
+            }
+            else
+            {
+                UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+                string strUserName = "";
+                if (userInfo != null)//已登录
+                {
+                    strUserName = userInfo.fUserName;
+                }
+                model = ClassRoomBll.GetClassRoomDetail(apply.fClassRoomCode, strUserName);
+                model.UserName = strUserName;
+
+                //修改成要修改的状态
+                model.fID = apply.fID;
+                model.fStatus = apply.fStatus;
+                model.fKnowLedge = apply.fNote;
+
+                return View(model);
+            }
+        }
+
+        public JsonResult DoApplyAgree(int iApplyID,string strApplyNote)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
-            response.iResult = ManagerBll.TeacherValid(userInfo.fUserName, iValidFid, ValidResult, strName, strUID, strCertNo, strEffect, ValidMessage);
+            string strMsg=null;
+            response.iResult = ManagerBll.ClassRoomApplyAgree(iApplyID, strApplyNote, userInfo.fUserName, DateTime.Now, ref strMsg);
 
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
+        public JsonResult DoApplyRefuse(int iApplyID, string strApplyNote)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            string strMsg = null;
+            response.iResult = ManagerBll.ClassRoomApplyRefuse(iApplyID, strApplyNote, userInfo.fUserName, DateTime.Now, ref strMsg);
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
+        public ActionResult TeacherWithdrawalManager()
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            TeacherWithdrawalListModel model = UserBll.GetTeacherWithdrawalList(null,null);
+
+            return View(model);
+        }
+
+        public ActionResult WithDrawal(int fid)
+        {
+            TeacherWithdrawalModel model = UserBll.GetTeacherWithdrawal(fid);
+            return View(model);
+        }
+
+        public JsonResult DoAgreeWithDrawal(int iWithID, string strNote, string TransCerd)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            string strMsg = "";
+            response.iResult = UserBll.TeacherWithdrawalAgree(iWithID,strNote,userInfo.fUserName,DateTime.Now,TransCerd,ref strMsg);
+            response.strMsg = strMsg;
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
+        public JsonResult DoRefuseWithDrawal(int iWithID, string strNote)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            string strMsg = null;
+
+
+            response.iResult = UserBll.TeacherWithdrawalRefuse(iWithID, strNote, userInfo.fUserName, DateTime.Now, ref strMsg);
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
+        public ActionResult FlowAdjust()
+        {
+            return View();
+        }
+
+        public JsonResult DoFlowAdjust(string strMobile, int iFlow, DateTime effectDate, string strNote)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            string strMsg = "";
+
+            response.iResult = UserBll.FlowAdjust(strMobile, iFlow, effectDate, userInfo.fUserName, strNote, ref strMsg);
+            response.strMsg = strMsg;
             JsonResult jr = new JsonResult();
             jr.Data = response;
             return jr;

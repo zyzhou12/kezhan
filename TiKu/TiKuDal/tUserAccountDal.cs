@@ -73,10 +73,15 @@ namespace TiKu.Dal
       return rst;
     }
 
-    public static DataTable GettUserAccountList(string strUserName)
+    public static DataTable GettUserAccountList(string strUserName, string strTradingType, string strSystem, string strType, DateTime beginDate, DateTime endDate)
     {
       List<DbParameter> lstParam = new List<DbParameter>();
       lstParam.Add(new DBParam("@UserName", strUserName));
+      lstParam.Add(new DBParam("@TradingType", strTradingType));
+      lstParam.Add(new DBParam("@System", strSystem));
+      lstParam.Add(new DBParam("@Type", strType));
+      lstParam.Add(new DBParam("@BeginDate", beginDate.ToShortDateString()));
+      lstParam.Add(new DBParam("@EndDate", endDate.ToShortDateString()));
 
       DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "User_QueryAccount", lstParam, DBHelper.ProcRstTypes.All);
 

@@ -60,11 +60,14 @@ namespace TiKu.Dal
       return rst.Result;
     }
 
-    public static tUserPayEntity GettUserPay(int id)
+    public static tUserPayEntity GettUserPayByBookingNo(string strBooking)
     {
       tUserPayEntity rst = null;
-      string strSQL = "SELECT * FROM tUserPay WHERE tUserPayID=" + id.ToString();
-      DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
+      string strSQL = "SELECT * FROM tUserPay WHERE fRemark=@BookingNo";
+      List<DbParameter> lstParam = new List<DbParameter>();
+      lstParam.Add(new DBParam("@BookingNo", strBooking));
+
+      DataTable dt = DBHelper.QueryToTable("TiKu", strSQL,lstParam);
       if (dt.Rows.Count > 0)
       {
         rst = new tUserPayEntity();
@@ -73,15 +76,6 @@ namespace TiKu.Dal
       return rst;
     }
 
-    public static Decimal GetUserAccountAmount(string strUserName)
-    {
-      string strSql = "select isnull(sum(fLeftAmount),0) AccountAmount from tuserpay  where fUserName=@UserName and fPayNo is not null ";
-      List<DbParameter> lstParam = new List<DbParameter>();
-      lstParam.Add(new DBParam("@UserName", strUserName));
-
-      object obj = DBHelper.ExecuteScalar("TiKu",strSql, lstParam);
-      return Convert.ToDecimal(obj);
-    }
 
     public static List<tUserPayEntity> GettUserPayList(int id)
     {
@@ -119,6 +113,25 @@ namespace TiKu.Dal
       return Convert.ToInt32(rst.Result);
     }
 
+
+      public static decimal GetUserAccountAmount(string strUserName)
+    {
+
+        StringBuilder bufSQL = new StringBuilder();
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        bufSQL.Append("select isnull(sum(fAmount),0) from tuserAmount WHERE (1=1) ");
+
+      
+            bufSQL.Append(" AND fUserName=@username ");
+            lstParam.Add(new DBParam("@username", strUserName));
+        
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        object dtRst = DBHelper.ExecuteScalar("TiKu", bufSQL.ToString(), lstParam);
+        return Convert.ToDecimal(dtRst);
+    }
 
   }
 }

@@ -51,16 +51,18 @@
           <a class="comment-avatar">
             @*<img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@b.UserHead?x-oss-process=style/width" alt="">*@</a>
           <h4 class="comment-subject">
-            @v.fUserName</h4>
+            @v.fName</h4>
           <p>
+             
+              提交时间：@v.fUploadDate.ToString()
            </p>
           <span class="comment-meta">
-           
+           @v.fUserName
 
           </span>
           <div class="action">
            
-            <button class="awe-btn awe-btn-14" onclick="showDetail(@v.fID)">去认证</button> 
+            <button class="awe-btn awe-btn-14" onclick="showDetail(@v.fTeacherValidID,@v.fID)">去认证</button> 
             
           </div>
         </div>
@@ -98,7 +100,7 @@ else
             $("#panelList").show();
           }
 
-          function showDetail(iValidFid) {
+          function showDetail(iValidFid, iDetailID) {
             $(".reservation-billing-detail").hide();
             $("#panelValid").show();
 
@@ -107,7 +109,7 @@ else
             $.ajax({
               url: "/Manager/TeacherValid",
               type: this.method,
-              data: { "iValidFid": iValidFid },
+              data: { "iValidFid": iValidFid, "iDetailID": iDetailID },
               success: function (msg) {
                 $('#panelValid').html(msg);
               }

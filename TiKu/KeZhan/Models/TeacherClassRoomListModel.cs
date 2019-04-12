@@ -8,7 +8,10 @@ namespace KeZhan.Models
 {
   public class TeacherClassRoomListModel
   {
+      public string strUserName { get; set; }
     public bool IsValid { get; set; }
+    public string strStatus { get; set; }
+    public string strPayType { get; set; }
     public ClassRoomListModel list { get; set; }
   }
 }

@@ -17,7 +17,7 @@ namespace TiKuBll.Model
         public System.String fBuySystem { get; set; }
         public System.Boolean fIsPay { get; set; }
         public System.String fStatus { get; set; }
-        public System.String fIsReturn { get; set; }
+        public System.Boolean fIsReturn { get; set; }
         public System.DateTime fCreateDate { get; set; }
         public System.String fCreateOpr { get; set; }
         public System.DateTime fModifyDate { get; set; }
@@ -27,8 +27,12 @@ namespace TiKuBll.Model
         public System.String UserHead { get; set; }
         public System.String Mobile { get; set; }
         public System.String Title { get; set; }
+        public System.String TeacherName { get; set; }
         public System.String CoverImg { get; set; }
         public System.Decimal UserAccountAmount { get; set; }
+        public System.String PayOrderNo { get; set; }
+
+        public System.Int32 MaxReturnAmount { get; set; }
 
         public ClassRoomModel ClassRoom { get; set; }
     }
@@ -36,7 +40,9 @@ namespace TiKuBll.Model
     public class BookingListModel
     {
         public System.String fClassRoomCode { get; set; }
-        public System.String fPayType { get; set; }
+        public System.String fClassType { get; set; }
+
+        public System.String fStatus { get; set; }
         public List<BookingModel> list { get; set; }
     }
 }

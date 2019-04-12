@@ -33,12 +33,10 @@
                         <!-- END / WIDGET RECENT POST HAS THUMBNAIL -->
                         @if (!string.IsNullOrEmpty(Model.TeacherQrCode))
                         {
-
-
                             <div class="widget widget_recent_entries has_thumbnail">
                                 <h4 class="widget-title">老师微信二维码</h4>
                                 <div class="guest-book_item guest-book_item-2">
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherQrCode?x-oss-process=style/zheng" alt="" />
+                                    <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherQrCode?x-oss-process=style/zheng" alt="" />
 
                                 </div>
                             </div>
@@ -52,7 +50,7 @@
                                 <div class="widget widget_recent_entries has_thumbnail">
                                     <h4 class="widget-title">课程微信群</h4>
                                     <div class="guest-book_item guest-book_item-2">
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/zheng" alt="" />
+                                        <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/zheng" alt="" />
 
                                     </div>
                                 </div>
@@ -87,17 +85,17 @@
                                         <p>
                                             @Html.Raw(Html.Encode(Model.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
                                             <br />
-                                            <span>开课时间：@Model.fClassRoomDate.ToShortDateString()</span>
-                                            <br />
+                                            @*<span>开课时间：@Model.fClassRoomDate.ToShortDateString()</span>
+                                                <br />*@
                                             <span>讲师：@Model.TeacherName</span>
                                             <br />
                                             @if (Model.fIsReturn)
                                             {
-                                                <span>不可退</span>
+                                                <span>可退</span>
                                             }
                                             else
                                             {
-                                                <span>可退</span>
+                                                <span>不可退</span>
                                             }
                                         </p>
 
@@ -173,14 +171,26 @@
                                                                 }
                                                                 else if (course.CourseStatus == 3)
                                                                 {
-                                                                    <a href="/Home/Index?iCourseID=@course.fID" class="awe-btn awe-btn-default">进入课堂</a>
+                                                                    if (Model.fStatus == "发布")
+                                                                    {
+                                                                        <a href="/Home/Index?iCourseID=@course.fID" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
+                                                                    }
                                                                 }
                                                                 else if (course.CourseStatus == 4)
                                                                 {
-                                                                    if (course.fStatus == "已转码")
+                                                                    if (!string.IsNullOrEmpty(course.fFileCoverUrl))
                                                                     {
                                                                         <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
                                                                     }
+                                                                    else
+                                                                    {
+                                                                        <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                                    }
+                                                                }
+
+                                                                @if (!string.IsNullOrEmpty(course.fDocoumentUrl))
+                                                                {
+                                                                    <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
                                                                 }
                                                             </div>
                                                         }

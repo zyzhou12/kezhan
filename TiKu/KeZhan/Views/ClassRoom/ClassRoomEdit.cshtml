@@ -1,509 +1,909 @@
 ﻿@model TiKuBll.Model.ClassRoomModel
 @{
-  ViewBag.Title = "课站";
+    ViewBag.Title = "课站";
+    bool isEdit = "结算;下线;发布;发布中;下线中".Contains(@Model.fStatus) ? false : true;
+
+
 }
 
 <section class="section-reservation-page bg-white">
 
-            <div class="container">
-                <div class="reservation-page">                   
-                  
+    <div class="container">
+        <div class="reservation-page">
+            @*<div class="reservation_step">
+                    <ul>
+                        <li><a href="#"><span>1.</span>  基本信息</a></li>
 
-                    <div class="row">
-                       <div class="col-md-3">
-                            <ul class="room-detail_tab-header">
-                                <li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">详细信息</a></li>
-                                 @if (Model.fID > 0)
-                                 {
-                                  <li onclick="showPanel('booking')"><a href="#"  style=" width:100%;" data-toggle="tab">报名记录</a></li>
-                                 }
-                            </ul>
+                        <li class="active"><a href="#"><span>2.</span> 基本信息</a></li>
+                        <li><a href="#"><span>3.</span> 资质认证</a></li>
+                        <li><a href="#"><span>4.</span> 完成</a></li>
+
+                    </ul>
+                </div>*@
+
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+                        <li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">基本信息</a></li>
+                        @if (Model.fID > 0)
+                        {
+                            @*<li onclick="showPanel('desc')"><a href="#" style=" width:100%;" data-toggle="tab">介绍信息</a></li>*@
+                            <li onclick="showPanel('courseEdit')"><a href="#" style=" width:100%;" data-toggle="tab">章节信息</a></li>
+                            if (Model.fStatus == "保存")
+                            {
+                                <li onclick="ShowDetail('@Model.fClassRoomCode')"><a href="#" style=" width:100%;" data-toggle="tab">预览发布</a></li>
+                            }
+                            if (Model.fStatus == "发布" && Model.fTecharUserName == Model.UserName)
+                            {
+                                <li onclick="showPanel('course')"><a href="#" style=" width:100%;" data-toggle="tab">上课</a></li>
+                            }
+                            <li onclick="showPanel('booking')"><a href="#" style=" width:100%;" data-toggle="tab">报名记录</a></li>
+                            if (Model.fStatus == "发布")
+                            {
+                                <li onclick="showPanel('private')"><a href="#" style=" width:100%;" data-toggle="tab">推广链接</a></li>
+                                <li onclick="showPanel('update')"><a href="#" style=" width:100%;" data-toggle="tab">修改信息</a></li>
+                            }
+                            if (Model.fStatus == "结算")
+                            {
+                                <li onclick="showPanel('account')"><a href="#" style=" width:100%;" data-toggle="tab">账单明细</a></li>
+                            }
+                        }
+                    </ul>
+                </div>
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail" id="panelData">
+
+
+                            <h4>基本信息</h4>
+                            @Html.HiddenFor(m => m.fID)
+
+                            <label>课程名称<sup>*</sup></label>
+                            <input type="text" id="txtTitle" value="@Model.fClassRoomTitle" class="input-text">
+
+
+                            <label>封面<sup>*</sup></label>
+
+                            @if (!string.IsNullOrEmpty(Model.fCoverImg))
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fCoverImg?x-oss-process=style/fang" id="imgCover" data-reveal-id="myModal" onclick="UploadFile('@Model.UserName','ClassRoomCover','hidConver','','imgCover')" alt="">
+                            }
+                            else
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgCover" data-reveal-id="myModal" onclick="UploadFile('@Model.UserName','ClassRoomCover','hidConver','','imgCover')" alt="">
+                            } <input type="hidden" id="hidConver" value="@Model.fCoverImg" />
+
+
+                            <label>课程简介</label>
+                            <textarea class="input-textarea" id="txtInfo" placeholder="课程简介是提要性的，限字数在50个汉字以内">@Model.fInfo</textarea>
+
+                            <label>图文详情</label>
+                            <span style="font-size:12px;">推荐使用第三方，比如135编辑器，制作长图文，支持JPG、JPEG格式，图片尺寸要求小于20M</span>
+                            <br /><br />
+                            @if (Model.descList != null && Model.descList.Count > 0)
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.descList[0].fContent?x-oss-process=style/fang" alt="" />
+                                <input type="hidden" id="hidDescID" value="@Model.descList[0].fID" />
+                                <input type="hidden" id="hidDesc" value="@Model.descList[0].fContent" />
+                            }
+                            else
+                            {
+                                <img id="fileUploadDesc" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadFile('@Model.fCreateOpr','ClassRoomDesc','hidDesc','','fileUploadDesc')" alt="">
+
+                                <input type="hidden" id="hidDescID" value="0" />
+                                <input type="hidden" id="hidDesc" />
+                            }
+
+                            <label>是否公开</label>
+
+                            @Html.DropDownListFor(m => m.fClassType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                                                                                              new SelectListItem { Text = "公开课", Value = "Public" },
+                                                                                              new SelectListItem { Text = "私课", Value = "Private" }}, new { @class = "awe-select", id = "cmbClassType", onchange = "ChangeType()" })
+
+
+
+
+
+
+
+
+                            @Html.Partial("../ClassRoom/TeacherSelect", new KeZhan.Models.TeacherModel { fUserName = @Model.fTecharUserName, fPharse = @Model.fPharse, fSubject = @Model.fSubject })
+
+
+                            @*<label>知识点<sup>*</sup></label>
+                                <input type="text" id="txtKnowLedge" value="@Model.fKnowLedge" class="input-text">*@
+
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>原价<sup>*</sup></label>
+                                    <input type="number" id="txtBasePrice" value="@Model.fBasePrice" class="input-text">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>售价<sup>*</sup></label>
+                                    <input type="number" id="txtPrice" value="@Model.fPrice" class="input-text">
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>截止报名时间<sup>*</sup></label>
+                                    @*<input type="text" class="awe-calendar" id="txtDeadLineDate"  value="@Model.fDeadLineDate.ToShortDateString()" placeholder="Arrival Date">*@
+                                    @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = Model.fDeadLineDate.ToString("yyyy-MM-dd"), datePlaceholder = "截止报名时间" })
+                                </div>
+                                @*<div class="col-sm-6">
+                                        <label>开课时间<sup>*</sup></label>
+
+                                        @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtClassRoomDate", date = Model.fClassRoomDate.ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "开课时间" })
+                                    </div>*@
+                            </div>
+
+
+
+                            <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
+                            <input type="number" id="txtMaxNumber" value="@Model.fMaxNumber" class="input-text">
+
+
+
+
+
+                            <label>支付类型</label>
+                            @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                                                                                              new SelectListItem { Text = "在线支付", Value = "在线支付" },
+                                                                                              new SelectListItem { Text = "线下支付", Value = "线下支付" }}, new { @class = "awe-select", id = "cmbPayType" })
+
+
+                            <label>是否可退</label>
+                            @Html.DropDownListFor(m => m.fIsReturn, new[] {
+                                                                                              new SelectListItem { Text = "是", Value = "true" },
+                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsReturn" })
+
+                            <label>退款类型</label>
+                            @Html.DropDownListFor(m => m.fReturnType, new[] {
+                                                                                              new SelectListItem { Text = "随时退", Value = "随时" },
+                                                                                              new SelectListItem { Text = "开课前退", Value = "课前" }}, new { @class = "awe-select", id = "cmbReturnType" })
+
+
+
+                            <label>退款规则</label>
+                            @Html.DropDownListFor(m => m.fReturnRule, new[] {
+                                                                                              new SelectListItem { Text = "按分钟", Value = "分钟" },
+                                                                                              new SelectListItem { Text = "按课时", Value = "课时" }}, new { @class = "awe-select", id = "cmbReturnRule" })
+
+
+
+
+
+
+                            <label>是否录屏回看</label>
+                            @Html.DropDownListFor(m => m.fIsRecord, new[] {
+                                                                                              new SelectListItem { Text = "是", Value = "true" },
+                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })
+
+
+
+
+                            @if (Model.fStatus == "保存")
+                            {
+                                <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
+                                @*if (Model.fID > 0) {
+                                    <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('发布')">发布</button>
+                                            }*@
+                            }
+                            else if (Model.fStatus == "发布")
+                            {
+                                <label>下线原因<sup>*</sup></label>
+                                <input type="text" id="txtDownLoadNote" value="" class="input-text">
+    
+                                <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('下线')">下线</button>
+                            }
+                            else if (Model.fStatus == "下线")
+                            {
+                                <button class="awe-btn awe-btn-13" onclick="DoClassRoomSettlement()">结算</button>
+                            }
+
                         </div>
-                       
-                        
-                        <!-- CONTENT -->
-                        <div class="col-md-8 col-lg-9">
+                        <div class="reservation-billing-detail" id="panelDesc" style="display:none;">
+                        </div>
+                        <div class="reservation-billing-detail" id="panelUpdate" style="display:none;">
+                            <label>微信群二维码<sup>*</sup></label>
 
-                            <div class="reservation_content">
-                                
-                                <div class="reservation-billing-detail" id="panelData">
+                            @if (string.IsNullOrEmpty(Model.fQrCode))
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.fCreateOpr','ClassRoomWeiXinQrCode','hidQrCode','btnSaveQrCode','imgQrCode')" alt="" />
+                            }
+                            else
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.fCreateOpr','ClassRoomWeiXinQrCode','hidQrCode','btnSaveQrCode','imgQrCode')" alt="" />
+                            }
+                            <input type="hidden" id="hidQrCode" value="@Model.fQrCode" />
+                            <br />
+                            <button class="awe-btn awe-btn-13" id="btnSaveQrCode" onclick="SaveClassRoomQrInfo()">保存</button>
 
-                                
-                                    <h4>课程信息</h4>
-                                    @Html.HiddenFor(m => m.fID)
-                                       <label>标题<sup>*</sup></label>
-                                    <input type="text" id="txtTitle" value="@Model.fClassRoomTitle" class="input-text">
-                                   
-                                   
-                                       <label>封面<sup>*</sup></label>
-                                    
-                                    @if (!string.IsNullOrEmpty(Model.fCoverImg))
-                                    {
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fCoverImg?x-oss-process=style/fang" id="imgCover" data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomCover','hidConver','','imgCover')" alt="">
-                                    }
-                                    else
-                                    {
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgCover" data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomCover','hidConver','','imgCover')" alt="">
-                                    } <input type="hidden" id="hidConver"  value="@Model.fCoverImg" />
-                                        
+                            <label>授课老师<sup>*</sup></label>
 
-                                        <label>简介</label>
-                                    <textarea class="input-textarea" id="txtInfo"  placeholder="Notes about your order, eg. special notes for delivery">@Model.fInfo</textarea>
+                            <select id="cmbAllTeacher" style="width:100%;height:42px;"></select>
+                            
+                            <br />
+                            <button class="awe-btn awe-btn-13" id="btnTeacherName" onclick="SaveClassRoomTeacherNameInfo()">保存</button>
 
-                                      <label>详情介绍</label>
-                                       @if (Model.descList != null)
-                                       {
-                                         foreach (var desc in Model.descList)
-                                         {
-                                           if (desc.fType == "text")
-                                           {
-                                           <span>@desc.fContent</span>
-                                         <br />
-                                           }
-                                           else if (desc.fType == "img")
-                                           {
-                                           <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@desc.fContent?x-oss-process=style/fang" alt="" />
-                                         <br />
-                                           }
-                                        <a class="awe-btn awe-btn-13"  onclick="DelDesc(@desc.fID)">删除当前段</a> 
-                                        <a class="awe-btn awe-btn-13"  onclick="UpdateDesc(@desc.fID,'@desc.fType','@desc.fContent',@desc.fOrder)">修改当前段</a> 
-                                         
-                                         <br />
-                                         }
-                                       }                        
-                                        <button class="awe-btn awe-btn-13" id="btnDescAdd" onclick="AddDesc()">新增介绍</button>
-                                        <div id="divDesc" style=" display:none ; border:2px solid #EFEFEF;">
-                                            <input type="hidden" id="hidDescID" />
-                                            <br />
-                                            <label>类型</label>
-                                            <select id="cmbType" onchange="changeType(this)">
-                                              <option value="text">文字</option>
-                                              <option value="img">图片</option>
-                                            </select>
-                                            <br />
-                                            <textarea cols=="50" rows="5"  id="txtContent"  placeholder="请输入内容"></textarea>
-                                           
-                                        <br />
-                                         <img id="fileUploadDesc" style=" display:none;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgDesc"  data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomDesc','hidDesc','','imgDesc')" alt="">
-                                         <input type="hidden" id="hidDesc"  />
-                                            <label>排序</label>
-                                            <input type="number" id="txtDescOrder" class="input-text">
-                                             
-                                        <button class="awe-btn awe-btn-13" onclick="SaveDesc()">保存</button>
-                                        </div>
-                                        <br />
-                                 
-                                 
-                                       <label>课程类型<sup>*</sup></label>
-                                      @Html.Partial("../ClassRoom/TeacherValidSelect", new TiKuBll.Model.TeacherValidModel { fID = @Model.fTeacherValidID, fUserName=@Model.fTecharUserName })
-
-                                    
-                                       <label>知识点<sup>*</sup></label>
-                                    <input type="text" id="txtKnowLedge" value="@Model.fKnowLedge" class="input-text">
+                        </div>
 
 
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <label>原价<sup>*</sup></label>
-                                            <input type="number" id="txtBasePrice" value="@Model.fBasePrice" class="input-text">
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label>售价<sup>*</sup></label>
-                                            <input type="number" id="txtPrice"  value="@Model.fPrice" class="input-text">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <label>截止报名时间<sup>*</sup></label>
-                                @*<input type="text" class="awe-calendar" id="txtDeadLineDate"  value="@Model.fDeadLineDate.ToShortDateString()" placeholder="Arrival Date">*@
-                                            @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtDeadLineDate", date = Model.fDeadLineDate.ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "截止报名时间" })
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label>开课时间<sup>*</sup></label>
-                                @*<input type="text" class="awe-calendar" id="txtClassRoomDate"  value="@Model.fClassRoomDate.ToShortDateString()" placeholder="Arrival Date">*@
-                                            @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtClassRoomDate", date = Model.fClassRoomDate.ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "开课时间" })
-                                        </div>
-                                    </div>
-                                    
-                                   
+                        <div class="reservation-billing-detail" id="panelCourseEdit" style="display:none;">
 
-                                      <label>最大人数</label>
-                                            <input type="number" id="txtMaxNumber"  value="@Model.fMaxNumber" class="input-text">
 
-                                            
-                                       <label>微信群二维码<sup>*</sup></label>
-                                     
-                                        @if (string.IsNullOrEmpty(Model.fQrCode))
+                        </div>
+                        <div class="reservation-billing-detail" id="panelBooking">
+
+                        </div>
+                        <div class="reservation-billing-detail" id="panelCourse" style="display:none;">
+                            @if (Model.courseList != null && Model.courseList.Count > 0)
+                            {
+                                                <!-- ITEM PACKAGE -->
+                                foreach (var course in Model.courseList)
+                                {
+                                    <div class="reservation-package_item">
+                                        @if (!string.IsNullOrEmpty(course.fResourceUrl))
                                         {
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgQrCode"  data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomWeiXinQrCode','hidQrCode','','imgQrCode')" alt="" />
+                                            if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                            {
+                                <div class="reservation-package_img">
+                                    <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal" alt="">
+
+                                </div>
+                                            }
+                                            else
+                                            {
+                                <div class="reservation-package_img">
+                                    <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" alt="" />
+                                </div>
+                                            }
                                         }
                                         else
                                         {
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/fang" id="imgQrCode"  data-reveal-id="myModal" onclick="UploadFile('@Model.fTecharUserName','ClassRoomWeiXinQrCode','hidQrCode','','imgQrCode')" alt="" />
-                                        }
-                                         <input type="hidden" id="hidQrCode"  value="@Model.fQrCode" />
-
-
-                                      
-                                      <label>支付类型</label>
-                                          @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
-                                                                                              new SelectListItem { Text = "在线支付", Value = "在线支付" },
-                                                                                              new SelectListItem { Text = "线下支付", Value = "线下支付" }}, new { @class = "awe-select", id = "cmbPayType" })
-                                     
-                                     
-                                      <label>是否可退</label>
-                                         @Html.DropDownListFor(m => m.fIsReturn, new[] { 
-                                                                                              new SelectListItem { Text = "是", Value = "1" },
-                                                                                              new SelectListItem { Text = "否", Value = "0" }}, new { @class = "awe-select", id = "cmbIsReturn" })
-                                     
-                                      
-                                      <label>是否录屏回看</label>
-                                      @Html.DropDownListFor(m => m.fIsRecord, new[] { 
-                                                                                              new SelectListItem { Text = "是", Value = "1" },
-                                                                                              new SelectListItem { Text = "否", Value = "0" }}, new { @class = "awe-select", id = "cmbIsRecord" })
-                                     
-                                    
-
-                                      <label>章节</label>
-                                         <div class="reservation-room_package">
-                                            <a data-toggle="collapse" href="#reservation-room_package-1" class="reservation-room_package-more" aria-expanded="true">章节</a>
-                                            <button class="awe-btn awe-btn-default" id="btnAdd" onclick="AddCurse()">新增</button>
-                                            <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
-                                            
-                                      @if (Model.courseList != null)
-                                      {
-                                                <!-- ITEM PACKAGE -->
-                                        foreach (var course in Model.courseList)
-                                        {
-                                                <div class="reservation-package_item">
-                                                     @if (!string.IsNullOrEmpty(course.fResourceUrl))
-                                                     {
-                                                       if (course.fStatus == "已转码")
-                                                       {
-                                                    <div class="reservation-package_img">
-                                                        <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl"   data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fTecharUserName','ClassRoom',@course.fID)" alt="">
-                                              
-                                                    </div>
-                                                       }
-                                                     }
-                                                     else
-                                                     {
-                                                    <div class="reservation-package_img">
-                                                     <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang"   data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fTecharUserName','ClassRoom',@course.fID)" alt="" />
-                                                    </div>
-                                                     }
-
-                                                    <div class="reservation-package_text">
-
-                                                        <h4><a href="#">@course.fDictTitle</a></h4>
-                                                        <p>@course.fCourseTitle
-                                                        <br />
-                                                        <span>上课时间：@course.fClassDate.ToString()</span>
-                                                        </p>
-                                                        
-                                                        <div class="reservation-package_book-price">
-                                                         @if (!string.IsNullOrEmpty(course.fResourceUrl))
-                                                         {
-                                                           if (course.fStatus == "已转码")
-                                                           {
-                                                             <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
-                                                       
-                                                           }
-                                                         }
-                                                         <button class="awe-btn awe-btn-default" onclick="UpdateCurse(@course.fID,'@course.fDictTitle','@course.fCourseTitle','@course.fClassDate.ToString()',@course.fClassDateLength,@course.fOrder)">修改</button>
-                                                          </div>
-                                                    </div>
-
-                                                </div>
-                                        }
-                                                
-                                              
-                                      }    
-                                                <div class="reservation-package_item" id="divCourse" style=" display:none">
-
-
-                                                    <div class="reservation-package_text">
-
-                                                        <input type="hidden" id="hidCourseID" />
-                                                        <p>
-
-                                                            <span>第几章：<input type="text" id="txtDictTitle" class="input-text"></span>
-                                                            <br />
-                                                            <span> 第几节：<input type="text" id="txtCourseTitle" class="input-text"></span>
-                                                            <br />
-                                                            <span>
-                                                                上课时间：
-                                                                @*<input type="text" class="awe-calendar" id="txtCourseDate"  placeholder="Arrival Date">*@
-                                                                @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtCourseDate", date = Model.fClassRoomDate.ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "上课时间" })
-                                                            </span>
-
-                                                            <br />
-                                                            <span>时长：<input type="number" id="txtDateLength" class="input-text"></span>
-                                                            <br />
-                                                            <span>排序：<input type="number" id="txtOrder" class="input-text"></span>
-
-                                                        </p>
-                                                        <div class="reservation-package_book-price">
-
-                                                            <button class="awe-btn awe-btn-13" onclick="SaveCurse()">保存章节</button>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-  
-                                            </div>
-                                        </div>
-                                        
-                                      
-                                        <br />
-                                        @if (Model.fStatus == "保存")
-                                        {
-                                          <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
-                                            <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('提交')">提交</button>
-
-                                        }
-                                    
+                                <div class="reservation-package_img">
+                                    <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fCreateOpr','ClassRoom',@course.fID)" alt="" />
                                 </div>
+                                        }
 
-                                   <div class="reservation-billing-detail" id="panelBooking">
+                                        <div class="reservation-package_text">
 
-                                  </div>
-                            </div>
+                                            <h4><a href="#">@course.fDictTitle</a></h4>
+                                            <p>
+                                                @course.fCourseTitle
+                                                <br />
+                                                <span>上课时间：@course.fClassDate.ToString()</span>
+                                                <br />
+                                                <span>时长（分钟）：@course.fClassDateLength</span>
+                                            </p>
 
+                                            <div class="reservation-package_book-price">
+                                                @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                                {
+                                                    if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                                    {
+                                        <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
+
+                                                    }
+                                                    else
+                                                    {
+                                        <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                    }
+                                                }
+                                                @if (course.CourseStatus == 1)
+                                                {
+                                        <a href="#" class="awe-btn awe-btn-default">未开始</a>
+                                                }
+                                                else if (course.CourseStatus == 2)
+                                                {
+                                        <a href="#" class="awe-btn awe-btn-default">已结束</a>
+                                                }
+                                                else if (course.CourseStatus == 3)
+                                                {
+                                                    if (Model.fStatus == "发布")
+                                                    {
+
+                                        <a href="#" onclick="OpenClassRoom(@course.fID)" class="awe-btn awe-btn-default">开始上课</a>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                            }
                         </div>
-                        <!-- END / CONTENT -->
-                        
+
+                        <div class="reservation-billing-detail" id="panelPrivate" style="display:none;">
+                            @if (Model.fID > 0 && Model.fStatus == "发布")
+                            {
+                                <label>链接</label>
+                                <input type="text" value="https://www.2kezhan.com/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode" class="input-text">
+                            }
+                        </div>
+                        <div class="reservation-billing-detail" id="panelAccount" style="display:none;">
+                            <h4>结算明细</h4>
+                            @if (Model.account!=null)
+                            { 
+                            <label>收入</label>
+                            <input type="text" id="txtTitle" value="@Model.account.fIncome" class="input-text" disabled="disabled">
+                            <label>退款</label>
+                            <input type="text" id="txtTitle" value="@Model.account.fRefund" class="input-text" disabled="disabled">
+                            <label>平台费用</label>
+                            <input type="text" id="txtTitle" value="@Model.account.fFee" class="input-text" disabled="disabled">
+                            <label>应收</label>
+                            <input type="text" id="txtTitle" value="@Model.account.fAmount" class="input-text" disabled="disabled">
+                            <label>结算时间</label>
+                            <input type="text" id="txtTitle" value="@Model.account.fCreateDate.ToString()" class="input-text" disabled="disabled">
+                            }
+                        </div>
+
                     </div>
+                    <!-- END / CONTENT -->
+
                 </div>
             </div>
+        </div>
+        </div>
+</section>
 
-        </section>
+
+
+<div id="divCourse" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
+    <h1>
+        课程信息
+    </h1>
+
+    <p>
+        <input type="hidden" id="hidCourseID" />
+        <label>第几章</label>
+        <br />
+        <input type="text" id="txtDictTitle" class="input-text form-control">
+        <br />
+        <label> 第几节</label>
+        <br />
+        <input type="text" id="txtCourseTitle" class="input-text form-control">
+        <br />
+        <label>
+            上课时间
+        </label>
+        <br />
+        @*<input type="text" class="awe-calendar" id="txtCourseDate"  placeholder="Arrival Date">*@
+        @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtCourseDate", date = DateTime.Now.AddDays(10).ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "上课时间" })
+
+
+        <br />
+        <label>时长</label>
+        <br /><input type="number" id="txtDateLength" class="input-text form-control">
+        <br />
+        <label>排序</label>
+        <br /><input type="number" id="txtOrder" class="input-text form-control">
+    </p>
+    <button class="awe-btn awe-btn-13" onclick="SaveCurse()">保存</button>
+
+
+    <a class="close-reveal-modal" onclick="CloseCourse()">&#215;</a>
+</div>
+
 <script type="text/javascript">
-  var username = "@Model.fTecharUserName";
+    var username = "@Model.fTecharUserName";
+    var classRoomCode = '@Model.fClassRoomCode';
 
 
+    function SaveClassRoomInfo(status) {
 
-  function SaveClassRoomInfo(status) {
-    
-    var ClassRoomModel = {
-      "fID": $("#fID").val(),
-      "fTecharUserName": username,
-      "fClassRoomTitle": $("#txtTitle").val(),
-      "fCoverImg": $("#hidConver").val(),
-      "fInfo": $("#txtInfo").val(),
-      "fDesc": $("#txtDesc").val(),
-      "fQrCode": $("#hidQrCode").val(),
-      "fTeacherValidID": $("#cmbTeacherValid").val(),
-      "fKnowLedge": $("#txtKnowLedge").val(),
-      "fMaxNumber": $("#txtMaxNumber").val(),
-      "fClassRoomDate": $("#txtClassRoomDate").val(),
-      "fDeadLineDate": $("#txtDeadLineDate").val(),
-      "fPrice": $("#txtPrice").val(),
-      "fBasePrice": $("#txtBasePrice").val(),
-      "fPayType": $("#cmbPayType").val(),
-      "fIsReturn": $("#cmbIsReturn").val(),
-      "fIsRecord": $("#cmbIsRecord").val(),
-      "fStatus": status
-    };
+        var ClassRoomModel = {
+            "fID": $("#fID").val(),
+            "fClassType": $("#cmbClassType").val(),
+            "fTecharUserName": $("#cmbTeacher").val(),
+            "fPharse": $("#cmbPharse").val(),
+            "fSubject": $("#cmbSubject").val(),
+            "fClassRoomTitle": $("#txtTitle").val(),
+            "fCoverImg": $("#hidConver").val(),
+            "fInfo": $("#txtInfo").val(),
+            "fDesc": $("#txtDesc").val(),
+            "fQrCode": $("#hidQrCode").val(),
+            // "fTeacherValidID": $("#cmbTeacherValid").val(),
+            "fKnowLedge": $("#txtKnowLedge").val(),
+            "fMaxNumber": $("#txtMaxNumber").val(),
+            //"fClassRoomDate": $("#txtClassRoomDate").val(),
+            "fDeadLineDate": $("#txtDeadLineDate").val(),
+            "fPrice": $("#txtPrice").val(),
+            "fBasePrice": $("#txtBasePrice").val(),
+            "fPayType": $("#cmbPayType").val(),
+            "fIsReturn": $("#cmbIsReturn").val(),
+            "fReturnType": $("#cmbReturnType").val(),
+            "fReturnRule": $("#cmbReturnRule").val(),
+            "fIsRecord": $("#cmbIsRecord").val(),
+            "fStatus": status
+        };
 
-    $.ajax({
-      url: "/classRoom/DoSaveClassRoom",
-      data: ClassRoomModel,
-      type: "POST",
-      dataType: "json",
-      success: function (rst) {
-        if (rst.iResult >= 0) {
-          alert("保存成功");
-        } else {
-          alert(rst.strMsg);
-        }
-      }
-
-    });
-  }
-        </script>
-<script type="text/javascript">
-
-  function changeType(obj) {
-    if ($(obj).val() == "text") {
-      $("#txtContent").show();
-      $("#fileUploadDesc").hide();
-    } else {
-      $("#fileUploadDesc").show();
-      $("#txtContent").hide();
-    }
-  }
-
-  function AddDesc(descID) {
-    $("#hidDescID").val(0);
-    $("#divDesc").show();
-    $("#btnDescAdd").hide();
-  }
-
-  function DelDesc(descID) {
-   
-    $.ajax({
-      url: "/classRoom/DoDelClassRoomDesc",
-      data: { "iDescID": descID },
-      type: "POST",
-      dataType: "json",
-      success: function (rst) {
-        if (rst.iResult >= 0) {
-          alert("保存成功");
-          window.location.reload();
-        } else {
-          alert(rst.strMsg);
-        }
-      }
-
-    });
-  }
-
-  function UpdateDesc(descID, type, content, order) {
-    $("#hidDescID").val(descID);
-    if (type == "text") {
-      $("#txtContent").val(content);
-    } else {
-      $("#hidDesc").val(content);
-      $("#cmbType").val("img");
-      $("#fileUploadDesc").show();
-      $("#txtContent").hide();
-    }
-    $("#txtDescOrder").val(order);
-    $("#divDesc").show();
-    $("#btnDescAdd").hide();
-  }
-
-  function SaveDesc() {
-    var type = $("#cmbType").val();
-    var content = "";
-
-    if (type == "text") {
-      content = $("#txtContent").val();
-    } else {
-      content = $("#hidDesc").val();
-    }
-
-    var DescModel = {
-      "fID": $("#hidDescID").val(),
-      "fType": type,
-      "fClassRoomCode": classRoomCode,
-      "fContent": content,
-      "fOrder": $("#txtDescOrder").val()
-    }
-    $.ajax({
-      url: "/classRoom/DoSaveClassRoomDesc",
-      data: DescModel,
-      type: "POST",
-      dataType: "json",
-      success: function (rst) {
-        if (rst.iResult >= 0) {
-          alert("保存成功");
-          window.location.reload();
-        } else {
-          alert(rst.strMsg);
-        }
-      }
-
-    });
-
-  }
-</script>
-<script type="text/javascript">
-  var classRoomCode = '@Model.fClassRoomCode';
-
-  function AddCurse(courseID) {
-    $("#hidCourseID").val(0);
-    $("#divCourse").show();
-    $("#btnAdd").hide();
-  }
-
-  function UpdateCurse(courseID, dictTitle, courseTitle, date,length, order) {
-    $("#hidCourseID").val(courseID);
-    $("#txtDictTitle").val(dictTitle);
-    $("#txtCourseTitle").val(courseTitle);
-    $("#txtCourseDate").val(date); 
-    $("#txtOrder").val(order);
-    $("#txtDateLength").val(length);
-    $("#divCourse").show();
-    $("#btnAdd").hide();
-  }
-
-  function SaveCurse() {
-    var CourseModel = {
-      "fID": $("#hidCourseID").val(),
-      "fClassType": "ClassRoom",
-      "fClassRoomCode": classRoomCode,
-      "fDictTitle": $("#txtDictTitle").val(),
-      "fCourseTitle": $("#txtCourseTitle").val(),
-      "fClassDate": $("#txtCourseDate").val(),
-      "fClassDateLength":$("#txtDateLength").val(),
-      "fOrder": $("#txtOrder").val()
-    }
-    $.ajax({
-      url: "/classRoom/DoSaveClassRoomCourse",
-      data: CourseModel,
-      type: "POST",
-      dataType: "json",
-      success: function (rst) {
-        if (rst.iResult >= 0) {
-          alert("保存成功");
-          $("#divCourse").hide();
-          $("#btnAdd").show();
-          window.location.reload();
-        } else {
-          alert(rst.strMsg);
-        }
-      }
-
-    });
-
-  }
-</script>
-<script type="text/javascript">
-  var ClassRoomCode = "@Model.fClassRoomCode";
-
-  function showPanel(div) {
-    if (div == "info") {
-      $(".reservation-billing-detail").hide();
-      $("#panelData").show();
-    } else if (div == "booking") {
-      $(".reservation-billing-detail").hide();
-      $("#panelBooking").show();
-
-      $.ajax({
-        url: "/ClassRoom/QueryBookingList",
-        type: this.method,
-        data: { "strClassRoomCode": ClassRoomCode },
-        success: function (msg) {
-          $('#panelBooking').html(msg);
-        }
-      });
-    }
-  }
-
-  function UpdatePayStatus(strBookingNo, strStatus) {
-    $.ajax({
-      url: "/classRoom/DoUpdateBookingStatus",
-      data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
-      type: "POST",
-      dataType: "json",
-      success: function (rst) {
-        if (rst.iResult >= 0) {
-          alert("修改成功");
-          $.ajax({
-            url: "/ClassRoom/QueryBookingList",
-            type: this.method,
-            data: { "strClassRoomCode": ClassRoomCode },
-            success: function (msg) {
-              $('#panelBooking').html(msg);
+        $.ajax({
+            url: "/classRoom/DoSaveClassRoom",
+            data: ClassRoomModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("保存成功");
+                    window.location.href = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + rst.strMsg;
+                } else {
+                    alert(rst.strMsg);
+                }
             }
-          });
+
+        });
+
+
+        if ($("#hidDesc").val() != "") {
+
+            var DescModel = {
+                "fID": $("#hidDescID").val(),
+                "fType": "img",
+                "fClassRoomCode": classRoomCode,
+                "fContent": $("#hidDesc").val(),
+                "fOrder": "0"
+            }
+            $.ajax({
+                url: "/classRoom/DoSaveClassRoomDesc",
+                data: DescModel,
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+                    if (rst.iResult >= 0) {
+                        //alert("保存成功");
+
+                    } else {
+                        alert(rst.strMsg);
+                    }
+                }
+
+            });
+
         }
-      }
+    }
 
+
+    //发布等申请（修改状态）
+    function ClassRoomUpdate(status) {
+        var isexec = true;
+        var strNote = "";
+        if (status == "发布") {
+            if ($("#hidCourseNum").val() == 0) {
+                alert("请添加课程章节内容");
+                return;
+            }
+        }
+
+        if (status == "下线") {
+            if ($("#txtDownLoadNote").val() == "") {
+                alert("下线请输入下线原因");
+                return;
+            }
+            strNote = $("#txtDownLoadNote").val();
+            if (!confirm("下线后已购买课程的款项需手动退款，继续下线操作吗？")) {
+                isexec = false;
+            }
+        }
+        if (isexec) {
+            $.ajax({
+                url: "/classRoom/DoUpdateStatus",
+                data: { "strClassRoomCode": classRoomCode, "strStatus": status, "strNote": strNote },
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+                    if (rst.iResult >= 0) {
+                        alert("申请提交成功");
+                        location.reload();
+                    } else {
+                        alert(rst.strMsg)
+                    }
+                }
+
+            });
+        }
+    }
+
+    function ShowDetail(ClassRoomCode) {
+        if ($("#hidCourseNum").val() == 0) {
+            alert("请添加课程章节内容");
+            return;
+        } else {
+            window.location.href = "/ClassRoom/ClassRoomShow?strClassRoomCode=" + ClassRoomCode;
+        }
+    }
+</script>
+<script type="text/javascript">
+
+    function changeType(obj) {
+        if ($(obj).val() == "text") {
+            $("#txtContent").show();
+            $("#fileUploadDesc").hide();
+        } else {
+            $("#fileUploadDesc").show();
+            $("#txtContent").hide();
+        }
+    }
+
+    function AddDesc(descID) {
+        $("#hidDescID").val(0);
+        $("#divDesc").show();
+        $("#btnDescAdd").hide();
+    }
+
+    function DelDesc(descID) {
+
+        $.ajax({
+            url: "/classRoom/DoDelClassRoomDesc",
+            data: { "iDescID": descID },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("保存成功");
+                    window.location.reload();
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+    function UpdateDesc(descID, type, content, order) {
+        $("#hidDescID").val(descID);
+        if (type == "text") {
+            $("#txtContent").val(content);
+        } else {
+            $("#hidDesc").val(content);
+            $("#cmbType").val("img");
+            $("#fileUploadDesc").show();
+            $("#txtContent").hide();
+        }
+        $("#txtDescOrder").val(order);
+        $("#divDesc").show();
+        $("#btnDescAdd").hide();
+    }
+
+    function SaveDesc() {
+        var type = $("#cmbType").val();
+        var content = "";
+
+        if (type == "text") {
+            content = $("#txtContent").val();
+        } else {
+            content = $("#hidDesc").val();
+        }
+
+        if (type == "") {
+            alert("请选择类型");
+            return;
+        } else if (content == "") {
+            alert("内容不能为空");
+            return;
+        }
+
+        var DescModel = {
+            "fID": $("#hidDescID").val(),
+            "fType": type,
+            "fClassRoomCode": classRoomCode,
+            "fContent": content,
+            "fOrder": $("#txtDescOrder").val()
+        }
+        $.ajax({
+            url: "/classRoom/DoSaveClassRoomDesc",
+            data: DescModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("保存成功");
+                    $.ajax({
+                        url: "/ClassRoom/QueryDescList",
+                        type: this.method,
+                        data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
+                        success: function (msg) {
+                            $('#panelDesc').html(msg);
+                        }
+                    });
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+
+    }
+</script>
+<script type="text/javascript">
+
+    function AddCurse(courseID) {
+        $("#hidCourseID").val(0);
+        $("#txtDictTitle").val("");
+        $("#txtCourseTitle").val("");
+        $("#txtCourseDate").val("");
+        $("#txtOrder").val("");
+        $("#txtDateLength").val("");
+        $("#myBGDiv").show();
+        $("#divCourse").show();
+    }
+
+    function DeleteCurse(courseID) {
+        if (confirm("确认删除该节课时吗")) {
+            $.ajax({
+                url: "/ClassRoom/DeleteCourse",
+                type: this.method,
+                data: { "iCourseID": courseID, "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
+                success: function (msg) {
+                    $('#panelCourseEdit').html(msg);
+                    $("#myBGDiv").hide();
+                }
+            });
+        }
+    }
+
+    function UpdateCurse(courseID, dictTitle, courseTitle, date, length, order) {
+        $("#hidCourseID").val(courseID);
+        $("#txtDictTitle").val(dictTitle);
+        $("#txtCourseTitle").val(courseTitle);
+        $("#txtCourseDate").val(date);
+        $("#txtOrder").val(order);
+        $("#txtDateLength").val(length);
+        $("#myBGDiv").show();
+        $("#divCourse").show();
+    }
+
+    function CloseCourse() {
+        $("#myBGDiv").hide();
+        $("#divCourse").hide();
+    }
+
+    function SaveCurse() {
+        var CourseModel = {
+            "fID": $("#hidCourseID").val(),
+            "fClassType": "ClassRoom",
+            "fClassRoomCode": classRoomCode,
+            "fDictTitle": $("#txtDictTitle").val(),
+            "fCourseTitle": $("#txtCourseTitle").val(),
+            "fClassDate": $("#txtCourseDate").val(),
+            "fClassDateLength": $("#txtDateLength").val(),
+            "fOrder": $("#txtOrder").val()
+        }
+        $.ajax({
+            url: "/classRoom/DoSaveClassRoomCourse",
+            data: CourseModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("保存成功");
+                    $("#divCourse").hide();
+                    $("#btnAdd").show();
+                    $("#myBGDiv").hide();
+                    $.ajax({
+                        url: "/ClassRoom/QueryCourseList",
+                        type: this.method,
+                        data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
+                        success: function (msg) {
+                            $('#panelCourseEdit').html(msg);
+                        }
+                    });
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+
+    }
+</script>
+<script type="text/javascript">
+    var ClassRoomCode = "@Model.fClassRoomCode";
+
+    function showPanel(div) {
+        if (div == "info") {
+            $(".reservation-billing-detail").hide();
+            $("#panelData").show();
+        } else if (div == "desc") {
+            $(".reservation-billing-detail").hide();
+            $("#panelDesc").show();
+
+            $.ajax({
+                url: "/ClassRoom/QueryDescList",
+                type: this.method,
+                data: { "strClassRoomCode": ClassRoomCode, "isEdit": "@isEdit" },
+                success: function (msg) {
+                    $('#panelDesc').html(msg);
+                },
+                fail: function (err) {
+                    alert(err)
+                }
+            });
+        } else if (div == "courseEdit") {
+            $(".reservation-billing-detail").hide();
+            $("#panelCourseEdit").show();
+
+
+            $.ajax({
+                url: "/ClassRoom/QueryCourseList",
+                type: this.method,
+                data: { "strClassRoomCode": ClassRoomCode, "isEdit": "@isEdit" },
+                success: function (msg) {
+                    $('#panelCourseEdit').html(msg);
+                }
+            });
+
+        } else if (div == "booking") {
+            $(".reservation-billing-detail").hide();
+            $("#panelBooking").show();
+
+            $.ajax({
+                url: "/ClassRoom/QueryBookingList",
+                type: this.method,
+                data: { "strClassRoomCode": ClassRoomCode },
+                success: function (msg) {
+                    $('#panelBooking').html(msg);
+                }
+            });
+        } else if (div == "course") {
+            $(".reservation-billing-detail").hide();
+            $("#panelCourse").show();
+
+        } else if (div == "private") {
+            $(".reservation-billing-detail").hide();
+            $("#panelPrivate").show();
+
+        } else if (div == "account") {
+            $(".reservation-billing-detail").hide();
+            $("#panelAccount").show();
+
+        } else if (div == "update") {
+            $(".reservation-billing-detail").hide();
+            $("#panelUpdate").show();
+
+        }
+    }
+
+    function GetAllTeacher() {     
+
+        $.getJSON("/ClassRoom/GetTeacherList?strPharse=&strSubject=", function (data) {
+            $("#cmbAllTeacher").append("<option value=''>请选择</option>");
+
+            $.each(data, function (i, item) {
+               
+                    $("<option></option>")
+                              .val(item["fUserName"])
+                              .text(item["MemberName"])
+                              .appendTo($("#cmbAllTeacher"));
+
+                
+            });
+
+        });
+
+    }
+
+    $(document).ready(function () {
+        GetAllTeacher();
     });
-  }
 
+
+    function SaveClassRoomQrInfo() {
+        if ($("#hidQrCode").val() == "") {
+            alert("请上传二维码图片");
+            return;
+        }
+
+        $.ajax({
+            url: "/classRoom/DoSaveClassRoomInfo",
+            data: { "strClassRoomCode": ClassRoomCode, "strType": "fQrCode", "strInfo": $("#hidQrCode").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("修改成功");
+
+                }
+            }
+
+        });
+    }
+    
+    function SaveClassRoomTeacherNameInfo() {
+        if ($("#cmbAllTeacher").val() == "") {
+            alert("请选择授课老师");
+            return;
+        }
+
+        $.ajax({
+            url: "/classRoom/DoSaveClassRoomInfo",
+            data: { "strClassRoomCode": ClassRoomCode, "strType": "fTecharUserName", "strInfo": $("#cmbAllTeacher").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("修改成功");
+
+                }
+            }
+
+        });
+    }
+
+    function UpdatePayStatus(strBookingNo, strStatus) {
+        $.ajax({
+            url: "/classRoom/DoUpdateBookingStatus",
+            data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("修改成功");
+                    $.ajax({
+                        url: "/ClassRoom/QueryBookingList",
+                        type: this.method,
+                        data: { "strClassRoomCode": ClassRoomCode },
+                        success: function (msg) {
+                            $('#panelBooking').html(msg);
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+
+    function DoClassRoomSettlement() {
+        $.ajax({
+            url: "/ClassRoom/DoClassRoomSettlement",
+            type: this.method,
+            data: { "strClassRooomCode": ClassRoomCode },
+            success: function (result) {
+
+                alert(result.strMsg);
+                window.location.reload();
+            }
+        });
+    }
+
+    function UploadDocument(id) {
+        $("#imgUploadDocument-" + id).click();
+    }
+
+    function OpenClassRoom(iCourdeID) {
+        //打开一个不被拦截的新窗口
+        var newWindow = window.open();
+        $.ajax({
+            url: "/Home/OpenClassRoom",
+            data: { "iCourseID": iCourdeID },
+            type: "Post",
+            success: function (rst) {
+
+                if (rst.iResult >= 0) {
+                    //window.open("/Home/Index?iCourseID=" + iCourdeID+"&strRole=Teacher", '_blank').location;
+                    newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
+
+                } else {
+                    newWindow.close();
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
 </script>

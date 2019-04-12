@@ -101,12 +101,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AliSign.cs" />
+    <Compile Include="Code\UserSig.cs" />
     <Compile Include="MediaService.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MediaService.Designer.cs">
       <DependentUpon>MediaService.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\GroupUserStatusModel.cs" />
     <Compile Include="Model\MediaModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
@@ -122,6 +124,10 @@
     <None Include="TiKuService_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TiKuBll\TiKuBll.csproj">
+      <Project>{3280caa8-9ebd-4cdc-a35c-e5f0f3ae635c}</Project>
+      <Name>TiKuBll</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TiKuDal\TiKuDal.csproj">
       <Project>{0A6348FA-38C0-4E46-AD42-B1C739D5A35F}</Project>
       <Name>TiKuDal</Name>

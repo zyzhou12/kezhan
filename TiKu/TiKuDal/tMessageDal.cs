@@ -63,7 +63,7 @@ namespace TiKu.Dal
     public static tMessageEntity GettMessage(int id)
     {
       tMessageEntity rst = null;
-      string strSQL = "SELECT * FROM tMessage WHERE tMessageID=" + id.ToString();
+      string strSQL = "SELECT * FROM tMessage WHERE fID=" + id.ToString();
       DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
       if (dt.Rows.Count > 0)
       {
@@ -73,18 +73,21 @@ namespace TiKu.Dal
       return rst;
     }
 
-    public static List<tMessageEntity> GettMessageList(int id)
+    public static List<tMessageEntity> GettMessageList(string strToUserName,string strStatus)
     {
       StringBuilder bufSQL = new StringBuilder();
       List<DbParameter> lstParam = new List<DbParameter>();
 
       bufSQL.Append("SELECT * FROM tMessage WHERE (1=1) ");
 
-      if (id > 0)
-      {
-        bufSQL.Append(" AND tMessageID=@id ");
-        lstParam.Add(new DBParam("@id", id));
-      }
+    
+        bufSQL.Append(" AND fToUser=@User ");
+        lstParam.Add(new DBParam("@User", strToUserName));
+        if (!string.IsNullOrEmpty(strStatus))
+        {
+            bufSQL.Append(" AND fStatus=@Status ");
+            lstParam.Add(new DBParam("@Status", strStatus));
+        }
 
       //防止返回数据过多
       if (lstParam.Count <= 0) throw new Exception("没有查询条件");

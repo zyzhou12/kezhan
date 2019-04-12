@@ -1,0 +1,72 @@
+﻿@model TiKuBll.Model.UserBankAccountListModel
+@{
+    ViewBag.Title = "UserBankManager";
+}
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+
+        <div class="reservation-page">
+
+
+            <div class="row">
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+                       
+
+                        <div class="reservation-billing-detail">
+
+                            <div id="comments">
+                                <ul class="commentlist">
+                                    @if (Model.accountList != null && Model.accountList.Count > 0)
+                                    {
+                                        foreach (var b in Model.accountList)
+                                        {
+                                            <li>
+                                                <div class="comment-body">
+                                                 
+                                                    <h4 class="comment-subject">
+                                                        别名：<a href="#">@b.fName</a>
+                                                    </h4>
+                                                    <p>
+                                                        <a href="#">账户名称:@b.fAccountName</a>
+                                                        <a href="#">账号:@b.fAccountNo</a>
+                                                    </p>
+                                                    <span class="comment-meta">
+                                                        开户行：@b.fOpenBank
+                                                        <br />
+                                                        创建时间：@b.fCreateDate.ToString()
+
+                                                    </span>
+                                                    <div class="action">
+                                                        <a href="/User/UserBankEdit?iBankId=@b.fID" class="awe-btn awe-btn-14">修改</a>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <spa>没有银行账户</spa>
+                                    }
+                                    <a href="/User/UserBankEdit?iBankId=0" class="awe-btn awe-btn-14">新增</a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- END / SUB BANNER -->

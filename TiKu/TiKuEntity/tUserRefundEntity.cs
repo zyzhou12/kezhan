@@ -9,6 +9,7 @@ namespace TiKu.Entity
   {
     public System.Int32 fID { get; set; }
     public System.String fOrderNo { get; set; }
+    public System.String fBookingNo { get; set; }
     public System.String fUserName { get; set; }
     public System.Decimal fApplyAmount { get; set; }
     public System.String fApplyRemark { get; set; }

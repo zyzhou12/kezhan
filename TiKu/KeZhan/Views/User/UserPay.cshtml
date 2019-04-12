@@ -1,248 +1,336 @@
-﻿@model TiKuBll.Model.UserInfoModel
+﻿@model KeZhan.Models.UserPayModel
 @{
-  ViewBag.Title = "课站";
+    ViewBag.Title = "课站";
 }
 
 <section class="section-reservation-page bg-white">
 
-            <div class="container">
-                <div class="reservation-page">
-                    
-                    <!-- STEP -->
-                    <div class="reservation_step">
-                       
+    <div class="container">
+        <div class="reservation-page">
 
-                    </div>
-                    <!-- END / STEP -->
+            <!-- STEP -->
+            <div class="reservation_step">
 
-                    <div class="row">
 
-                        <!-- SIDEBAR -->
-                        <div class="col-md-4 col-lg-3">
+            </div>
+            <!-- END / STEP -->
 
-                            
+            <div class="row">
 
-                        </div>
-                        <!-- END / SIDEBAR -->
-                        
-                        <!-- CONTENT -->
-                        <div class="col-md-8 col-lg-9">
-                            <div class="reservation_content">                                
-                                <div class="reservation-billing-detail">
+                <!-- SIDEBAR -->
+                <div class="col-md-4 col-lg-3">
 
-                                  
-                                
-                              @*  <div class="reservation-chosen-message bg-gray text-center">
+
+
+                </div>
+                <!-- END / SIDEBAR -->
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+                    <div class="reservation_content">
+                        <div class="reservation-billing-detail">
+
+
+
+                            @*  <div class="reservation-chosen-message bg-gray text-center">
                                     <h4>在线充值 </h4>
                                     <p>充值金额不退?</p>
                                     <a href="#" class="awe-btn awe-btn-6">GO NEXT STEP</a>
                                 </div>*@
 
-                                   
-                                   <div class="reservation-chosen-message bg-gray text-center">
-                                    <h4>充值金额 </h4>
-                                    
-                                    <p>充值金额不退?</p>
-                                    <button class="awe-btn awe-btn-4" style=" color:Blue;" onclick="ChooseAmount(this,10)">10</button>
-                                    <button class="awe-btn awe-btn-4" style=" color:Blue;" onclick="ChooseAmount(this,20)">20</button>
-                                    <button class="awe-btn awe-btn-4" onclick="ChooseAmount(this,50)">50</button>
-                                    <button class="awe-btn awe-btn-4" onclick="ChooseAmount(this,100)">100</button>
-                                    <button class="awe-btn awe-btn-4" onclick="ChooseAmount(this,200)">200</button>
-                                    <button class="awe-btn awe-btn-4" onclick="ChooseAmount(this,300)">300</button>
-                                    <button class="awe-btn awe-btn-4" onclick="InputAmount(this)">自定义</button>
-                                    
-                                     <input type="number" style=" display:none" id="hidAmount" value="" placeholder="请输入充值金额" class="input-text" />
-                                   </div>
 
+                            <div class="bg-gray text-center">
+                                <h4>流量购买 </h4>
 
-                                    <label>支付方式</label>
-                                       <ul class="option-bank">                                
+                                <p>
+                                    提示：充值金额低于20元不退！主要用于不定时
+                                    长的在线辅导或资料下载、视频观看等，请充值
+                                    合适的金额?
+                                </p>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10)">10分钟<br />￥ @Convert.ToString(Model.ClassFee * 10)</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,30)">30分钟<br />￥ @Convert.ToString(Model.ClassFee * 30)</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,45)">45分钟<br />￥ @Convert.ToString(Model.ClassFee * 45)</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,100)">100分钟<br />￥ @Convert.ToString(Model.ClassFee * 100)</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,1000)">1000分钟<br />￥ @Convert.ToString(Model.ClassFee * 1000)</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10000)">10000分钟<br />￥ @Convert.ToString(Model.ClassFee * 10000)</button>
+                                <button class="awe-btn awe-btn-2" onclick="InputAmount(this)">自定义 <br />每分钟￥ @Model.ClassFee</button>
 
-                                        <li id="liAli">
-                                            <label class="label-radio">
-                                                <input type="radio" class="input-radio" name="rPayType" value="alipay" >
-                                                支付宝
-                                            </label>
-                                            
-                                           @* <img src="../../Content/images/icon-card.jpg" alt="">*@
-                                        </li>
-                                          <li>
-                                            <label class="label-radio">
-                                                <input type="radio" class="input-radio"  name="rPayType" value="weixinpay" >
-                                                微信
-                                            </label>
-                                            
-                                           @* <img src="../../Content/images/icon-card.jpg" alt="">*@
-                                        </li>
-                                    </ul>
-                                      <img id="imgQrCode" style=" display:none;" src="" />
-                                      <div id="divQrCode" style=" display:none;"  >
-                                      
-                                      </div>
-                                    <button class="awe-btn awe-btn-13" onclick="UserPay()">支付</button>
-                                   
-                                </div>
-
+                                <input type="number" style=" display:none" id="hidAmount" value="" placeholder="请输入购买分钟数" class="input-text" />
                             </div>
 
+
+                            <label>支付方式</label>
+                            <ul class="option-bank">
+
+                                <li id="liAli">
+                                    <label class="label-radio">
+                                        <input type="radio" class="input-radio" name="rPayType" value="alipay">
+                                        支付宝
+                                    </label>
+
+                                    @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                </li>
+                                <li>
+                                    <label class="label-radio">
+                                        <input type="radio" class="input-radio" name="rPayType" value="weixinpay">
+                                        微信
+                                    </label>
+
+                                    @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                </li>
+                                <li>
+                                    <label class="label-radio">
+                                        <input type="radio" class="input-radio" name="rPayType" value="accountpay">
+                                        账号余额
+                                    </label>
+
+                                    @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                </li>
+                            </ul>
+
+                            <div id="divQrCode" style=" display:none;">
+
+                            </div>
+                            <button class="awe-btn awe-btn-13" onclick="UserPay()">支付</button>
+
                         </div>
-                        <!-- END / CONTENT -->
-                        
+
                     </div>
+
                 </div>
+                <!-- END / CONTENT -->
+
             </div>
+        </div>
+    </div>
 
-        </section>
-
-
-        <script type="text/javascript">
-          var username = "@Model.fUserName";
+</section>
 
 
-          $(document).ready(function () {
-            if (is_weixn()) {
-              $("#liAli").hide();
-            }
-          })
 
-          function ChooseAmount(obj, iAmount) {
-            $(".awe-btn").removeClass("awe-btn-11");
-            $(obj).addClass("awe-btn-11");
-            $("#hidAmount").hide();
-            $("#hidAmount").val(iAmount);
-          }
 
-          function InputAmount(obj) {
-            $(".awe-btn").removeClass("awe-btn-11");
-            $(obj).addClass("awe-btn-11");
+<div id="divPayCode" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
+    <h1>
+        微信扫码支付
+    </h1>
 
-            $("#hidAmount").show();
-            $("#hidAmount").val("");
-          }
+    <p>
+        <img id="imgQrCode" src="" />
 
-          function UserPay() {
+    </p>
+    <button class="awe-btn awe-btn-13" onclick="ClosePayCode()">支付完成</button>
 
-            if (IsPC()) {
-              PCPay();
+
+    <a class="close-reveal-modal" onclick="ClosePayCode()">&#215;</a>
+</div>
+
+
+<script type="text/javascript">
+    var username = "@Model.UserName";
+    var classfee = "@Model.ClassFee";
+
+    $(document).ready(function () {
+        if (is_weixn()) {
+            $("#liAli").hide();
+        }
+    })
+
+    function ChooseAmount(obj, iAmount) {
+        $(".awe-btn").removeClass("awe-btn-8");
+        $(obj).addClass("awe-btn-8");
+        $("#hidAmount").hide();
+        $("#hidAmount").val(iAmount);
+    }
+
+    function InputAmount(obj) {
+        $(".awe-btn").removeClass("awe-btn-8");
+        $(obj).addClass("awe-btn-8");
+
+        $("#hidAmount").show();
+        $("#hidAmount").val("");
+    }
+
+    function UserPay() {
+
+        $.ajax({
+            url: "/user/SubmitBuyFlowOrder",
+            data: { "iNum": $("#hidAmount").val(), "dPrice": classfee },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst != "") {
+
+                    var payType = $("input[name='rPayType']:checked").val();
+
+                    if (payType == "accountpay") {
+                        AiZhuPay(rst);//账号余额支付
+                    }else{
+                        if (IsPC()) {
+                            PCPay(rst);
+                        } else {
+                            if (is_weixn()) {
+                                WXPay(rst)
+                            } else {
+                                WapPay(rst);
+                            }
+                        }
+                }
             } else {
-               // if (is_weixn()) {
+                    alert(rst.strMsg);
+    }
+    }
 
-              //  } else {
-                  WapPay();
-               // }
-            }           
-          }
+    });
 
-          function PCPay()
-          {
-            var fee = $("#hidAmount").val();
-            var payType = $("input[name='rPayType']:checked").val();
-            if (payType == "weixinpay") {
-              $.ajax({
+
+    }
+
+    function PCPay(bookingNo) {
+        var fee = parseFloat($("#hidAmount").val()) * parseFloat(classfee);
+
+        var payType = $("input[name='rPayType']:checked").val();
+
+        if (payType == "weixinpay") {
+            $.ajax({
                 url: "/weixinpay/UserPay",
-                data: { "strUserName": username, "strBookingNo": null, "strFee": fee },
+                data: { "strUserName": username, "strType": "BuyFlow", "strBookingNo": bookingNo, "strFee": fee },
                 type: "POST",
                 dataType: "json",
                 success: function (rst) {
-                  if (rst.iResult >= 0) {
-                    $("#imgQrCode").attr("src", "http://qr.liantu.com/api.php?text=" + rst.strMsg);
-                    $("#imgQrCode").show();
-                  } else {
-                    alert(rst.strMsg);
-                  }
+                    if (rst.iResult >= 0) {
+                        $("#imgQrCode").attr("src", "http://qr.liantu.com/api.php?text=" + rst.strMsg);
+                        $("#myBGDiv").show();
+                        $("#divPayCode").show();
+                    } else {
+                        alert(rst.strMsg);
+                    }
                 }
 
-              });
-            } else {
-              $.ajax({
+            });
+        } else if (payType == "alipay") {
+            $.ajax({
                 url: "/alipay/UserPay",
-                data: { "strUserName": username, "strBookingNo": null, "strFee": fee },
+                data: { "strUserName": username, "strType": "BuyFlow", "strBookingNo": bookingNo, "strFee": fee },
                 type: "POST",
                 dataType: "json",
                 success: function (rst) {
 
-                  if (rst.iResult >= 0) {
-                    $("#divQrCode").html(rst.strMsg);
-                    $("#divQrCode").show();
-                  } else {
-                    alert(rst.strMsg);
-                  }
+                    if (rst.iResult >= 0) {
+                        $("#divQrCode").html(rst.strMsg);
+                        $("#divQrCode").show();
+                    } else {
+                        alert(rst.strMsg);
+                    }
                 }
 
-              });
+            });
+        } else {
+            alert("账号支付暂未开通");
+        }
+    }
+
+    function WXPay(bookingNo) {
+        var fee = parseFloat($("#hidAmount").val()) * parseFloat(classfee);
+
+        $.ajax({
+            url: "/weixinpay/UserWeiXinPay",
+            data: { "openid": "", "strUserName": username, "strType": "BuyFlow", "strBookingNo": bookingNo, "strFee": fee },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', {
+                    "appId": rst.appId,     //公众号名称，由商户传入
+                    "timeStamp": rst.timeStamp,         //时间戳，自1970年以来的秒数
+                    "nonceStr": rst.nonceStr, //随机串
+                    "package": rst.packageValue,
+                    "signType": "MD5",         //微信签名方式:
+                    "paySign": rst.paySign //微信签名
+                },
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        setTimeout(window.location.reload(), 1000);
+                    } else {
+                        // alert(res.err_msg);
+                        $("#getBrandWCPayRequest").attr("disabled", false)
+                        $("#getBrandWCPayRequest").val("支付");
+                    }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+
+                }
+               );
             }
-          }
 
-          function WXPay() {
-            var fee = $("#hidAmount").val();
+        });
 
-              $.ajax({
-                url: "/weixinpay/UserPay",
-                data: { "strUserName": username, "strBookingNo": null, "strFee": fee },
-                type: "POST",
-                dataType: "json",
-                success: function (rst) {
-                   WeixinJSBridge.invoke(
-                   'getBrandWCPayRequest', {
-                     "appId": rst.appId,     //公众号名称，由商户传入     
-                     "timeStamp": rst.timeStamp,         //时间戳，自1970年以来的秒数     
-                     "nonceStr": rst.nonceStr, //随机串     
-                     "package": rst.packageValue,
-                     "signType": "MD5",         //微信签名方式:     
-                     "paySign": rst.paySign //微信签名 
-                   },
-                   function (res) {
-                     if (res.err_msg == "get_brand_wcpay_request:ok") {
-                       setTimeout(window.location.reload(),1000);
-                     } else {
-                       // alert(res.err_msg);
-                       $("#getBrandWCPayRequest").attr("disabled", false)
-                       $("#getBrandWCPayRequest").val("支付");
-                     }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+    }
 
-                   }
-                  );
-                }
-
-              });
-            
-          }
-
-          function WapPay() {
-            var fee = $("#hidAmount").val();
-            var payType = $("input[name='rPayType']:checked").val();
-            if (payType == "weixinpay") {
-              $.ajax({
+    function WapPay(bookingNo) {
+        var fee = parseFloat($("#hidAmount").val()) * parseFloat(classfee);
+        var payType = $("input[name='rPayType']:checked").val();
+        if (payType == "weixinpay") {
+            $.ajax({
                 url: "/weixinpay/UserWapPay",
-                data: { "strUserName": username, "strBookingNo": null, "strFee": fee },
+                data: { "strUserName": username, "strType": "BuyFlow", "strBookingNo": bookingNo, "strFee": fee },
                 type: "POST",
                 dataType: "json",
                 success: function (rst) {
-                  if (rst.iResult >= 0) {
-                    window.location.href = rst.strMsg;
-                  } else {
-                    alert(rst.strMsg);
-                  }
+                    if (rst.iResult >= 0) {
+                        window.location.href = rst.strMsg;
+                    } else {
+                        alert(rst.strMsg);
+                    }
                 }
 
-                            });
-            } else {
-              $.ajax({
+            });
+        } else if (payType == "alipay") {
+            $.ajax({
                 url: "/alipay/UserWapPay",
-                data: { "strUserName": username, "strBookingNo": null, "strFee": fee },
+                data: { "strUserName": username, "strType": "BuyFlow", "strBookingNo": bookingNo, "strFee": fee },
                 type: "POST",
                 dataType: "json",
                 success: function (rst) {
 
-                  if (rst.iResult >= 0) {
-                    $("#divQrCode").html(rst.strMsg);
-                    $("#divQrCode").show();
-                  } else {
-                    alert(rst.strMsg);
-                  }
+                    if (rst.iResult >= 0) {
+                        $("#divQrCode").html(rst.strMsg);
+                        $("#divQrCode").show();
+                    } else {
+                        alert(rst.strMsg);
+                    }
                 }
 
-              });
+            });
+        } else {
+            alert("账号支付暂未开通");
+        }
+    }
+
+    function AiZhuPay(bookingNo) {
+        var tradePass = "";
+        tradePass = prompt("请输入交易密码")
+        if (tradePass == "") {
+            alert("请输入交易密码");
+            return;
+        }
+
+        $.ajax({
+            url: "/AiZhuPay/BookingPay",
+            data: { "strBookingType": "Flow", "strBookingNo": bookingNo, "strTradePass": tradePass },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("支付成功");
+                    window.location.reload();
+                } else {
+                    alert(rst.strMsg);
+                }
             }
-          }
-        </script>
+
+        });
+    }
+
+
+    function ClosePayCode() {
+        $("#myBGDiv").hide();
+        $("#divPayCode").hide();
+    }
+</script>

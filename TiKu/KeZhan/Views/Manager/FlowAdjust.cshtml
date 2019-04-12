@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "FlowAdjust";
+}
+
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail" id="panelData">
+
+
+                            <h4>流量赠送</h4>
+
+
+                            <label>手机号<sup>*</sup></label>
+                            <input type="text" id="txtMobile" value="" class="input-text">
+                            <label>赠送流量<sup>*</sup></label>
+                            <input type="number" id="txtFlow" value="" class="input-text">
+                            <label>有效期<sup>*</sup></label>
+                            
+                            @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtEffect", date = "2099-01-01", datePlaceholder = "有效期" })
+                            <label>备注<sup>*</sup></label>
+                            <input type="text" id="txtNote" value="" class="input-text">
+
+                            <button class="awe-btn awe-btn-13" onclick="DoFlowAdjust()">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script type="text/javascript">
+    function DoFlowAdjust() {
+        if ($("#txtMobile").val() == "") {
+            alert("请输入手机号");
+            return;
+        } else if ($("#txtFlow").val() == "") {
+            alert("请输入流量");
+            return;
+        } else if ($("#txtEffect").val() == "") {
+            alert("请输入有效期");
+            return;
+        } else if ($("#txtNote").val() == "") {
+            alert("请输入备注");
+            return;
+        }
+
+        $.ajax({
+            url: "/Manager/DoFlowAdjust",
+            data: { "strMobile": $("#txtMobile").val(), "iFlow": $("#txtFlow").val(), "effectDate": $("#txtEffect").val(), "strNote": $("#txtNote").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    self.location = document.referrer;
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

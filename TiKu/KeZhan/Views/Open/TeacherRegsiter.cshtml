@@ -14,7 +14,7 @@
                         
 
                             <div class="field-form">
-                                <input type="text" class="field-text" id="txtMobile"  onkeyup="inputMobile(this)" placeholder="请输入手机号" />
+                                <input type="text" class="field-text" id="txtNewMobile"  onkeyup="inputMobile(this)" placeholder="请输入手机号" />
                             </div>
                             <div class="field-form" style=" margin-top:1px;">
                                 <span class="account-desc" style=" margin-top:1px;" >
@@ -38,8 +38,8 @@
                                    
                                   <span class="account-desc" id="bTeacherDesc" >
                                       
-                                      <input type="checkbox" id="chkReg" /><a href="/open/KeZhanDesc" >&nbsp;&nbsp;课站平台服务协议</a>
-                                     <input type="checkbox" id="chkTea" /><a href="/open/KeZhanTeachDesc" >&nbsp;&nbsp;课站平台教师服务协议</a>
+                                      <input type="checkbox" id="chkReg" /><a href="/open/KeZhanDesc" target="_blank">&nbsp;&nbsp;课站平台服务协议</a>
+                                     <input type="checkbox" id="chkTea" /><a href="/open/KeZhanTeachDesc" target="_blank">&nbsp;&nbsp;课站平台教师服务协议</a>
                                   </span>
                                   
                             </div>
@@ -136,13 +136,13 @@
   function DoSendCode() {
     var reg = /^0?1[3|4|5|7|8][0-9]\d{8}$/;
 
-    if ($("#txtMobile").val() == "") {
+    if ($("#txtNewMobile").val() == "") {
       alert("请输入联系手机");
-      $("#txtMobile").focus();
+      $("#txtNewMobile").focus();
       return;
-    } else if (!reg.test($("#txtMobile").val())) {
+    } else if (!reg.test($("#txtNewMobile").val())) {
       alert("手机号格式错误，请重新输入");
-      $("#txtMobile").focus();
+      $("#txtNewMobile").focus();
       return;
     }
 
@@ -155,7 +155,7 @@
 
     $.ajax({
       url: "/open/DoSendCode",
-      data: { "strMobile": $("#txtMobile").val() },
+      data: { "strMobile": $("#txtNewMobile").val() },
       type: "POST",
       dataType: "json",
       success: function (rst) {
@@ -201,7 +201,7 @@
 
     $.ajax({
       url: "/open/DoTeacherValidCode",
-      data: { "strMobile": $("#txtMobile").val(), "strCode": $("#txtCode").val(), "strPass": $("#txtPass").val(), "strPass2": $("#txtPass2").val() },
+      data: { "strMobile": $("#txtNewMobile").val(), "strCode": $("#txtCode").val(), "strPass": $("#txtPass").val(), "strPass2": $("#txtPass2").val() },
       type: "POST",
       dataType: "json",
       success: function (rst) {

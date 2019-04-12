@@ -170,29 +170,36 @@ namespace KeZhan.Controllers
 
 
         [HttpPost]
-        public JsonResult UserPay(string strUserName, string strBookingNo, string strFee)
+        public JsonResult UserPay(string strUserName, string strType, string strBookingNo, string strFee)
         {
-            string sp_billno = UserBll.UserPay(strUserName, "weixinpay", strBookingNo, Convert.ToDecimal(strFee)*100, "web");
+            string sp_billno = UserBll.UserPay(strUserName, "weixinpay",strType, strBookingNo, Convert.ToDecimal(strFee), "web");
 
             ResponseBaseModel response = new ResponseBaseModel();
             response.iResult = 0;
-            response.strMsg = GetUnifiedOrder("NATIVE", sp_billno, "充值", Convert.ToDecimal(strFee) * 100);
+            response.strMsg = GetUnifiedOrder("NATIVE", sp_billno, strType, Convert.ToDecimal(strFee) * 100);
 
             JsonResult jr = new JsonResult();
             jr.Data = response;
             return jr;
         }
+        [HttpPost]
+        public JsonResult UserWeiXinPay(string openid, string strUserName, string strType, string strBookingNo, string strFee)
+        {
+            string sp_billno = UserBll.UserPay(strUserName, "weixinpay", strType, strBookingNo, Convert.ToDecimal(strFee), "web");
 
+
+            return GetJSUnifiedOrder(openid, "NATIVE", sp_billno, strType, Convert.ToInt32(Convert.ToDecimal(strFee) * 100));
+        }
        
 
         [HttpPost]
-        public JsonResult UserWapPay(string strUserName, string strBookingNo, string strFee)
+        public JsonResult UserWapPay(string strUserName, string strType, string strBookingNo, string strFee)
         {
-            string sp_billno = UserBll.UserPay(strUserName, "weixinpay", strBookingNo, Convert.ToDecimal(strFee) * 100, "web");
+            string sp_billno = UserBll.UserPay(strUserName, "weixinpay",strType, strBookingNo, Convert.ToDecimal(strFee), "web");
 
             ResponseBaseModel response = new ResponseBaseModel();
             response.iResult = 0;
-            response.strMsg = GetUnifiedOrder("MWEB", sp_billno, "充值", Convert.ToDecimal(strFee) * 100);
+            response.strMsg = GetUnifiedOrder("MWEB", sp_billno, strType, Convert.ToDecimal(strFee) * 100);
 
             JsonResult jr = new JsonResult();
             jr.Data = response;
@@ -207,10 +214,10 @@ namespace KeZhan.Controllers
         /// <param name="strBody"></param>
         /// <param name="strFee"></param>
         /// <returns></returns>
-        public JsonResult GetJSUnifiedOrder(string openid, string strUserName, string strBody, int strFee)
+        public JsonResult GetJSUnifiedOrder(string openid, string strUserName,string strType, string strBody, int strFee)
         {
 
-            string sp_billno = UserBll.UserPay(strUserName, "weixinpay", null, strFee, "web");
+            string sp_billno = UserBll.UserPay(strUserName, "weixinpay", strType, null, strFee, "web");
 
             TenPayModel model = new TenPayModel();
             JsonResult rst = new JsonResult();
@@ -590,111 +597,98 @@ namespace KeZhan.Controllers
         /// <param name="totalfee"></param>
         /// <param name="refundfee"></param>
         /// <returns></returns>
-        //public string RefundAmount(string ordertype, string transactionid, string outtradeno, string outrefundno, string totalfee, string refundfee)
-        //{
+        public string RefundAmount(string outtradeno, string outrefundno, int totalfee, int refundfee)
+        {
 
-        //  string resp = string.Empty;
-        //  try
-        //  {
-        //    tWeiXinPayAccountEntity pay = new tWeiXinPayAccountEntity();
-        //    if (ordertype == "HotelLife")
-        //    {
-        //      pay = tWeiXinPayAccountDal.GettWeiXinPayAccountByHotelLifeOrderNo(outtradeno);
-        //    }
-        //    else if (ordertype == "HotelDinner")
-        //    {
-        //      // pay = tWeiXinPayAccountDal.GettWeiXinPayAccountByHotelDinnerOrderNo(outtradeno);
-        //      pay = tWeiXinPayAccountDal.GettWeiXinPayAccountByPublicID("wx75004136ad050a9f");
-        //    }
-        //    string appId = pay.fAppID;
-        //    string appsecret = pay.fAppSecret;
+            string resp = string.Empty;
+            try
+            {
+
+                string appId = "wx28414d6c37dde33b";
+            
 
 
-        //    if (pay == null)
-        //    {
-        //      Response.Write("找不到酒店微信账号");
-        //    }
-
-
-        //    //当前时间 yyyyMMdd
-        //    string date = DateTime.Now.ToString("yyyyMMdd");
+                //当前时间 yyyyMMdd
+                string date = DateTime.Now.ToString("yyyyMMdd");
 
 
 
-        //    //创建支付应答对象
-        //    var packageReqHandler = new RequestHandler(HttpContext);
-        //    //初始化
-        //    packageReqHandler.init();
+                //创建支付应答对象
+                var packageReqHandler = new RequestHandler(HttpContext);
+                //初始化
+                packageReqHandler.init();
 
-        //    string nonceStr = TenpayUtil.getNoncestr();
-
-
-
-        //    //设置package订单参数
-        //    //获取package包
-
-        //    packageReqHandler.setParameter("appid", appId);
-        //    packageReqHandler.setParameter("mch_id", pay.fWeiXinMCHID);
-        //    packageReqHandler.setParameter("device_info", Request.UserHostAddress);//终端设备号
-        //    packageReqHandler.setParameter("nonce_str", nonceStr.ToLower());
-        //    packageReqHandler.setParameter("transaction_id", transactionid);//微信订单号
-        //    packageReqHandler.setParameter("out_trade_no", outtradeno);//商户订单号
-        //    packageReqHandler.setParameter("out_refund_no", outrefundno);//商户退款订单号
-        //    packageReqHandler.setParameter("total_fee", totalfee); //总金额,以分为单位(money * 100).ToString()
-        //    packageReqHandler.setParameter("refund_fee", refundfee); //退款金额,以分为单位(money * 100).ToString()
-        //    packageReqHandler.setParameter("op_user_id", pay.fWeiXinMCHID); //操作员
-
-        //    string sign = packageReqHandler.CreateMd5Sign("key", pay.fWeiXinAppKey);
-        //    packageReqHandler.setParameter("sign", sign);
-        //    string data = "";
-
-        //    data = packageReqHandler.parseXML();
-        //    string url = "https://api.mch.weixin.qq.com/secapi/pay/refund";
-        //    string password = pay.fWeiXinMCHID;
-
-        //    ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
-
-
-        //    X509Certificate2 cer = new X509Certificate2(pay.fCertUrl, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
-        //    HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
-        //    webrequest.ClientCertificates.Add(cer);
-        //    webrequest.Method = "post";
-
-        //    Stream requestStream = webrequest.GetRequestStream();
-        //    requestStream.Write(Encoding.GetEncoding("UTF-8").GetBytes(data), 0, data.Length);
-        //    requestStream.Close();
-
-        //    HttpWebResponse webreponse = (HttpWebResponse)webrequest.GetResponse();
-        //    requestStream = webreponse.GetResponseStream();
-        //    using (StreamReader reader = new StreamReader(requestStream))
-        //    {
-        //      resp = reader.ReadToEnd();
-        //    }
-        //  }
-        //  catch (Exception ex)
-        //  {
-        //    resp = ex.Message;
-        //  }
-
-        //  return resp;
-
-        //  //<xml>
-        //  //<return_code><![CDATA[SUCCESS]]></return_code> 
-        //  //<return_msg><![CDATA[OK]]></return_msg>
-        //  //<appid><![CDATA[wx67d892b056103f43]]></appid>
-        //  //<mch_id><![CDATA[1270015901]]></mch_id> 
-        //  //<nonce_str><![CDATA[uM7ST4BDUaL57g46]]></nonce_str> 
-        //  //<sign><![CDATA[089E52099C453CD3E1358AB3C37D528E]]></sign> 
-        //  //<result_code><![CDATA[SUCCESS]]></result_code>
-        //  //<transaction_id><![CDATA[1003640943201512162118664995]]></transaction_id> 
-        //  //<out_trade_no><![CDATA[820151216161142]]></out_trade_no> 
-        //  //<out_refund_no><![CDATA[8201512161
-
-        //  //string prepayXml = HttpUtil.Send(data, "https://api.mch.weixin.qq.com/secapi/pay/refund");
+                string nonceStr = TenpayUtil.getNoncestr();
 
 
 
-        //}
+                //设置package订单参数
+                //获取package包
+
+                packageReqHandler.setParameter("appid", appId);
+                packageReqHandler.setParameter("mch_id", mchid);
+                packageReqHandler.setParameter("device_info", Request.UserHostAddress);//终端设备号
+                packageReqHandler.setParameter("nonce_str", nonceStr.ToLower());
+               // packageReqHandler.setParameter("transaction_id", transactionid);//微信订单号
+                packageReqHandler.setParameter("out_trade_no", outtradeno);//商户订单号
+                packageReqHandler.setParameter("out_refund_no", outrefundno);//商户退款订单号
+                packageReqHandler.setParameter("total_fee", totalfee.ToString()); //总金额,以分为单位(money * 100).ToString()
+                packageReqHandler.setParameter("refund_fee", refundfee.ToString()); //退款金额,以分为单位(money * 100).ToString()
+                packageReqHandler.setParameter("op_user_id", mchid); //操作员
+
+                string sign = packageReqHandler.CreateMd5Sign("key", "4C891C0C71DE4DDC9953F3197C5CA91F");
+                packageReqHandler.setParameter("sign", sign);
+                string data = "";
+
+                data = packageReqHandler.parseXML();
+                string url = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+                string password = mchid;
+
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
+
+
+                X509Certificate2 cer = new X509Certificate2("D:\\GuoBin\\Ebooking\\Cert\\YY00001apiclient_cert.p12", password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+                HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
+                webrequest.ClientCertificates.Add(cer);
+                webrequest.Method = "post";
+
+                Stream requestStream = webrequest.GetRequestStream();
+                requestStream.Write(Encoding.GetEncoding("UTF-8").GetBytes(data), 0, data.Length);
+                requestStream.Close();
+
+                HttpWebResponse webreponse = (HttpWebResponse)webrequest.GetResponse();
+                requestStream = webreponse.GetResponseStream();
+                using (StreamReader reader = new StreamReader(requestStream))
+                {
+                    resp = reader.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                resp = ex.Message;
+            }
+
+            WriteFile("Error.txt", resp + "\r\n----------------------------------------\r\n");
+        
+            return resp;
+
+            //<xml>
+            //<return_code><![CDATA[SUCCESS]]></return_code> 
+            //<return_msg><![CDATA[OK]]></return_msg>
+            //<appid><![CDATA[wx67d892b056103f43]]></appid>
+            //<mch_id><![CDATA[1270015901]]></mch_id> 
+            //<nonce_str><![CDATA[uM7ST4BDUaL57g46]]></nonce_str> 
+            //<sign><![CDATA[089E52099C453CD3E1358AB3C37D528E]]></sign> 
+            //<result_code><![CDATA[SUCCESS]]></result_code>
+            //<transaction_id><![CDATA[1003640943201512162118664995]]></transaction_id> 
+            //<out_trade_no><![CDATA[820151216161142]]></out_trade_no> 
+            //<out_refund_no><![CDATA[8201512161
+
+            //string prepayXml = HttpUtil.Send(data, "https://api.mch.weixin.qq.com/secapi/pay/refund");
+
+
+
+        }
 
 
         private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)

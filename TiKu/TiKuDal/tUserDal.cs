@@ -75,6 +75,22 @@ namespace TiKu.Dal
       return rst;
     }
 
+
+    public static tUserEntity GettUserByMobile(string strMobile)
+    {
+        tUserEntity rst = null;
+        List<DbParameter> lstParam = new List<DbParameter>();
+        string strSQL = "SELECT * FROM tUser WHERE fMobile=@Mobile";
+        lstParam.Add(new DBParam("@Mobile", strMobile));
+        DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
+        if (dt.Rows.Count > 0)
+        {
+            rst = new tUserEntity();
+            Trip8H.Common.PubFun.DataRowToObject(dt.Rows[0], rst);
+        }
+        return rst;
+    }
+
     public static List<tUserEntity> GettUserList(int id)
     {
       StringBuilder bufSQL = new StringBuilder();

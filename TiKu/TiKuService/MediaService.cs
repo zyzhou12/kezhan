@@ -16,6 +16,9 @@ using TiKuService.Model;
 using System.Web.Script.Serialization;
 using TiKu.Entity;
 using TiKu.Dal;
+using TiKuBll;
+using TiKuBll.Model;
+using TiKuService.Code;
 
 namespace TiKuService
 {
@@ -71,8 +74,8 @@ namespace TiKuService
 
           // xyk meet hz sy sxgg
           string connstr, connbasestr, strSql;
-          connstr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=tiku;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
-          connbasestr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=tiku;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
+          connstr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan2;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
+          connbasestr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan2;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
 
 
           SqlConnection conn;
@@ -128,7 +131,72 @@ namespace TiKuService
 
             }
           }
+          strSql = @"select b.* from tbooking b
+                        left join tClassRoom r on r.fClassRoomCode=b.fTypeCode
+                        where b.fType='ClassRoom' and b.fStatus='提交' and r.fPayType='在线支付' and b.fCreateDate<dateadd(mi,-30,getdate())";
+          daSMS = new SqlDataAdapter(strSql, conn);
+          dsSms = new DataSet();
 
+          daSMS.Fill(dsSms);
+
+
+          if (dsSms.Tables[0].Rows.Count > 0)
+          {
+              for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
+              {
+                  string bookingNo = dsSms.Tables[0].Rows[i]["fBookingNo"].ToString();
+                  try
+                  {
+
+                      SaveLog("The UpdateBookingStatus is Begin" + DateTime.Now.ToString() + "\t" + bookingNo);
+                      UpdateBookingStatus(bookingNo);
+
+
+                      SaveLog("The UpdateBookingStatus is end\t" + DateTime.Now.ToString() + "\t" + bookingNo);
+
+                  }
+                  catch (Exception ex)
+                  {
+                      SaveLog("The  UpdateBookingStatus Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+                  }
+
+
+              }
+          }
+
+            //获取群成员状态
+          strSql = @"select u.fGroupID,count(*) from tgroupuserinfo u
+                        left join tGroup g on g.fGroupID=u.fGroupID
+                        where fIsValid=1 group by u.fGroupID";
+          daSMS = new SqlDataAdapter(strSql, conn);
+          dsSms = new DataSet();
+
+          daSMS.Fill(dsSms);
+
+          if (dsSms.Tables.Count > 0 && dsSms.Tables[0] != null)
+          {
+              if (dsSms.Tables[0].Rows.Count > 0)
+              {
+                  for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
+                  {
+                      string groupID = dsSms.Tables[0].Rows[i]["fGroupID"].ToString();
+                      try
+                      {
+                          SaveLog("The UpdateGroupUserStatus is Begin" + DateTime.Now.ToString() + "\t" + groupID);
+                          UpdateGroupUserStatus(groupID);
+
+                          SaveLog("The UpdateGroupUserStatus is end\t" + DateTime.Now.ToString() + "\t" + groupID);
+
+                      }
+                      catch (Exception ex)
+                      {
+                          SaveLog("The  UpdateGroupUserStatus Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+                      }
+                  }
+              }
+          }
+
+        
 
           conn.Close();
           conn.Dispose();
@@ -334,6 +402,57 @@ namespace TiKuService
      }
     }
 
+    public void UpdateGroupUserStatus(string strGroupId)
+    {
+        Random rand = new Random();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= 32; i++)
+        {
+            int randNum = rand.Next(9) + 1;
+            String num = randNum + "";
+            sb = sb.Append(num);
+        }
+        String random = sb.ToString();
 
+        string strUrl = string.Format("https://console.tim.qq.com/v4/openim/querystate?usersig={0}&identifier={1}&sdkappid={2}&random={3}&contenttype=json", "eJxlj81Og0AYRfc8BWFtdH6YlJp0gbYKpiQaalPZkJEZ8MOUgZmhrW18dyPWSOLdnpN7c0*O67reaple8qJQfWNz*9FKz712PeRd-MG2BZFzm1Mt-kF5aEHLnJdW6gFixhhBaOyAkI2FEs4GF1towFjNrdIjzYj3fNj66fERwpOABdOxAtUAk8XzbRy9vFVwtA*PEcN9TFc89LskocfX4t4v*TwV6-0d3WB-sxMhLELDg7kiKTGRikxfP10texTd1EqldWYO-jreV12msrqboNlo0sJW-h6jmAVkOr62k9qAagaBIMwwoeg7nvPpfAFRuGD7", "administrator", 1400178589, random);
+        StringBuilder strUserIds = new StringBuilder();
+        strUserIds.Append("{\"To_Account\": [");
+        GroupUserInfoListModel model = GroupUserBll.GetGroupUserInfiList(strGroupId);
+        foreach (GroupUserInfoModel info in model.infoList)
+        {
+            strUserIds.Append("\"" + info.fUserId + "\",");
+        }
+        strUserIds.Append("\"\"]}");
+
+        byte[] postData = Encoding.UTF8.GetBytes(strUserIds.ToString());
+        WebClient MyWebClient = new WebClient();
+
+        MyWebClient.Credentials = CredentialCache.DefaultCredentials;
+        Byte[] pageData = MyWebClient.UploadData(strUrl, "post", postData);
+
+        String strJson = Encoding.UTF8.GetString(pageData) ?? "";
+
+        JavaScriptSerializer jss = new JavaScriptSerializer();
+
+        GroupUserStatusModel groupUserStatusModel = jss.Deserialize<GroupUserStatusModel>(strJson);
+        if (groupUserStatusModel.ActionStatus == "OK")
+        {
+            foreach (QueryResultModel result in groupUserStatusModel.QueryResult)
+            {
+                if (!string.IsNullOrEmpty(result.To_Account))
+                {
+                    if (result.State == "Offline")
+                    {
+                        GroupUserBll.UpdateGroupUserInfo(result.To_Account, strGroupId, "offline");
+                    }
+                }
+            }
+        }
+    }
+
+      public void UpdateBookingStatus(string strBookingNo)
+    {
+        BookingBll.BookingUpdateStatus(strBookingNo, "已取消", "支付时间到自动取消", "System");
+    }
   }
 }

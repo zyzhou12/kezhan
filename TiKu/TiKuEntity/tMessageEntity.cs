@@ -13,7 +13,10 @@ namespace TiKu.Entity
     public System.String fTitle { get; set; }
     public System.String fContent { get; set; }
     public System.String fType { get; set; }
+
+    public System.Int32 fTypeID { get; set; }
     public System.DateTime fSendDate { get; set; }
+    public System.Int32 fStatus { get; set; }
     public System.DateTime fCreateDate { get; set; }
     public System.String fCreateOpr { get; set; }
     public System.DateTime fModifyDate { get; set; }

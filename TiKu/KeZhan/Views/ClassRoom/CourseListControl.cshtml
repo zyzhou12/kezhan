@@ -1,0 +1,89 @@
+﻿@model TiKuBll.Model.CourseListModel
+@{
+    ViewBag.Title = "CourseListControl";
+}
+
+<div class="reservation-room_package">
+    @*<a data-toggle="collapse" href="#reservation-room_package-1" class="reservation-room_package-more" aria-expanded="true">章节</a>*@
+    @if (Model.isEdit)
+    {
+        <button class="awe-btn awe-btn-13" id="btnAdd" onclick="AddCurse()">新增</button>
+    }
+    <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+
+        @if (Model.courseList != null)
+        {
+                                                <!-- ITEM PACKAGE -->
+            foreach (var course in Model.courseList)
+            {
+                <div class="reservation-package_item">
+                    @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                    {
+                        if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                        {
+                            <div class="reservation-package_img">
+                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.TeacherUserName','ClassRoom',@course.fID)" alt="">
+
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div class="reservation-package_img">
+                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal" alt="">
+
+                            </div>
+                        }
+                    }
+                    else if (Model.isEdit)
+                    {
+                        <div class="reservation-package_img">
+                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.TeacherUserName','ClassRoom',@course.fID)" alt="" />
+                        </div>
+                    }
+
+                    <div class="reservation-package_text">
+
+                        <h4><a href="#">@course.fDictTitle</a></h4>
+                        <p>
+                            @course.fCourseTitle
+                            <br />
+                            <span>上课时间：@course.fClassDate.ToString()</span>
+                        </p>
+
+                        <div class="reservation-package_book-price">
+                            @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                            {
+                                if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                {
+                                    <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
+
+                                }
+                                else
+                                {
+                                    <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                }
+                            }
+                            @if (Model.isEdit)
+                            {
+                                <button class="awe-btn awe-btn-default" onclick="UpdateCurse(@course.fID,'@course.fDictTitle','@course.fCourseTitle','@course.fClassDate.ToString()',@course.fClassDateLength,@course.fOrder)">修改</button>
+                                <button class="awe-btn awe-btn-default" onclick="DeleteCurse(@course.fID)">删除</button>
+
+                            }
+                            <img style=" display:none;" src="#" data-reveal-id="myModal" id="imgUploadDocument-@course.fID" onclick="UploadCourseDocumentFile('@Model.TeacherUserName','CourseDocument',@course.fID)" alt="" />
+
+                            <button class="awe-btn awe-btn-default" onclick="UploadDocument(@course.fID)">上传资料</button>
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+
+        }
+        <input type="hidden" id="hidCourseNum" value="@Model.courseList.Count" />
+
+
+      
+    </div>
+</div>

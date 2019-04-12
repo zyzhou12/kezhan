@@ -1,0 +1,53 @@
+﻿@model TiKuBll.Model.UserMemberListModel
+@{
+    ViewBag.Title = "UserMemberListControl";
+}
+
+
+@if (Model.userMemberList != null)
+{
+                                                <!-- ITEM PACKAGE -->
+    foreach (var member in Model.userMemberList)
+    {
+        <div class="reservation-package_item">
+            <div class="reservation-package_img">
+                <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@member.MemberHead" data-reveal-id="myModal" alt="">
+
+            </div>
+
+            <div class="reservation-package_text">
+
+                <h4><a href="#">@member.MemberName</a></h4>
+                <p>
+                    <span>邀请时间：@member.fCreateDateTime.ToString()</span>
+                    <br />
+                    @if (member.fStatus.Trim() == "2")
+                    {
+                        <span>已接受</span>
+                    }
+                    else if (member.fStatus.Trim() == "3")
+                    {
+                        <span>已拒绝</span>
+                    }
+                    else if (member.fStatus.Trim() == "4")
+                    {
+                        <span>已取消</span>
+                    }
+                    else
+                    {
+                        <span>已提交</span>
+                    }
+                </p>
+
+                <div class="reservation-package_book-price">
+                    @if (member.fStatus.Trim() == "2") { 
+                    <button class="awe-btn awe-btn-default" onclick="UserInviteCancel(@member.fID)">取消授权</button>
+                    }
+                </div>
+            </div>
+
+        </div>
+    }
+
+
+}

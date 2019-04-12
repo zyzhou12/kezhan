@@ -12,6 +12,7 @@ namespace TiKu.Entity
     public System.String fOrderNo { get; set; }
     public System.String fRemark { get; set; }
     public System.Decimal fAmount { get; set; }
+    public System.String fType { get; set; }
     public System.String fPayType { get; set; }
     public System.String fPayNo { get; set; }
     public System.DateTime fPayDate { get; set; }

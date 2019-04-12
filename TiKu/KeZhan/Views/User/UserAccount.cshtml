@@ -1,62 +1,103 @@
 ﻿@{
-  ViewBag.Title = "课站";
+    ViewBag.Title = "课站";
 }
 !-- ACTIVITI -->
-<section class="section-activiti bg-white">
-            <div class="container">
+<section class="section-reservation-page bg-white">
+    <div class="container">
+        <div class="reservation-page">
+            <div class="row">
 
-                <div class="activiti">
+                <div class="col-md-4 col-lg-3">
 
-                  @*  <div class="gallery-cat activiti-cat ">
-                       
-                        <ul class="list-inline">                          
-                            <li>学段：</li>
-                            <li onclick="CheckPharse(this,'小学')"><a href="#">小学</a></li>
-                            <li  onclick="CheckPharse(this,'初中')"><a href="#">初中</a></li>
-                            <li onclick="CheckPharse(this,'高中')"><a href="#">高中</a></li>
-                        </ul>
-                        
-                    </div>*@
+                    <div class="reservation-sidebar">
 
-                    <div class="activiti_content">
-                        
-                        <div class="row" id="accountList">
+                        <!-- SIDEBAR AVAILBBILITY -->
+                        <div class="reservation-sidebar_availability bg-gray">
 
-                           </div>
+                            <!-- HEADING -->
+                            <h2 class="reservation-heading">交易明细</h2>
+                            <!-- END / HEADING -->
+                            @*<h6 class="check_availability_title">your stay dates</h6>*@
 
-                        <!-- PAGE NAVIGATION   -->
-                        @*<ul class="page-navigation text-center">
-                            <li class="first"><a href="#"><i class="fa fa-arrow-left"></i></a></li>
-                            <li><a href="#">1</a></li>
-                            <li class="current-page"><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li><a href="#">6</a></li>
-                            <li class="last"><a href="#"><i class="fa fa-arrow-right"></i></a></li>
-                        </ul>*@
-                        <!-- END / PAGE NAVIGATION   -->
+                            <div class="check_availability-field">
+                                <label>开始日期</label>
+                                <input type="text" id="txtBeginDate" class="awe-calendar awe-input" placeholder="开始日期">
+                            </div>
+
+                            <div class="check_availability-field">
+                                <label>结束日期</label>
+                                <input type="text" id="txtEndDate" class="awe-calendar awe-input to" placeholder="结束日期">
+                            </div>
+
+
+                            <div class="check_availability-field">
+                                <label>明细类型</label>
+                                <select class="awe-select" id="cmbType">
+                                    <option value="">全部</option>
+                                    <option value="RMB">人民币</option>
+                                    <option value="FLOW">流量</option>
+                                </select>
+                            </div>
+
+                            <div class="check_availability-field">
+                                <label>交易类型</label>
+                                <select class="awe-select" id="cmbTradingType">
+                                    <option value="">全部</option>
+                                    @*<option value="BuyClass">购买课程</option>*@
+                                    <option value="BuyFlow">购买流量</option>
+                                    <option value="PayFlow">支付流量</option>
+                                    <option value="ClassAmount">课程收入</option>
+                                    <option value="WithDrawal">收入提现</option>
+                                </select>
+                            </div>
+                            <button class="awe-btn awe-btn-13" onclick="GetAccountList()">查询</button>
+
+                        </div>
+                        <!-- END / SIDEBAR AVAILBBILITY -->
 
                     </div>
 
                 </div>
+                <div class="col-md-9" id="accountList">
 
+                </div>
             </div>
-        </section>
+
+
+
+        </div>
+
+    </div>
+</section>
 <!-- END / ACTIVITI -->
 
 <script type="text/javascript">
 
-  $(document).ready(function () {
-    $.ajax({
-      url: "/user/QueryUserAccount",
-      type: this.method,
-      // data: { "strClassRoomCode": ClassRoomCode },
-      success: function (msg) {
-        $('#accountList').html(msg);
-      }
+    $(document).ready(function () {
+
+        GetAccountList();
     });
 
-  });
 
+    function GetAccountList() {
+        var TradingType = $("#cmbTradingType").val();
+        var Type = $("#cmbType").val();
+        var beginDate = "2018-01-01";
+        var endDate = "2099-01-01";
+        if ($("#txtBeginDate").val() != "") {
+            beginDate = $("#txtBeginDate").val();
+        }
+        if ($("#txtEndDate").val() != "") {
+            endDate = $("#txtEndDate").val();
+        }
+
+        $.ajax({
+            url: "/user/QueryUserAccount",
+            type: this.method,
+            data: { "strTradingType": TradingType, "strSystem": "Web", "strType": Type, "beginDate": beginDate, "endDate": endDate },
+            success: function (msg) {
+                $('#accountList').html(msg);
+            }
+        });
+    }
 </script>

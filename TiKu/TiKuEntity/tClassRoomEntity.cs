@@ -9,6 +9,7 @@ namespace TiKu.Entity
   {
     public System.Int32 fID { get; set; }
     public System.String fClassRoomCode { get; set; }
+    public System.String fClassType { get; set; }
     public System.String fTecharUserName { get; set; }
     public System.String fClassRoomTitle { get; set; }
     public System.String fCoverImg { get; set; }
@@ -27,6 +28,8 @@ namespace TiKu.Entity
     public System.String fPayType { get; set; }
     public System.String fQrCode { get; set; }
     public System.Boolean fIsReturn { get; set; }
+    public System.String fReturnType { get; set; }
+    public System.String fReturnRule { get; set; }
     public System.Boolean fIsRecord { get; set; }
     public System.String fStatus { get; set; }
     public System.DateTime fCreateDate { get; set; }

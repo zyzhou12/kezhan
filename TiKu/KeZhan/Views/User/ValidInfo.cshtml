@@ -1,55 +1,66 @@
-﻿@model TiKuBll.Model.TeacherValidModel
+﻿@model TiKuBll.Model.ValidDetailListModel
 @{
-  ViewBag.Title = "课站";
+    ViewBag.Title = "课站";
 }
 <section class="section-reservation-page bg-white">
+    <div class="container">
+        <div class="reservation-page">
+            <div class="row">
 
-            <div class="container">
-                <div class="reservation-page">     
-                    <div class="row">
-                    
-                        <div class="col-md-8 col-lg-9">
-                            <div class="reservation_content">                                
-                                <div class="reservation-billing-detail">
-                             
-                             
-                                           <label>身份证正面</label>
-                                
-                                      
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard1?x-oss-process=style/width" )" alt="" />
-                                      
-                                         <input type="hidden" id="txtIDCard1"  value="" />
-                                          <label>身份证反面</label>
-                                    
-                                       
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard2?x-oss-process=style/width" )" alt="" />
-                                      
-                                         <input type="hidden" id="txtIDCard2"  value="" />
+                <div class="col-md-8 col-lg-9">
+                    <div class="reservation_content">
+                        <div class="reservation-billing-detail">
 
-                                          <label>学段 <sup>*</sup></label>
-                                 <span>@Model.fPharse</span>
-                                     <label>学科 <sup>*</sup></label>
-                                   <span>@Model.fSubject</span>
-                                     <label>证书类型 <sup>*</sup></label>
-                                   <span>@Model.fCertType</span>
+                            @if (Model.detailList != null)
+                            {
+                                                <!-- ITEM PACKAGE -->
+                                foreach (var detail in Model.detailList)
+                                {
+                                    <div class="reservation-package_item">
+                                        <div class="reservation-package_img">
+                                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@detail.fTeachCert1" data-reveal-id="myModal" alt="">
+
+                                        </div>
+
+                                        <div class="reservation-package_text">
+
+                                            <h4><a href="#">@detail.fStatus</a></h4>
+                                            <p>
+                                                @if (detail.fStatus == "已审核")
+                                                {
+                                                    if (detail.fCertType == "教师证")
+                                                    {
+                                                        <span>学段：@detail.fPharse</span>
+                                                        <br />
+                                                        <span>学科：@detail.fSubject</span>
+                                                    }
+                                                    <br />
+                                                    <span>审核人：@detail.fValidDate.ToString()</span>
+                                                    <br />
+                                                    <span>审核时间：@detail.fValidUser</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>原因：@detail.fNote</span>
+                                                    <br />
+                                                    <span>审核人：@detail.fValidDate.ToString()</span>
+                                                    <br />
+                                                    <span>审核时间：@detail.fValidUser</span>
+                                                }
+                                            </p>
 
 
-                                          <label>证书1</label>
-                                    
-                                      
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert1?x-oss-process=style/width" )" alt="" />
-                                       
-                                         <input type="hidden" id="txtTeacherCert1"  value="" />
-                                          <label>证书2</label>
-                                     
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert2?x-oss-process=style/width" )" alt="" />
-                                        
-                                         <input type="hidden" id="txtTeacherCert2"  value="" />
-</div>
-                    </div>
-                </div>
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-
-        </section>
+        </div>
+    </div>
+</section>

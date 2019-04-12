@@ -1,0 +1,104 @@
+﻿@model TiKuBll.Model.TeacherWithdrawalModel
+@{
+    ViewBag.Title = "WithDrawal";
+}
+
+
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail">
+                            <input type="hidden" id="hidFid" value="@Model.fID" />
+                            <label>申请人<sup>*</sup></label>
+                            <span>@Model.fUserName</span>
+                           
+                            <label>申请提现金额<sup>*</sup></label>
+                            <span>@Model.fAmount</span>
+                          
+
+                            <label>提现账号<sup>*</sup></label>
+                            <span>@Model.bankAccount.fAccountName</span>
+                            <br />
+                            <span>@Model.bankAccount.fOpenBank</span>
+                            <br />
+                            <span>@Model.bankAccount.fAccountNo</span>
+                           
+
+                            <label>处理意见<sup>*</sup></label>
+
+                            <input type="text" id="txtApproveNote" value="@Model.fApproveNote" class="input-text">
+                            <label>汇款凭证<sup>*</sup></label>
+
+                            <input type="text" id="txtTransCerd" value="@Model.fTransCerd" class="input-text">
+
+                            <br />
+
+                            <a href="#" class="awe-btn awe-btn-14" onclick="DoAgree()">汇款完成</a>
+                            <a href="#" class="awe-btn awe-btn-14" onclick="DoRefund">拒绝提现</a>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<script type="text/javascript">
+    function DoAgree()
+    {
+        
+        $.ajax({
+            url: "/Manager/DoAgreeWithDrawal",
+            data: {"iWithID": $("#hidFid").val(),"strNote":$("#txtApproveNote").val(),"TransCerd":$("#txtTransCerd").val()},
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    self.location = document.referrer;
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+    function DoRefund() {
+
+        $.ajax({
+            url: "/Manager/DoRefuseWithDrawal",
+            data: { "iWithID": $("#hidFid").val(), "strNote": $("#txtApproveNote").val(), "TransCerd": $("#txtTransCerd").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    self.location = document.referrer;
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

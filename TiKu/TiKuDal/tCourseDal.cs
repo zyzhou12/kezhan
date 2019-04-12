@@ -41,7 +41,7 @@ namespace TiKu.Dal
         xw.WriteStartDocument();
         xw.WriteStartElement("DataSet");
 
-        PubFun.WriteIDListToXml(xw, ids, "tCourse", "tCourseID");
+        PubFun.WriteIDListToXml(xw, ids, "tCourse", "fID");
 
         xw.WriteEndElement();
         xw.WriteEndDocument();
@@ -63,7 +63,7 @@ namespace TiKu.Dal
     public static tCourseEntity GettCourse(int id)
     {
       tCourseEntity rst = null;
-      string strSQL = "SELECT * FROM tCourse WHERE tCourseID=" + id.ToString();
+      string strSQL = "SELECT * FROM tCourse WHERE fID=" + id.ToString();
       DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
       if (dt.Rows.Count > 0)
       {

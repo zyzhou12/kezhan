@@ -26,9 +26,10 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -200,13 +201,16 @@
     <Compile Include="Code\wxpay\RequestHandler.cs" />
     <Compile Include="Code\wxpay\ResponseHandler.cs" />
     <Compile Include="Code\wxpay\TenpayUtil.cs" />
+    <Compile Include="Controllers\AiZhuPayController.cs" />
     <Compile Include="Controllers\AliPayController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\ClassRoomController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\OpenController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
+    <Compile Include="Controllers\UserApiController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WeiXinPayController.cs" />
     <Compile Include="Filters\TeacherActionFilter.cs" />
@@ -223,12 +227,16 @@
     </Compile>
     <Compile Include="Models\DateModel.cs" />
     <Compile Include="Models\FileModel.cs" />
+    <Compile Include="Models\GroupUserStatusModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OpenClassRoomModel.cs" />
+    <Compile Include="Models\RefundXmlModel.cs" />
     <Compile Include="Models\ResponseBaseModel.cs" />
     <Compile Include="Models\TeacherClassRoomListModel.cs" />
+    <Compile Include="Models\TeacherModel.cs" />
     <Compile Include="Models\TenPayModel.cs" />
     <Compile Include="Models\UserBaseModel.cs" />
+    <Compile Include="Models\UserPayModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -646,6 +654,7 @@
     <Content Include="Content\images\team\img-4.jpg" />
     <Content Include="Content\images\tripadvisor.png" />
     <Content Include="Content\less\style.css" />
+    <Content Include="Content\main - 复制.css" />
     <Content Include="Content\main.css" />
     <Content Include="Content\reveal.css" />
     <Content Include="favicon.ico" />
@@ -1195,8 +1204,26 @@
     <Content Include="Scripts\plugins\layer\layim\data\groups.json" />
     <Content Include="Scripts\plugins\suggest\data.json" />
     <Content Include="Scripts\plugins\webuploader\README.md" />
-    <Content Include="Views\ClassRoom\ClassRoomCourse.cshtml" />
     <Content Include="Views\ClassRoom\MyClassRoomList.cshtml" />
+    <Content Include="Views\Manager\ClassRoomApplyManager.cshtml" />
+    <Content Include="Views\Manager\ClassRoomApplyDetail.cshtml" />
+    <Content Include="Views\ClassRoom\BookingRefund.cshtml" />
+    <Content Include="Views\User\UserBankManager.cshtml" />
+    <Content Include="Views\User\UserBankEdit.cshtml" />
+    <Content Include="Views\User\TeacherWithdrawalApply.cshtml" />
+    <Content Include="Views\Manager\TeacherWithdrawalManager.cshtml" />
+    <Content Include="Views\Manager\WithDrawal.cshtml" />
+    <Content Include="Views\Home\Index - 复制.cshtml" />
+    <Content Include="Views\ClassRoom\CourseListControl.cshtml" />
+    <Content Include="Views\ClassRoom\ClassRoomDescControl.cshtml" />
+    <Content Include="Views\Message\MessageList.cshtml" />
+    <Content Include="Views\User\UserMemberList.cshtml" />
+    <Content Include="Views\User\UserMemberListControl.cshtml" />
+    <Content Include="Views\ClassRoom\ClassRoomShow.cshtml" />
+    <Content Include="Views\ClassRoom\TeacherSelect.cshtml" />
+    <Content Include="Views\Booking\UserRefundList.cshtml" />
+    <Content Include="Views\Booking\UserRefund.cshtml" />
+    <Content Include="Views\Manager\FlowAdjust.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -1207,7 +1234,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

@@ -68,13 +68,17 @@
     <Compile Include="tAnswerDal.cs" />
     <Compile Include="tBookingDal.cs" />
     <Compile Include="tChapterDal.cs" />
+    <Compile Include="tClassRoomApplyDal.cs" />
     <Compile Include="tClassRoomDal.cs" />
     <Compile Include="tClassRoomDetailDal.cs" />
     <Compile Include="tCourseDal.cs" />
     <Compile Include="tDiffTypeDal.cs" />
     <Compile Include="tEditionDal.cs" />
     <Compile Include="tEmailDal.cs" />
+    <Compile Include="tFlowStoredDal.cs" />
     <Compile Include="tGradeDal.cs" />
+    <Compile Include="tGroupDal.cs" />
+    <Compile Include="tGroupUserInfoDal.cs" />
     <Compile Include="tHistoryDal.cs" />
     <Compile Include="tKnowLedgeBasicDal.cs" />
     <Compile Include="tKonwLedgeLevelDal.cs" />
@@ -95,10 +99,14 @@
     <Compile Include="tSubjectDal.cs" />
     <Compile Include="tSubQuestionDal.cs" />
     <Compile Include="tSystemConfigDal.cs" />
+    <Compile Include="tTeacherValidDetailDal.cs" />
+    <Compile Include="tTeacherWithdrawalDal.cs" />
     <Compile Include="tTeachInfoDal.cs" />
     <Compile Include="tTeachValidDal.cs" />
     <Compile Include="tUserAccountDal.cs" />
+    <Compile Include="tUserBankAccountDal.cs" />
     <Compile Include="tUserDal.cs" />
+    <Compile Include="tUserMemberDal.cs" />
     <Compile Include="tUserPayDal.cs" />
     <Compile Include="tUserRefundDal.cs" />
   </ItemGroup>

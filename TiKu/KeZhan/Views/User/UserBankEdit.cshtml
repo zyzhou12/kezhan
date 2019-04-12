@@ -1,0 +1,90 @@
+﻿@model TiKuBll.Model.UserBankAccountModel
+@{
+    ViewBag.Title = "UserBankEdit";
+}
+
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+
+           
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail" >
+                            <input type="hidden" value="@Model.fID" id="hidBankId" />
+                            <label>账号别名<sup>*</sup></label>
+
+                            <input type="text" id="txtName" value="@Model.fName" class="input-text">
+
+                            <label>账号名称<sup>*</sup></label>
+                           
+                            <input type="text" id="txtAccountName" value="@Model.fAccountName" class="input-text">
+                        
+
+                            <label>开户行<sup>*</sup></label>
+                            
+                            <input type="text" id="txtOpenBank" value="@Model.fOpenBank" class="input-text">
+                           
+                            <label>账号<sup>*</sup></label>
+                            
+                            <input type="text" id="txtAccountNo" value="@Model.fAccountNo" class="input-text">
+
+                            <br />
+
+                            <a href="#" class="awe-btn awe-btn-14" onclick="DoSaveUserBankAccount()">保存</a>
+                        </div>
+                  
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    function DoSaveUserBankAccount()
+    {
+        var UserBankAccountModel = {
+            "fID": $("#hidBankId").val(),
+            "fName": $("#txtName").val(),
+            "fAccountName": $("#txtAccountName").val(),
+            "fOpenBank": $("#txtOpenBank").val(),
+            "fAccountNo": $("#txtAccountNo").val()
+        }
+
+        $.ajax({
+            url: "/User/DoSaveUserBank",
+            data: UserBankAccountModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("保存成功");
+                    self.location = document.referrer;
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

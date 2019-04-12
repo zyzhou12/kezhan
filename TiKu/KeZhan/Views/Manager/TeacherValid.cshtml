@@ -1,67 +1,228 @@
-﻿@model TiKuBll.Model.TeacherValidModel
+﻿@model TiKuBll.Model.ValidModel
 @{
-  ViewBag.Title = "课站";
+    ViewBag.Title = "课站";
 }
 
 
-  <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard1?x-oss-process=style/width" alt="" />
-  <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard2?x-oss-process=style/width" alt="" />
-  <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert1?x-oss-process=style/width" alt="" />
-  <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert2?x-oss-process=style/width" alt="" />
+<section class="section-reservation-page bg-white">
 
-  <br />
-  
-  <input type="text" id="txtName" placeholder="真实姓名"  class="input-text" />
-  <input type="text" id="txtID" placeholder="身份证号"  class="input-text" />
-  <input type="text" id="txtTeacherNo" placeholder="证书编号"  class="input-text" />
-  <input type="text" id="txtEffect" placeholder="证书有效期"  class="input-text" />
+    <div class="container">
+        <div class="reservation-page">
 
-  <button class="awe-btn awe-btn-14" onclick="ValidTeacher(@Model.fID)">认证通过</button>
-  <br />
-  <input type="text" id="txtValidMessage"  class="input-text" />
-  <button class="awe-btn awe-btn-14" onclick="ReturnValidTeacher(@Model.fID)">认证未通过</button>
+            <!-- STEP -->
+            <div class="reservation_step">
 
-  <script type="text/javascript">
-    function ValidTeacher(iValidFid) {
-        if($("#txtName").val()==""){
-            alert("请填写真实姓名");
-            return;
-        }else if($("#txtID").val()==""){
-            alert("请填写身份证号");
-            return;
-        }else if($("#txtTeacherNo").val()==""){
-            alert("请填写证书编号");
-            return;
-        }else if($("#txtEffect").val()==""){
-            alert("请填写证书有效期");
-            return;
+
+            </div>
+            <!-- END / STEP -->
+
+            <div class="row">
+
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+                    <div class="reservation_content">
+                        <div class="reservation-billing-detail">
+
+
+                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard1?x-oss-process=style/width" alt="" />
+
+                            <label>真实姓名</label>
+
+                            <input type="text" id="txtName" placeholder="真实姓名" value="@Model.fName" class="input-text" />
+
+                            <label>证件类型</label>
+                            <div>
+                                <div class="shortcode-select">
+                                    <select style="width:100%; height:42px;" id="cmbIDType">
+                                        @if (Model.fIDType == "1")
+                                        {
+                                            <option value="">请选择</option>
+                                            <option value="1" selected>身份证</option>
+                                            <option value="2">护照</option>
+                                        }
+                                        else
+                                        {
+
+                                            <option value="">请选择</option>
+                                            <option value="1">身份证</option>
+                                            <option value="2" selected>护照</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <label>证件号码</label>
+                            <input type="text" id="txtID" placeholder="证件号码" value="@Model.fUID" class="input-text" />
+
+                            <br />
+                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert1?x-oss-process=style/width" alt="" />
+
+                            <div>
+                                <label>证书类型</label>
+                                <div class="shortcode-select">
+                                    <select style="width:100%; height:42px;" id="cmbCertType" onchange="SetPharse(this)">
+                                        <option value="">请选择</option>
+                                        <option value="教师证">教师证</option>
+                                        <option value="学历证书">学历证书</option>
+                                        <option value="职业资格证">职业资格证</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>
+                                <label>证书编号</label>
+                                <input type="text" id="txtTeacherNo" placeholder="证书编号" class="input-text" />
+                                @*<input type="text" id="txtEffect" placeholder="证书有效期" class="input-text" />*@
+                                <label>证书有效期</label>
+                                @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtEffect", date = DateTime.Now.ToString("yyyy-MM-dd"), datePlaceholder = "有效期" })
+                            </div>
+                            <div id="divPharse" style="display:none">
+                                <label>学段</label>
+                                <div class="shortcode-select">
+                                    <select style="width:100%; height:42px;" id="cmbPharse" onchange="SetSubject(this)">
+                                        <option value="0">请选择</option>
+                                        <option value="1">小学</option>
+                                        <option value="2">初中</option>
+                                        <option value="3">高中</option>
+                                    </select>
+                                </div>
+                                <label>学科</label>
+                                <div class="shortcode-select">
+                                    <select style="width:100%; height:42px;" id="cmbSubject">
+                                        <option value="">请选择</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <label>审核结果</label>
+
+                            <div>
+                                <div class="shortcode-select">
+                                    <select style="width:100%; height:42px;" id="cmbResult" onchange="SetResult(this)">
+                                        <option value="1">通过</option>
+                                        <option value="0">未通过</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div id="divMessage" style="display:none">
+                                <div class="shortcode-select">
+                                    <select style="width:100%; height:42px;" id="cmbMessage">
+                                        <option value="证件照片不清">证件照片不清</option>
+                                        <option value="证件过期">证件过期</option>
+                                        <option value="证件与手机号不符">证件与手机号不符</option>
+                                        <option value="无法查证证件有效">无法查证证件有效</option>
+                                        <option value="学历要求大专以上">学历要求大专以上</option>
+                                        <option value="不认识这个证书">不认识这个证书</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button class="awe-btn awe-btn-14" onclick="ValidTeacher(@Model.fTeacherValidID,@Model.fID)">完成</button>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+
+    function SetPharse(obj) {
+
+        if ($(obj).val() == "教师证") {
+            $("#divPharse").show()
+        } else {
+            $("#divPharse").hide();
+            $("#cmbSubject").empty();
+
         }
-
-      $.ajax({
-        url: "/Manager/DoTeacherValid",
-        type: "POST",
-        data: { "iValidFid": iValidFid, "ValidResult": true,"strName":$("#txtName").val(),"strUID":$("#txtID").val(),"strCertNo":$("#txtTeacherNo").val(),"strEffect":$("#txtEffect").val(), "ValidMessage": "认证通过" },
-        success: function (msg) {
-          alert("认证成功");
-          window.location.reload();
-        }
-      });
     }
 
-    function ReturnValidTeacher(iValidFid) {
-      var ValidMessage = $("#txtValidMessage").val();
-      $.ajax({
-        url: "/Manager/DoTeacherValid",
-        type: this.method,
-        data: { "iValidFid": iValidFid, "ValidResult": false,"strName":"","strUID":"","strCertNo":"","strEffect":"", "ValidMessage": ValidMessage },
-        success: function (msg) {
-          alert("认证未通过");
-          window.location.reload();
-        },
-        fail: function (msg) {
-          alert(msg);
-          window.location.reload();
+    function SetResult(obj) {
+
+        if ($(obj).val() == "0") {
+            $("#divMessage").show()
+        } else {
+            $("#divMessage").hide()
         }
-      });
-    }       
-  </script>
+    }
+
+    function SetSubject(obj) {
+        $("#cmbSubject").empty();
+        if ($(obj).val() == "1") {
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+        } else if ($(obj).val() == "2") {
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+            $("#cmbSubject").append("<option value='物理'>物理</option>");
+            $("#cmbSubject").append("<option value='化学'>化学</option>");
+            $("#cmbSubject").append("<option value='地理'>地理</option>");
+        } else if ($(obj).val() == "3") {
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+            $("#cmbSubject").append("<option value='物理'>物理</option>");
+            $("#cmbSubject").append("<option value='化学'>化学</option>");
+            $("#cmbSubject").append("<option value='地理'>地理</option>");
+        } 
+    }
+
+
+
+
+    function ValidTeacher(iValidFid, iValidDetailID) {
+        if ($("#cmbResult").val() == "1") {
+
+            if ($("#txtName").val() == "") {
+                alert("请填写真实姓名");
+                return;
+            } else if ($("#txtID").val() == "") {
+                alert("请填写身份证号");
+                return;
+            } else if ($("#txtTeacherNo").val() == "") {
+                alert("请填写证书编号");
+                return;
+            } else if ($("#txtEffect").val() == "") {
+                alert("请填写证书有效期");
+                return;
+            }
+
+            $.ajax({
+                url: "/Manager/DoTeacherValid",
+                type: "POST",
+                data: { "iValidFid": iValidFid, "iValidDetailID": iValidDetailID, "ValidResult": true, "strName": $("#txtName").val(), "strIDType": $("#cmbIDType").val(), "strUID": $("#txtID").val(), "strCertType": $("#cmbCertType").val(), "strCertNo": $("#txtTeacherNo").val(), "strEffect": $("#txtEffect").val(), "strPharse": $("#cmbPharse").val(), "strSubject": $("#cmbSubject").val(), "ValidMessage": "认证通过" },
+                success: function (msg) {
+                    alert("认证成功");
+                    window.location.reload();
+                }
+            });
+        } else {
+            var ValidMessage = $("#cmbMessage").val();
+            if (ValidMessage == "") {
+                alert("请输入未通过原因");
+                return;
+            }
+            $.ajax({
+                url: "/Manager/DoTeacherValid",
+                type: "POST",
+                data: { "iValidFid": iValidFid, "iValidDetailID": iValidDetailID, "ValidResult": false, "strName": "", "strIDType": "", "strUID": "", "strCertType": "", "strCertNo": "", "strEffect": "", "strPharse": "", "strSubject": "", "ValidMessage": ValidMessage },
+                success: function (msg) {
+                    alert("认证未通过");
+                    window.location.reload();
+                },
+                fail: function (msg) {
+                    alert(msg);
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+</script>

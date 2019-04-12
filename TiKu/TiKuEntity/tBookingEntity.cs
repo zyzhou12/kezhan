@@ -17,7 +17,7 @@ namespace TiKu.Entity
     public System.String fBuySystem { get; set; }
     public System.Boolean fIsPay { get; set; }
     public System.String fStatus { get; set; }
-    public System.String fIsReturn { get; set; }
+    public System.Boolean fIsReturn { get; set; }
     public System.DateTime fCreateDate { get; set; }
     public System.String fCreateOpr { get; set; }
     public System.DateTime fModifyDate { get; set; }

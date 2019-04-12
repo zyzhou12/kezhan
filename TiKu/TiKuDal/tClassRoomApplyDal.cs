@@ -63,7 +63,7 @@ namespace TiKu.Dal
         public static tClassRoomApplyEntity GettClassRoomApply(int id)
         {
             tClassRoomApplyEntity rst = null;
-            string strSQL = "SELECT * FROM tClassRoomApply WHERE tClassRoomApplyID=" + id.ToString();
+            string strSQL = "SELECT * FROM tClassRoomApply WHERE fid=" + id.ToString();
             DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
             if (dt.Rows.Count > 0)
             {
@@ -78,50 +78,74 @@ namespace TiKu.Dal
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
-            bufSQL.Append("SELECT * FROM tClassRoomApply WHERE (1=1)  AND fApplyOpr is not null ");
+            bufSQL.Append(@"select cra.*,fClassRoomTitle from tclassRoomapply  cra
+                            left join tClassRoom cr on cr.fClassRoomCode=cra.fClassRoomCode
+                            where fApplyDate is null");
 
-            
+            //if (!string.IsNullOrEmpty(strClassRoomCode))
+            //{
+            //    bufSQL.Append(" AND fClassRoomCode=@ClassRoomCode ");
+            //    lstParam.Add(new DBParam("@ClassRoomCode", strClassRoomCode));
+            //}
 
-            //防止返回数据过多
-            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            ////防止返回数据过多
+            //if (lstParam.Count <= 0) throw new Exception("没有查询条件");
             DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
             return dtRst;
         }
 
-        public static int DoAgreeClassRoomApply(int id, string strApplyNote, string strApplyOpr, DateTime applyDate)
+        /// <summary>
+        /// 同意申请
+        /// </summary>
+        /// <param name="iApplyID"></param>
+        /// <param name="strApplyNote"></param>
+        /// <param name="strApplyOpr"></param>
+        /// <param name="applyDate"></param>
+        /// <param name="strMsg"></param>
+        /// <returns></returns>
+        public static int  ClassRoomApplyAgree(int iApplyID,string strApplyNote,string strApplyOpr,DateTime applyDate,ref string strMsg)
         {
             List<DbParameter> lstParam = new List<DbParameter>();
 
 
-            lstParam.Add(new DBParam("@ApplyID", id));
+            lstParam.Add(new DBParam("@ApplyID", iApplyID));
             lstParam.Add(new DBParam("@ApplyNote", strApplyNote));
             lstParam.Add(new DBParam("@ApplyOpr", strApplyOpr));
             lstParam.Add(new DBParam("@ApplyDate", applyDate));
 
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");
-            DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "ClassRoomApply_Agree", lstParam, DBHelper.ProcRstTypes.All);
-
-            return Convert.ToInt32(rst.Result);
+            DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "ClassRoomApply_Agree",
+        lstParam, DBHelper.ProcRstTypes.All);
+            strMsg = rst.Message;
+            return rst.Result;
         }
 
-        public static int DoRefuseClassRoomApply(int id, string strApplyNote, string strApplyOpr, DateTime applyDate)
+        /// <summary>
+        /// 拒绝申请
+        /// </summary>
+        /// <param name="iApplyID"></param>
+        /// <param name="strApplyNote"></param>
+        /// <param name="strApplyOpr"></param>
+        /// <param name="applyDate"></param>
+        /// <param name="strMsg"></param>
+        /// <returns></returns>
+        public static int ClassRoomApplyRefuse(int iApplyID, string strApplyNote, string strApplyOpr, DateTime applyDate, ref string strMsg)
         {
             List<DbParameter> lstParam = new List<DbParameter>();
 
 
-            lstParam.Add(new DBParam("@ApplyID", id));
+            lstParam.Add(new DBParam("@ApplyID", iApplyID));
             lstParam.Add(new DBParam("@ApplyNote", strApplyNote));
             lstParam.Add(new DBParam("@ApplyOpr", strApplyOpr));
             lstParam.Add(new DBParam("@ApplyDate", applyDate));
 
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");
-            DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "ClassRoomApply_Refuse", lstParam, DBHelper.ProcRstTypes.All);
-
-            return Convert.ToInt32(rst.Result);
+            DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "ClassRoomApply_Refuse",
+        lstParam, DBHelper.ProcRstTypes.All);
+            strMsg = rst.Message;
+            return rst.Result;
         }
-
-
     }
 }

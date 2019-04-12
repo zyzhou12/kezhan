@@ -1,0 +1,82 @@
+﻿@model TiKuBll.Model.TeacherWithdrawalListModel
+@{
+    ViewBag.Title = "TeacherWithdrawalManager";
+}
+
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+
+        <div class="reservation-page">
+
+
+            <div class="row">
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+
+                        <div class="reservation-billing-detail">
+
+                            <div id="comments">
+                                <ul class="commentlist">
+                                    @if (Model.withDrawalList != null && Model.withDrawalList.Count > 0)
+                                    {
+                                        foreach (var b in Model.withDrawalList)
+                                        {
+                                            <li>
+                                                <div class="comment-body">
+
+                                                    <h4 class="comment-subject">
+                                                        用户：<a href="#">@b.fUserName</a>
+                                                    </h4>
+                                                    <p>
+                                                        <a href="#">提现金额:@b.fAmount</a>
+                                                    </p>
+                                                    <span class="comment-meta">
+
+                                                        提交时间：@b.fSubmitDate.ToString()
+                                                        @if (b.fStatus == "success")
+                                                        {
+                                                            <br />
+                                                            <span>处理意见：@b.fApproveNote</span>
+                                                            <br />
+                                                            <span>
+                                                                汇款凭证：@b.fTransCerd
+                                                            </span>
+                                                        }
+                                                    </span>
+
+                                                    @if (b.fStatus == "submit")
+                                                    {
+                                                        <div class="action">
+                                                            <a href="/Manager/WithDrawal?fid=@b.fID" class="awe-btn awe-btn-14">处理</a>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <spa>没有提现申请</spa>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- END / SUB BANNER -->

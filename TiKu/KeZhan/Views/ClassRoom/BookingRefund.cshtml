@@ -1,0 +1,108 @@
+﻿@model TiKuBll.Model.BookingModel
+
+@{
+    ViewBag.Title = "BookingRefund";
+}
+
+
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+
+                <!-- SIDEBAR -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="sidebar">
+
+
+
+                    </div>
+
+                </div>
+                <!-- END / SIDEBAR -->
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail">
+
+
+                            <h4>订单信息</h4>
+
+                            <label>课程名称<sup> </sup></label>
+                            <span>@Model.ClassRoom.fClassRoomTitle</span>
+                            <label>价格<sup></sup></label>
+                            <span>@Model.fAmount </span>
+                            @*<label>开课时间<sup> </sup></label>
+                            <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>*@
+
+                            <label>课程明细<sup> </sup></label>
+                            @foreach (var c in Model.ClassRoom.courseList)
+                            {
+                                <span>@c.fDictTitle</span>
+                                <span>@c.fCourseTitle</span>
+                                <span>@c.fClassDate.ToString()</span>
+                                <br />
+                            }
+                            <br />
+                            <label>退款金额<sup>最大可退款金额 @Model.MaxReturnAmount </sup></label>
+                            <input type="number" id="txtRefundAmount" value="@Model.MaxReturnAmount" disabled="disabled" />
+
+                            <label>退款原因<sup> </sup></label>
+                            <input type="text" id="txtRemark" />
+                            <button class="awe-btn awe-btn-13" id="btnSubmit" onclick="SubmitRefund('@Model.fBookingNo',@Model.MaxReturnAmount)">提交退款</button>
+
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+    function SubmitRefund(bookingNo,maxAmount)
+    {
+        if($("#txtRefundAmount").val().trim()==""){
+            alert("退款金额不能为空");
+            return;
+        }else if($("#txtRemark").val().trim()==""){
+            alert("退款原因不能为空");
+            return;
+        } else if (parseFloat($("#txtRefundAmount").val()) > parseFloat(maxAmount)) {
+             alert("退款金额不能超过最大可退款金额");
+                return;
+        }
+
+        $("#btnSubmit").attr("disabled", "disabled");
+
+        $.ajax({
+            url: "/classRoom/DoSubmitBookingRefund",
+            data: { "strOrderNo": bookingNo, "dAmount": $("#txtRefundAmount").val().trim(), "strRemark": $("#txtRemark").val().trim() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("提交成功");
+                    window.history.back();
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

@@ -37,8 +37,8 @@
                                     <span>@Model.fClassRoomTitle</span>
                                     <label>价格<sup></sup></label>
                                     <span>@Model.fPrice </span>
-                                    <label>开课时间<sup> </sup></label>
-                                    <span>@Model.fClassRoomDate.ToShortDateString()</span>
+                                    @*<label>开课时间<sup> </sup></label>
+                                    <span>@Model.fClassRoomDate.ToShortDateString()</span>*@
 
                                     <label>课程明细<sup> </sup></label>
                                     @foreach (var c in Model.courseList)
@@ -113,7 +113,6 @@
                     } else {
                       $("#btnPay").attr("href", "/Booking/UserBooking?strBookingNo=" + rst.strMsg);
                       $("#btnPay").text("去支付");
-                     // PayOrder(rst.strMsg); //余额支付
                     }
                     //window.location.href = "/Booking/UserBooking?strBookingNo=" + rst.strMsg;
                   }
@@ -126,29 +125,4 @@
           }
 
 
-          function PayOrder(bookingNo) {
-            var tradePass = "";
-
-            tradePass = prompt("请输入交易密码")
-            if (tradePass == "") {
-              alert("请输入交易密码");
-              return;
-            }
-
-            $.ajax({
-              url: "/Booking/BookingPay",
-              data: { "strBookingNo": bookingNo, "strTradePass": tradePass },
-              type: "POST",
-              dataType: "json",
-              success: function (rst) {
-                if (rst.iResult >= 0) {
-                  alert("支付成功");
-                  window.location.href = "/Booking/UserBooking?strBookingNo=" + bookingNo;
-                } else {
-                  alert(rst.strMsg);
-                }
-              }
-
-            });
-          }
         </script>

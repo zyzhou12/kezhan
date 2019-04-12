@@ -12,9 +12,9 @@ namespace TiKuBll
 {
     public class ClassRoomBll
     {
-        public static ClassRoomListModel GetClassRoomByTeacher(string strTeacher, string strStatus)
+        public static ClassRoomListModel GetClassRoomByTeacher(string strTeacher, string strStatus,string strPayType)
         {
-            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByTeacher(strTeacher, strStatus);
+            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByTeacher(strTeacher, strStatus, strPayType);
 
             List<ClassRoomModel> modelList = new List<ClassRoomModel>();
             foreach (tClassRoomEntity entity in list)
@@ -22,6 +22,7 @@ namespace TiKuBll
                 ClassRoomModel model = new ClassRoomModel();
                 model.fBasePrice = entity.fBasePrice;
                 model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassType = entity.fClassType;
                 model.fClassRoomDate = entity.fClassRoomDate;
                 model.fClassRoomTitle = entity.fClassRoomTitle;
                 model.fCoverImg = entity.fCoverImg;
@@ -31,6 +32,47 @@ namespace TiKuBll
                 model.fInfo = entity.fInfo;
                 model.fIsRecord = entity.fIsRecord;
                 model.fIsReturn = entity.fIsReturn;
+                model.fReturnType = entity.fReturnType;
+                model.fReturnRule = entity.fReturnRule;
+                model.fKnowLedge = entity.fKnowLedge;
+                model.fMaxNumber = entity.fMaxNumber;
+                model.fPayType = entity.fPayType;
+                model.fPharse = entity.fPharse;
+                model.fPrice = entity.fPrice;
+                model.fStatus = entity.fStatus;
+                model.fSubject = entity.fSubject;
+                model.fTecharUserName = entity.fTecharUserName;
+                modelList.Add(model);
+
+
+            }
+            ClassRoomListModel listModel = new ClassRoomListModel();
+            listModel.classRoomList = modelList;
+            return listModel;
+        }
+
+        public static ClassRoomListModel GetClassRoomByCreateOpr(string strCreate, string strStatus, string strPayType)
+        {
+            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByCreateOpr(strCreate, strStatus, strPayType);
+
+            List<ClassRoomModel> modelList = new List<ClassRoomModel>();
+            foreach (tClassRoomEntity entity in list)
+            {
+                ClassRoomModel model = new ClassRoomModel();
+                model.fBasePrice = entity.fBasePrice;
+                model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassType = entity.fClassType;
+                model.fClassRoomDate = entity.fClassRoomDate;
+                model.fClassRoomTitle = entity.fClassRoomTitle;
+                model.fCoverImg = entity.fCoverImg;
+                model.fDeadLineDate = entity.fDeadLineDate;
+                model.fDesc = entity.fDesc;
+                model.fGrade = entity.fGrade;
+                model.fInfo = entity.fInfo;
+                model.fIsRecord = entity.fIsRecord;
+                model.fIsReturn = entity.fIsReturn;
+                model.fReturnType = entity.fReturnType;
+                model.fReturnRule = entity.fReturnRule;
                 model.fKnowLedge = entity.fKnowLedge;
                 model.fMaxNumber = entity.fMaxNumber;
                 model.fPayType = entity.fPayType;
@@ -56,6 +98,7 @@ namespace TiKuBll
             model.fID = entity.fID;
             model.fBasePrice = entity.fBasePrice;
             model.fClassRoomCode = entity.fClassRoomCode;
+            model.fClassType = entity.fClassType;
             model.fClassRoomDate = entity.fClassRoomDate;
             model.fClassRoomTitle = entity.fClassRoomTitle;
             model.fCoverImg = entity.fCoverImg;
@@ -65,6 +108,8 @@ namespace TiKuBll
             model.fInfo = entity.fInfo;
             model.fIsRecord = entity.fIsRecord;
             model.fIsReturn = entity.fIsReturn;
+            model.fReturnType = entity.fReturnType;
+            model.fReturnRule = entity.fReturnRule;
             model.fKnowLedge = entity.fKnowLedge;
             model.fMaxNumber = entity.fMaxNumber;
             model.fPayType = entity.fPayType;
@@ -108,10 +153,16 @@ namespace TiKuBll
             List<CourseModel> courseList = PubFun.DataTableToObjects<CourseModel>(dsRst.Tables[2]);
 
 
+            List<ClassRoomAccountModel> accountList = PubFun.DataTableToObjects<ClassRoomAccountModel>(dsRst.Tables[3]);
+
             ClassRoomModel model = new ClassRoomModel();
             if (modelList.Count > 0)
             {
                 model = modelList[0];
+            }
+            if (accountList!=null && accountList.Count > 0)
+            {
+                model.account = accountList[0];
             }
             model.descList = descList;
             model.courseList = courseList;
@@ -134,22 +185,82 @@ namespace TiKuBll
             return model;
         }
 
-        public static decimal GetClassRoomPrice(int iCourseID)
+
+        public static CourseModel GetCourseByID(int iCourseId)
         {
-            decimal classRoomPrice = tClassRoomDal.GetClassRoomPrice(iCourseID);
-            return classRoomPrice;
+            tCourseEntity entity = tCourseDal.GettCourse(iCourseId);
+            CourseModel model = new CourseModel();
+            model.fAuthor = entity.fAuthor;
+            model.fClassDate = entity.fClassDate;
+            model.fClassDateLength = entity.fClassDateLength;
+            model.fClassRoomCode = entity.fClassRoomCode;
+            model.fClassType = entity.fClassType;
+            model.fClassType = entity.fClassType;
+            model.fCourseTitle = entity.fCourseTitle;
+            model.fDictTitle = entity.fDictTitle;
+            model.fFileCoverUrl = entity.fFileCoverUrl;
+            model.fFileSize = entity.fFileSize;
+            model.fFileType = entity.fFileType;
+            model.fID = entity.fID;
+            model.fOrder = entity.fOrder;
+            model.fResourceUrl = entity.fResourceUrl;
+            model.fSource = entity.fSource;
+            model.fStatus = entity.fStatus;
+            model.fIsPay = entity.fIsPay;
+            model.fUploadDate = entity.fUploadDate;
+            model.fUploadOpr = entity.fUploadOpr;
+            return model;
+        }
+
+        public static decimal GetClassRoomFlow(int iCourseID)
+        {
+            decimal classRoomFlow = tClassRoomDal.GetClassRoomFlow(iCourseID);
+            return classRoomFlow;
+        }
+
+        public static int ClassRoomCoursePay(int iCourseID, string strOprUser, string strSystem)
+        {
+            return tClassRoomDal.ClassRoomCoursePay(iCourseID, strOprUser,strSystem);
         }
 
 
-        public static int DoSaveClassRoom(ClassRoomModel model, string strUserName)
+        public static int ClassRoomSettlement(string strClassRoomCode, string strOprUser, ref string strMsg)
+        {
+            return tClassRoomDal.ClassRoomSettlement(strClassRoomCode, strOprUser,ref strMsg);
+        }
+
+        public static int SaveClassRoomInfo(string strClassRoomCode, string InfoType, string strValue,string strUserName)
+        {
+            tClassRoomEntity classRoom = tClassRoomDal.GettClassRoomByCode(strClassRoomCode, "");
+            if (InfoType == "fQrCode")
+            {
+                classRoom.fQrCode = strValue;
+            }
+            else if (InfoType == "fTecharUserName")
+            {
+                classRoom.fTecharUserName = strValue;
+            }
+            classRoom.fModifyDate = DateTime.Now;
+            classRoom.fModifyOpr = strUserName;
+
+            List<tClassRoomEntity> list = new List<tClassRoomEntity>();
+            list.Add(classRoom);
+            int i = tClassRoomDal.Modify(list, "update", "fID,fModifyDate,fModifyOpr," + InfoType, null);
+            return i;
+        }
+
+        public static int DoSaveClassRoom(ClassRoomModel model, string strUserName,ref string ClassRoomCode)
         {
             int i = 0;
             tClassRoomEntity entity = null;
             if (model.fID > 0)
             {
+                
                 entity = tClassRoomDal.GettClassRoomByID(model.fID);
+
+                ClassRoomCode = entity.fClassRoomCode;
+                entity.fClassType = model.fClassType;
                 entity.fBasePrice = model.fBasePrice;
-                entity.fClassRoomCode = model.fClassRoomCode;
                 entity.fClassRoomDate = model.fClassRoomDate;
                 entity.fClassRoomTitle = model.fClassRoomTitle;
                 entity.fCoverImg = model.fCoverImg;
@@ -159,6 +270,9 @@ namespace TiKuBll
                 entity.fInfo = model.fInfo;
                 entity.fIsRecord = model.fIsRecord;
                 entity.fIsReturn = model.fIsReturn;
+
+                entity.fReturnType = model.fReturnType;
+                entity.fReturnRule = model.fReturnRule;
                 entity.fKnowLedge = model.fKnowLedge;
                 entity.fMaxNumber = model.fMaxNumber;
                 entity.fPayType = model.fPayType;
@@ -177,7 +291,6 @@ namespace TiKuBll
             }
             else
             {
-                string ClassRoomCode = "";
                 Random rd = new Random();
                 if (model.fPayType == "在线支付")
                 {
@@ -189,6 +302,7 @@ namespace TiKuBll
                 }
 
                 entity = new tClassRoomEntity();
+                entity.fClassType = model.fClassType;
                 entity.fBasePrice = model.fBasePrice;
                 entity.fClassRoomCode = ClassRoomCode;
                 entity.fClassRoomDate = model.fClassRoomDate;
@@ -200,6 +314,8 @@ namespace TiKuBll
                 entity.fInfo = model.fInfo;
                 entity.fIsRecord = model.fIsRecord;
                 entity.fIsReturn = model.fIsReturn;
+                entity.fReturnType = model.fReturnType;
+                entity.fReturnRule = model.fReturnRule;
                 entity.fKnowLedge = model.fKnowLedge;
                 entity.fMaxNumber = model.fMaxNumber;
                 entity.fPayType = model.fPayType;
@@ -260,6 +376,14 @@ namespace TiKuBll
             return i;
         }
 
+        public static int DoDelClassRoomCourse(int iCourseID)
+        {
+
+            int i = tCourseDal.Delete(iCourseID.ToString());
+
+
+            return i;
+        }
 
         public static int DoSaveClassRoomCourse(CourseModel model)
         {
@@ -311,40 +435,19 @@ namespace TiKuBll
             return i;
         }
 
-
-
-        public static int DoColassRoomApplySubmit(string strClassRoomCode,string strStatus,string strUserName)
+        public static int DoCourseDocumentUpload(CourseModel model)
         {
-            tClassRoomApplyEntity apply = new tClassRoomApplyEntity();
-            apply.fClassRoomCode = strClassRoomCode;
-            apply.fStatus = strStatus;
-            apply.fSubmitDate = DateTime.Now;
-            apply.fSubmitOpr = strUserName;
-            List<tClassRoomApplyEntity> list=new List<tClassRoomApplyEntity>();
-            list.Add(apply);
-            int i = tClassRoomApplyDal.Modify(list, "insert", null, null);
+            List<tCourseEntity> courseList = new List<tCourseEntity>();
+
+            tCourseEntity cm = new tCourseEntity();
+            
+            cm.fID = model.fID;
+            cm.fDocoumentUrl = model.fDocoumentUrl;
+            courseList.Add(cm);
+            int i = tCourseDal.Modify(courseList, "update", "fID,fDocoumentUrl", null);
+
+
             return i;
-        }
-
-        public static List<ClassRoomApplyModel> getApplyList()
-        {
-            List<ClassRoomApplyModel> lstRst = PubFun.DataTableToObjects<ClassRoomApplyModel>(tClassRoomApplyDal.GettClassRoomApplyList());
-
-
-            return lstRst;
-        }
-
-        public static int DoAgreeClassRoomApply(int id,string strApplyNote,string strApplyOpr)
-        {
-            int i=tClassRoomApplyDal.DoAgreeClassRoomApply(id,strApplyNote,strApplyOpr,DateTime.Now);
-            return i;
-
-        }
-        public static int DoRefuseClassRoomApply(int id, string strApplyNote, string strApplyOpr)
-        {
-            int i = tClassRoomApplyDal.DoRefuseClassRoomApply(id, strApplyNote, strApplyOpr, DateTime.Now);
-            return i;
-
         }
 
         public static ClassRoomListModel GetMyClassRoom(string strUserName)
@@ -366,6 +469,8 @@ namespace TiKuBll
                 model.fInfo = entity.fInfo;
                 model.fIsRecord = entity.fIsRecord;
                 model.fIsReturn = entity.fIsReturn;
+                model.fReturnType = entity.fReturnType;
+                model.fReturnRule = entity.fReturnRule;
                 model.fKnowLedge = entity.fKnowLedge;
                 model.fMaxNumber = entity.fMaxNumber;
                 model.fPayType = entity.fPayType;
@@ -401,6 +506,8 @@ namespace TiKuBll
                 model.fInfo = entity.fInfo;
                 model.fIsRecord = entity.fIsRecord;
                 model.fIsReturn = entity.fIsReturn;
+                model.fReturnType = entity.fReturnType;
+                model.fReturnRule = entity.fReturnRule;
                 model.fKnowLedge = entity.fKnowLedge;
                 model.fMaxNumber = entity.fMaxNumber;
                 model.fPayType = entity.fPayType;
@@ -477,5 +584,33 @@ namespace TiKuBll
             listModel.MediaList = modelList;
             return listModel;
         }
+
+        /// <summary>
+        /// 课程发布/下架（修改状态）
+        /// </summary>
+        /// <returns></returns>
+        public static int ClassRoomSubmitSend(string strClassRoomCode,string strStatus,string strNote,string strUserName)
+        {
+            tClassRoomApplyEntity entity = new tClassRoomApplyEntity();
+            entity.fClassRoomCode = strClassRoomCode;
+            entity.fStatus = strStatus;
+            entity.fNote = strNote;
+            entity.fSubmitDate = DateTime.Now;
+            entity.fSubmitOpr = strUserName;
+            List<tClassRoomApplyEntity> list=new List<tClassRoomApplyEntity>();
+            list.Add(entity);
+            int i = tClassRoomApplyDal.Modify(list, "insert", null, null);
+
+            tClassRoomEntity classRoom = tClassRoomDal.GettClassRoomByCode(strClassRoomCode,null);
+            classRoom.fStatus = strStatus + "中";
+            List<tClassRoomEntity> classRoomList=new List<tClassRoomEntity>();
+            classRoomList.Add(classRoom);
+            i = tClassRoomDal.Modify(classRoomList, "update", "fID,fStatus", null);
+
+
+            return i;
+        }
+
+      
     }
 }

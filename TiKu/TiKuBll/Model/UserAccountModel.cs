@@ -9,6 +9,7 @@ namespace TiKuBll.Model
   {
     public System.Int32 fID { get; set; }
     public System.String fUserName { get; set; }
+    public System.String fType { get; set; }
     public System.Decimal fAmount { get; set; }
     public System.String fRemark { get; set; }
     public System.DateTime fDate { get; set; }
@@ -25,5 +26,8 @@ namespace TiKuBll.Model
 
   public class UserAccountListModel {
     public List<UserAccountModel> accountList { get; set; }
+
+    public decimal LeftAmount { get; set; }
+    public decimal LeftFlow { get; set; }
   }
 }

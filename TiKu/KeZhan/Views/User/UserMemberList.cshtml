@@ -1,0 +1,198 @@
+﻿@model TiKuBll.Model.UserMemberListModel
+@{
+    ViewBag.Title = "课站";
+}
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+                        <li class="active" onclick="showPanel('member')"><a href="#" style=" width:100%;" data-toggle="tab">我邀请的</a></li>
+                       
+                            <li onclick="showPanel('user')"><a href="#" style=" width:100%;" data-toggle="tab">邀请我的</a></li>
+                            <li onclick="showPanel('add')"><a href="#" style=" width:100%;" data-toggle="tab">新增邀请</a></li>
+
+                    </ul>
+                </div>
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail" id="panelMemberList">
+
+                            @if (Model.userMemberList != null)
+                            {
+                                                <!-- ITEM PACKAGE -->
+                                foreach (var member in Model.userMemberList)
+                                {
+                                    <div class="reservation-package_item">
+                                        <div class="reservation-package_img">
+                                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@member.MemberHead" data-reveal-id="myModal" alt="">
+
+                                        </div>
+
+                                        <div class="reservation-package_text">
+
+                                            <h4><a href="#">@member.MemberName</a></h4>
+                                            <p>
+                                                <span>邀请时间：@member.fCreateDateTime.ToString()</span>
+                                                <br />
+                                                @if (member.fStatus.Trim() == "2")
+                                                {
+                                                    <span>已接受</span>
+                                                }
+                                                else if (member.fStatus.Trim() == "3")
+                                                {
+                                                    <span>已拒绝</span>
+                                                }
+                                                else if (member.fStatus.Trim() == "4")
+                                                {
+                                                    <span>已取消</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>已提交</span>
+                                                }
+                                            </p>
+
+                                            <div class="reservation-package_book-price">
+                                               @if (member.fStatus.Trim() == "2") {
+                                                <button class="awe-btn awe-btn-default" onclick="UserInviteRemove(@member.fID)" >取消邀请</button>
+                                               }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                            }
+
+                        </div>
+
+                        <div class="reservation-billing-detail" id="panelList" style="display:none;">
+
+                        </div>
+
+                        <div class="reservation-billing-detail" id="panelAdd" style="display:none;">
+                            <label>手机号<sup>*</sup></label>
+                            <input type="text" id="txtMobile" value="" placeholder="请输入手机号" class="input-text">
+
+                            <button class="awe-btn awe-btn-13" onclick="SendInvite()">发送邀请</button>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+   
+    function showPanel(div) {
+        if (div == "member") {
+            $(".reservation-billing-detail").hide();
+            $("#panelMemberList").show();
+        } else if (div == "user") {
+            $(".reservation-billing-detail").hide();
+            $("#panelList").show();
+            $.ajax({
+                url: "/user/QueryMemberList",
+                type: this.method,
+                data: {},
+                success: function (msg) {
+                    $('#panelList').html(msg);
+                }
+            });
+
+        } else if (div == "add") {
+            $(".reservation-billing-detail").hide();
+            $("#panelAdd").show();
+
+
+
+        } else if (div == "booking") {
+            $(".reservation-billing-detail").hide();
+            $("#panelBooking").show();
+
+            $.ajax({
+                url: "/ClassRoom/QueryBookingList",
+                type: this.method,
+                data: { "strClassRoomCode": ClassRoomCode },
+                success: function (msg) {
+                    $('#panelBooking').html(msg);
+                }
+            });
+        }
+    }
+
+    function SendInvite()
+    {
+        if ($("#txtMobile").val() == "") {
+            alert("请输入手机号")
+            return;
+        }
+        $.ajax({
+            url: "/user/CheckUser",
+            type: this.method,
+            data: { "strMobile": $("#txtMobile").val() },
+            success: function (rest) {
+                if (rest.iResult == 0) {
+                    $.ajax({
+                        url: "/user/InviteMember",
+                        type: this.method,
+                        data: { "strMobile": $("#txtMobile").val(), "strNote": "" },
+                        success: function (rest) {
+                            alert(rest.strMsg);
+                            if (rest.iResult == 0) {
+                                location.reload();
+                            }
+                        }
+                    });
+                } else {
+                    alert(rest.strMsg)
+                }
+            }
+        });
+    }
+
+    function UserInviteCancel(id) {
+        $.ajax({
+            url: "/user/InviteCancel",
+            type: this.method,
+            data: { "id": id },
+            success: function (rest) {
+                if (rest.iResult == 0) {
+                    location.reload();
+                } else {
+                    alert(rest.strMsg);
+                }
+            }
+        });
+    }
+
+
+    function UserInviteRemove(id) {
+        $.ajax({
+            url: "/user/InviteRemove",
+            type: this.method,
+            data: { "id": id },
+            success: function (rest) {
+                if (rest.iResult == 0) {
+                    location.reload();
+                } else {
+                    alert(rest.strMsg);
+                }
+            }
+        });
+    }
+</script>

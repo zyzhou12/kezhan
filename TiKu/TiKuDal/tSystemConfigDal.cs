@@ -60,11 +60,13 @@ namespace TiKu.Dal
       return rst.Result;
     }
 
-    public static tSystemConfigEntity GettSystemConfig(int id)
+    public static tSystemConfigEntity GettSystemConfigByCity(string strCity)
     {
       tSystemConfigEntity rst = null;
-      string strSQL = "SELECT * FROM tSystemConfig WHERE tSystemConfigID=" + id.ToString();
-      DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
+      string strSQL = "SELECT * FROM tSystemConfig WHERE fCity=@City";
+      List<DbParameter> lstParam = new List<DbParameter>();
+      lstParam.Add(new DBParam("@City", strCity));
+      DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
       if (dt.Rows.Count > 0)
       {
         rst = new tSystemConfigEntity();

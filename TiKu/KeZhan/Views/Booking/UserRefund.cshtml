@@ -1,0 +1,153 @@
+﻿@model TiKuBll.Model.UserRefundModel
+@{
+    ViewBag.Title = "UserRefund";
+}
+
+
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+            <!-- STEP -->
+            <div class="reservation_step">
+
+
+            </div>
+            <!-- END / STEP -->
+
+            <div class="row">
+
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+                    <div class="reservation_content">
+                        <div class="reservation-billing-detail">
+
+
+                            <label>订单号</label>
+                            <br />
+                            <span>@Model.fBookingNo</span>
+                            <br />
+                            <label>申请人</label>
+                            <br />
+                            <span>@Model.fUserName</span>
+                            <br />
+                            <label>退款金额</label>
+                            <br />
+                            <span>@Model.fApplyAmount</span>
+                            <br />
+                            <label>申请时间</label>
+                            <br />
+                            <span>@Model.fApplyDate.ToString()</span>
+                            <br />
+                            <label>申请备注</label>
+                            <br />
+                            <span>@Model.fApplyRemark</span>
+
+                            <br />
+
+                            <label>处理结果</label>
+
+                            @if (Model.fStatus == "0")
+                            {
+                                <div>
+                                    <div class="shortcode-select">
+                                        <select style="width:100%; height:42px;" id="cmbResult" onchange="SetResult(this)">
+                                            <option value="1">通过</option>
+                                            <option value="0">未通过</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <label>处理意见</label>
+                                <input type="text" id="txtRefundNote" placeholder="处理意见" class="input-text" />
+
+                                <input type="text" id="txtRefundAmount" class="input-text" style=" display:none" />
+
+                                <button class="awe-btn awe-btn-14" onclick="Confirm(@Model.fID,'@Model.fPayType')">确定</button>
+                            }
+                            else
+                            {
+                                <br />
+                                if (Model.fStatus == "1")
+                                {
+                                    <span>已退款</span>
+                                    <span>实际退款： @Model.fRefundAmount</span>
+                                    <span>处理意见： @Model.fRefundNote</span>
+                                }
+                                else
+                                {
+                                    <span>已驳回</span>
+                                    <span>处理意见： @Model.fRefundNote</span>}
+                            }
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    function SetResult(obj) {
+        if ($(obj).val() == "1") {
+            $("#txtRefundAmount").hide();
+        } else {
+            $("#txtRefundAmount").show();
+        }
+    }
+
+    function Confirm(id,payType) {
+        if ($("#txtRefundNote").val() == "") {
+            alert("请输入处理意见");
+            return;
+        }
+
+
+        if ($("#cmbResult").val() == "1") {
+            ConfirmUserRefund(id, payType);
+        } else {
+            RefusedUserRefund(id, payType);
+        }
+    }
+
+    function ConfirmUserRefund(id, payType) {
+
+        $.ajax({
+            url: "/Booking/DoConfrimRefund",
+            data: { "refundID": id, "strPayType": payType, "refundPrice": $("#txtRefundAmount").val(), "applyStatus": "1", "applyNote": $("#txtRefundNote").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    self.location = document.referrer;
+                }
+            }
+
+        });
+    }
+
+    function RefusedUserRefund(id) {
+        $.ajax({
+            url: "/Booking/DoConfrimRefund",
+            data: { "refundID": id, "refundPrice": "0", "applyStatus": "2", "applyNote": $("#txtRefundNote").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    self.location = document.referrer;
+                }
+            }
+
+        });
+    }
+</script>

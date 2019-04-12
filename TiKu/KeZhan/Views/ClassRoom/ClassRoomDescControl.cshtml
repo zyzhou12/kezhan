@@ -1,0 +1,52 @@
+﻿@model TiKuBll.Model.DescListModel
+@{
+    ViewBag.Title = "ClassRoomDescControl";
+}
+
+@if (Model.descList != null)
+{
+    foreach (var desc in Model.descList)
+    {
+        if (desc.fType == "text")
+        {
+            <span>@desc.fContent</span>
+            <br />
+        }
+        else if (desc.fType == "img")
+        {
+            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@desc.fContent?x-oss-process=style/fang" alt="" />
+            <br />
+        }
+        if (Model.isEdit)
+        {
+            <a class="awe-btn awe-btn-13" onclick="DelDesc(@desc.fID)">删除当前段</a>
+            <a class="awe-btn awe-btn-13" onclick="UpdateDesc(@desc.fID,'@desc.fType','@desc.fContent',@desc.fOrder)">修改当前段</a>
+        }
+        <br />
+    }
+}
+@if (Model.isEdit)
+{
+    <button class="awe-btn awe-btn-13" id="btnDescAdd" onclick="AddDesc()">新增介绍</button>
+}
+<div id="divDesc" style=" display:none ;">
+    <input type="hidden" id="hidDescID" />
+    <br />
+    <label>信息类型</label>
+    <select id="cmbType" class="awe-select" onchange="changeType(this)">
+        <option value="text">文字</option>
+        <option value="img">图片</option>
+    </select>
+    <br />
+    <br />
+    <textarea class="input-textarea" id="txtContent" placeholder="请输入内容"></textarea>
+
+    <br />
+    <img id="fileUploadDesc" style=" display:none;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadFile('@Model.TeacherUserName','ClassRoomDesc','hidDesc','','fileUploadDesc')" alt="">
+    <input type="hidden" id="hidDesc" />
+    <label>排序</label>
+    <input type="number" id="txtDescOrder" placeholder="请输入数字" class="input-text">
+
+    <button class="awe-btn awe-btn-13" onclick="SaveDesc()">保存</button>
+</div>
+<br />

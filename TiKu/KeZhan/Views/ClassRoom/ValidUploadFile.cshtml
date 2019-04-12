@@ -2,185 +2,247 @@
 
 
 @section otherHeadInfo {
-  <link href="../../Content/css/fileUpload.css" rel="stylesheet" type="text/css">
-  <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-  <script type="text/javascript" src="../../Scripts/fileUpload.js?v=2.0"></script>
+    <link href="../../Content/css/fileUpload.css" rel="stylesheet" type="text/css">
+    <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="../../Scripts/fileUpload.js?v=2.0"></script>
 }
 
 
 <section class="section-reservation-page bg-white">
 
-            <div class="container">
-                <div class="reservation-page">
-                    
-                    <!-- STEP -->
-                    <div class="reservation_step">
+    <div class="container">
+        <div class="reservation-page">
+
+            <!-- STEP -->
+            <div class="reservation_step">
+
+
+            </div>
+            <!-- END / STEP -->
+
+            <div class="row">
+
+                <!-- SIDEBAR -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="sidebar">
+
+
+                        <!-- WIDGET RECENT POST HAS THUMBNAIL -->
                        
+                        <div class="widget widget_recent_entries has_thumbnail">
+                            <h4 class="widget-title">证书要求</h4>
+                            <div class="guest-book_item guest-book_item-2">
+                              <p>
+                                  K12 公开课必须拥有相应学科的教师证书，证书向下兼容，比如你有高中数学证书，可以上高中、初中和小学的课，认证一旦通过，您还可以上所有非K12的课程；
+                                  非 K12 课程或K12私课必须提供本科以上学历（学位）证书或其他国家认可的专业资质证书包括教师证，认证一旦通过，可以上所有非K12课程；
+                              </p>
+                            </div>
+                        </div>
+                        <div class="widget widget_recent_entries has_thumbnail">
+                            <h4 class="widget-title">关于私课与公开课</h4>
+                            <div class="guest-book_item guest-book_item-2">
+                                <p>
+                                    所谓“私课”是指课程只能在私下渠道传播和报名的课程，私课只需要学位证书
+                                </p>
+                            </div>
+                        </div>
+                        <div class="widget widget_recent_entries has_thumbnail">
+                            <h4 class="widget-title">关于学科</h4>
+                            <div class="guest-book_item guest-book_item-2">
+                                <p>
+                                    K12 学科包括：
+                                    数学、语文、英语、物理、化学、历史、地理；
+                                    非 K12 学科包括：
+                                    外语、音乐、绘画、STEAM、竞赛、科学、编程、拓展、其他
+                                </p>
+                            </div>
+                        </div>
+                        <!-- END / WIDGET RECENT POST HAS THUMBNAIL -->
+                     
 
                     </div>
-                    <!-- END / STEP -->
 
-                    <div class="row">
+                </div>
+                <!-- END / SIDEBAR -->
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+                    <div class="reservation_content">
+                        <div class="reservation-billing-detail">
 
-                        <!-- SIDEBAR -->
-                        <div class="col-md-4 col-lg-3">
 
-                            
 
-                        </div>
-                        <!-- END / SIDEBAR -->
-                        
-                        <!-- CONTENT -->
-                        <div class="col-md-8 col-lg-9">
-                            <div class="reservation_content">                                
-                                <div class="reservation-billing-detail">
+                            <div class="reservation-chosen-message bg-gray text-center" id="divMessage" style=" display:none;">
+                                <h4>提示信息 </h4>
+                                <p>认证信息提交成功，请等待审核，大概需要3-5个工作日?</p>
+                                <a href="/open/ClassRoomList" class="awe-btn awe-btn-6">确定</a>
+                            </div>
 
-                                  
-                                
-                                <div class="reservation-chosen-message bg-gray text-center" id="divMessage" style=" display:none;">
-                                    <h4>提示信息 </h4>
-                                    <p>认证信息提交成功，请等待审核，大概需要3-5个工作日?</p>
-                                    <a href="/open/ClassRoomList" class="awe-btn awe-btn-6">确定</a>
+
+
+
+
+                            <div style="text-align:left;" id="divValid">
+
+                                <h4>老师身份认证</h4>
+
+                                <label>真实姓名</label>
+                                <input type="text" id="txtName" value="" class="input-text">
+                                <label>证件类型</label>
+                                <div class="shortcode-select">
+                                    <select class="awe-select" id="cmbIDType" >
+                                        <option value="">请选择</option>
+                                        <option value="1">身份证</option>
+                                        <option value="2">护照</option>
+                                    </select>
+                                </div>
+                                <label>证件号码</label>
+                                <input type="text" id="txtUID" value="" class="input-text">
+
+
+
+
+                                <label>证件照</label>
+
+                                @if (string.IsNullOrEmpty(Model.fIDCard1))
+                                {
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgIDCard1" data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtIDCard1','','imgIDCard1')" alt="" />
+                                }
+                                else
+                                {
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard1?x-oss-process=style/title" id="imgIDCard1" data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtIDCard1','','imgIDCard1')" alt="" />
+                                }
+                                <input type="hidden" id="txtIDCard1" value="@Model.fIDCard1" />
+                                @*<label>身份证反面</label>
+
+                                @if (string.IsNullOrEmpty(Model.fIDCard2))
+                                {
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgIDCard2" data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtIDCard2','','imgIDCard2')" alt="" />
+                                }
+                                else
+                                {
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard2?x-oss-process=style/title" id="imgIDCard2" data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtIDCard2','','imgIDCard2')" alt="" />
+                                }
+                                <input type="hidden" id="txtIDCard2" value="@Model.fIDCard2" />*@
+
+
+
+                                @*<br />
+                                <label>老师类型 <sup>*</sup></label>
+                                <div class="shortcode-select">
+                                    <select class="awe-select" id="cmbPharse" onchange="SetSubject(this)">
+                                        <option value="">请选择</option>
+                                        <option value="小学">K12小学</option>
+                                        <option value="初中">K12初中</option>
+                                        <option value="高中">K12高中</option>
+                                        <option value="非K12">非K12</option>
+                                    </select>
+                                </div>
+                                <br />
+                                <div class="shortcode-select">
+                                    <select style="width:100%; height:42px;" id="cmbSubject">
+                                        <option value="">请选择</option>
+
+                                    </select>
+                                </div>
+                                <label>证书类型 <sup>*</sup></label>
+                                <div class="shortcode-select">
+                                    <select class="awe-select" id="cmbCertType">
+                                        <option value="">请选择</option>
+                                        <option value="教师证">教师证</option>
+                                        <option value="学历证书">学历证书</option>
+                                        <option value="职业资格证">职业资格证</option>
+                                        <option value="其他">其他</option>
+                                    </select>
+                                </div>*@
+
+
+                                <label>上传教师证、学位证书或其他国家认可的专业资质证书</label>
+
+                                <div id="divValidImg">
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgTeacherCert0" data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtTeacherCert0','','imgTeacherCert0')" alt="" />
+                                    <input type="hidden" id="txtTeacherCert0" value="" />
                                 </div>
 
-                                   
-                                   <div class="reservation-chosen-message bg-gray text-center" id="divValid">
-                                   
-                                    <h4>老师身份认证</h4>
-                                      
-                                          <label>身份证正面</label>
-                                
-                                        @if (string.IsNullOrEmpty(Model.fIDCard1))
-                                        {
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgIDCard1"  data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtIDCard1','','imgIDCard1')" alt="" />
-                                        }
-                                        else
-                                        {
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard1?x-oss-process=style/title" id="imgIDCard1"  data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtIDCard1','','imgIDCard1')" alt="" />
-                                        }
-                                         <input type="hidden" id="txtIDCard1"  value="@Model.fIDCard1" />
-                                          <label>身份证反面</label>
-                                    
-                                        @if (string.IsNullOrEmpty(Model.fIDCard2))
-                                        {
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgIDCard2"  data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtIDCard2','','imgIDCard2')" alt="" />
-                                        }
-                                        else
-                                        {
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fIDCard2?x-oss-process=style/title" id="imgIDCard2"  data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtIDCard2','','imgIDCard2')" alt="" />
-                                        }
-                                         <input type="hidden" id="txtIDCard2"  value="@Model.fIDCard2" />
+                                <label>如果您有多张证书，可以同时上传</label>
+                                <button class="awe-btn awe-btn-13" onclick="AddValid()">新增证书</button>
+                                @*<label>证书2</label>
 
-                                          <label>老师类型 <sup>*</sup></label>
-                                    <div class="shortcode-select">
-                                        <select class="awe-select" id="cmbPharse">
-                                            <option value="">请选择</option>
-                                            <option value="小学教育">小学教育</option>
-                                            <option value="初中教育">初中教育</option>
-                                            <option value="高中教育">高中教育</option>
-                                            <option value="成人教育">成人教育</option>
-                                            <option value="其他">其他</option>
-                                        </select>
-                                    </div>
-                                    <div class="shortcode-select">
-                                        <select class="awe-select" id="cmbSubject">
-                                            <option value="">请选择</option>
-                                            <option value="小学">语文</option>
-                                            <option value="数学">数学</option>
-                                            <option value="英语">英语</option>
-                                            <option value="物理">物理</option>
-                                            <option value="化学">化学</option>
-                                            <option value="音乐">音乐</option>
-                                            <option value="美术">美术</option>
-                                            <option value="编程">编程</option>
-                                            <option value="其他">其他</option>
-                                        </select>
-                                    </div>
-                                     <label>证书类型 <sup>*</sup></label>
-                                    <div class="shortcode-select">
-                                        <select class="awe-select" id="cmbCertType">
-                                            <option value="">请选择</option>
-                                            <option value="教师证">教师证</option>
-                                            <option value="职业资格证">职业资格证</option>
-                                            <option value="其他">其他</option>
-                                        </select>
-                                    </div>
-
-
-                                          <label>证书1</label>
-                                    
-                                        @if (string.IsNullOrEmpty(Model.fTeachCert1))
-                                        {
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgTeacherCert1"  data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtTeacherCert1','','imgTeacherCert1')" alt="" />
-                                        }
-                                        else
-                                        {
-                                      <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert1?x-oss-process=style/title" id="imgTeacherCert1"  data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtTeacherCert1','','imgTeacherCert1')" alt="" />
-                                        }
-                                         <input type="hidden" id="txtTeacherCert1"  value="@Model.fTeachCert1" />
-                                          <label>证书2</label>
-                                     
-                                        @if (string.IsNullOrEmpty(Model.fTeachCert2))
-                                        {
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgTeacherCert2"  data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtTeacherCert2','','imgTeacherCert2')" alt="" />
-                                        }
-                                        else
-                                        {
-                                      <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert2?x-oss-process=style/title" id="imgTeacherCert2"  data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtTeacherCert2','','imgTeacherCert2')" alt="" />
-                                        }
-                                         <input type="hidden" id="txtTeacherCert2"  value="@Model.fTeachCert2" />
-                                         <br />
-                                    <button class="awe-btn awe-btn-13" onclick="TeacherValid()">提交认证</button>
-                                    
-                                   </div>
-
-
-                                </div>
+                                @if (string.IsNullOrEmpty(Model.fTeachCert2))
+                                {
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgTeacherCert2" data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtTeacherCert2','','imgTeacherCert2')" alt="" />
+                                }
+                                else
+                                {
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fTeachCert2?x-oss-process=style/title" id="imgTeacherCert2" data-reveal-id="myModal" onclick="UploadFile('@Model.fUserName','TeacherValid','txtTeacherCert2','','imgTeacherCert2')" alt="" />
+                                }
+                                <input type="hidden" id="txtTeacherCert2" value="@Model.fTeachCert2" />*@
+                                <br />
+                                <button class="awe-btn awe-btn-13" onclick="TeacherValid()">提交认证</button>
 
                             </div>
 
-                        </div>
-                        <!-- END / CONTENT -->
-                        
-                    </div>
-                </div>
-            </div>
 
-        </section>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
 
 
 
 <script type="text/javascript">
 
-  function TeacherValid() {
-    var TeacherValidModel = {
-      fPharse: $("#cmbPharse").val(),
-      fSubject: $("#cmbSubject").val(),
-      fCertType: $("#cmbCertType").val(),
-      fIDCard1: $("#txtIDCard1").val(),
-      fIDCard2: $("#txtIDCard2").val(),
-      fTeachCert1: $("#txtTeacherCert1").val(),
-      fTeachCert2: $("#txtTeacherCert2").val()
-    };
-    $.ajax({
-      url: "/user/SaveTeacherValidFile",
-      data: TeacherValidModel,
-      type: "POST",
-      dataType: "json",
-      success: function (rst) {
-        if (rst.iResult >= 0) {
-          //alert("提交成功，等待审核");
-          //window.location.reload();
-          $("#divMessage").show();
-          $("#divValid").hide();
+    function AddValid()
+    {
+        $("#divValidImg").html($("#divValidImg").html() + "<br/> <br/><img src=\"https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title\" id=\"imgTeacherCert" + $("#divValidImg").find("input").length + "\" data-reveal-id=\"myModal\" onclick=\"UploadFile('@Model.fUserName','TeacherValid','txtTeacherCert" + $("#divValidImg").find("input").length + "','','imgTeacherCert" + $("#divValidImg").find("input").length + "')\" alt=\"\" /><input type=\"hidden\" id=\"txtTeacherCert" + $("#divValidImg").find("input").length + "\" value=\"\" />");
+    }
 
-        } else {
-          alert(rst.strMsg);
-        }
-      }
 
-    });
-  }
+    function TeacherValid() {
+        var detailList = new Array();
+        $("#divValidImg").find("input").each(function (i, val) {
+          
+            detailList[i] = {
+                fTeachCert1: val.value
+            };
+        });
+
+
+
+        var TeacherValidModel = {
+            fName: $("#txtName").val(),
+            fIDType: $("#cmbIDType").val(),
+            fUID: $("#txtUID").val(),
+            fIDCard1: $("#txtIDCard1").val(),
+            detailList: detailList
+        };
+        $.ajax({
+            url: "/user/SaveTeacherValidFile",
+            data: { "jsonData": JSON.stringify(TeacherValidModel) },
+            type: "POST",
+            cache: false,
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    //alert("提交成功，等待审核");
+                    //window.location.reload();
+                    $("#divMessage").show();
+                    $("#divValid").hide();
+
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
 
 
 

@@ -26,7 +26,7 @@ namespace KeZhan.Controllers
     //
     // GET: /AliPay/
       [HttpPost]
-    public JsonResult UserPay(string strUserName, string strBookingNo, string strFee)
+      public JsonResult UserPay(string strUserName, string strType, string strBookingNo, string strFee)
     {
       string privatekey = @"MIIEpQIBAAKCAQEAweqH4zUrohyvhIQCj5XNcdVz/1jd669oP/pc8gla9fTApwrU
                             wy4AQqPinR38w0uk8/kUGCqetZAUfmyBEjXptqI3Lh5i1Jag7t+Psa5m8Zsi2f8q
@@ -58,8 +58,8 @@ namespace KeZhan.Controllers
     
 
       DefaultAopClient client = new DefaultAopClient("https://openapi.alipay.com/gateway.do", "2018113062388410", privatekey, "json", "1.0", "RSA2", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlse4dU81/Q0QZa5lgwkcPPUFUfim+ZXYLosPaOJU4ZBDPUvxQnyVuHjvQdnAoxqUX2jmEi/XQfDHCtgcFMO4c7UpiI/DTqybBUMb5yKoAtPipKw7W4XAauXoFWqGF/dV2WrrDggNHVKKZYrpWFdyN8B32b5JP5J9TorGhNELl7RHm7QsOSCMFgMdd/IVIEsDr1V9HtJa3DMj2J6k+vbJAickXsmJBI4ix74pGSUYKG8tx2t016tkaIjRdI5DLIseEgqhV8jvqnk5qI9kziMJdXZr3QhIbXX/7Sf0JcJPQwXbqokSB1NFU++fIk1s367l1xqKsAZUd29c/9c7FlAF+QIDAQAB", "UTF-8", false);
-      
-      string sp_billno = UserBll.UserPay(strUserName, "alipay",strBookingNo, Convert.ToDecimal(strFee), "web");
+
+      string sp_billno = UserBll.UserPay(strUserName, "alipay", strType, strBookingNo, Convert.ToDecimal(strFee), "web");
 
       // 外部订单号，商户网站订单系统中唯一的订单号
       string out_trade_no = sp_billno;
@@ -176,6 +176,7 @@ namespace KeZhan.Controllers
       }
       catch (Exception ex)
       {
+
         WriteFile("Error.txt", "回调失败" + ex.Message);
       }
 
@@ -256,7 +257,7 @@ namespace KeZhan.Controllers
 
 
       [HttpPost]
-    public JsonResult UserWapPay(string strUserName, string strBookingNo, string strFee)
+    public JsonResult UserWapPay(string strUserName, string strType, string strBookingNo, string strFee)
     {
       string privatekey = @"MIIEpQIBAAKCAQEAweqH4zUrohyvhIQCj5XNcdVz/1jd669oP/pc8gla9fTApwrU
                             wy4AQqPinR38w0uk8/kUGCqetZAUfmyBEjXptqI3Lh5i1Jag7t+Psa5m8Zsi2f8q
@@ -289,7 +290,7 @@ namespace KeZhan.Controllers
 
       DefaultAopClient client = new DefaultAopClient("https://openapi.alipay.com/gateway.do", "2018113062388410", privatekey, "json", "1.0", "RSA2", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlse4dU81/Q0QZa5lgwkcPPUFUfim+ZXYLosPaOJU4ZBDPUvxQnyVuHjvQdnAoxqUX2jmEi/XQfDHCtgcFMO4c7UpiI/DTqybBUMb5yKoAtPipKw7W4XAauXoFWqGF/dV2WrrDggNHVKKZYrpWFdyN8B32b5JP5J9TorGhNELl7RHm7QsOSCMFgMdd/IVIEsDr1V9HtJa3DMj2J6k+vbJAickXsmJBI4ix74pGSUYKG8tx2t016tkaIjRdI5DLIseEgqhV8jvqnk5qI9kziMJdXZr3QhIbXX/7Sf0JcJPQwXbqokSB1NFU++fIk1s367l1xqKsAZUd29c/9c7FlAF+QIDAQAB", "UTF-8", false);
 
-      string sp_billno = UserBll.UserPay(strUserName, "alipay", strBookingNo, Convert.ToDecimal(strFee), "web");
+      string sp_billno = UserBll.UserPay(strUserName, "alipay", strType, strBookingNo, Convert.ToDecimal(strFee), "web");
 
       // 外部订单号，商户网站订单系统中唯一的订单号
       string out_trade_no = sp_billno;
@@ -362,9 +363,9 @@ namespace KeZhan.Controllers
 
     }
 
-    public void PayOrder(string strUserName,int strFee)
+    public void PayOrder(string strUserName, string strType, int strFee)
     {
-      string bookingno = UserBll.UserPay(strUserName, "alipay",null, strFee, "web");
+        string bookingno = UserBll.UserPay(strUserName, "alipay", strType, null, strFee, "web");
       //支付宝网关地址
       string GATEWAY_NEW = "http://wappaygw.alipay.com/service/rest.htm?";
 
@@ -558,6 +559,56 @@ namespace KeZhan.Controllers
     }
 
 
+    public string RefundAmount(string outtradeno, string outrefundno, int refundfee)
+    {
+        string privatekey = @"MIIEpQIBAAKCAQEAweqH4zUrohyvhIQCj5XNcdVz/1jd669oP/pc8gla9fTApwrU
+                            wy4AQqPinR38w0uk8/kUGCqetZAUfmyBEjXptqI3Lh5i1Jag7t+Psa5m8Zsi2f8q
+                            0ZqUrxXKJZF/rBum+3pLI1uPtK8HLgLI2K+/2eDK9xL9AqaHF5tR1Ml3IJjAhZYU
+                            FDsCeY8wnf5TywvzhgA//n/eKvvxyUBrs2Mfwu46sEWVC82JUII8Ww9mUL0dVqWk
+                            8eAnyYvgTxZMkeLHz8vWXP0tjoAS40sDRxo0bXisuXtgoF+U6rFCAhviZLRJOKMu
+                            +QvTKh0vFVZnOcxD/DWIursk9ij6Beua2XmRPQIDAQABAoIBAQC8DfniOfoqqK7+
+                            UBc7sAcg0eRASapNmjn7cY0ZnED+LXF3jWVwMvhFqDFoNWCe9IjvoSn/lbV8VlHJ
+                            mOhDBM22M/JXY1hs2fcQMPZlVcC3pb9SscaQptxyPyte649pFRgG4T5k97KRgvvv
+                            fvvQSABCB2JN4bhEDcMM/a+KMCa7EDfTihGSvwAh/bu9+9hB5v6nx1CotHsrp/mW
+                            5QfWDq4lYnajjwAi3Sj1cIkKuREEj9fkz29uHQlg57Zxv9pSLhSHCft8wLNN0ab8
+                            yC6d4ygIYABwkwSwBc4rOfX8B/k4mEKDja981tawUnQdkTMg9wJtUVqTPlSvNh7d
+                            JzIzwgrxAoGBAOHqn38HJIutx4WKpyP84FNi3zRC5XK/TJyOJ8g8nURaSV/vrZ8Z
+                            suz2P9j0PgbRe9NBIqgCxMRYl8yR+ChIVXgpzIN2Y/Gy4ZTmfCTrMDXcvM++iXVO
+                            xdlZCpH2rTGOkkRpLJ/vkM6h9Vz0l3g42AIvfQRxMvU26QsCdsyyl9jfAoGBANu9
+                            CDAbiabSO7bi+YUcM+edLxfyClD/LO9w8oXvS4DgXjyK6y3k97ae0zUAsWRnlVe6
+                            Ytw0av+vdnTKSbUsHToJvDlmo1oOrGjSrduk2EvCPsSiDvrSd/Qd+/JBi0B8nCIu
+                            0/JKoI9e0wG0tgl/toTnZxq4cRk/spfBSwORDq1jAoGAVa6+v1beLXvDaIqlyahn
+                            DDk7nn6gt1yGmfnwbKlQnFQB8DjfCLCeg/EBVi+MNtnMtNrHYiFqr21KZXQXQm/s
+                            up5fypxkW48Ur3ybKQVqS4NkuQXy7GLr9vsmXyXHmjwQjZG2MxKRQU172b2KlTY5
+                            9to7+CtWwFoLGPneRNSXctECgYEAqcN5N/GOf1uc1sa0j6oiT6aYY5+TaNA8HyDb
+                            va4KXx74rz2ERIjI+EXsVt6aLj/4mTZeelHk+HTOx5whJd9XFSfAS3iIa2M6wCFE
+                            QJUyphUD+VZazF0eX3Nq2tbYhpG+7onPJTmSojFYQ9EhcmVA1Z0RgwtMFX2otKWZ
+                            FsBS3pECgYEAse5fSm7eWxEAThpmvdqAysRRoUxum80gDkacbXJl62ZPTSiT4jDG
+                            ybZxVxITwfH23XCf9z52H/fb2TEUdE6c8cnwbnKsYHSAMw8Kg6bwRKhdItiPc7Kd
+                            jNbVzfmmNrbwttR1WDPtgLd8u3z+pjqcP5y82Y9e9Znj21S2VuoJOQY=
+                            ";
+       IAopClient client = new DefaultAopClient("https://openapi.alipay.com/gateway.do", "2018113062388410", privatekey, "json", "1.0", "RSA2", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlse4dU81/Q0QZa5lgwkcPPUFUfim+ZXYLosPaOJU4ZBDPUvxQnyVuHjvQdnAoxqUX2jmEi/XQfDHCtgcFMO4c7UpiI/DTqybBUMb5yKoAtPipKw7W4XAauXoFWqGF/dV2WrrDggNHVKKZYrpWFdyN8B32b5JP5J9TorGhNELl7RHm7QsOSCMFgMdd/IVIEsDr1V9HtJa3DMj2J6k+vbJAickXsmJBI4ix74pGSUYKG8tx2t016tkaIjRdI5DLIseEgqhV8jvqnk5qI9kziMJdXZr3QhIbXX/7Sf0JcJPQwXbqokSB1NFU++fIk1s367l1xqKsAZUd29c/9c7FlAF+QIDAQAB", "UTF-8", false);
+        AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
+        
+        request.BizContent = "{" +
+        "\"out_trade_no\":\"" + outtradeno + "\"," +
+        "\"refund_amount\":" + refundfee + "," +
+        "\"refund_currency\":\"RMB\"," +
+        "\"refund_reason\":\"正常退款\"," +
+        "\"out_request_no\":\"" + outrefundno + "\"," +
+        "  }";
+        AlipayTradeRefundResponse response = client.Execute(request);
+        Console.WriteLine(response.Body);
+        if(response.Code=="10000")
+        {
+            return "SUCCESS";
+        }
+        else
+        {
+            return response.Msg;
+        }
+    }
+
 
     /// <summary>
     /// 获取支付宝POST过来通知消息，并以“参数名=参数值”的形式组成数组
@@ -619,7 +670,7 @@ namespace KeZhan.Controllers
           //——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
 
          
-          UserBll.UserPaySuccess("weixinpay", out_trade_no, trade_no);
+          UserBll.UserPaySuccess("alipay", out_trade_no, trade_no);
           
           /////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }

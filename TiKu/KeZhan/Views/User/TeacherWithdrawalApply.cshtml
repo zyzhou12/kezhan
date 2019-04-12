@@ -1,0 +1,77 @@
+﻿@model TiKuBll.Model.UserBankAccountListModel
+@{
+    ViewBag.Title = "提现申请";
+}
+
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail">
+                            <label>提现金额<sup>*</sup></label>
+
+                            <input type="number" id="txtAmount"  class="input-text">
+
+                            <label>收款账号<sup>*</sup></label>
+
+                            <select id="cmbAccount" style="width:100%;height:42px;">
+                                @foreach(var a in Model.accountList)
+                                {
+                                    <option value="@a.fID">@a.fName</option>
+                                }
+
+                            </select>
+                            <br />
+
+                            <a href="#" class="awe-btn awe-btn-14" onclick="DoSaveTeacherWithDrawal()">提交</a>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<script type="text/javascript">
+    function DoSaveTeacherWithDrawal()
+    {
+        var TeacherWithdrawalModel = {
+            "fAmount": $("#txtAmount").val(),
+            "fBankAccountId": $("#cmbAccount").val()
+        }
+
+        $.ajax({
+            url: "/User/DoSaveTeacherWithDrawal",
+            data: TeacherWithdrawalModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("提交成功");
+                    self.location = document.referrer;
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

@@ -122,18 +122,23 @@ namespace TiKu.Dal
       return rst.DataSet.Tables[0];
     }
 
-    public static int TeacherValid(string strUserName, int iValidFid, bool ValidResutl,string strName,string strUID,string strCertNo,string strEffect, string strValidMessage)
+    public static int TeacherValid(string strUserName, int iValidFid, int iValidDetailFid, bool ValidResutl, string strName, string strIDType, string strUID, string strCertType, string strCertNo, string strEffect, string strPharse,string strSubject, string strValidMessage)
     {
       List<DbParameter> lstParam = new List<DbParameter>();
       lstParam.Add(new DBParam("@UserName", strUserName));
       lstParam.Add(new DBParam("@ValidFID", iValidFid));
+      lstParam.Add(new DBParam("@ValidDetailFID", iValidDetailFid));
       lstParam.Add(new DBParam("@ValidResult", ValidResutl));
       lstParam.Add(new DBParam("@Name", strName));
+      lstParam.Add(new DBParam("@IDType", strIDType));
       lstParam.Add(new DBParam("@UId", strUID));
+      lstParam.Add(new DBParam("@CertType", strCertType));
       lstParam.Add(new DBParam("@CertNo", strCertNo));
       lstParam.Add(new DBParam("@CertEffect", strEffect));
+      lstParam.Add(new DBParam("@Pharse", strPharse));
+      lstParam.Add(new DBParam("@Subject", strSubject));
       lstParam.Add(new DBParam("@ValidMessage", strValidMessage));
-
+     
       DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "Teacher_Valid", lstParam, DBHelper.ProcRstTypes.All);
 
       return rst.Result;

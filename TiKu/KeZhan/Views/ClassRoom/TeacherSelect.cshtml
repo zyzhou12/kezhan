@@ -1,0 +1,182 @@
+﻿@model KeZhan.Models.TeacherModel
+
+
+<label>课程类型</label>
+
+<select style="width:100%; height:42px;" id="cmbK12Type" onchange="ChangeClassType(this)">
+    <option value="">请选择</option>
+    <option value="K12">K12</option>
+    <option value="非K12">非K12</option>
+</select>
+
+<label>适应人群</label>
+<input type="hidden" id="hidPharse" value="@Model.fPharse" />
+<select id="cmbPharse" name="fPharse" onchange="ChangePharse()" style="width:100%; height:42px;">
+    
+</select>
+
+<label>学科</label>
+<div class="shortcode-select">
+    <input type="hidden" id="hidSubject" value="@Model.fSubject" />
+    <select style="width:100%; height:42px;" id="cmbSubject" onchange="ChangeSubject()">
+        <option value="">请选择</option>
+
+    </select>
+</div>
+
+
+<label>授课老师</label>
+<input type="hidden" id="hidTeacherValue" value="@Model.fUserName" />
+<select id="cmbTeacher" name="fTeacherUserName" onchange="GetValid(this)" style="width:100%; height:42px;"></select>
+
+
+<script type="text/javascript">
+    function ChangeType() {
+        var type = $("#cmbK12Type").val();
+        GetPharse(type);
+    }
+
+    function ChangeClassType(obj)
+    {
+        var type = $(obj).val();
+        GetPharse(type);
+    }
+
+    function ChangePharse() {
+        GetSubject($("#cmbPharse").val());
+    }
+
+    function ChangeSubject() {
+        var strPharse = $("#cmbPharse").val();
+        var strSubject = $("#cmbSubject").val();
+        GetTeacher(strPharse, strSubject);
+    }
+
+
+    $(document).ready(function () {
+        var strPharse = '@Model.fPharse';
+        var strSubject = '@Model.fSubject';
+        var type = "K12";
+        if (strPharse == "0") {
+            type = "非K12";
+        }
+        
+        $("#cmbK12Type").val(type);
+        GetPharse(type);
+        $("#cmbPharse").val(strPharse);
+        GetSubject(strPharse);
+        $("#cmbSubject").val(strSubject);
+        GetTeacher(strPharse, strSubject);
+    })
+
+    function GetPharse(type) {
+        $("#cmbPharse").empty();
+        $("#cmbSubject").empty();
+        $("#cmbTeacher").empty();
+        if (type== "K12") {
+            $("#cmbPharse").append("<option value=\"\">请选择</option>");
+            $("#cmbPharse").append("<option value=\"1\">小学</option>");
+            $("#cmbPharse").append(" <option value=\"2\">初中</option>");
+            $("#cmbPharse").append("<option value=\"3\">高中</option>");
+        } else {
+            $("#cmbPharse").append("<option value=\"0\">全部</option>");
+            GetSubject("0");
+        }
+    }
+
+    function GetSubject(pharse) {
+        $("#cmbSubject").empty();
+        if (pharse == "1") {
+            $("#cmbSubject").append("<option value=\"\">请选择</option>");
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+        } else if (pharse == "2") {
+            $("#cmbSubject").append("<option value=\"\">请选择</option>");
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+            $("#cmbSubject").append("<option value='物理'>物理</option>");
+            $("#cmbSubject").append("<option value='化学'>化学</option>");
+            $("#cmbSubject").append("<option value='地理'>地理</option>");
+        } else if (pharse == "3") {
+            $("#cmbSubject").append("<option value=\"\">请选择</option>");
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+            $("#cmbSubject").append("<option value='物理'>物理</option>");
+            $("#cmbSubject").append("<option value='化学'>化学</option>");
+            $("#cmbSubject").append("<option value='地理'>地理</option>");
+        } else if (pharse == "0") {
+            $("#cmbSubject").append("<option value=\"\">请选择</option>");
+            $("#cmbSubject").append("<option value='音乐'>音乐</option>");
+            $("#cmbSubject").append("<option value='美术'>美术</option>");
+            $("#cmbSubject").append("<option value='竞赛'>竞赛</option>");
+            $("#cmbSubject").append("<option value='科学'>科学</option>");
+            $("#cmbSubject").append("<option value='编程'>编程</option>");
+            $("#cmbSubject").append("<option value='拓展'>拓展</option>");
+            $("#cmbSubject").append("<option value='其他'>其他</option>");
+        }
+    }
+
+
+    function GetTeacher(strPharse, strSubject) {
+        $("#cmbTeacher").empty();
+        if (strPharse == "0") {
+            strPharse = "";
+            strSubject = "";
+        }
+        if ($("#cmbClassType").val() == "Private") {
+            strPharse = "";
+            strSubject = "";
+        }
+
+        $.getJSON("/ClassRoom/GetTeacherList?strPharse=" + strPharse + "&strSubject=" + strSubject, function (data) {
+            $("#cmbTeacher").append("<option value=''>请选择</option>");
+
+            $.each(data, function (i, item) {
+                if (item["fUserName"] == $("#hidTeacherValue").val()) {
+                    $("<option></option>")
+                              .val(item["fUserName"])
+                              .text(item["MemberName"])
+                              .attr("selected", "selected")
+                              .appendTo($("#cmbTeacher"));
+                } else {
+                    $("<option></option>")
+                              .val(item["fUserName"])
+                              .text(item["MemberName"])
+                              .appendTo($("#cmbTeacher"));
+
+                }
+            });
+
+        });
+
+    }
+
+    function GetValid(obj) {
+        var teacherUserName = $(obj).val();
+        $("#cmbTeacherValid").empty();
+        $.getJSON("/ClassRoom/GetTeacherValidList?strUserName=" + teacherUserName, function (data) {
+            $("#cmbTeacherValid").append("<option value=''>请选择</option>");
+
+            $.each(data, function (i, item) {
+                if (item["fID"] == $("#hidTeacherValidValue").val()) {
+                    $("<option></option>")
+                              .val(item["fID"])
+                              .text(item["fPharse"] + item["fSubject"])
+                              .attr("selected", "selected")
+                              .appendTo($("#cmbTeacherValid"));
+                } else {
+                    $("<option></option>")
+                              .val(item["fID"])
+                              .text(item["fPharse"] + item["fSubject"])
+                              .appendTo($("#cmbTeacherValid"));
+
+                }
+            });
+
+        });
+    }
+
+</script>

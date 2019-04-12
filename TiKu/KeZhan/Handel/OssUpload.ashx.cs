@@ -20,7 +20,6 @@ namespace KeZhan.Handel
             HttpPostedFile imgFile = context.Request.Files["file"];
             if (imgFile != null)
             {
-
                 var endpoint = "oss-cn-hangzhou.aliyuncs.com";
                 var accessKeyId = "LTAI0W5pqyqDXHhs"; //LTAIlLsb3W0Idk6a
                 var accessKeySecret = "c2sUv3Lf3hNr1DSsQdb3KqYcMQiGlD "; //EGCWeEQlwLqLaIGZRYrfEmcpPInQCV 
@@ -34,6 +33,10 @@ namespace KeZhan.Handel
                 if (context.Request["FileType"] == "ClassRoom")//课堂视频
                 {
                     key = "ClassRoomMedia" + "/" + context.Request["UserName"] + "/" + DateTime.Now.ToString("yyyyMMddHHmm") + imgFile.FileName;
+                }
+                else if (context.Request["FileType"] == "CourseDocument")//课堂资料
+                {
+                    key = "CourseDocument" + "/" + context.Request["UserName"] + "/" + DateTime.Now.ToString("yyyyMMddHHmm") + imgFile.FileName;
                 }
                 PutObjectResult result = ossClient.PutObject(bucketName, key, imgFile.InputStream);
 

@@ -62,13 +62,17 @@
     <Compile Include="tAnswerEntity.cs" />
     <Compile Include="tBookingEntity.cs" />
     <Compile Include="tChapterEntity.cs" />
+    <Compile Include="tClassRoomApplyEntity.cs" />
     <Compile Include="tClassRoomDetailEntity.cs" />
     <Compile Include="tClassRoomEntity.cs" />
     <Compile Include="tCourseEntity.cs" />
     <Compile Include="tDiffTypeEntity.cs" />
     <Compile Include="tEditionEntity.cs" />
     <Compile Include="tEmailEntity.cs" />
+    <Compile Include="tFlowStoredEntity.cs" />
     <Compile Include="tGradeEntity.cs" />
+    <Compile Include="tGroupEntity.cs" />
+    <Compile Include="tGroupUserInfoEntity.cs" />
     <Compile Include="tHistoryEntity.cs" />
     <Compile Include="tKnowLedgeBasicEntity.cs" />
     <Compile Include="tKonwLedgeLevelEntity.cs" />
@@ -89,10 +93,14 @@
     <Compile Include="tSubjectEntity.cs" />
     <Compile Include="tSubQuestionEntity.cs" />
     <Compile Include="tSystemConfigEntity.cs" />
+    <Compile Include="tTeacherValidDetailEntity.cs" />
+    <Compile Include="tTeacherWithdrawalEntity.cs" />
     <Compile Include="tTeachInfoEntity.cs" />
     <Compile Include="tTeachValidEntity.cs" />
     <Compile Include="tUserAccountEntity.cs" />
+    <Compile Include="tUserBankAccountEntity.cs" />
     <Compile Include="tUserEntity.cs" />
+    <Compile Include="tUserMemberEntity.cs" />
     <Compile Include="tUserPayEntity.cs" />
     <Compile Include="tUserRefundEntity.cs" />
   </ItemGroup>

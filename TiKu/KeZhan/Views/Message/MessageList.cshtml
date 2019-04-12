@@ -1,0 +1,164 @@
+﻿@model TiKuBll.Model.MessageListModel
+
+@{
+    ViewBag.Title = "MessageList";
+}
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+                        <li class="active" onclick="showPanel('')"><a href="#" style=" width:100%;" data-toggle="tab">全部</a></li>
+                        <li onclick="showPanel('0')"><a href="#" style=" width:100%;" data-toggle="tab">未查看</a></li>
+
+                        <li onclick="showPanel('1')"><a href="#" style=" width:100%;" data-toggle="tab">已查看</a></li>
+
+                    </ul>
+                </div>
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div id="comments">
+                            @*<h4 class="comment-title">COMMENT (3)</h4>*@
+                            <ul class="commentlist">
+                                @if (Model.messageList != null)
+                                {
+                                                <!-- ITEM PACKAGE -->
+                                    foreach (var msg in Model.messageList)
+                                    {
+                                        <li title="@msg.fStatus">
+                                            <div class="comment-body">
+                                                @*<a class="comment-avatar"><img src="images/avatar/img-1.jpg" alt=""></a>*@
+                                                <h4 class="comment-subject" onclick="showDetail(@msg.fID,@msg.fStatus)">@msg.fTitle</h4>
+                                                <p id="pdetail-@msg.fID" style="display:none;">@msg.fContent</p>
+                                                <span class="comment-meta">
+                                                    <a href="#"></a> @msg.fCreateDate.ToString()
+                                                </span>
+                                                <div class="action">
+                                                    @if (msg.fStatus == 0 && msg.fType.Trim() == "Invite")
+                                                    {
+                                                        <a href="#" class="awe-btn awe-btn-14" onclick="UserInviteAgree(@msg.fTypeID)">接受邀请</a>
+    <a href="#" class="awe-btn awe-btn-14" onclick="UserInviteRefused(@msg.fTypeID)">拒绝邀请</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+
+
+                        @*<div class="reservation-billing-detail" id="panelMemberList">
+
+                            @if (Model.messageList != null)
+                            {
+                                foreach (var msg in Model.messageList)
+                                {
+                                    <div class="reservation-package_item" title="@msg.fStatus">
+                                     
+
+                                        <div class="reservation-package_text">
+
+                                            <h4><a href="#">@msg.fTitle</a></h4>
+                                            <p>
+                                                <span>@msg.fContent</span>
+                                            </p>
+
+                                            <div class="reservation-package_book-price">
+
+                                                @if (msg.fStatus == 0 && msg.fType.Trim() == "Invite")
+                                                {
+                                                    <button class="awe-btn awe-btn-13" onclick="UserInviteAgree(@msg.fTypeID)">接受邀请</button>
+                                                    <button class="awe-btn awe-btn-12" onclick="UserInviteRefused(@msg.fTypeID)">拒绝邀请</button>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                            }
+
+                        </div>*@
+
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script type="text/javascript">
+    function showDetail(id,status)
+    {
+        $("#pdetail-"+id).show();
+        if(status==0){
+            $.ajax({
+                url: "/Message/MessageLook",
+                type: this.method,
+                data: { "iMessageID": id },
+                success: function (rest) {
+               
+
+                }
+            });
+        }
+    }
+
+    function UserInviteAgree(id) {
+        $.ajax({
+            url: "/user/InviteAgree",
+            type: this.method,
+            data: { "id": id },
+            success: function (rest) {
+                if (rest.iResult == 0) {
+                    //location.reload();
+                    window.location.href = "/user/UserMemberList";
+                } else {
+                    alert(rest.strMsg);
+                }
+            }
+        });
+    }
+
+    function UserInviteRefused(id) {
+        $.ajax({
+            url: "/user/InviteRefused",
+            type: this.method,
+            data: { "id": id },
+            success: function (rest) {
+                if (rest.iResult == 0) {
+                    location.reload();
+                } else {
+                    alert(rest.strMsg);
+                }
+            }
+        });
+    }
+
+    function showPanel(status) {
+        $(".commentlist li").hide();
+        if (status == "") {
+            $(".commentlist li").show();
+        } else {
+            if (status == "0") {
+                $("[title='0']").show();
+            } else {
+                $(".commentlist li").show();
+                $("[title='0']").hide();
+            }
+        }
+    }
+</script>

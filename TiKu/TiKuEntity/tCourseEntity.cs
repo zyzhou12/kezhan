@@ -14,6 +14,8 @@ namespace TiKu.Entity
     public System.String fCourseTitle { get; set; }
     public System.DateTime fClassDate { get; set; }
     public System.Int32 fClassDateLength { get; set; }
+
+    public System.String fDocoumentUrl { get; set; }
     public System.Int32 fOrder { get; set; }
     public System.String fResourceUrl { get; set; }
     public System.String fSource { get; set; }
@@ -23,6 +25,7 @@ namespace TiKu.Entity
     public System.String fFileType { get; set; }
     public System.Int32 fFileSize { get; set; }
     public System.String fStatus { get; set; }
+    public System.Boolean fIsPay { get; set; }
     public System.String fFileCoverUrl { get; set; }
 
   }

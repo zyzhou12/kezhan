@@ -10,6 +10,7 @@ namespace TiKuBll.Model
   {
     public int fID { get; set; }
     public System.String fClassRoomCode { get; set; }
+    public System.String fClassType { get; set; }
     public System.String fTecharUserName { get; set; }
     public System.String fClassRoomTitle { get; set; }
     public System.String fCoverImg { get; set; }
@@ -29,12 +30,14 @@ namespace TiKuBll.Model
     public System.String fKnowLedge { get; set; }
     public System.String fPayType { get; set; }
     public System.Boolean fIsReturn { get; set; }
+    public System.String fReturnType { get; set; }
+    public System.String fReturnRule { get; set; }
     public System.Boolean fIsRecord { get; set; }
     public System.String fStatus { get; set; }
 
     public System.Int32 IsBuy { get; set; }
 
-
+    public System.String fCreateOpr { get; set; }
 
     public System.String UserName { get; set; }
     public System.String TeacherName { get; set; }
@@ -45,12 +48,21 @@ namespace TiKuBll.Model
 
     public List<DescModel> descList { get; set; }
     public List<CourseModel> courseList { get; set; }
+
+    public ClassRoomAccountModel account { get; set; }
   }
 
   public class ClassRoomListModel
   {
     public List<ClassRoomModel> classRoomList { get; set; }
   }
+
+    public class DescListModel
+    {
+        public bool isEdit { get; set; }
+        public string TeacherUserName { get; set; }
+        public List<DescModel> descList { get; set; }
+    }
 
   public class DescModel
   {
@@ -61,6 +73,12 @@ namespace TiKuBll.Model
     public System.Int32 fOrder { get; set; }
   }
 
+    public class CourseListModel
+    {
+        public bool isEdit { get; set; }
+        public string TeacherUserName { get; set; }
+        public List<CourseModel> courseList { get; set; }
+    }
   public class CourseModel
   {
     public System.Int32 fID { get; set; }
@@ -69,7 +87,7 @@ namespace TiKuBll.Model
     public System.String fDictTitle { get; set; }
     public System.String fCourseTitle { get; set; }
     public System.DateTime fClassDate { get; set; }
-
+    public System.String fDocoumentUrl { get; set; }
     public System.Int32 fClassDateLength { get; set; }
     public System.Int32 fOrder { get; set; }
     public System.String fResourceUrl { get; set; }
@@ -80,6 +98,7 @@ namespace TiKuBll.Model
     public System.String fFileType { get; set; }
     public System.Int32 fFileSize { get; set; }
     public System.String fStatus { get; set; }
+    public System.Boolean fIsPay { get; set; }
     public System.String fFileCoverUrl { get; set; }
 
     public System.Int32 CourseStatus { get; set; }

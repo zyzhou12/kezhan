@@ -1,5 +1,86 @@
-﻿@{
-    ViewBag.Title = "ClassRoomApplyManager";
+﻿@model TiKuBll.Model.ClassRoomApplyListModel
+@{
+    ViewBag.Title = "课站";
 }
 
-<h2>ClassRoomApplyManager</h2>
+
+<section class="section-reservation-page bg-white">
+    <div class="container">
+        <div class="reservation-page">
+
+            <div class="row">
+                <!-- SIDEBAR -->
+                <div class="col-md-4 col-lg-3">
+                    <div class="reservation-sidebar">
+                        <!-- RESERVATION DATE -->
+                        <div class="reservation-date bg-gray">
+                            <!-- HEADING -->
+                            @* <h2 class="reservation-heading" onclick="showPanel('info')">基本资料</h2>
+                            *@
+                            <!-- END / HEADING -->
+                        </div>
+                        <!-- END / RESERVATION DATE -->
+                    </div>
+                </div>
+                <!-- END / SIDEBAR -->
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+                    <div class="reservation_content">
+
+
+                        <div class="reservation-billing-detail" id="panelList">
+
+                            @if (Model.list != null && Model.list.Count > 0)
+                            {
+                                <div id="comments">
+                                    <ul class="commentlist">
+                                        @foreach (var v in Model.list)
+                                        {
+                                            <li>
+                                                <div class="comment-body">
+                                                    <a class="comment-avatar">
+                                                        @*<img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@b.UserHead?x-oss-process=style/width" alt="">*@
+                                                    </a>
+                                                    <h4 class="comment-subject">
+                                                        @v.fClassRoomTitle ( @v.fClassRoomCode )
+                                                    </h4>
+                                                    <p>
+                                                    </p>
+                                                    <span class="comment-meta">
+                                                        @v.fStatus
+
+                                                    </span>
+                                                    <div class="action">
+
+                                                        <button class="awe-btn awe-btn-14" onclick="showDetail(@v.fID)">详情</button>
+
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <span>暂时没有需要审核的课程</span>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+                <!-- END / CONTENT -->
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    function showDetail(fid) {
+          
+        window.location.href = "/Manager/ClassRoomApplyDetail?fid=" + fid;
+    }
+</script>

@@ -16,19 +16,19 @@
                               if (string.IsNullOrEmpty(Model.teacherInfo.fStatus))
                               {
                             <li  class="active"><a href="#"><span>2.</span> 基本信息</a></li>
-                            <li><a href="#"><span>3.</span> 提交认证</a></li>
+                            <li><a href="#"><span>3.</span> 资质认证</a></li>
                             <li><a href="#"><span>4.</span> 完成</a></li>
                               }
                               else if (Model.teacherInfo.fStatus == "未认证")
                               {
                             <li><a href="#"><span>2.</span> 基本信息</a></li>
-                            <li  class="active"><a href="#"><span>3.</span> 提交认证</a></li>
+                            <li  class="active"><a href="#"><span>3.</span> 资质认证</a></li>
                             <li><a href="#"><span>4.</span> 完成</a></li>
                               }
                               else
                               {
                             <li><a href="#"><span>2.</span> 基本信息</a></li>
-                            <li ><a href="#"><span>3.</span> 提交认证</a></li>
+                            <li ><a href="#"><span>3.</span> 资质认证</a></li>
                             <li  class="active"><a href="#"><span>4.</span> 完成</a></li>
                                 
                               }
@@ -36,8 +36,8 @@
                             }
                             else
                             {
-                            <li  class="active"><a href="#"><span>2.</span> 基本信息</a></li>
-                            <li><a href="#"><span>3.</span> 完成</a></li>
+                            @*<li  ><a href="#"><span>2.</span> 基本信息</a></li>*@
+    <li class="active"><a href="#"><span>3.</span> 完成</a></li>
                             }
                         </ul>
                     </div>
@@ -60,7 +60,7 @@
 
                                     @if (Model.userRole == "Teacher")
                                     {
-                                      if (string.IsNullOrEmpty(Model.teacherInfo.fStatus))
+                                        if (Model.teacherInfo.fStatus == "已认证")
                                       {
                                        <h4>老师基本资料</h4>
                                    
@@ -94,7 +94,7 @@
                                         
                                         </li>
 
-                                        <li>
+                                        @*<li>
                                             <label class="label-radio">
                                                 <input type="checkbox" class="input-radio" id="chkProblem">
                                                 在线答疑
@@ -102,8 +102,8 @@
                                             
                                             <label>收费价格<sup>*</sup></label>
                                             <input type="text" id="txtProblemFee" class="input-text">
-                                           @* <img src="../../Content/images/icon-card.jpg" alt="">*@
-                                        </li>
+                                           
+                                        </li>*@
 
                                     </ul>
                                       
@@ -133,18 +133,16 @@
                                     <div class="shortcode-select">
                                         <select class="awe-select" id="cmbPharse">
                                             <option value="">请选择</option>
-                                            <option value="小学教育">小学教育</option>
-                                            <option value="初中教育">初中教育</option>
-                                            <option value="高中教育">高中教育</option>
-                                            <option value="成人教育">成人教育</option>
-                                            <option value="其他">其他</option>
+                                            <option value="1">小学</option>
+                                            <option value="2">初中</option>
+                                            <option value="3">高中</option>
                                         </select>
                                     </div>
                                      <label>学科 <sup>*</sup></label>
                                     <div class="shortcode-select">
                                         <select class="awe-select" id="cmbSubject">
                                             <option value="">请选择</option>
-                                            <option value="小学">语文</option>
+                                            <option value="语文">语文</option>
                                             <option value="数学">数学</option>
                                             <option value="英语">英语</option>
                                             <option value="物理">物理</option>
@@ -231,16 +229,16 @@
                                     }
                                     else if (Model.userRole == "Student")
                                     {
-                                    <h4>基本资料</h4>
+                                    @*<h4>基本资料</h4>
                                     
                                   
                                     <label>学段 <sup>*</sup></label>
                                     <div class="shortcode-select">
                                         <select class="awe-select" id="cmbPharse">
                                             <option value="">请选择</option>
-                                            <option value="小学">小学</option>
-                                            <option value="初中">初中</option>
-                                            <option value="高中">高中</option>
+                                            <option value="1">小学</option>
+                                            <option value="2">初中</option>
+                                            <option value="3">高中</option>
                                         </select>
                                     </div>
 
@@ -264,7 +262,13 @@
                                         </select>
                                     </div>
                                     
-                                    <button class="awe-btn awe-btn-13" onclick="SaveInfo('@Model.userRole')">保存</button>
+                                    <button class="awe-btn awe-btn-13" onclick="SaveInfo('@Model.userRole')">保存</button>*@
+
+    <div class="reservation-chosen-message bg-gray text-center">
+        <h4>提示 </h4>
+        <p>注册成功，前往购买课程</p>
+        <a href="/open/ClassRoomList" class="awe-btn awe-btn-6">确定</a>
+    </div>
                                     }
                                     else if (Model.userRole == "Parents")
                                     {
@@ -295,8 +299,9 @@
         fIsClassRoom: $("#chkClassRoom").prop('checked'),
         fIsLive: $("#chkLives").prop('checked'),
         fIsProblem: $("#chkProblem").prop('checked'),
-        fVideoFee: $("#txtVideoFee").val(),
-        fProblemFee: $("#txtProblemFee").val()
+        fVideoFee: $("#txtVideoFee").val()
+        //  ,
+        //fProblemFee: $("#txtProblemFee").val()
       };
 
       $.ajax({

@@ -96,7 +96,7 @@ namespace TiKu.Dal
       return rst;
     }
 
-    public static List<tClassRoomEntity> GettClassRoomListByTeacher(string strTeacher,string strStatus)
+    public static List<tClassRoomEntity> GettClassRoomListByTeacher(string strTeacher, string strStatus, string strPayType)
     {
       StringBuilder bufSQL = new StringBuilder();
       List<DbParameter> lstParam = new List<DbParameter>();
@@ -109,12 +109,44 @@ namespace TiKu.Dal
         bufSQL.Append(" AND fStatus=@Status ");
         lstParam.Add(new DBParam("@Status", strStatus));
       }
+      if (!string.IsNullOrEmpty(strPayType))
+      {
+          bufSQL.Append(" AND fPayType=@PayType ");
+          lstParam.Add(new DBParam("@PayType", strPayType));
+      }
 
       //防止返回数据过多
       if (lstParam.Count <= 0) throw new Exception("没有查询条件");
       DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
       List<tClassRoomEntity> lstRst = PubFun.DataTableToObjects<tClassRoomEntity>(dtRst);
       return lstRst;
+    }
+
+
+    public static List<tClassRoomEntity> GettClassRoomListByCreateOpr(string strCreate, string strStatus, string strPayType)
+    {
+        StringBuilder bufSQL = new StringBuilder();
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        bufSQL.Append("SELECT * FROM tClassRoom WHERE (fCreateOpr=@UserName or fTecharUserName=@UserName) ");
+        lstParam.Add(new DBParam("@UserName", strCreate));
+
+        if (!string.IsNullOrEmpty(strStatus))
+        {
+            bufSQL.Append(" AND fStatus=@Status ");
+            lstParam.Add(new DBParam("@Status", strStatus));
+        }
+        if (!string.IsNullOrEmpty(strPayType))
+        {
+            bufSQL.Append(" AND fPayType=@PayType ");
+            lstParam.Add(new DBParam("@PayType", strPayType));
+        }
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+        List<tClassRoomEntity> lstRst = PubFun.DataTableToObjects<tClassRoomEntity>(dtRst);
+        return lstRst;
     }
 
     public static List<tClassRoomEntity> GetMyClassRoomList(string strUserName)
@@ -201,7 +233,7 @@ namespace TiKu.Dal
 
         bufSQL.Append(@"select isnull(b.fID,0) IsBuy,cr.* from tCourse c
                         left join tClassRoom cr on cr.fClassRoomCode=c.fClassRoomCode
-                        left join tbooking b on b.fType='ClassRoom' and b.fStatus='已支付' and b.fTypeCode=c.fClassRoomCode and fUserName=@UserName
+                        left join tbooking b on b.fType='ClassRoom' and b.fIsPay=1 and b.fStatus='已支付' and b.fTypeCode=c.fClassRoomCode and fUserName=@UserName
                         where c.fId=@CourseID ");
         lstParam.Add(new DBParam("@CourseID", iCourseID));
         lstParam.Add(new DBParam("@UserName", strUserName));
@@ -227,18 +259,63 @@ namespace TiKu.Dal
       return lstRst;
     }
 
-    public static decimal GetClassRoomPrice(int iCourseID)
+    public static decimal GetClassRoomFlow(int iCourseID)
     {
         List<DbParameter> lstParam = new List<DbParameter>();
-
 
         lstParam.Add(new DBParam("@iCourseID", iCourseID));
 
         //防止返回数据过多
         if (lstParam.Count <= 0) throw new Exception("没有查询条件");
-        object dtRst = DBHelper.ExecuteScalar("TiKu", "ClassRoomPrice_Query", lstParam);
+        object dtRst = DBHelper.ExecuteProc("TiKu", "ClassRoomPrice_Query", lstParam,DBHelper.ProcRstTypes.All).Value;
 
         return Convert.ToDecimal(dtRst);
     }
+
+    public static int ClassRoomCoursePay(int iCourseID,string strOprUser,string strSystem)
+    {
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        lstParam.Add(new DBParam("@iCourseID", iCourseID));
+        lstParam.Add(new DBParam("@OprUser", strOprUser));
+        lstParam.Add(new DBParam("@System", strSystem));
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        int dtRst = DBHelper.ExecuteProc("TiKu", "ClassRoomCourse_Pay", lstParam, DBHelper.ProcRstTypes.All).Result;
+
+        return dtRst;
+    }
+
+    public static int ClassRoomSettlement(string strClassRoomCode, string strOprUser,ref string strMsg)
+    {
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        lstParam.Add(new DBParam("@ClassRoomCode", strClassRoomCode));
+        lstParam.Add(new DBParam("@Opr", strOprUser));
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        DBHelper.ProcRstInfo ds = DBHelper.ExecuteProc("TiKu", "ClassRoom_Settlement", lstParam, DBHelper.ProcRstTypes.All);
+        strMsg = ds.Message;
+        return ds.Result;
+    }
+
+      
+
+//    public static decimal GetClassRoomFlootPrice(string strClassRoomCode)
+//    {
+//        string strSql = @"select sum(fClassDateLength)*max(fClassFee)*sum(cr.fMaxNumber) from tCourse c
+//                        left join tClassRoom cr on cr.fClassRoomCode=c.fClassRoomCode
+//                        left join tuser u on u.fUserName=cr.fTecharUserName
+//                        left join tSystemConfig sc on sc.fCity=u.fCity
+//                        where c.fClassRoomCode=@ClassRoomCode";
+//        List<DbParameter> lstParam = new List<DbParameter>();
+//        lstParam.Add(new DBParam("@ClassRoomCode", strClassRoomCode));
+
+//        object dtRst = DBHelper.ExecuteScalar("TiKu", strSql, lstParam);
+
+//        return Convert.ToDecimal(dtRst);
+//    }
   }
 }

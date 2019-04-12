@@ -1,13 +1,95 @@
 ﻿@model TiKuBll.Model.UserAccountListModel
 @{
-  ViewBag.Title = "课站";
+    ViewBag.Title = "课站";
 }
 
-@foreach (var a in Model.accountList)
-{
-  <span>@a.fNote</span>
-  <span>@a.fDate.ToString()</span>
-  <span>@a.fAmount</span>
-  <span>@a.fTradingType</span>
-  <br />
-}
+
+
+            <div class="room-detail_tab-content tab-content">
+
+               
+                <!-- RATES -->
+                <div class="tab-pane fade active in" id="rates">
+                    <div class="room-detail_overview">
+                        <label>账户余额</label>
+                        <span>@Model.LeftAmount</span>
+                        @if (Model.LeftAmount > 0) { 
+                        <a href="/User/TeacherWithdrawalApply" class="awe-btn awe-btn-14">申请提现</a>
+                        }
+
+                    </div>
+                    <br />
+                    <div class="room-detail_overview">
+                        <label>剩余流量</label>
+                        <span>@Model.LeftFlow</span>
+                    </div>
+                    <br />
+                    @if (Model.accountList!=null && Model.accountList.Count > 0)
+                    { 
+                    <div class="room-detail_rates">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>交易时间</th>
+                                    <th>金额</th>
+                                    <th>类型</th>
+                                    <th>备注</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var a in Model.accountList)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            <p class="price"><span class="amout">@a.fDate.ToString()</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price"><span class="amout">@a.fAmount</span></p>
+                                        </td>
+                                        <td>
+                                            <p class="price">
+                                                @if (a.fTradingType == "BuyClass")
+                                                {
+                                                    <span class="amout">购买课程</span>
+                                                }
+                                                else if (a.fTradingType == "BuyFlow")
+                                                {
+                                                    <span class="amout">购买流量</span>
+                                                }
+                                                else if (a.fTradingType == "PayFlow")
+                                                {
+                                                    <span class="amout">支付流量</span>
+                                                }
+                                                else if (a.fTradingType == "ClassAmount")
+                                                {
+                                                    <span class="amout">课程收入</span>
+                                                }
+                                                else if (a.fTradingType == "WithDrawal")
+                                                {
+                                                    <span class="amout">收入提现</span>
+                                                }
+                                            </p>
+                                        </td>
+                                        <td>
+                                            <h6>@a.fNote</h6>
+                                            @*<ul>
+                                                    <li>Jun 1 - Aug 31</li>
+                                                    <li>3 night minimum stay</li>
+                                                </ul>*@
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    }
+                    else
+                    {
+                        <span>暂无相关记录</span>
+                    }
+                </div>
+                <!-- END / RATES -->
+
+            </div>
+        
