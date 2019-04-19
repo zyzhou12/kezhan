@@ -34,7 +34,25 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
-        public ActionResult ClassRoomEdit(string strClassRoomCode = null, string strType = null)
+        public ActionResult ClassRoomAdd()
+        {
+            ClassRoomModel model = null;
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+
+            model = new ClassRoomModel();
+            model.UserName = userInfo.fUserName;
+            model.fMaxNumber = 100;
+            model.fStatus = "保存";
+            model.fCreateOpr = userInfo.fUserName;
+            model.courseList = new List<CourseModel>();
+
+            return View(model);
+        }
+
+
+
+        public ActionResult ClassRoomEdit(string strClassRoomCode, string strType = null)
         {
             ClassRoomModel model = null;
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
@@ -56,6 +74,7 @@ namespace KeZhan.Controllers
                 {
                     model.courseList = new List<CourseModel>();
                 }
+                model.showType = strType;
                 //if (strType == "copy")
                 //{
                 //    model.fTecharUserName = "";
@@ -67,12 +86,27 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
+
+        public ActionResult ClassRoomTeacher(string strClassRoomCode)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+            ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName); ;
+            model.UserName = userInfo.fUserName;
+            if (model.courseList == null)
+            {
+                model.courseList = new List<CourseModel>();
+            }
+
+            return View(model);
+        }
+
         [HttpPost]
-        public JsonResult DoSaveClassRoomInfo(string strClassRoomCode,string strType, string strInfo)
+        public JsonResult DoSaveClassRoomInfo(string strClassRoomCode, string strType, string strInfo)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
-            int i = ClassRoomBll.SaveClassRoomInfo(strClassRoomCode, strType, strInfo,userInfo.fUserName);
+            int i = ClassRoomBll.SaveClassRoomInfo(strClassRoomCode, strType, strInfo, userInfo.fUserName);
 
             JsonResult jr = new JsonResult();
             jr.Data = response;
@@ -139,7 +173,7 @@ namespace KeZhan.Controllers
             if (string.IsNullOrEmpty(model.fClassRoomTitle))
             {
                 response.iResult = -1;
-                response.strMsg = "请输入标题";
+                response.strMsg = "请输入课程名称";
             }
             else if (string.IsNullOrEmpty(model.fCoverImg))
             {
@@ -317,7 +351,16 @@ namespace KeZhan.Controllers
             else
             {
 
-                response.iResult = ClassRoomBll.ClassRoomSubmitSend(strClassRoomCode, strStatus, strNote, userInfo.fUserName);
+                ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName); ;
+                if (strStatus == "发布" && model.courseList.Count == 0)
+                {
+                    response.iResult = -1;
+                    response.strMsg = "至少要一节课时才能发布";
+                }
+                else
+                {
+                    response.iResult = ClassRoomBll.ClassRoomSubmitSend(strClassRoomCode, strStatus, strNote, userInfo.fUserName);
+                }
             }
 
             JsonResult jr = new JsonResult();
@@ -360,19 +403,16 @@ namespace KeZhan.Controllers
             return PartialView("CourseListControl", courseModel);
         }
 
-        /// <summary>
-        /// 查询报名记录
-        /// </summary>
-        /// <param name="strClassRoomCode"></param>
-        /// <returns></returns>
-        public ActionResult QueryBookingList(string strClassRoomCode)
+
+        public ActionResult QueryBookingList(string strClassRoomCode, string strMobile = null, string strStatus = null, string beginDate = null, string endDate = null)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            BookingListModel model = BookingBll.GetBookingList(userInfo.fUserName, strClassRoomCode);
-            ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, userInfo.fUserName);
+            BookingListModel model = BookingBll.GetBookingList(userInfo.fUserName, strClassRoomCode, strMobile, strStatus, beginDate, endDate);
+            ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, "");
             model.fClassRoomCode = strClassRoomCode;
             model.fClassType = classRoom.fClassType;
             model.fStatus = classRoom.fStatus;
+            model.IsManager = classRoom.fCreateOpr == userInfo.fUserName;
             // model.list = model.list.Where(m => m.fIsPay == true).ToList();
             return PartialView("BookingListControl", model);
         }
@@ -398,7 +438,7 @@ namespace KeZhan.Controllers
         public ActionResult BookingRefund(string strBookingNo)
         {
             BookingModel model = BookingBll.GetBookingByNo(strBookingNo);
-            model.MaxReturnAmount= BookingBll.GetBokingMaxReturnAmount(strBookingNo);
+            model.MaxReturnAmount = BookingBll.GetBokingMaxReturnAmount(strBookingNo);
             return View(model);
         }
         /// <summary>
@@ -411,9 +451,17 @@ namespace KeZhan.Controllers
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
-
-            response.iResult = BookingBll.SubmitBookingRefund(strOrderNo, userInfo.fUserName, dAmount, strRemark);
-
+            string strMsg = "";
+            int i = BookingBll.CheckRefund(dAmount, strOrderNo, ref strMsg);
+            if (i >= 0)
+            {
+                response.iResult = BookingBll.SubmitBookingRefund(strOrderNo, userInfo.fUserName, dAmount, strRemark);
+            }
+            else
+            {
+                response.iResult = -1;
+                response.strMsg = strMsg;
+            }
             JsonResult jr = new JsonResult();
             jr.Data = response;
             return jr;
@@ -434,7 +482,7 @@ namespace KeZhan.Controllers
             BookingModel booking = BookingBll.GettBooking(userInfo.fUserName, "ClassRoom", strClassRoomCode, "已支付");
             if (booking != null)
             {
-                return RedirectToAction("ClassRoomDetail", "Open", new { strClassRoomCode = strClassRoomCode });
+                return RedirectToAction("UserBooking", "Booking", new { strBookingNo = booking.fBookingNo });
             }
             else
             {
@@ -454,8 +502,8 @@ namespace KeZhan.Controllers
             {
 
                 ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, null);
-                BookingListModel list = BookingBll.GetBookingList(classRoom.fTecharUserName, strClassRoomCode);
-                if (classRoom.fMaxNumber > list.list.Where(m=>m.fIsPay==true).ToList().Count)
+                BookingListModel list = BookingBll.GetBookingList(classRoom.fTecharUserName, strClassRoomCode, null, null, null, null);
+                if (classRoom.fMaxNumber > list.list.Where(m => m.fIsPay == true).ToList().Count)
                 {
                     response.strMsg = BookingBll.SubmitBooking(userInfo.fUserName, "ClassRoom", strClassRoomCode, classRoom.fPrice, classRoom.fIsReturn, "Web");
                 }
@@ -481,6 +529,9 @@ namespace KeZhan.Controllers
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             TeacherValidModel model = new TeacherValidModel();
             model.fUserName = userInfo.fUserName;
+            TeacherBaseModel teacher = UserBll.GetUserTeacherBase(userInfo.fUserName);
+            model.fStatus = teacher.fStatus;
+            model.userInfo = userInfo;
 
             return View(model);
         }
@@ -511,6 +562,34 @@ namespace KeZhan.Controllers
 
             JsonResult jr = new JsonResult();
             response.iResult = ClassRoomBll.DoCourseDocumentUpload(model);
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+
+        [HttpPost]
+        public JsonResult DoDelCourseDocument(int iCourseId)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+
+
+            JsonResult jr = new JsonResult();
+            response.iResult = ClassRoomBll.DoCourseDocumentDel(iCourseId);
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+
+        [HttpPost]
+        public JsonResult DoDelCourseResource(int iCourseId)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+
+
+            JsonResult jr = new JsonResult();
+            response.iResult = ClassRoomBll.DoCourseResourceDel(iCourseId);
             jr.Data = response;
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
@@ -604,13 +683,41 @@ namespace KeZhan.Controllers
         }
 
 
-        public ActionResult MyClassRoomList()
+        public ActionResult MyClassRoomList(string strClassType, string strStatus = null, string strPayType = null)
         {
 
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
 
-            ClassRoomListModel model = ClassRoomBll.GetMyClassRoom(userInfo.fUserName);
-
+            ClassRoomListModel model = null;
+            if (strClassType == "buy")
+            {
+                model = ClassRoomBll.GetMyClassRoom(userInfo.fUserName);
+            }
+            else if (strClassType == "create")
+            {
+                model = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType);
+            }
+            else if (strClassType == "teacher")
+            {
+                model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, strStatus, strPayType);
+            }
+            model.listType = strClassType;
+            if (strStatus == null)
+            {
+                model.strStatus = "";
+            }
+            else
+            {
+                model.strStatus = strStatus;
+            }
+            if (strPayType == null)
+            {
+                model.strPayType = "";
+            }
+            else
+            {
+                model.strPayType = strPayType;
+            }
             return View(model);
         }
 

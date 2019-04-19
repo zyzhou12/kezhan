@@ -50,7 +50,9 @@
                                                         退款单号：@b.fOrderNo
                                                     </h4>
                                                     <span class="comment-meta">
-                                                        订单号：                                                        @b.fBookingNo
+                                                        订单号： @b.fBookingNo
+                                                        <br />
+                                                        购买课程：@b.fClassRoomTitle
                                                         <br />
                                                         提交时间：@b.fCreateDate.ToString()
                                                         <br />
@@ -58,7 +60,7 @@
                                                         <br />
                                                         金额：@b.fApplyAmount
                                                     </span>
-                                                    @if (b.fStatus == "0")
+                                                    @if (b.fStatus == 0)
                                                     {
                                                         <div class="action">
                                                             <a href="UserRefund?iRefundID=@b.fID" class="awe-btn awe-btn-14">处理</a>

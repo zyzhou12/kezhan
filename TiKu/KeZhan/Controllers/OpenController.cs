@@ -17,8 +17,14 @@ namespace KeZhan.Controllers
 {
   public class OpenController : Controller
   {
-
-
+      public ActionResult WebInfo()
+      {
+          return View();
+      }
+      public ActionResult QAInfo()
+      {
+          return View();
+      }
 
     public ActionResult RegsiterLogin(string redirect_uri = null)
     {

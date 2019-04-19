@@ -72,11 +72,13 @@ namespace TiKu.Dal
             return Convert.ToDecimal(obj);
         }
 
-        public static tFlowStoredEntity GettFlowStored(int id)
+        public static tFlowStoredEntity GettFlowStored(string strStoredNo)
         {
             tFlowStoredEntity rst = null;
-            string strSQL = "SELECT * FROM tFlowStored WHERE tFlowStoredID=" + id.ToString();
-            DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
+            string strSQL = "SELECT * FROM tFlowStored WHERE fStoredNo=@StoredNo";
+            List<DbParameter> lstParam = new List<DbParameter>();
+            lstParam.Add(new DBParam("@StoredNo", strStoredNo));
+            DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
             if (dt.Rows.Count > 0)
             {
                 rst = new tFlowStoredEntity();
@@ -119,6 +121,15 @@ namespace TiKu.Dal
             DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "UserFlowAdjust",
         lstParam, DBHelper.ProcRstTypes.All);
             strMsg = rst.Message;
+            return rst.Result;
+        }
+
+        public static int CheckFlowEffect()
+        {
+            List<DbParameter> lstParam = new List<DbParameter>();
+          
+            DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "CheckFlowEffect",
+        lstParam, DBHelper.ProcRstTypes.All);
             return rst.Result;
         }
 

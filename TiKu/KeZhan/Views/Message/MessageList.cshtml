@@ -35,7 +35,15 @@
                                         <li title="@msg.fStatus">
                                             <div class="comment-body">
                                                 @*<a class="comment-avatar"><img src="images/avatar/img-1.jpg" alt=""></a>*@
-                                                <h4 class="comment-subject" onclick="showDetail(@msg.fID,@msg.fStatus)">@msg.fTitle</h4>
+                                                @if (msg.fStatus == 0)
+                                                {
+                                                    <h4 class="comment-subject" onclick="showDetail(@msg.fID,@msg.fStatus)">@msg.fTitle</h4>
+                                                }
+                                                else
+                                                {
+                                                    <h2 class="comment-subject" style="font-weight:normal" onclick="showDetail(@msg.fID,@msg.fStatus)">@msg.fTitle</h2>
+                                                }
+                                                
                                                 <p id="pdetail-@msg.fID" style="display:none;">@msg.fContent</p>
                                                 <span class="comment-meta">
                                                     <a href="#"></a> @msg.fCreateDate.ToString()

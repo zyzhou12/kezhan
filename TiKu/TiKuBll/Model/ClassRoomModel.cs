@@ -45,7 +45,7 @@ namespace TiKuBll.Model
     public System.String TeacherDesc { get; set; }
     public System.String TeacherQrCode { get; set; }
 
-
+    public System.String showType { get; set; }
     public List<DescModel> descList { get; set; }
     public List<CourseModel> courseList { get; set; }
 
@@ -54,6 +54,9 @@ namespace TiKuBll.Model
 
   public class ClassRoomListModel
   {
+      public string listType { get; set; }
+      public string strStatus { get; set; }
+      public string strPayType { get; set; }
     public List<ClassRoomModel> classRoomList { get; set; }
   }
 

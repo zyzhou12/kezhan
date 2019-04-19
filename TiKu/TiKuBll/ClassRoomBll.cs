@@ -93,55 +93,57 @@ namespace TiKuBll
 
         public static ClassRoomModel GetClassRoomByCode(string strClassRoomCode, string strUserName)
         {
-            tClassRoomEntity entity = tClassRoomDal.GettClassRoomByCode(strClassRoomCode, strUserName);
             ClassRoomModel model = new ClassRoomModel();
-            model.fID = entity.fID;
-            model.fBasePrice = entity.fBasePrice;
-            model.fClassRoomCode = entity.fClassRoomCode;
-            model.fClassType = entity.fClassType;
-            model.fClassRoomDate = entity.fClassRoomDate;
-            model.fClassRoomTitle = entity.fClassRoomTitle;
-            model.fCoverImg = entity.fCoverImg;
-            model.fDeadLineDate = entity.fDeadLineDate;
-            model.fDesc = entity.fDesc;
-            model.fGrade = entity.fGrade;
-            model.fInfo = entity.fInfo;
-            model.fIsRecord = entity.fIsRecord;
-            model.fIsReturn = entity.fIsReturn;
-            model.fReturnType = entity.fReturnType;
-            model.fReturnRule = entity.fReturnRule;
-            model.fKnowLedge = entity.fKnowLedge;
-            model.fMaxNumber = entity.fMaxNumber;
-            model.fPayType = entity.fPayType;
-            model.fPharse = entity.fPharse;
-            model.fPrice = entity.fPrice;
-            model.fStatus = entity.fStatus;
-            model.fSubject = entity.fSubject;
-            model.fTecharUserName = entity.fTecharUserName;
-
-            List<tCourseEntity> courseList = tCourseDal.GetCourseListByClassRoomCode(strClassRoomCode);
-            List<CourseModel> courseModelList = new List<CourseModel>();
-            foreach (tCourseEntity ce in courseList)
+            tClassRoomEntity entity = tClassRoomDal.GettClassRoomByCode(strClassRoomCode, strUserName);
+            if (entity != null)
             {
-                CourseModel cm = new CourseModel();
-                cm.fAuthor = ce.fAuthor;
-                cm.fClassDate = ce.fClassDate;
-                cm.fClassRoomCode = ce.fClassRoomCode;
-                cm.fClassType = ce.fClassType;
-                cm.fCourseTitle = ce.fCourseTitle;
-                cm.fDictTitle = ce.fDictTitle;
-                cm.fFileSize = ce.fFileSize;
-                cm.fFileType = ce.fFileType;
-                cm.fID = ce.fID;
-                cm.fOrder = ce.fOrder;
-                cm.fResourceUrl = ce.fResourceUrl;
-                cm.fSource = ce.fSource;
-                cm.fUploadDate = ce.fUploadDate;
-                cm.fUploadOpr = ce.fUploadOpr;
-                courseModelList.Add(cm);
-            }
-            model.courseList = courseModelList;
+                model.fID = entity.fID;
+                model.fBasePrice = entity.fBasePrice;
+                model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassType = entity.fClassType;
+                model.fClassRoomDate = entity.fClassRoomDate;
+                model.fClassRoomTitle = entity.fClassRoomTitle;
+                model.fCoverImg = entity.fCoverImg;
+                model.fDeadLineDate = entity.fDeadLineDate;
+                model.fDesc = entity.fDesc;
+                model.fGrade = entity.fGrade;
+                model.fInfo = entity.fInfo;
+                model.fIsRecord = entity.fIsRecord;
+                model.fIsReturn = entity.fIsReturn;
+                model.fReturnType = entity.fReturnType;
+                model.fReturnRule = entity.fReturnRule;
+                model.fKnowLedge = entity.fKnowLedge;
+                model.fMaxNumber = entity.fMaxNumber;
+                model.fPayType = entity.fPayType;
+                model.fPharse = entity.fPharse;
+                model.fPrice = entity.fPrice;
+                model.fStatus = entity.fStatus;
+                model.fSubject = entity.fSubject;
+                model.fTecharUserName = entity.fTecharUserName;
 
+                List<tCourseEntity> courseList = tCourseDal.GetCourseListByClassRoomCode(strClassRoomCode);
+                List<CourseModel> courseModelList = new List<CourseModel>();
+                foreach (tCourseEntity ce in courseList)
+                {
+                    CourseModel cm = new CourseModel();
+                    cm.fAuthor = ce.fAuthor;
+                    cm.fClassDate = ce.fClassDate;
+                    cm.fClassRoomCode = ce.fClassRoomCode;
+                    cm.fClassType = ce.fClassType;
+                    cm.fCourseTitle = ce.fCourseTitle;
+                    cm.fDictTitle = ce.fDictTitle;
+                    cm.fFileSize = ce.fFileSize;
+                    cm.fFileType = ce.fFileType;
+                    cm.fID = ce.fID;
+                    cm.fOrder = ce.fOrder;
+                    cm.fResourceUrl = ce.fResourceUrl;
+                    cm.fSource = ce.fSource;
+                    cm.fUploadDate = ce.fUploadDate;
+                    cm.fUploadOpr = ce.fUploadOpr;
+                    courseModelList.Add(cm);
+                }
+                model.courseList = courseModelList;
+            }
             return model;
         }
 
@@ -446,6 +448,35 @@ namespace TiKuBll
             courseList.Add(cm);
             int i = tCourseDal.Modify(courseList, "update", "fID,fDocoumentUrl", null);
 
+
+            return i;
+        }
+
+        public static int DoCourseDocumentDel(int iCourseId)
+        {
+            List<tCourseEntity> courseList = new List<tCourseEntity>();
+
+            tCourseEntity cm = new tCourseEntity();
+
+            cm.fID = iCourseId;
+            cm.fDocoumentUrl = "";
+            courseList.Add(cm);
+            int i = tCourseDal.Modify(courseList, "update", "fID,fDocoumentUrl", null);
+            
+            return i;
+        }
+
+        public static int DoCourseResourceDel(int iCourseId)
+        {
+            List<tCourseEntity> courseList = new List<tCourseEntity>();
+
+            tCourseEntity cm = new tCourseEntity();
+
+            cm.fID = iCourseId;
+            cm.fResourceUrl = "";
+            cm.fFileCoverUrl = "";
+            courseList.Add(cm);
+            int i = tCourseDal.Modify(courseList, "update", "fID,fResourceUrl,fFileCoverUrl", null);
 
             return i;
         }

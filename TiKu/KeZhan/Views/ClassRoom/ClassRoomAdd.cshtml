@@ -1,0 +1,289 @@
+﻿@model TiKuBll.Model.ClassRoomModel
+@{
+    ViewBag.Title = "ClassRoomAdd";
+}
+<style>
+    .errorMsg {
+        height:30px;
+        line-height:30px;
+        font-size:15px;
+        color:red;
+    }
+
+
+</style>
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+          
+
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+                   
+                    <div class="reservation_content">
+                        <p class="alert alert-danger" id="pMsg" style=" display:none">
+                            
+                        </p>
+                        <div class="reservation-billing-detail" id="panelData">
+
+
+                            <h4>基本信息</h4>
+                            @Html.HiddenFor(m => m.fID)
+
+                            <label>课程名称<sup>*</sup></label>
+                            <input type="text" id="txtTitle" value="@Model.fClassRoomTitle" class="input-text">
+
+
+                            <label>封面<sup>*</sup></label>
+
+                            @if (!string.IsNullOrEmpty(Model.fCoverImg))
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fCoverImg?x-oss-process=style/fang" id="imgCover" data-reveal-id="myModal" onclick="UploadFile('@Model.UserName','ClassRoomCover','hidConver','','imgCover')" alt="">
+                            }
+                            else
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgCover" data-reveal-id="myModal" onclick="UploadFile('@Model.UserName','ClassRoomCover','hidConver','','imgCover')" alt="">
+                            } <input type="hidden" id="hidConver" value="@Model.fCoverImg" />
+
+
+                            <label>课程简介</label>
+                            <textarea class="input-textarea" id="txtInfo" placeholder="课程简介是提要性的，限字数在50个汉字以内">@Model.fInfo</textarea>
+
+                            <label>图文详情</label>
+                            <span style="font-size:12px;">推荐使用第三方，比如135编辑器，制作长图文，支持JPG、JPEG格式，图片尺寸要求小于20M</span>
+                            <br /><br />
+                            @if (Model.descList != null && Model.descList.Count > 0)
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.descList[0].fContent?x-oss-process=style/fang" alt="" />
+                                <input type="hidden" id="hidDescID" value="@Model.descList[0].fID" />
+                                <input type="hidden" id="hidDesc" value="@Model.descList[0].fContent" />
+                            }
+                            else
+                            {
+                                <img id="fileUploadDesc" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadFile('@Model.fCreateOpr','ClassRoomDesc','hidDesc','','fileUploadDesc')" alt="">
+
+                                <input type="hidden" id="hidDescID" value="0" />
+                                <input type="hidden" id="hidDesc" />
+                            }
+
+                            <label>是否公开<sup>*</sup></label>
+
+                            @Html.DropDownListFor(m => m.fClassType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                                                                                              new SelectListItem { Text = "公开课", Value = "Public" },
+                                                                                              new SelectListItem { Text = "私课", Value = "Private" }}, new { @class = "awe-select", id = "cmbClassType", onchange = "ChangeType()" })
+
+
+
+
+
+
+
+
+                            @Html.Partial("../ClassRoom/TeacherSelect", new KeZhan.Models.TeacherModel { fUserName = @Model.fTecharUserName, fPharse = @Model.fPharse, fSubject = @Model.fSubject })
+
+
+                            @*<label>知识点<sup>*</sup></label>
+                                <input type="text" id="txtKnowLedge" value="@Model.fKnowLedge" class="input-text">*@
+
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>原价<sup>*</sup></label>
+                                    <input type="number" id="txtBasePrice" value="@Model.fBasePrice" class="input-text">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>售价<sup>*</sup></label>
+                                    <input type="number" id="txtPrice" value="@Model.fPrice" class="input-text">
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>截止报名时间<sup>*</sup></label>
+                                    @*<input type="text" class="awe-calendar" id="txtDeadLineDate"  value="@Model.fDeadLineDate.ToShortDateString()" placeholder="Arrival Date">*@
+                                    @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = "", datePlaceholder = "截止报名时间" })
+                                </div>
+                                @*<div class="col-sm-6">
+                                        <label>开课时间<sup>*</sup></label>
+
+                                        @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtClassRoomDate", date = Model.fClassRoomDate.ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "开课时间" })
+                                    </div>*@
+                            </div>
+
+
+
+                            <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
+                            <input type="number" id="txtMaxNumber" value="@Model.fMaxNumber" class="input-text">
+                            
+
+
+
+
+
+                            <label>支付类型<sup>*</sup></label>
+                            @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                                                                                              new SelectListItem { Text = "在线支付", Value = "在线支付" },
+                                                                                              new SelectListItem { Text = "线下支付", Value = "线下支付" }}, new { @class = "awe-select", id = "cmbPayType" })
+
+
+                            <label>是否可退<sup>*</sup></label>
+                            @Html.DropDownListFor(m => m.fIsReturn, new[] {
+                                                                                              new SelectListItem { Text = "是", Value = "true" },
+                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsReturn" })
+
+                            <label>退款类型</label>
+                            @Html.DropDownListFor(m => m.fReturnType, new[] {
+                                                                                              new SelectListItem { Text = "随时退", Value = "随时" },
+                                                                                              new SelectListItem { Text = "开课前退", Value = "课前" }}, new { @class = "awe-select", id = "cmbReturnType" })
+
+
+
+                            <label>退款规则</label>
+                            @Html.DropDownListFor(m => m.fReturnRule, new[] {
+                                                                                              new SelectListItem { Text = "按分钟", Value = "分钟" },
+                                                                                              new SelectListItem { Text = "按课时", Value = "课时" }}, new { @class = "awe-select", id = "cmbReturnRule" })
+
+
+
+
+
+
+                            <label>是否录屏回看</label>
+                            @Html.DropDownListFor(m => m.fIsRecord, new[] {
+                                                                                              new SelectListItem { Text = "是", Value = "true" },
+                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })
+
+
+
+
+                       
+                                    <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
+                                 
+
+                        </div>
+                    </div>
+                    <!-- END / CONTENT -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+
+
+    function SaveClassRoomInfo() {
+        $(".errorMsg").remove();
+
+        if ($("#txtTitle").val().trim() == "")
+        {            
+            $("#txtTitle").after("<span class=\"errorMsg\">课程名称不能为空</span>");
+            $("#txtTitle").focus();
+            return;
+        }
+        if ($("#hidConver").val().trim() == "") {
+            $("#hidConver").after("<span class=\"errorMsg\">封面图片不能为空</span>");
+            $("#hidConver").focus();
+            return;
+        }
+        if ($("#txtInfo").val().trim() == "") {
+            $("#txtInfo").after("<span class=\"errorMsg\">课程简介不能为空</span>");
+            $("#txtInfo").focus();
+            return;
+        }
+        if ($("#cmbTeacher").val().trim() == "") {
+            $("#cmbTeacher").after("<span class=\"errorMsg\">授课老师不能为空</span>");
+            $("#cmbTeacher").focus();
+            return;
+        }
+
+
+        var ClassRoomModel = {
+            "fID": $("#fID").val(),
+            "fClassType": $("#cmbClassType").val(),
+            "fTecharUserName": $("#cmbTeacher").val(),
+            "fPharse": $("#cmbPharse").val(),
+            "fSubject": $("#cmbSubject").val(),
+            "fClassRoomTitle": $("#txtTitle").val(),
+            "fCoverImg": $("#hidConver").val(),
+            "fInfo": $("#txtInfo").val(),
+            "fDesc": $("#txtDesc").val(),
+            "fQrCode": $("#hidQrCode").val(),
+            // "fTeacherValidID": $("#cmbTeacherValid").val(),
+            "fKnowLedge": $("#txtKnowLedge").val(),
+            "fMaxNumber": $("#txtMaxNumber").val(),
+            //"fClassRoomDate": $("#txtClassRoomDate").val(),
+            "fDeadLineDate": $("#txtDeadLineDate").val(),
+            "fPrice": $("#txtPrice").val(),
+            "fBasePrice": $("#txtBasePrice").val(),
+            "fPayType": $("#cmbPayType").val(),
+            "fIsReturn": $("#cmbIsReturn").val(),
+            "fReturnType": $("#cmbReturnType").val(),
+            "fReturnRule": $("#cmbReturnRule").val(),
+            "fIsRecord": $("#cmbIsRecord").val(),
+            "fStatus": "保存"
+        };
+
+        $.ajax({
+            url: "/classRoom/DoSaveClassRoom",
+            data: ClassRoomModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    if ($("#hidDesc").val() != "") {
+
+                        var DescModel = {
+                            "fID": $("#hidDescID").val(),
+                            "fType": "img",
+                            "fClassRoomCode": rst.strMsg,
+                            "fContent": $("#hidDesc").val(),
+                            "fOrder": "0"
+                        }
+                        $.ajax({
+                            url: "/classRoom/DoSaveClassRoomDesc",
+                            data: DescModel,
+                            type: "POST",
+                            dataType: "json",
+                            success: function (rst) {
+                                if (rst.iResult >= 0) {
+                                    //alert("保存成功");
+                                } else {
+                                    alert(rst.strMsg);
+                                }
+                            }
+
+                        });
+
+                    }
+
+                    alert("保存成功");
+                    window.location.href = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + rst.strMsg + "&strType=Add";
+                } else {
+                    
+                    $("#pMsg").text(rst.strMsg);
+                    $("#pMsg").show();
+                }
+            }
+
+        });
+
+
+       
+    }
+
+</script>

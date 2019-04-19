@@ -21,8 +21,8 @@
                                     
                                     @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
                                     <br />
-                                    @*<span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
-                                    <br />*@
+                                    <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
+                                    <br />
                                     <span>讲师：@classRoom.TeacherName</span>
                                     </p>
                                      <h2>￥ @classRoom.fPrice.ToString()</h2>

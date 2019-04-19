@@ -39,8 +39,8 @@
                             <span>@Model.ClassRoom.fClassRoomTitle</span>
                             <label>价格<sup></sup></label>
                             <span>@Model.fAmount </span>
-                            @*<label>开课时间<sup> </sup></label>
-                            <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>*@
+                            <label>开课时间<sup> </sup></label>
+                            <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
 
                             <label>课程明细<sup> </sup></label>
                             @foreach (var c in Model.ClassRoom.courseList)
@@ -97,7 +97,7 @@
             success: function (rst) {
                 if (rst.iResult >= 0) {
                     alert("提交成功");
-                    window.history.back();
+                    window.location.href=document.referrer;
                 } else {
                     alert(rst.strMsg);
                 }

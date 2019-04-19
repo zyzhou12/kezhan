@@ -128,7 +128,7 @@ namespace TiKu.Dal
         StringBuilder bufSQL = new StringBuilder();
         List<DbParameter> lstParam = new List<DbParameter>();
 
-        bufSQL.Append("SELECT * FROM tClassRoom WHERE (fCreateOpr=@UserName or fTecharUserName=@UserName) ");
+        bufSQL.Append("SELECT * FROM tClassRoom WHERE fCreateOpr=@UserName ");
         lstParam.Add(new DBParam("@UserName", strCreate));
 
         if (!string.IsNullOrEmpty(strStatus))

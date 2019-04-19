@@ -1,107 +1,205 @@
 ﻿@model TiKuBll.Model.ClassRoomListModel
 @{
-  ViewBag.Title = "课站";
+    ViewBag.Title = "课站";
 }
 
-@if (Model.classRoomList != null && Model.classRoomList.Count > 0) { 
-<section class="section-room-detail bg-white">
-            <div class="container">
-                
-            
-                <!-- TAB -->
-                <div class="room-detail_tab">                    
-                    <div class="row">
-                        <div class="col-md-3">
-                            <ul class="room-detail_tab-header">
-                                @foreach (var classRoom in Model.classRoomList)
-                                {                                
-                                  <li onclick="showPanel('@classRoom.fClassRoomCode')"><a href="#" style=" width:100%;" data-toggle="tab">@classRoom.fClassRoomTitle</a></li>
-                                }                                
-                            </ul>
-                        </div>
-                                        
-                        <div class="col-md-9">
-                            <div class="room-detail_tab-content tab-content" id="panelBooking">                                
-                              
+!-- ACTIVITI -->
+<section class="section-reservation-page bg-white">
+    <div class="container">
+        <div class="reservation-page">
+            <div class="row">
 
+                <div class="col-md-4 col-lg-3">
+
+                    <div class="reservation-sidebar">
+
+                        <!-- SIDEBAR AVAILBBILITY -->
+                        <div class="reservation-sidebar_availability bg-gray">
+
+                            <!-- HEADING -->
+                            <h2 class="reservation-heading">订单记录</h2>
+                            <!-- END / HEADING -->
+                            @*<h6 class="check_availability_title">your stay dates</h6>*@
+
+                            <div class="check_availability-field">
+                                <label>课程</label>
+                                <select class="awe-select" id="cmbClassRoom">
+                                    @foreach (var classRoom in Model.classRoomList)
+                                    {
+                                        <option value="@classRoom.fClassRoomCode">@classRoom.fClassRoomTitle</option>
+                                    }
+                                </select>
                             </div>
+                            <div class="check_availability-field">
+                                <label>开始日期</label>
+                                <input type="text" id="txtBeginDate" class="awe-calendar awe-input" placeholder="开始日期">
+                            </div>
+
+                            <div class="check_availability-field">
+                                <label>结束日期</label>
+                                <input type="text" id="txtEndDate" class="awe-calendar awe-input to" placeholder="结束日期">
+                            </div>
+
+
+
+
+                            <div class="check_availability-field">
+                                <label>状态</label>
+                                <select class="awe-select" id="cmbStatus">
+                                    <option value="">全部</option>
+                                    <option value="提交">提交</option>
+                                    <option value="已支付">已支付</option>
+                                    <option value="退款中">退款中</option>
+                                    <option value="已退款">已退款</option>
+                                    <option value="已驳回">已驳回</option>
+                                    <option value="已取消">已取消</option>
+                                </select>
+                            </div>
+
+                            <div class="check_availability-field">
+                                <label>手机号</label>
+                                    <input type="text" class="input-text" style="width:100%;" id="txtMobile" placeholder="手机号" />
+                            </div>
+                            <button class="awe-btn awe-btn-13" onclick="QueryBookingList()">查询</button>
+
                         </div>
+                        <!-- END / SIDEBAR AVAILBBILITY -->
 
                     </div>
 
+                </div>
+                <div class="col-md-9" id="panelBooking">
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+</section>
+<!-- END / ACTIVITI -->
+@*@if (Model.classRoomList != null && Model.classRoomList.Count > 0) {
+    <section class="section-room-detail bg-white">
+                <div class="container">
+
+                    <!-- TAB -->
+                    <div class="room-detail_tab">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <ul class="room-detail_tab-header">
+                                    @foreach (var classRoom in Model.classRoomList)
+                                    {
+                                      <li onclick="showPanel('@classRoom.fClassRoomCode')"><a href="#" style=" width:100%;" data-toggle="tab">@classRoom.fClassRoomTitle</a></li>
+                                    }
+                                </ul>
+                            </div>
+
+                            <div class="col-md-9">
+
+                                <div class="room-detail_tab-content tab-content" id="panelBooking">
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <!-- END / TAB -->
+
+
+                </div>
+            </section>
+    }
+    else
+    {
+        <section class="section-room-detail bg-white">
+            <div class="container">
+
+
+                <!-- TAB -->
+                <div class="room-detail_tab">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="room-detail_tab-content tab-content" id="panelBooking">
+                                没有课程信息，请先发布课程
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- END / TAB -->
 
-              
             </div>
         </section>
-}
-else
-{
-    <section class="section-room-detail bg-white">
-        <div class="container">
+        <p style="height:200px;"></p>
+    }*@
 
 
-            <!-- TAB -->
-            <div class="room-detail_tab">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div class="room-detail_tab-content tab-content" id="panelBooking">
-                            没有课程信息，请先发布课程
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- END / TAB -->
-
-        </div>
-    </section>
-    <p style="height:200px;"></p>
-}
 @if (Model.classRoomList != null && Model.classRoomList.Count > 0)
 {
-  <script type="text/javascript">
-    var classRoomCode = "@Model.classRoomList[0].fClassRoomCode";
+    <script type="text/javascript">
+        var classRoomCode = "@Model.classRoomList[0].fClassRoomCode";
 
-    $(document).ready(function () {
-      showPanel(classRoomCode);
-    });
+        $(document).ready(function () {
+          //  showPanel(classRoomCode);
+        });
 
 
-    function showPanel(code) {
-      classRoomCode = code;
-      $.ajax({
-        url: "/ClassRoom/QueryBookingList",
-        type: this.method,
-        data: { "strClassRoomCode": classRoomCode },
-        success: function (msg) {
-          $('#panelBooking').html(msg);
-        }
-      });
-
-    }
-
-    function UpdatePayStatus(strBookingNo, strStatus) {
-      $.ajax({
-        url: "/classRoom/DoUpdateBookingStatus",
-        data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
-        type: "POST",
-        dataType: "json",
-        success: function (rst) {
-          if (rst.iResult >= 0) {
-            alert("修改成功");
+        function showPanel(code) {
+            classRoomCode = code;
             $.ajax({
-              url: "/ClassRoom/QueryBookingList",
-              type: this.method,
-              data: { "strClassRoomCode": classRoomCode },
-              success: function (msg) {
-                $('#panelBooking').html(msg);
-              }
+                url: "/ClassRoom/QueryBookingList",
+                type: this.method,
+                data: { "strClassRoomCode": classRoomCode },
+                success: function (msg) {
+                    $('#panelBooking').html(msg);
+                }
             });
-          }
+
         }
 
-      });
-    }
-  </script>
+
+        function QueryBookingList() {
+            
+            classRoomCode = $("#cmbClassRoom").val();
+            var mobile = $("#txtMobile").val();
+            var status = $("#cmbStatus").val();
+            var begindate = $("#txtBeginDate").val();
+            var enddate = $("#txtEndDate").val();
+            $.ajax({
+                url: "/ClassRoom/QueryBookingList",
+                type: this.method,
+                data: { "strClassRoomCode": classRoomCode, "strMobile": mobile, "strStatus": status, "beginDate": begindate, "endDate": enddate },
+                success: function (msg) {
+                    $('#panelBooking').html(msg);
+                }
+            });
+        }
+
+
+        function UpdatePayStatus(strBookingNo, strStatus) {
+            $.ajax({
+                url: "/classRoom/DoUpdateBookingStatus",
+                data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+                    if (rst.iResult >= 0) {
+                        alert("修改成功");
+                        $.ajax({
+                            url: "/ClassRoom/QueryBookingList",
+                            type: this.method,
+                            data: { "strClassRoomCode": classRoomCode },
+                            success: function (msg) {
+                                $('#panelBooking').html(msg);
+                            }
+                        });
+                    }
+                }
+
+            });
+        }
+    </script>
 }

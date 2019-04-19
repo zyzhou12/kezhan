@@ -20,9 +20,25 @@
                 <!-- SIDEBAR -->
                 <div class="col-md-4 col-lg-3">
 
+                    <div class="sidebar">
 
 
-                </div>
+                        <!-- WIDGET RECENT POST HAS THUMBNAIL -->
+                        <div class="widget widget_recent_entries has_thumbnail">
+                            <h4 class="widget-title">流量购买</h4>
+                            <div class="guest-book_item guest-book_item-2">
+                                @*<span class="icon lotus-icon-quote-left"></span>
+                                <div class="avatar">
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherHead?x-oss-process=style/head" alt="">
+                                </div>
+                                <h2>@Model.TeacherName</h2>*@
+                                <p>提示：购买的流量不可退，请注意有效期和购买合适的流量，每个课程的课时所需要的流量是（线下报名人数+在线支付人数+老师）*课时长短，购买的流量不可退，有效期自购买之日起12个月?</p>
+                                <span></span>
+                            </div>
+                        </div>
+                        </div>
+
+                    </div>
                 <!-- END / SIDEBAR -->
                 <!-- CONTENT -->
                 <div class="col-md-8 col-lg-9">
@@ -38,14 +54,12 @@
                                 </div>*@
 
 
-                            <div class="bg-gray text-center">
-                                <h4>流量购买 </h4>
+                            <div class="text-center">
+                                @*<h4>流量购买 </h4>
 
                                 <p>
-                                    提示：充值金额低于20元不退！主要用于不定时
-                                    长的在线辅导或资料下载、视频观看等，请充值
-                                    合适的金额?
-                                </p>
+                                    提示：购买的流量不可退，请注意有效期和购买合适的流量，每个课程的课时所需要的流量是（线下报名人数+在线支付人数+老师）*课时长短，购买的流量不可退，有效期自购买之日起12个月?
+                                </p>*@
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10)">10分钟<br />￥ @Convert.ToString(Model.ClassFee * 10)</button>
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,30)">30分钟<br />￥ @Convert.ToString(Model.ClassFee * 30)</button>
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,45)">45分钟<br />￥ @Convert.ToString(Model.ClassFee * 45)</button>
@@ -53,14 +67,13 @@
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,1000)">1000分钟<br />￥ @Convert.ToString(Model.ClassFee * 1000)</button>
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10000)">10000分钟<br />￥ @Convert.ToString(Model.ClassFee * 10000)</button>
                                 <button class="awe-btn awe-btn-2" onclick="InputAmount(this)">自定义 <br />每分钟￥ @Model.ClassFee</button>
-
+                                <br /><br />
                                 <input type="number" style=" display:none" id="hidAmount" value="" placeholder="请输入购买分钟数" class="input-text" />
                             </div>
 
 
                             <label>支付方式</label>
                             <ul class="option-bank">
-
                                 <li id="liAli">
                                     <label class="label-radio">
                                         <input type="radio" class="input-radio" name="rPayType" value="alipay">
@@ -200,6 +213,8 @@
                         $("#imgQrCode").attr("src", "http://qr.liantu.com/api.php?text=" + rst.strMsg);
                         $("#myBGDiv").show();
                         $("#divPayCode").show();
+
+                        setTimeout("GetFlowStoredStatus('" + bookingno + "')", 2000);
                     } else {
                         alert(rst.strMsg);
                     }
@@ -328,6 +343,24 @@
         });
     }
 
+    function GetFlowStoredStatus(bookingno) {
+        $.ajax({
+            url: "/weixinpay/GetFlowStatus",
+            data: { "strBookingNo": bookingno },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult == 1) {
+                    alert("支付成功")
+                    window.location.reload();
+                } else {
+                    setTimeout("GetFlowStoredStatus('" + bookingno + "')", 2000);
+                }
+            }
+
+        });
+
+    }
 
     function ClosePayCode() {
         $("#myBGDiv").hide();

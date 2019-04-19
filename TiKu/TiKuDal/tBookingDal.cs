@@ -143,13 +143,20 @@ namespace TiKu.Dal
       return dtRst;
     }
 
-    public static DataTable GetClassRoomBookingList(string strUserName,string strClassRoomCode)
+    public static DataTable GetClassRoomBookingList(string strUserName,string strClassRoomCode,string strMobile,string strStatus,string beginDate,string endDate)
     {
       List<DbParameter> lstParam = new List<DbParameter>();
-
+      if (!string.IsNullOrEmpty(strMobile))
+      {
+          strMobile = strMobile.Trim();
+      }
 
       lstParam.Add(new DBParam("@UserName", strUserName));
       lstParam.Add(new DBParam("@ClassRoomCode", strClassRoomCode));
+      lstParam.Add(new DBParam("@Mobile", strMobile));
+      lstParam.Add(new DBParam("@Status", strStatus));
+      lstParam.Add(new DBParam("@BeginDate", beginDate));
+      lstParam.Add(new DBParam("@EndDate", endDate));
 
       //防止返回数据过多
       if (lstParam.Count <= 0) throw new Exception("没有查询条件");

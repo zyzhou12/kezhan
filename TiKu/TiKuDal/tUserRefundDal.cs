@@ -63,7 +63,9 @@ namespace TiKu.Dal
         public static tUserRefundEntity GettUserRefund(int id)
         {
             tUserRefundEntity rst = null;
-            string strSQL = "SELECT * FROM tUserRefund WHERE fID=" + id.ToString();
+            string strSQL = @"select fClassRoomTitle,r.* from tUserRefund r 
+	left join tBooking b on b.fBookingNo=r.fBookingNO
+	left join tClassRoom c on c.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' WHERE r.fID=" + id.ToString();
             DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
             if (dt.Rows.Count > 0)
             {
@@ -73,23 +75,30 @@ namespace TiKu.Dal
             return rst;
         }
 
-        public static List<tUserRefundEntity> GettUserRefundList(string strUserName,string strStatus)
+        public static List<tUserRefundEntity> GettUserRefundList(string strUserName,string strStatus,string strTeacher)
         {
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
-            bufSQL.Append("SELECT * FROM tUserRefund WHERE (1=1) ");
+            bufSQL.Append(@"select fClassRoomTitle,r.* from tUserRefund r 
+	left join tBooking b on b.fBookingNo=r.fBookingNO
+	left join tClassRoom c on c.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' WHERE (1=1) ");
 
             if (!string.IsNullOrEmpty(strUserName))
             {
-                bufSQL.Append(" AND fUserName=@UserName ");
+                bufSQL.Append(" AND r.fUserName=@UserName ");
                 lstParam.Add(new DBParam("@UserName", strUserName));
             }
 
             if (!string.IsNullOrEmpty(strStatus))
             {
-                bufSQL.Append(" AND fStatus=@Status ");
+                bufSQL.Append(" AND r.fStatus=@Status ");
                 lstParam.Add(new DBParam("@Status", strStatus));
+            }
+            if (!string.IsNullOrEmpty(strTeacher))
+            {
+                bufSQL.Append(" AND c.fCreateOpr=@Teacher ");
+                lstParam.Add(new DBParam("@Teacher", strTeacher));
             }
 
             //防止返回数据过多
@@ -104,7 +113,7 @@ namespace TiKu.Dal
         /// </summary>
         /// <param name="BookingNo"></param>
         /// <returns></returns>
-        public static int GetBokingMaxReturnAmount(string BookingNo)
+        public static decimal GetBokingMaxReturnAmount(string BookingNo)
         {
             List<DbParameter> lstParam = new List<DbParameter>();
 
@@ -113,9 +122,28 @@ namespace TiKu.Dal
 
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");
-            Object rst = DBHelper.ExecuteScalar("TiKu", "GetReturnAmount",
-        lstParam);
-            return Convert.ToInt32(rst);
+            DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "GetReturnAmount ", lstParam, DBHelper.ProcRstTypes.All);
+            decimal dMaxReturnAmount=0;
+            if(rst.DataSet.Tables.Count>0){
+                dMaxReturnAmount = Convert.ToDecimal(rst.DataSet.Tables[0].Rows[0][0]);
+            }
+            return dMaxReturnAmount;
+        }
+
+        public static int CheckRefund(decimal iAmount, string strBookingNo, ref string strMsg)
+        {
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+
+            lstParam.Add(new DBParam("@BookingNo", strBookingNo));
+            lstParam.Add(new DBParam("@iAmount", iAmount));
+
+            //防止返回数据过多
+            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "CheckRefund",
+        lstParam, DBHelper.ProcRstTypes.All);
+            strMsg = rst.Message;
+            return rst.Result;
         }
 
         public static int ConfirmUserRefund(int iRefundID, decimal refundAmount, string strApplyNote, string strApplyOpr, ref string strMsg)

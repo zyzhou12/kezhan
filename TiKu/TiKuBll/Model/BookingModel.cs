@@ -32,7 +32,7 @@ namespace TiKuBll.Model
         public System.Decimal UserAccountAmount { get; set; }
         public System.String PayOrderNo { get; set; }
 
-        public System.Int32 MaxReturnAmount { get; set; }
+        public System.Decimal MaxReturnAmount { get; set; }
 
         public ClassRoomModel ClassRoom { get; set; }
     }
@@ -43,6 +43,7 @@ namespace TiKuBll.Model
         public System.String fClassType { get; set; }
 
         public System.String fStatus { get; set; }
+        public System.Boolean IsManager { get; set; }
         public List<BookingModel> list { get; set; }
     }
 }

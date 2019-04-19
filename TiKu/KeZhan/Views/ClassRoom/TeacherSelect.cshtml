@@ -25,7 +25,7 @@
 </div>
 
 
-<label>授课老师</label>
+<label>授课老师<sup>*</sup></label>
 <input type="hidden" id="hidTeacherValue" value="@Model.fUserName" />
 <select id="cmbTeacher" name="fTeacherUserName" onchange="GetValid(this)" style="width:100%; height:42px;"></select>
 
@@ -80,6 +80,8 @@
             $("#cmbPharse").append("<option value=\"3\">高中</option>");
         } else {
             $("#cmbPharse").append("<option value=\"0\">全部</option>");
+            $("#cmbPharse").append("<option value=\"8\">素质与拓展</option>");
+            $("#cmbPharse").append("<option value=\"9\">职业与技能</option>");
             GetSubject("0");
         }
     }
@@ -109,12 +111,26 @@
             $("#cmbSubject").append("<option value='地理'>地理</option>");
         } else if (pharse == "0") {
             $("#cmbSubject").append("<option value=\"\">请选择</option>");
+            $("#cmbSubject").append("<option value='其他'>其他</option>");
+        } else if (pharse == "8") {
+            $("#cmbSubject").append("<option value=\"\">请选择</option>");
+            $("#cmbSubject").append("<option value='外语'>外语</option>");
+            $("#cmbSubject").append("<option value='SAT'>SAT</option>");
+            $("#cmbSubject").append("<option value='STEAM'>STEAM</option>");
+            $("#cmbSubject").append("<option value='绘画'>绘画</option>");
             $("#cmbSubject").append("<option value='音乐'>音乐</option>");
-            $("#cmbSubject").append("<option value='美术'>美术</option>");
-            $("#cmbSubject").append("<option value='竞赛'>竞赛</option>");
-            $("#cmbSubject").append("<option value='科学'>科学</option>");
             $("#cmbSubject").append("<option value='编程'>编程</option>");
-            $("#cmbSubject").append("<option value='拓展'>拓展</option>");
+            $("#cmbSubject").append("<option value='书法'>书法</option>");
+            $("#cmbSubject").append("<option value='围棋'>围棋</option>");
+            $("#cmbSubject").append("<option value='其他'>其他</option>");
+        } else if (pharse == "9") {
+            $("#cmbSubject").append("<option value=\"\">请选择</option>");
+            $("#cmbSubject").append("<option value='市场营销'>市场营销</option>");
+            $("#cmbSubject").append("<option value='会计'>会计</option>");
+            $("#cmbSubject").append("<option value='法律'>法律</option>");
+            $("#cmbSubject").append("<option value='科学'>科学</option>");
+            $("#cmbSubject").append("<option value='烹调'>烹调</option>");
+            $("#cmbSubject").append("<option value='速记'>速记</option>");
             $("#cmbSubject").append("<option value='其他'>其他</option>");
         }
     }
@@ -122,7 +138,7 @@
 
     function GetTeacher(strPharse, strSubject) {
         $("#cmbTeacher").empty();
-        if (strPharse == "0") {
+        if (strPharse == "0" || strPharse == "8" || strPharse == "9") {
             strPharse = "";
             strSubject = "";
         }

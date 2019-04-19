@@ -559,7 +559,7 @@ namespace KeZhan.Controllers
     }
 
 
-    public string RefundAmount(string outtradeno, string outrefundno, int refundfee)
+    public string RefundAmount(string outtradeno, string outrefundno, decimal refundfee)
     {
         string privatekey = @"MIIEpQIBAAKCAQEAweqH4zUrohyvhIQCj5XNcdVz/1jd669oP/pc8gla9fTApwrU
                             wy4AQqPinR38w0uk8/kUGCqetZAUfmyBEjXptqI3Lh5i1Jag7t+Psa5m8Zsi2f8q
@@ -587,15 +587,14 @@ namespace KeZhan.Controllers
                             ybZxVxITwfH23XCf9z52H/fb2TEUdE6c8cnwbnKsYHSAMw8Kg6bwRKhdItiPc7Kd
                             jNbVzfmmNrbwttR1WDPtgLd8u3z+pjqcP5y82Y9e9Znj21S2VuoJOQY=
                             ";
-       IAopClient client = new DefaultAopClient("https://openapi.alipay.com/gateway.do", "2018113062388410", privatekey, "json", "1.0", "RSA2", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlse4dU81/Q0QZa5lgwkcPPUFUfim+ZXYLosPaOJU4ZBDPUvxQnyVuHjvQdnAoxqUX2jmEi/XQfDHCtgcFMO4c7UpiI/DTqybBUMb5yKoAtPipKw7W4XAauXoFWqGF/dV2WrrDggNHVKKZYrpWFdyN8B32b5JP5J9TorGhNELl7RHm7QsOSCMFgMdd/IVIEsDr1V9HtJa3DMj2J6k+vbJAickXsmJBI4ix74pGSUYKG8tx2t016tkaIjRdI5DLIseEgqhV8jvqnk5qI9kziMJdXZr3QhIbXX/7Sf0JcJPQwXbqokSB1NFU++fIk1s367l1xqKsAZUd29c/9c7FlAF+QIDAQAB", "UTF-8", false);
+        DefaultAopClient client = new DefaultAopClient("https://openapi.alipay.com/gateway.do", "2018113062388410", privatekey, "json", "1.0", "RSA2", "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlse4dU81/Q0QZa5lgwkcPPUFUfim+ZXYLosPaOJU4ZBDPUvxQnyVuHjvQdnAoxqUX2jmEi/XQfDHCtgcFMO4c7UpiI/DTqybBUMb5yKoAtPipKw7W4XAauXoFWqGF/dV2WrrDggNHVKKZYrpWFdyN8B32b5JP5J9TorGhNELl7RHm7QsOSCMFgMdd/IVIEsDr1V9HtJa3DMj2J6k+vbJAickXsmJBI4ix74pGSUYKG8tx2t016tkaIjRdI5DLIseEgqhV8jvqnk5qI9kziMJdXZr3QhIbXX/7Sf0JcJPQwXbqokSB1NFU++fIk1s367l1xqKsAZUd29c/9c7FlAF+QIDAQAB", "UTF-8", false);
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         
         request.BizContent = "{" +
         "\"out_trade_no\":\"" + outtradeno + "\"," +
-        "\"refund_amount\":" + refundfee + "," +
-        "\"refund_currency\":\"RMB\"," +
+        "\"refund_amount\":" + refundfee.ToString() + "," +
         "\"refund_reason\":\"正常退款\"," +
-        "\"out_request_no\":\"" + outrefundno + "\"," +
+        "\"out_request_no\":\"" + outrefundno + "\"" +
         "  }";
         AlipayTradeRefundResponse response = client.Execute(request);
         Console.WriteLine(response.Body);

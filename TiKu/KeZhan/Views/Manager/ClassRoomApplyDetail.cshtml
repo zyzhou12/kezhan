@@ -87,8 +87,8 @@
                                         <p>
                                             @Html.Raw(Html.Encode(Model.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
                                             <br />
-                                            @*<span>开课时间：@Model.fClassRoomDate.ToShortDateString()</span>
-                                            <br />*@
+                                            <span>开课时间：@Model.fClassRoomDate.ToShortDateString()</span>
+                                            <br />
                                             <span>讲师：@Model.TeacherName</span>
                                             <br />
                                             @if (Model.fIsReturn)

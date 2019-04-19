@@ -8,7 +8,7 @@
             <div class="container">
                 <div class="login-register">
                     <div class="text text-center">
-                        <h2>注册</h2>
+                        <h2>课站注册</h2>
                          
                         <div class="account_form">
                         
@@ -30,7 +30,7 @@
                                 <input type="text" class="field-text" id="txtNickName" placeholder="请输入昵称" />
                             </div>
                                 <div class="field-form">
-                                <input type="password" class="field-text" id="txtPass"placeholder="请输入密码">
+                                <input type="password" class="field-text" id="txtNewPass"placeholder="请输入密码">
                                 <span class="view-pass"><i class="lotus-icon-view"></i></span>
                                 </div>
                                  <div class="field-form">
@@ -53,7 +53,7 @@
                                    
                                   <span class="account-desc" id="bTeacherDesc" >
                                       
-                                      <p><a href="/open/RegsiterLogin" >已有账号，去登录</a></p>
+                                      <p><a href="/open/RegsiterLogin" >已有课站账号，去登录</a></p>
                                   </span>
                                   
                             </div>
@@ -198,7 +198,7 @@
 
     $.ajax({
       url: "/open/DoStudentValidCode",
-      data: { "strMobile": $("#txtNewMobile").val(), "strCode": $("#txtCode").val(), "strNickName": $("#txtNickName").val(), "strPass": $("#txtPass").val(), "strPass2": $("#txtPass2").val() },
+      data: { "strMobile": $("#txtNewMobile").val(), "strCode": $("#txtCode").val(), "strNickName": $("#txtNickName").val(), "strPass": $("#txtNewPass").val(), "strPass2": $("#txtPass2").val() },
       type: "POST",
       dataType: "json",
       success: function (rst) {

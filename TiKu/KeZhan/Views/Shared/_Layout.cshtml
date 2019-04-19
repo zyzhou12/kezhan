@@ -1,7 +1,7 @@
 ﻿@{
-  var userinfo = KeZhan.Code.Fun.GetSessionUserInfo(this);
-  var controller = ViewContext.RouteData.Values["controller"].ToString();
-  var action = ViewContext.RouteData.Values["action"].ToString();
+    var userinfo = KeZhan.Code.Fun.GetSessionUserInfo(this);
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    var action = ViewContext.RouteData.Values["action"].ToString();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +25,8 @@
     <link rel="stylesheet" type="text/css" href="../../Content/css/lib/magnific-popup.css">
     <link rel="stylesheet" type="text/css" href="../../Content/css/lib/settings.css">
     <link rel="stylesheet" type="text/css" href="../../Content/css/lib/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/css/helper.css">
+    <link rel="stylesheet" type="text/css" href="../../Content/css/custom.css">
     <!-- MAIN STYLE -->
     <link rel="stylesheet" type="text/css" href="../../Content/css/style.css?v=1.9">
     <link rel="stylesheet" type="text/css" href="../../Content/aizhu.css">
@@ -77,8 +79,7 @@
                             {
                                 <a id="aLogin" href="/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()">登录</a>
                                 <a id="aLogin" href="/open/StudentRegsiter?redirect_uri=@Request.Url.ToString()">注册</a>
-                                @*<a id="aLogin" href="/open/TeacherRegsiter?redirect_uri=@Request.Url.ToString()">老师认证</a>*@
-                                <a id="aLogin" href="/User/UpdateRole">老师认证</a>
+                              
                             }
                             else
                             {
@@ -89,6 +90,10 @@
                                 else
                                 {
                                     <a href="../user/userInfo">@userinfo.fNickName</a>
+                                }
+                                if (userinfo.fRole == "Student")
+                                {
+                                    <a id="aLogin" href="/User/UpdateRole">老师认证</a>
                                 }
 
                                 <a href="../message/MessageList">系统消息<span id="spanNum"></span></a>
@@ -130,49 +135,49 @@
                     <nav class="header_menu">
                         <ul class="menu">
 
-                            <li @if (controller == "Open" && action == "ClassRoomList") { <text> class="current-menu-item" </text>    }><a href="../Open/ClassRoomList">公开课</a></li>
+                            <li @if (controller == "Open" && action == "ClassRoomList") { <text> class="current-menu-item" </text>       }><a href="../Open/ClassRoomList">K12课程</a></li>
                             @if (userinfo != null)
                             {
 
-                                <li @if (controller == "ClassRoom") { <text> class="current-menu-item" </text>     }>
+                                <li @if (controller == "ClassRoom") { <text> class="current-menu-item" </text>        }>
                                     <a href="#">上课<span class="fa fa-caret-down"></span></a>
                                     <ul class="sub-menu">
-                                        <li @if (controller == "ClassRoom" && action == "MyClassRoomList") { <text> class="current-menu-item" </text>     }><a href="../ClassRoom/MyClassRoomList">我购买的</a></li>
+                                        <li @if (controller == "ClassRoom" && action == "MyClassRoomList") { <text> class="current-menu-item" </text>        }><a href="../ClassRoom/MyClassRoomList?strClassType=buy">我购买的</a></li>
                                         @if (userinfo.fRole == "Teacher")
                                         {
-                                            <li @if (controller == "ClassRoom" && action == "ClassRoomManager") { <text> class="current-menu-item" </text>      }><a href="../ClassRoom/ClassRoomManager?strStatus=发布">我发布的</a></li>
+
+                                            <li @if (controller == "ClassRoom" && action == "MyClassRoomList") { <text> class="current-menu-item" </text>          }><a href="../ClassRoom/MyClassRoomList?strClassType=teacher">我是老师</a></li>
                                         }
                                     </ul>
                                 </li>
                                 if (userinfo.fRole == "Teacher")
                                 {
-                                    <li @if (controller == "User") { <text> class="current-menu-item" </text>    }>
+                                    <li @if (controller == "User") { <text> class="current-menu-item" </text>       }>
                                         <a href="#">我的 <span class="fa fa-caret-down"></span></a>
                                         <ul class="sub-menu">
-                                            <li @if (controller == "User" && action == "UserInfo") { <text> class="current-menu-item" </text>    }><a href="../User/UserInfo">个人信息</a></li>
-                                            <li @if (controller == "booking" && action == "bookingList") { <text> class="current-menu-item" </text>     }><a href="../booking/bookingList">我的订单</a></li>
-                                            <li @if (controller == "User" && action == "UserMemberList") { <text> class="current-menu-item" </text>      }><a href="../User/UserMemberList">我的邀请</a></li>
-                                            <li @if (controller == "ClassRoom" && action == "ClassRoomManager") { <text> class="current-menu-item" </text>    }><a href="../ClassRoom/ClassRoomManager">课程列表</a></li>
-                                            <li @if (controller == "ClassRoom" && action == "ClassRoomEdit") { <text> class="current-menu-item" </text>    }><a href="../ClassRoom/ClassRoomEdit">新增课程</a></li>
-                                            <li @if (controller == "ClassRoom" && action == "BookingListManager") { <text> class="current-menu-item" </text>    }><a href="../ClassRoom/BookingListManager">报名记录</a></li>
-                                            <li @if (controller == "Booking" && action == "UserRefundList")
-                                                { <text> class="current-menu-item" </text>     }><a href="../Booking/UserRefundList">退款管理</a></li>
-                                            <li @if (controller == "User" && action == "UserPay") { <text> class="current-menu-item" </text>    }><a href="../User/UserPay">购买流量</a></li>
-                                            <li @if (controller == "User" && action == "UserAccount")
-                                                { <text> class="current-menu-item" </text>    }><a href="../User/UserAccount">交易账户</a></li>
-                                            <li @if (controller == "User" && action == "UserBankManager") { <text> class="current-menu-item" </text>     }><a href="../User/UserBankManager">银行账户</a></li>
+                                            <li @if (controller == "User" && action == "UserInfo") { <text> class="current-menu-item" </text>       }><a href="../User/UserInfo">个人信息</a></li>
+                                            <li @if (controller == "booking" && action == "bookingList") { <text> class="current-menu-item" </text>        }><a href="../booking/bookingList">我的订单</a></li>
+                                            <li @if (controller == "User" && action == "UserMemberList") { <text> class="current-menu-item" </text>         }><a href="../User/UserMemberList">我的邀请</a></li>
+                                            <li @if (controller == "ClassRoom" && action == "ClassRoomManager") { <text> class="current-menu-item" </text>       }><a href="../ClassRoom/ClassRoomManager">课程列表</a></li>
+                                            <li @if (controller == "ClassRoom" && action == "ClassRoomAdd")
+                                                { <text> class="current-menu-item" </text>       }><a href="../ClassRoom/ClassRoomAdd">新增课程</a></li>
+                                            <li @if (controller == "ClassRoom" && action == "BookingListManager") { <text> class="current-menu-item" </text>       }><a href="../ClassRoom/BookingListManager">报名记录</a></li>
+                                            <li @if (controller == "Booking" && action == "UserRefundList") { <text> class="current-menu-item" </text>        }><a href="../Booking/UserRefundList">退款管理</a></li>
+                                            <li @if (controller == "User" && action == "UserPay") { <text> class="current-menu-item" </text>       }><a href="../User/UserPay">购买流量</a></li>
+                                            <li @if (controller == "User" && action == "UserAccount") { <text> class="current-menu-item" </text>       }><a href="../User/UserAccount">交易账户</a></li>
+                                            <li @if (controller == "User" && action == "UserBankManager") { <text> class="current-menu-item" </text>        }><a href="../User/UserBankManager">银行账户</a></li>
 
                                         </ul>
                                     </li>
                                 }
                                 else if (userinfo.fRole == "Student")
                                 {
-                                    <li @if (controller == "User") { <text> class="current-menu-item" </text>    }>
+                                    <li @if (controller == "User") { <text> class="current-menu-item" </text>       }>
                                         <a href="#">我的 <span class="fa fa-caret-down"></span></a>
                                         <ul class="sub-menu">
-                                            <li @if (controller == "User" && action == "UserInfo") { <text> class="current-menu-item" </text>    }><a href="../User/UserInfo">个人信息</a></li>
-                                            <li @if (controller == "booking" && action == "bookingList") { <text> class="current-menu-item" </text>    }><a href="../booking/bookingList">我的订单</a></li>
-                                         
+                                            <li @if (controller == "User" && action == "UserInfo") { <text> class="current-menu-item" </text>       }><a href="../User/UserInfo">个人信息</a></li>
+                                            <li @if (controller == "booking" && action == "bookingList") { <text> class="current-menu-item" </text>       }><a href="../booking/bookingList">我的订单</a></li>
+
                                         </ul>
                                     </li>
 
@@ -183,15 +188,14 @@
                                 else if (userinfo.fRole == "Manager")
                                 {
 
-                                    <li @if (controller == "User") { <text> class="current-menu-item" </text>    }>
+                                    <li @if (controller == "User") { <text> class="current-menu-item" </text>       }>
                                         <a href="#">我的 <span class="fa fa-caret-down"></span></a>
                                         <ul class="sub-menu">
-                                            <li @if (controller == "User" && action == "UserInfo") { <text> class="current-menu-item" </text>    }><a href="../User/UserInfo">个人信息</a></li>
-                                            <li @if (controller == "Manager" && action == "ValidManager") { <text> class="current-menu-item" </text>    }><a href="../Manager/ValidManager">认证管理</a></li>
-                                            <li @if (controller == "Manager" && action == "ClassRoomApplyManager") { <text> class="current-menu-item" </text>     }><a href="../Manager/ClassRoomApplyManager">课程管理</a></li>
-                                            <li @if (controller == "User" && action == "TeacherWithdrawalManager") { <text> class="current-menu-item" </text>      }><a href="../Manager/TeacherWithdrawalManager">提现管理</a></li>
-                                            <li @if (controller == "Manager" && action == "FlowAdjust")
-                                                { <text> class="current-menu-item" </text>       }><a href="../Manager/FlowAdjust">赠送流量</a></li>
+                                            <li @if (controller == "User" && action == "UserInfo") { <text> class="current-menu-item" </text>       }><a href="../User/UserInfo">个人信息</a></li>
+                                            <li @if (controller == "Manager" && action == "ValidManager") { <text> class="current-menu-item" </text>       }><a href="../Manager/ValidManager">认证管理</a></li>
+                                            <li @if (controller == "Manager" && action == "ClassRoomApplyManager") { <text> class="current-menu-item" </text>        }><a href="../Manager/ClassRoomApplyManager">课程管理</a></li>
+                                            <li @if (controller == "User" && action == "TeacherWithdrawalManager") { <text> class="current-menu-item" </text>         }><a href="../Manager/TeacherWithdrawalManager">提现管理</a></li>
+                                            <li @if (controller == "Manager" && action == "FlowAdjust") { <text> class="current-menu-item" </text>          }><a href="../Manager/FlowAdjust">赠送流量</a></li>
 
                                         </ul>
                                     </li>
@@ -200,12 +204,12 @@
                             }
                             else
                             {
-                                <li @if (controller == "Open" && action == "RegsiterLogin") { <text> class="current-menu-item" </text>    }>
+                                <li @if (controller == "Open" && action == "RegsiterLogin") { <text> class="current-menu-item" </text>       }>
                                     <a href="/Open/RegsiterLogin?redirect_uri=@Request.Url.ToString()">登录 </a>
                                 </li>
                             }
 
-                            <li @if (controller == "Open" && action == "About") { <text> class="current-menu-item" </text>    }>
+                            <li @if (controller == "Open" && action == "About") { <text> class="current-menu-item" </text>       }>
                                 <a href="/Open/About">关于 </a>
 
                             </li>
@@ -224,7 +228,7 @@
 
         </header>
         <!-- END / HEADER -->
-        <section class="section-sub-banner bg-9">
+        <section class="section-sub-banner" style="background-color:black;padding-top: 100px;">
             <div class="awe-overlay"></div>
             @*<div class="sub-banner">
                     <div class="container">
@@ -254,7 +258,7 @@
                                     </div>
                                     <div class="text">
                                         <p><i class="lotus-icon-location"></i> 上海市徐汇区</p>
-                                        <p><i class="lotus-icon-phone"></i> 021-12345678</p>
+                                        <p><i class="lotus-icon-phone"></i> 021-54590428</p>
                                         <p><i class="fa fa-envelope-o"></i> <a href="mailto:hello@thelotushotel.com">service@aizhusoft.com</a></p>
                                     </div>
                                 </div>
@@ -263,35 +267,35 @@
 
                         <div class="col-xs-4 col-lg-2">
                             <div class="widget">
-                                <h4 class="widget-title">服务</h4>
+                                <h4 class="widget-title">网站导航</h4>
                                 <ul>
-                                    <li><a href="#">选课</a></li>
-                                    <li><a href="#">上课</a></li>
-                                    <li><a href="#">我的</a></li>
+                                    <li><a href="/open/ClassRoomList">K12课程</a></li>
+                                    <li><a href="/ClassRoom/MyClassRoomList?strClassType=buy">上课</a></li>
+
                                 </ul>
                             </div>
                         </div>
 
                         <div class="col-xs-4 col-lg-2">
                             <div class="widget">
-                                <h4 class="widget-title">条款</h4>
+                                <h4 class="widget-title">帮助中心</h4>
                                 <ul>
-                                    <li><a href="">隐私条款</a></li>
-                                    <li><a href="">使用条款</a></li>
-                                    <li><a href="">常见规则</a></li>
+                                    <li><a href="/open/QAInfo">常见问题</a></li>
+                                    <li><a href="/open/WebInfo">服务协议</a></li>
+                                    <li><a href="/Open/About">关于</a></li>
                                 </ul>
                             </div>
                         </div>
 
-                        @* <div class="col-xs-4 col-lg-3">
-                                <div class="widget widget_tripadvisor">
-                                    <h4 class="widget-title">Tripadvisor</h4>
-                                    <div class="tripadvisor">
-                                        <p>Now with hotel reviews by</p>
 
-                                    </div>
+                        <div class="col-xs-4 col-lg-3">
+                            <div class="widget widget_tripadvisor">
+                                <h4 class="widget-title">课站公众号</h4>
+                                <div class="tripadvisor">
+                                    <img width="100" height="100" src="~/Content/image/WeiXinPublic.jpg" />
                                 </div>
-                            </div>*@
+                            </div>
+                        </div>
 
 
                     </div>
@@ -319,6 +323,7 @@
             文件上传
         </h1>
         <p>
+            <span>请将文档压缩后上传，支持rar,zip,7z格式</span>
             <div id="fileUploadContent" class="fileUploadContent">
             </div>
             <button id="btnSuccessClose" style="display: none">
@@ -536,8 +541,8 @@
                 //"filelSavePath":"",//文件上传地址，后台设置的根目录
                 //"beforeUpload":beforeUploadFun,//在上传前执行的函数
                 "onUpload": function (opt, data) { SaveCourse(username, courseid, opt, data); }, //在上传后执行的函数
-                autoCommit: true//文件是否自动上传
-                //"fileType": []//文件类型限制，默认不限制，注意写的是文件后缀
+                "autoCommit": true,//文件是否自动上传
+                "fileType": ['rar', 'zip', '7z']//文件类型限制，默认不限制，注意写的是文件后缀
 
             });
         }

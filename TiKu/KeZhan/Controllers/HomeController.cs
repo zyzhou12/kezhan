@@ -97,6 +97,7 @@ namespace KeZhan.Controllers
                     {
                         OpenClassRoomModel model = new OpenClassRoomModel();
                         model.ClassRoomCode = cr.fClassRoomCode + iCourseID.ToString();//课堂房间号
+                        model.CourseID = iCourseID;
                         model.ClassRoomName = cr.fClassRoomTitle;
                         model.UserName = userInfo.fUserName;
                         model.UserSig = UserSig.GetSig(userInfo.fUserName);//获取签名
@@ -137,6 +138,23 @@ namespace KeZhan.Controllers
 
         }
 
+
+        public JsonResult GerCourseStatus(int iCourseID)
+        {
+              CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
+              ResponseBaseModel response = new ResponseBaseModel();
+              if (course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
+              {
+                  response.iResult = -1;
+                  response.strMsg = "课时已结束";
+              }
+              else
+              {
+                  response.iResult = 0;
+              }
+              JsonResult jr = new JsonResult();
+              return jr;
+        }
 
         public ActionResult ClassRoom(string strClassRoomType, string strClassRoomCode)
         {

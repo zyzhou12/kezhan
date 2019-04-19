@@ -62,8 +62,8 @@
                             <span>@Model.ClassRoom.fClassRoomTitle</span>
                             <label>价格<sup></sup></label>
                             <span>@Model.fAmount </span>
-                            @*<label>开课时间<sup> </sup></label>
-                                <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>*@
+                            <label>开课时间<sup> </sup></label>
+                                <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
 
                             <label>课程明细<sup> </sup></label>
                             @foreach (var c in Model.ClassRoom.courseList)
@@ -121,7 +121,6 @@
                                         </li>
                                         }
                                     </ul>
-                                    <img id="imgQrCode" style=" display:none;" src="" />
                                     <div id="divQrCode" style=" display:none;">
                                     </div>
                                     <br />
@@ -146,6 +145,25 @@
     </div>
 
 </section>
+
+
+
+<div id="divPayCode" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
+    <h1>
+        微信扫码支付
+    </h1>
+
+    <p>
+        <img id="imgQrCode" src="" />
+
+    </p>
+    <button class="awe-btn awe-btn-13" onclick="ClosePayCode()">支付完成</button>
+
+
+    <a class="close-reveal-modal" onclick="ClosePayCode()">&#215;</a>
+</div>
+
+
 <script type="text/javascript">
     var username = '@Model.UserName';
 
@@ -211,8 +229,8 @@
                 success: function (rst) {
                     if (rst.iResult >= 0) {
                         $("#imgQrCode").attr("src", "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + rst.strMsg);
-                        $("#imgQrCode").show();
-                        $("#btnPay").hide();
+                        $("#myBGDiv").show();
+                        $("#divPayCode").show();
 
                         setTimeout("GetBookingNo('" + bookingNo + "')", 2000);//获取支付结果
                     } else {
@@ -355,5 +373,12 @@
 
         });
 
+    }
+
+
+
+    function ClosePayCode() {
+        $("#myBGDiv").hide();
+        $("#divPayCode").hide();
     }
 </script>

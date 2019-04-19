@@ -1,73 +1,110 @@
 ﻿@model TiKuBll.Model.ClassRoomListModel
 @{
-  ViewBag.Title = "课站";
+    ViewBag.Title = "课站";
 }
 
 
 <!-- ACTIVITI -->
 <section class="section-activiti bg-white">
-            <div class="container">
+    <div class="container">
 
-                <div class="activiti">
+        <div class="activiti">
+            @if (Model.listType == "teacher") { 
+            <div class="gallery-cat activiti-cat ">
 
-                    <div class="activiti_content">
-                        
-                        <div class="row" id="divClassRoom">
+                <ul class="list-inline">
+                    <li>状态：</li>
+                    <li @if (Model.strStatus == "") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=&strPayType=@Model.strPayType">全部</a></li>
+                    <li @if (Model.strStatus == "保存") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=保存&strPayType=@Model.strPayType">草稿</a></li>
 
-                            @if (Model.classRoomList.Count > 0)
+                    <li @if (Model.strStatus == "发布") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=发布&strPayType=@Model.strPayType">发布</a></li>
+
+                    <li @if (Model.strStatus == "下线") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=下线&strPayType=@Model.strPayType">下线</a></li>
+
+                </ul>
+                <ul class="list-inline">
+                    <li>付款方式：</li>
+                    <li @if (Model.strPayType == "") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=">全部</a></li>
+                    <li @if (Model.strPayType == "在线支付") { <text> class="active" </text>        }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=在线支付">在线支付</a></li>
+
+                    <li @if (Model.strPayType == "线下支付") { <text> class="active" </text>        }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=线下支付">线下支付</a></li>
+
+                </ul>
+            </div>
+
+            }
+
+
+
+            <div class="activiti_content">
+
+                <div class="row" id="divClassRoom">
+
+                    @if (Model.classRoomList.Count > 0)
+                    {
+                        var linkUrl="";
+                        foreach (var classRoom in Model.classRoomList)
+                        {
+                            if (Model.listType == "teacher")
                             {
-
-                                foreach (var classRoom in Model.classRoomList)
-                                {
-                                    <div class="col-md-4 col-xs-6">
-                                        <div class="activiti_item">
-                                            <div class="img">
-                                                <a href="/Open/ClassRoomDetail?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">
-                                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt="">
-                                                </a>
-                                            </div>
-                                            <div class="text">
-                                                <h2>
-                                                    <a href="#">@classRoom.fClassRoomTitle</a>
-                                                </h2>
-                                                <p>
-
-                                                    @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
-                                                    <br />
-                                                    @*<span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
-                                                    <br />*@
-                                                    <span>讲师：@classRoom.TeacherName</span>
-                                                </p>
-                                                <h2>￥ @classRoom.fPrice.ToString()</h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
+                                linkUrl = "/ClassRoom/ClassRoomTeacher?strClassRoomCode=" + @classRoom.fClassRoomCode;
+                            }
+                            else if (Model.listType == "create")
+                            {
+                                linkUrl = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + @classRoom.fClassRoomCode;
                             }
                             else
                             {
-                                <div class="col-md-4 col-xs-6">
-                                    <div class="activiti_item">
-                                        <div class="img">
-                                            <a href="#" class="view-more">
-                                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ClassRoom-bg.jpg?x-oss-process=style/title" alt="" />
-                                            </a>
-                                        </div>
-                                        <div class="text">
-
-                                        </div>
-                                    </div>
-                                </div>
+                                linkUrl = "/Open/ClassRoomDetail?strClassRoomCode=" + @classRoom.fClassRoomCode;
                             }
 
+                            <div class="col-md-4 col-xs-6">
+                                <div class="activiti_item">
+                                    <div class="img">
+                                        <a href="@linkUrl" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="text">
+                                        <h2>
+                                            <a href="#">@classRoom.fClassRoomTitle</a>
+                                        </h2>
+                                        <p>
+
+                                            @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+                                            <br />
+
+                                            <span>讲师：@classRoom.TeacherName</span>
+                                        </p>
+                                        <h2>￥ @classRoom.fPrice.ToString()</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="col-md-4 col-xs-6">
+                            <div class="activiti_item">
+                                <div class="img">
+                                    <a href="#" class="view-more">
+                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ClassRoom-bg.jpg?x-oss-process=style/title" alt="" />
+                                    </a>
+                                </div>
+                                <div class="text">
+
+                                </div>
+                            </div>
                         </div>
-
-
-                    </div>
+                    }
 
                 </div>
 
-            </div>
-        </section>
-<!-- END / ACTIVITI -->
 
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- END / ACTIVITI -->

@@ -1,0 +1,324 @@
+﻿@model TiKuBll.Model.ClassRoomModel
+@{
+    ViewBag.Title = "课站";
+    bool isEdit = "结算;下线;发布;发布中;下线中".Contains(@Model.fStatus) ? false : true;
+
+    bool isCreateOpr = Model.fCreateOpr == Model.UserName ? true : false;
+}
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+
+                        @if (Model.fID > 0)
+                        {
+
+                            <li onclick="showPanel('course')"><a href="#" style=" width:100%;" data-toggle="tab">上课</a></li>
+                            if (Model.fStatus == "发布")
+                            {
+                                <li onclick="showPanel('booking')"><a href="#" style=" width:100%;" data-toggle="tab">报名记录</a></li>
+
+                                <li onclick="showPanel('private')"><a href="#" style=" width:100%;" data-toggle="tab">推广链接</a></li>
+
+                            }
+
+                        }
+                    </ul>
+                </div>
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+
+                        <div class="reservation-billing-detail" id="panelDesc" style="display:none;">
+                        </div>
+                        <div class="reservation-billing-detail" id="panelUpdate" style="display:none;">
+                            <label>微信群二维码<sup>*</sup></label>
+
+                            @if (string.IsNullOrEmpty(Model.fQrCode))
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.fCreateOpr','ClassRoomWeiXinQrCode','hidQrCode','btnSaveQrCode','imgQrCode')" alt="" />
+                            }
+                            else
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.fCreateOpr','ClassRoomWeiXinQrCode','hidQrCode','btnSaveQrCode','imgQrCode')" alt="" />
+                            }
+                            <input type="hidden" id="hidQrCode" value="@Model.fQrCode" />
+                            <br />
+
+                            <button class="awe-btn awe-btn-13" id="btnSaveQrCode" onclick="SaveClassRoomQrInfo()">保存</button>
+
+
+
+                        </div>
+
+
+                        <div class="reservation-billing-detail" id="panelBooking">
+
+                        </div>
+                        <div class="reservation-billing-detail" id="panelCourse">
+                            @if (Model.courseList != null && Model.courseList.Count > 0)
+                            {
+                                                <!-- ITEM PACKAGE -->
+                                foreach (var course in Model.courseList)
+                                {
+                            <div class="reservation-package_item">
+                                @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                        {
+                                            if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                            {
+                                        <div class="reservation-package_img">
+                                            <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal" alt="">
+
+                                        </div>
+                                            }
+                                            else
+                                            {
+                                        <div class="reservation-package_img">
+                                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" alt="" />
+                                        </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if(course.fClassDate.AddMinutes(course.fClassDateLength)>DateTime.Now)
+                                            {
+                                        <div class="reservation-package_img">
+                                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fCreateOpr','ClassRoom',@course.fID)" alt="" />
+                                        </div>
+                                            }
+                                        }
+
+                                <div class="reservation-package_text">
+
+                                    <h4><a href="#">@course.fDictTitle</a></h4>
+                                    <p>
+                                        @course.fCourseTitle
+                                        <br />
+                                        <span>上课时间：@course.fClassDate.ToString()</span>
+                                        <br />
+                                        <span>时长（分钟）：@course.fClassDateLength</span>
+                                    </p>
+
+                                    <div class="reservation-package_book-price">
+                                        @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                                {
+                                                    if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                                    {
+                                                <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
+                                                <a href="#" class="awe-btn awe-btn-default" onclick="DelResource(@course.fID">删除视频</a>
+                                                    }
+                                                    else
+                                                    {
+                                                <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                    }
+                                                }
+                                        @if (course.CourseStatus == 1)
+                                                {
+                                                <a href="#" class="awe-btn awe-btn-default">未开始</a>
+                                                }
+                                                else if (course.CourseStatus == 2)
+                                                {
+                                                <a href="#" class="awe-btn awe-btn-default">已结束</a>
+                                                }
+                                                else if (course.CourseStatus == 3)
+                                                {
+                                                    if (Model.fStatus == "发布")
+                                                    {
+
+                                                <a href="#" onclick="OpenClassRoom(@course.fID)" class="awe-btn awe-btn-default">开始上课</a>
+                                                    }
+                                                }
+                                        @if (string.IsNullOrEmpty(course.fDocoumentUrl))
+                                                {
+                                                <button class="awe-btn awe-btn-default" onclick="UploadDocument(@course.fID)">上传资料</button>
+                                                }
+                                                else
+                                                {
+                                                <button class="awe-btn awe-btn-default" onclick="DelDocument(@course.fID">删除资料</button>
+                                                }
+                                        <img style=" display:none;" src="#" data-reveal-id="myModal" id="imgUploadDocument-@course.fID" onclick="UploadCourseDocumentFile('@Model.fTecharUserName','CourseDocument',@course.fID)" alt="" />
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                                }
+
+
+                            }
+                        </div>
+
+                        <div class="reservation-billing-detail" id="panelPrivate" style="display:none;">
+                            @if (Model.fID > 0 && Model.fStatus == "发布")
+                            {
+                                var httpurl = System.Configuration.ConfigurationManager.AppSettings["PayCallBack"].ToString();
+                                <label>链接</label>
+                                <p>@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode</p>
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode" />
+                            }
+                        </div>
+
+                    </div>
+                    <!-- END / CONTENT -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    var ClassRoomCode = "@Model.fClassRoomCode";
+
+    function showPanel(div) {
+        if (div == "booking") {
+            $(".reservation-billing-detail").hide();
+            $("#panelBooking").show();
+
+            $.ajax({
+                url: "/ClassRoom/QueryBookingList",
+                type: this.method,
+                data: { "strClassRoomCode": ClassRoomCode },
+                success: function (msg) {
+                    $('#panelBooking').html(msg);
+                }
+            });
+        } else if (div == "course") {
+            $(".reservation-billing-detail").hide();
+            $("#panelCourse").show();
+
+        } else if (div == "private") {
+            $(".reservation-billing-detail").hide();
+            $("#panelPrivate").show();
+
+        } else if (div == "update") {
+            $(".reservation-billing-detail").hide();
+            $("#panelUpdate").show();
+
+        }
+    }
+
+
+
+    function SaveClassRoomQrInfo() {
+        if ($("#hidQrCode").val() == "") {
+            alert("请上传二维码图片");
+            return;
+        }
+
+        $.ajax({
+            url: "/classRoom/DoSaveClassRoomInfo",
+            data: { "strClassRoomCode": ClassRoomCode, "strType": "fQrCode", "strInfo": $("#hidQrCode").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("修改成功");
+
+                }
+            }
+
+        });
+    }
+
+    function UpdatePayStatus(strBookingNo, strStatus) {
+        $.ajax({
+            url: "/classRoom/DoUpdateBookingStatus",
+            data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("修改成功");
+                    $.ajax({
+                        url: "/ClassRoom/QueryBookingList",
+                        type: this.method,
+                        data: { "strClassRoomCode": ClassRoomCode },
+                        success: function (msg) {
+                            $('#panelBooking').html(msg);
+                        }
+                    });
+                }
+            }
+
+        });
+    }
+
+
+
+    function UploadDocument(id) {
+        $("#imgUploadDocument-" + id).click();
+    }
+
+    function DelDocument(id)
+    {
+        if(confirm("确认删除上传的资料文档吗")){
+
+            $.ajax({
+                url: "/classRoom/DoDelCourseDocument",
+                data: { "iCourseId": id },
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+                    if (rst.iResult >= 0) {
+                        alert("删除成功");
+                        window.location.reload();
+                    }
+                }
+
+            });
+        }
+    }
+
+    function DelResource(id)
+    {
+        if(confirm("确认删除上传的视频吗")){
+
+            $.ajax({
+                url: "/classRoom/DoDelCourseResource",
+                data: { "iCourseId": id },
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+                    if (rst.iResult >= 0) {
+                        alert("删除成功");
+                        window.location.reload();
+                    }
+                }
+
+            });
+        }
+    }
+
+    function OpenClassRoom(iCourdeID) {
+        //打开一个不被拦截的新窗口
+        var newWindow = window.open();
+        $.ajax({
+            url: "/Home/OpenClassRoom",
+            data: { "iCourseID": iCourdeID },
+            type: "Post",
+            success: function (rst) {
+
+                if (rst.iResult >= 0) {
+                    //window.open("/Home/Index?iCourseID=" + iCourdeID+"&strRole=Teacher", '_blank').location;
+                    newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
+
+                } else {
+                    newWindow.close();
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

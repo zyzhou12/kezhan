@@ -19,11 +19,13 @@ namespace TiKuBll.Model
         public System.String fRefundNote { get; set; }
         public System.DateTime fRefundDate { get; set; }
         public System.String fRefundUserName { get; set; }
-        public System.String fStatus { get; set; }
+        public System.Int32 fStatus { get; set; }
         public System.DateTime fCreateDate { get; set; }
         public System.String fCreateOpr { get; set; }
         public System.DateTime fModifyDate { get; set; }
         public System.String fModifyOpr { get; set; }
+
+        public System.String fClassRoomTitle { get; set; }
     }
 
     public class UserRefundListModel

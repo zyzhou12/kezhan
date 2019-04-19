@@ -20,6 +20,8 @@ namespace TiKuBll.Model
     public System.DateTime fCreateDate { get; set; }
 
     public List<TeacherValidDetailModel> detailList { get; set; }
+
+    public UserInfoModel userInfo { get; set; }
   }
 
   public class TeacherValidListModel

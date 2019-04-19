@@ -13,6 +13,7 @@ namespace KeZhan.Models
     public string UserSig { get; set; }
     public string Role { get; set; }
     public string ClassRoomCode { get; set; }
+    public int CourseID { get; set; }
 
     public string ClassRoomName { get; set; }
     public string ClassRoomType { get; set; }

@@ -93,10 +93,10 @@ namespace TiKuBll
         }
 
 
-        public static BookingListModel GetBookingList(string strTeacherUserName, string strClassRoomCode)
+        public static BookingListModel GetBookingList(string strUsername, string strClassRoomCode, string strMobile, string strStatus, string beginDate, string endDate)
         {
             BookingListModel model = new BookingListModel();
-            DataTable dt = tBookingDal.GetClassRoomBookingList(strTeacherUserName, strClassRoomCode);
+            DataTable dt = tBookingDal.GetClassRoomBookingList(strUsername, strClassRoomCode,strMobile,strStatus,beginDate,endDate);
             List<BookingModel> modelList = PubFun.DataTableToObjects<BookingModel>(dt);
             model.list = modelList;
             return model;
@@ -208,6 +208,11 @@ namespace TiKuBll
             return i;
         }
 
+        public static int CheckRefund(decimal iAmount, string strBookingNo, ref string strMsg)
+        {
+            return tUserRefundDal.CheckRefund(iAmount, strBookingNo, ref strMsg);
+        }
+
         public static int SubmitBookingRefund(string strBookingNo, string strUserName, decimal dAmount, string strRemark)
         {
             tUserRefundEntity entity = new tUserRefundEntity();
@@ -218,7 +223,7 @@ namespace TiKuBll
             entity.fCreateOpr = strUserName;
             entity.fOrderNo = "T"+DateTime.Now.ToString("yyyyMMddHHmmssssss");
             entity.fBookingNo = strBookingNo;
-            entity.fStatus = "0";
+            entity.fStatus = 0;
             entity.fUserName = strUserName;
             List<tUserRefundEntity> list = new List<tUserRefundEntity>();
             list.Add(entity);
@@ -228,10 +233,10 @@ namespace TiKuBll
             return i;
         }
 
-        public static UserRefundListModel GetBookingRefundList(string strUserName, string strStatus)
+        public static UserRefundListModel GetBookingRefundList(string strUserName, string strStatus, string strTeacher)
         {
             UserRefundListModel model = new UserRefundListModel();
-            List<tUserRefundEntity> list = tUserRefundDal.GettUserRefundList(strUserName, strStatus);
+            List<tUserRefundEntity> list = tUserRefundDal.GettUserRefundList(strUserName, strStatus, strTeacher);
             List<UserRefundModel> refundList = new List<UserRefundModel>();
             foreach (tUserRefundEntity entity in list)
             {
@@ -252,6 +257,7 @@ namespace TiKuBll
                 refund.fRefundUserName = entity.fRefundUserName;
                 refund.fStatus = entity.fStatus;
                 refund.fUserName = entity.fUserName;
+                refund.fClassRoomTitle = entity.fClassRoomTitle;
                 refundList.Add(refund);
             }
             model.refundList = refundList;
@@ -283,7 +289,7 @@ namespace TiKuBll
             return refund;
         }
 
-        public static int GetBokingMaxReturnAmount(string strBookingNo)
+        public static decimal GetBokingMaxReturnAmount(string strBookingNo)
         {
             return tUserRefundDal.GetBokingMaxReturnAmount(strBookingNo);
         }
@@ -297,7 +303,7 @@ namespace TiKuBll
         public static int RefusedUserRefund(int iRefundID, string strApplyNote, string strApplyOpr)
         {
             tUserRefundEntity refund = tUserRefundDal.GettUserRefund(iRefundID);
-            refund.fStatus = "2";
+            refund.fStatus = 2;
             refund.fRefundNote = "驳回退款";
             refund.fModifyDate = DateTime.Now;
             refund.fModifyOpr = strApplyOpr;

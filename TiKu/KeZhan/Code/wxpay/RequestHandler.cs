@@ -104,7 +104,7 @@ namespace WXPay
             //return sb.ToString();
 
 
-            string sign = MD5Util.GetMD5(sb.ToString(), getCharset()).ToUpper();
+            string sign = MD5Util.GetMD5(sb.ToString(), "UTF-8").ToUpper();
 
             return sign;
         }

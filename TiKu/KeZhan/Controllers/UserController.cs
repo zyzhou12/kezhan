@@ -131,42 +131,53 @@ namespace KeZhan.Controllers
         public JsonResult SaveTeacherValidFile(string jsonData)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            TeacherValidModel model = new JavaScriptSerializer().Deserialize<TeacherValidModel>(jsonData);
-
             ResponseBaseModel response = new ResponseBaseModel();
+            try
+            {
+                TeacherValidModel model = new JavaScriptSerializer().Deserialize<TeacherValidModel>(jsonData);
+                TeacherBaseModel teacher = UserBll.GetUserTeacherBase(userInfo.fUserName);
+                if (teacher.fStatus == "未认证" && string.IsNullOrEmpty(model.fIDCard1))
+                {
+                    response.iResult = -1;
+                    response.strMsg = "请上传证件照";
+                }
+                else if (string.IsNullOrEmpty(model.fName))
+                {
+                    response.iResult = -1;
+                    response.strMsg = "请输入真实姓名";
+                }
+                else if (string.IsNullOrEmpty(model.fIDType))
+                {
+                    response.iResult = -1;
+                    response.strMsg = "请选择证件类型";
+                }
+                else if (string.IsNullOrEmpty(model.fUID))
+                {
+                    response.iResult = -1;
+                    response.strMsg = "请输入证件号码";
+                }
+                else if (model.fIDType=="1" && model.fUID.Length!=18)
+                {
+                    response.iResult = -1;
+                    response.strMsg = "证件号码错误";
+                }
+                else if (model.detailList == null || model.detailList.Count <= 0)
+                {
+                    response.iResult = -1;
+                    response.strMsg = "请上传证书文件";
+                }
+                else
+                {
 
-            if (string.IsNullOrEmpty(model.fIDCard1))
-            {
-                response.iResult = -1;
-                response.strMsg = "请上传证件照";
-            }
-            else if (string.IsNullOrEmpty(model.fName))
-            {
-                response.iResult = -1;
-                response.strMsg = "请输入真实姓名";
-            }
-            else if (string.IsNullOrEmpty(model.fIDType))
-            {
-                response.iResult = -1;
-                response.strMsg = "请选择证件类型";
-            }
-            else if (string.IsNullOrEmpty(model.fUID))
-            {
-                response.iResult = -1;
-                response.strMsg = "请输入证件号码";
-            }
-            else if (model.detailList == null && model.detailList.Count > 0)
-            {
-                response.iResult = -1;
-                response.strMsg = "请上传证书文件";
-            }
-            else
-            {
-                response.iResult = UserBll.SaveTeacherValidInfo(userInfo.fUserName, model);
+                    response.iResult = UserBll.SaveTeacherValidInfo(userInfo.fUserName, model);
 
-
+                }
             }
-
+            catch (Exception ex)
+            {
+                response.iResult = -1;
+                response.strMsg = ex.Message;
+            }
             JsonResult jr = new JsonResult();
             jr.Data = response;
             return jr;
@@ -408,11 +419,11 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
-        public JsonResult SubmitBuyFlowOrder(int iNum,decimal dPrice)
+        public JsonResult SubmitBuyFlowOrder(int iNum, decimal dPrice)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             JsonResult jr = new JsonResult();
-            jr.Data = UserBll.SubmitBuyFlowOrder(userInfo.fUserName,iNum,dPrice,"购买",Convert.ToDateTime("2099-12-31"),userInfo.fUserName);
+            jr.Data = UserBll.SubmitBuyFlowOrder(userInfo.fUserName, iNum, dPrice, "购买", Convert.ToDateTime("2099-12-31"), userInfo.fUserName);
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
         }
@@ -427,7 +438,7 @@ namespace KeZhan.Controllers
         public ActionResult QueryUserAccount(string strTradingType, string strSystem, string strType, DateTime beginDate, DateTime endDate)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            UserAccountListModel model = UserBll.GetUserAccountData(userInfo.fUserName,strTradingType,strSystem,strType,beginDate,endDate);
+            UserAccountListModel model = UserBll.GetUserAccountData(userInfo.fUserName, strTradingType, strSystem, strType, beginDate, endDate);
 
             return PartialView("UserAccountListControl", model);
         }
@@ -595,5 +606,6 @@ namespace KeZhan.Controllers
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
         }
+
     }
 }

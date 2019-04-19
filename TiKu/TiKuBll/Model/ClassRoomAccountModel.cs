@@ -15,6 +15,7 @@ namespace TiKuBll.Model
         public decimal fRefund { get; set; }
         public decimal fFee { get; set; }
         public decimal fAmount { get; set; }
+        public int fUsedFlow { get; set; }
         public int fStatus { get; set; }
         public DateTime fConfirmDate { get; set; }
         public string fConfirmOpr { get; set; }

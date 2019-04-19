@@ -54,7 +54,7 @@ namespace KeZhan.Controllers
             JsonResult rst = new JsonResult();
             try
             {
-                string appId = "wx28414d6c37dde33b"; //appid
+                string appId = "wx67d892b056103f43"; //appid
                 // string appsecret = "af19b09cee2a4a2834ad69914d11b238"; //appsecret   
 
 
@@ -224,7 +224,7 @@ namespace KeZhan.Controllers
             try
             {
 
-                string appId = "wxcdfd15d903566d66"; //appid
+                string appId = "wx67d892b056103f43"; //appid
                 // string appsecret = "af19b09cee2a4a2834ad69914d11b238"; //appsecret
 
 
@@ -549,6 +549,16 @@ namespace KeZhan.Controllers
              jr.Data = response;
              return jr;
         }
+
+        public JsonResult GetFlowStatus(string strBookingNo)
+        {
+            ResponseBaseModel response = new ResponseBaseModel();
+            response.iResult = UserBll.GetFlowStoredStatus(strBookingNo);
+           
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
         /// <summary>
         /// 支付回调
         /// </summary>
@@ -597,44 +607,32 @@ namespace KeZhan.Controllers
         /// <param name="totalfee"></param>
         /// <param name="refundfee"></param>
         /// <returns></returns>
-        public string RefundAmount(string outtradeno, string outrefundno, int totalfee, int refundfee)
+        public string RefundAmount(string outtradeno, string outrefundno, int totalfee, int refundfee, string strUserHostAddress)
         {
 
             string resp = string.Empty;
             try
             {
 
-                string appId = "wx28414d6c37dde33b";
-            
-
-
+                string appId = "wx67d892b056103f43";
                 //当前时间 yyyyMMdd
                 string date = DateTime.Now.ToString("yyyyMMdd");
-
-
-
                 //创建支付应答对象
                 var packageReqHandler = new RequestHandler(HttpContext);
                 //初始化
                 packageReqHandler.init();
-
                 string nonceStr = TenpayUtil.getNoncestr();
-
-
-
                 //设置package订单参数
                 //获取package包
-
                 packageReqHandler.setParameter("appid", appId);
                 packageReqHandler.setParameter("mch_id", mchid);
-                packageReqHandler.setParameter("device_info", Request.UserHostAddress);//终端设备号
                 packageReqHandler.setParameter("nonce_str", nonceStr.ToLower());
-               // packageReqHandler.setParameter("transaction_id", transactionid);//微信订单号
+               // packageReqHandler.setParameter("transaction_id", "4200000290201904164708356519");//微信订单号
                 packageReqHandler.setParameter("out_trade_no", outtradeno);//商户订单号
                 packageReqHandler.setParameter("out_refund_no", outrefundno);//商户退款订单号
                 packageReqHandler.setParameter("total_fee", totalfee.ToString()); //总金额,以分为单位(money * 100).ToString()
                 packageReqHandler.setParameter("refund_fee", refundfee.ToString()); //退款金额,以分为单位(money * 100).ToString()
-                packageReqHandler.setParameter("op_user_id", mchid); //操作员
+               
 
                 string sign = packageReqHandler.CreateMd5Sign("key", "4C891C0C71DE4DDC9953F3197C5CA91F");
                 packageReqHandler.setParameter("sign", sign);
@@ -646,8 +644,8 @@ namespace KeZhan.Controllers
 
                 ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(CheckValidationResult);
 
-
-                X509Certificate2 cer = new X509Certificate2("D:\\GuoBin\\Ebooking\\Cert\\YY00001apiclient_cert.p12", password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
+                string WeixinCertUrl= ConfigurationManager.AppSettings["WeixinCertUrl"].ToString();
+                X509Certificate2 cer = new X509Certificate2(WeixinCertUrl, password, X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
                 HttpWebRequest webrequest = (HttpWebRequest)HttpWebRequest.Create(url);
                 webrequest.ClientCertificates.Add(cer);
                 webrequest.Method = "post";

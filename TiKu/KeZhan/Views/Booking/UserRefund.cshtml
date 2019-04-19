@@ -32,11 +32,15 @@
                             <br />
                             <span>@Model.fBookingNo</span>
                             <br />
+                            <label>购买课程</label>
+                            <br />
+                            <span>@Model.fClassRoomTitle</span>
+                            <br />
                             <label>申请人</label>
                             <br />
                             <span>@Model.fUserName</span>
                             <br />
-                            <label>退款金额</label>
+                            <label>申请退款金额</label>
                             <br />
                             <span>@Model.fApplyAmount</span>
                             <br />
@@ -52,7 +56,7 @@
 
                             <label>处理结果</label>
 
-                            @if (Model.fStatus == "0")
+                            @if (Model.fStatus == 0)
                             {
                                 <div>
                                     <div class="shortcode-select">
@@ -64,15 +68,17 @@
                                 </div>
                                 <label>处理意见</label>
                                 <input type="text" id="txtRefundNote" placeholder="处理意见" class="input-text" />
-
-                                <input type="text" id="txtRefundAmount" class="input-text" style=" display:none" />
+                                <br />
+                                <br />
+                                <label>实际退款金额</label>
+                                <input type="text" id="txtRefundAmount" class="input-text" value="@Model.fApplyAmount" />
 
                                 <button class="awe-btn awe-btn-14" onclick="Confirm(@Model.fID,'@Model.fPayType')">确定</button>
                             }
                             else
                             {
                                 <br />
-                                if (Model.fStatus == "1")
+                                if (Model.fStatus == 1)
                                 {
                                     <span>已退款</span>
                                     <span>实际退款： @Model.fRefundAmount</span>
@@ -129,6 +135,9 @@
                 if (rst.iResult >= 0) {
                     alert("操作成功");
                     self.location = document.referrer;
+                }else
+                {
+                    alert(rst.strMsg);
                 }
             }
 

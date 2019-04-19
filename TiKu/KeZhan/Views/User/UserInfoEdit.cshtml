@@ -43,6 +43,17 @@
                     </div>
                     <!-- END / STEP -->
 
+                    @if (Model.userRole == "Teacher" && Model.teacherInfo.fStatus == "未认证")
+                    {
+
+                    @Html.Partial("../ClassRoom/ValidUploadFile", new TiKuBll.Model.TeacherValidModel { fUserName = Model.userInfo.fUserName })
+
+
+                    }
+                    else
+                    {
+                        
+
                     <div class="row">
 
                         <!-- SIDEBAR -->
@@ -109,123 +120,7 @@
                                       
                                     <button class="awe-btn awe-btn-13" onclick="SaveInfo('@Model.userRole')">保存</button>
                                       }
-                                      else if (Model.teacherInfo.fStatus == "未认证")
-                                      {
-                                       
-                                        
-
-                                    <h4>认证</h4>
-                                      
-                                           <label>身份证正面</label>
-                                
-                                      
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgIDCard1"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','TeacherValid','txtIDCard1','','imgIDCard1')" alt="" />
-                                      
-                                         <input type="hidden" id="txtIDCard1"  value="" />
-                                          <label>身份证反面</label>
-                                    
-                                       
-                                          <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgIDCard2"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','TeacherValid','txtIDCard2','','imgIDCard2')" alt="" />
-                                      
-                                         <input type="hidden" id="txtIDCard2"  value="" />
-
-                                          <label>学段 <sup>*</sup></label>
-                                    <div class="shortcode-select">
-                                        <select class="awe-select" id="cmbPharse">
-                                            <option value="">请选择</option>
-                                            <option value="1">小学</option>
-                                            <option value="2">初中</option>
-                                            <option value="3">高中</option>
-                                        </select>
-                                    </div>
-                                     <label>学科 <sup>*</sup></label>
-                                    <div class="shortcode-select">
-                                        <select class="awe-select" id="cmbSubject">
-                                            <option value="">请选择</option>
-                                            <option value="语文">语文</option>
-                                            <option value="数学">数学</option>
-                                            <option value="英语">英语</option>
-                                            <option value="物理">物理</option>
-                                            <option value="化学">化学</option>
-                                            <option value="音乐">音乐</option>
-                                            <option value="美术">美术</option>
-                                            <option value="编程">编程</option>
-                                        </select>
-                                    </div>
-                                     <label>证书类型 <sup>*</sup></label>
-                                    <div class="shortcode-select">
-                                        <select class="awe-select" id="cmbCertType">
-                                            <option value="">请选择</option>
-                                            <option value="教师证">教师证</option>
-                                            <option value="职业资格证">职业资格证</option>
-                                            <option value="其他">其他</option>
-                                        </select>
-                                    </div>
-
-
-                                          <label>证书1</label>
-                                    
-                                      
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgTeacherCert1"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','TeacherValid','txtTeacherCert1','','imgTeacherCert1')" alt="" />
-                                       
-                                         <input type="hidden" id="txtTeacherCert1"  value="" />
-                                          <label>证书2</label>
-                                     
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/title" id="imgTeacherCert2"  data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','TeacherValid','txtTeacherCert2','','imgTeacherCert2')" alt="" />
-                                        
-                                         <input type="hidden" id="txtTeacherCert2"  value="" />
-                                    <br />
-                                    <button class="awe-btn awe-btn-13" onclick="TeacherValid()">提交认证</button>
-                                    
-                                      }
-                                      else
-                                      {                                       
-                                      
-                                
-                                        <div class="reservation-chosen-message bg-gray text-center">
-                                            <h4>您已提交认证资料，请等待认证结果 </h4>
-                                            <p>大概需要7个工作日?</p>
-                                            <a href="/open/ClassRoomList" class="awe-btn awe-btn-6">确定</a>
-                                        </div>
-
-                                      }
-
-                                     <script type="text/javascript">
-
-                                       var username = '@Model.userInfo.fUserName';
-
-
-
-                                       function TeacherValid() {
-                                         var TeacherValidModel = {
-                                           fPharse: $("#cmbPharse").val(),
-                                           fSubject: $("#cmbSubject").val(),
-                                           fCertType: $("#cmbCertType").val(),
-                                           fIDCard1: $("#txtIDCard1").val(),
-                                           fIDCard2: $("#txtIDCard2").val(),
-                                           fTeachCert1: $("#txtTeacherCert1").val(),
-                                           fTeachCert2: $("#txtTeacherCert2").val()
-                                         };
-                                         $.ajax({
-                                           url: "/user/SaveTeacherValidFile",
-                                           data: TeacherValidModel,
-                                           type: "POST",
-                                           dataType: "json",
-                                           success: function (rst) {
-                                             if (rst.iResult >= 0) {
-                                               alert("提交成功，等待审核");
-                                               window.location.reload();
-
-                                             } else {
-                                               alert(rst.strMsg);
-                                             }
-                                           }
-
-                                         });
-                                       }
-                                      </script>
-
-
+                                   
                                     }
                                     else if (Model.userRole == "Student")
                                     {
@@ -286,6 +181,7 @@
                         <!-- END / CONTENT -->
                         
                     </div>
+                    }
                 </div>
             </div>
 

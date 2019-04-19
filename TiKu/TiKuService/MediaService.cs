@@ -19,6 +19,7 @@ using TiKu.Dal;
 using TiKuBll;
 using TiKuBll.Model;
 using TiKuService.Code;
+using TiKu.Bll;
 
 namespace TiKuService
 {
@@ -195,8 +196,15 @@ namespace TiKuService
                   }
               }
           }
-
-        
+          try
+          {
+              //检查流量是否过期
+              UserBll.CheckFlowEffect();
+          }
+          catch (Exception ex)
+          {
+              SaveLog("The  CheckFlowEffect Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+          }
 
           conn.Close();
           conn.Dispose();

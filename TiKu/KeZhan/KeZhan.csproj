@@ -230,7 +230,7 @@
     <Compile Include="Models\GroupUserStatusModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OpenClassRoomModel.cs" />
-    <Compile Include="Models\RefundXmlModel.cs" />
+    <Compile Include="Models\xml.cs" />
     <Compile Include="Models\ResponseBaseModel.cs" />
     <Compile Include="Models\TeacherClassRoomListModel.cs" />
     <Compile Include="Models\TeacherModel.cs" />
@@ -653,6 +653,37 @@
     <Content Include="Content\images\team\img-3.jpg" />
     <Content Include="Content\images\team\img-4.jpg" />
     <Content Include="Content\images\tripadvisor.png" />
+    <Content Include="Content\image\jhk-1545184170763.jpg" />
+    <Content Include="Content\image\jhk-1545184415752.jpg" />
+    <Content Include="Content\image\jhk-1545184515313.jpg" />
+    <Content Include="Content\image\jhk-1545184772594.jpg" />
+    <Content Include="Content\image\jhk-1545185427332.jpg" />
+    <Content Include="Content\image\jhk-1545185866624.jpg" />
+    <Content Include="Content\image\jhk-1545205506431.jpeg" />
+    <Content Include="Content\image\jhk-1545205535482.jpg" />
+    <Content Include="Content\image\jhk-1545205553883.jpeg" />
+    <Content Include="Content\image\jhk-1545205631239.jpeg" />
+    <Content Include="Content\image\jhk-1545205758628.jpeg" />
+    <Content Include="Content\image\jhk-1545205793078.jpeg" />
+    <Content Include="Content\image\jhk-1545205905854.jpg" />
+    <Content Include="Content\image\jhk-1545205924799.jpg" />
+    <Content Include="Content\image\jhk-1545205937970.jpg" />
+    <Content Include="Content\image\jhk-1545206172255.jpg" />
+    <Content Include="Content\image\jhk-1545206194707.jpg" />
+    <Content Include="Content\image\jhk-1545206642368.jpg" />
+    <Content Include="Content\image\jhk-1545206676889.jpg" />
+    <Content Include="Content\image\jhk-1545206974365.jpg" />
+    <Content Include="Content\image\jhk-1545207147269.jpg" />
+    <Content Include="Content\image\jhk-1545207319691.jpeg" />
+    <Content Include="Content\image\jhk-1555415089893.jpeg" />
+    <Content Include="Content\image\jhk-1555415123309.jpeg" />
+    <Content Include="Content\image\jhk-1555420546694.jpeg" />
+    <Content Include="Content\image\jhk-1555420575824.jpeg" />
+    <Content Include="Content\image\jhk-1555458988320.png" />
+    <Content Include="Content\image\jhk-1555459031562.jpg" />
+    <Content Include="Content\image\jhk-1555459671592.jpg" />
+    <Content Include="Content\image\jhk-1555459676926.jpg" />
+    <Content Include="Content\image\WeiXinPublic.jpg" />
     <Content Include="Content\less\style.css" />
     <Content Include="Content\main - 复制.css" />
     <Content Include="Content\main.css" />
@@ -1224,6 +1255,10 @@
     <Content Include="Views\Booking\UserRefundList.cshtml" />
     <Content Include="Views\Booking\UserRefund.cshtml" />
     <Content Include="Views\Manager\FlowAdjust.cshtml" />
+    <Content Include="Views\ClassRoom\ClassRoomTeacher.cshtml" />
+    <Content Include="Views\Open\WebInfo.cshtml" />
+    <Content Include="Views\Open\QAInfo.cshtml" />
+    <Content Include="Views\ClassRoom\ClassRoomAdd.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

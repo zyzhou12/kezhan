@@ -512,6 +512,12 @@ namespace TiKu.Bll
             }
         }
 
+        public static int GetFlowStoredStatus(string strStoredNo)
+        {
+            tFlowStoredEntity entity = tFlowStoredDal.GettFlowStored(strStoredNo);
+            return entity.fStatus;
+        }
+
 
         public static string UserPay(string strUserName, string strPayType,string strType, string strBookingNo, decimal iAmount, string strSystem)
         {
@@ -874,6 +880,11 @@ namespace TiKu.Bll
         {
             int i = tFlowStoredDal.FlowAdjust(strMobile, iFlow, effectDate, strUserName, strNote, ref strMsg);
             return i;
+        }
+
+        public static int CheckFlowEffect()
+        {
+            return tFlowStoredDal.CheckFlowEffect();
         }
     }
 }

@@ -22,7 +22,7 @@
                         if (!string.IsNullOrEmpty(course.fFileCoverUrl))
                         {
                             <div class="reservation-package_img">
-                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.TeacherUserName','ClassRoom',@course.fID)" alt="">
+                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal"  alt="">
 
                             </div>
                         }
@@ -38,7 +38,7 @@
                     else if (Model.isEdit)
                     {
                         <div class="reservation-package_img">
-                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.TeacherUserName','ClassRoom',@course.fID)" alt="" />
+                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" alt="" />
                         </div>
                     }
 
@@ -70,9 +70,7 @@
                                 <button class="awe-btn awe-btn-default" onclick="DeleteCurse(@course.fID)">删除</button>
 
                             }
-                            <img style=" display:none;" src="#" data-reveal-id="myModal" id="imgUploadDocument-@course.fID" onclick="UploadCourseDocumentFile('@Model.TeacherUserName','CourseDocument',@course.fID)" alt="" />
-
-                            <button class="awe-btn awe-btn-default" onclick="UploadDocument(@course.fID)">上传资料</button>
+                           
                         </div>
                     </div>
 

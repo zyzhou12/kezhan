@@ -27,7 +27,7 @@
                                 <input type="text" class="field-text" id="txtCode" disabled="disabled" onkeyup="inputCode(this)"  placeholder="请输入验证码" />                                
                             </div>
                                 <div class="field-form">
-                                <input type="password" class="field-text" id="txtPass"placeholder="请输入密码">
+                                <input type="password" class="field-text" id="txtNewPass"placeholder="请输入密码">
                                 <span class="view-pass"><i class="lotus-icon-view"></i></span>
                                 </div>
                                  <div class="field-form">
@@ -201,13 +201,14 @@
 
     $.ajax({
       url: "/open/DoTeacherValidCode",
-      data: { "strMobile": $("#txtNewMobile").val(), "strCode": $("#txtCode").val(), "strPass": $("#txtPass").val(), "strPass2": $("#txtPass2").val() },
+      data: { "strMobile": $("#txtNewMobile").val(), "strCode": $("#txtCode").val(), "strPass": $("#txtNewPass").val(), "strPass2": $("#txtPass2").val() },
       type: "POST",
       dataType: "json",
       success: function (rst) {
         if (rst.iResult >= 0) {
           if (rst.iResult == 1) {
-            window.location.href = "/user/userinfoedit";
+               window.location.href = "/user/userinfoedit";
+              
           } else if (rst.iResult == 2) {
             window.location.href = "/user/updatepassword?redirect_uri=" + redirect_uri;
           } else {

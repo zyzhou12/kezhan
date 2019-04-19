@@ -36,7 +36,7 @@
                             <label>昵称<sup>*</sup></label>
                             <span id="spanNickName">@Model.userInfo.fNickName</span><a href="#" style="padding-left:20px;color:#e1bd85;" id="aNickName" onclick="updateNickName()">修改</a>
                             <input type="text" style=" display:none" id="txtNickName" value="@Model.userInfo.fNickName" class="input-text">
-                            <a href="#" class="awe-btn awe-btn-13" style=" display:none;width:20%;" id="btnNickName" onclick="DoSaveNickName()">昵称保存</a>
+                            <a href="#" class="awe-btn awe-btn-13" style=" display:none;width:20%;" id="btnNickName" onclick="DoSaveNickName()">保存</a>
 
 
 
@@ -99,15 +99,22 @@
                         {
                             <div class="reservation-billing-detail" id="panelTeacher" style=" display:none">
 
+                                <label>状态</label>
+                                <span>@Model.teacherInfo.fStatus</span>
 
 
                                 <label>简要介绍</label>
                                 <textarea class="input-textarea" id="txtTeacherDesc" placeholder="请输入老师介绍信息">@Model.teacherInfo.fDesc</textarea>
 
                                 <label>微信二维码</label>
-
+                                @if (string.IsNullOrEmpty(Model.teacherInfo.fQrCode))
+                                {
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/width" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
+                                }
+                                else
+                                {
                                 <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.teacherInfo.fQrCode?x-oss-process=style/width" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
-
+                                }
                                 <input type="hidden" id="hidQrCode" value="@Model.teacherInfo.fQrCode" />
 
 
@@ -182,6 +189,9 @@
 
                             <div class="reservation-billing-detail" id="panelValid" style=" display:none">
                                 <a href="/ClassRoom/ValidUploadFile" class="awe-btn awe-btn-default">新增认证</a>
+                                <br />
+                                <br />
+                                <br />
                                 @if (Model.validInfo.validList != null)
                                 {
                                     <div class="reservation-room_package">
@@ -412,7 +422,7 @@
             dataType: "json",
             success: function (rst) {
                 if (rst.iResult >= 0) {
-                    window.location.href = "/user/userinfoedit";
+                   // window.location.href = "/user/userinfoedit";
                     alert("保存成功");
                     window.location.reload();
                 } else {

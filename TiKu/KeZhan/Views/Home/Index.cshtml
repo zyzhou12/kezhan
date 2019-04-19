@@ -119,7 +119,7 @@
             <table>
                 <tr>
                     <td style="padding-right:20px;">
-                        <div class="u-btn" v-on:click="quit" onclick="Quit()">继续退出</div>
+                        <div class="u-btn" v-on:click="quit" onclick="Quit()">确认</div>
                     </td>
                     <td>
                         <div class="u-btn" style="background-color:gray;" onclick="hideDev()">取消</div>
@@ -286,9 +286,9 @@
                                 <div class="u-tab-item u-tab-item-big" v-on:click="startRTC">
                                     推摄像头
                                 </div>
-                                <div class="u-tab-item u-tab-item-big" v-on:click="stopPush">
+                                @*<div class="u-tab-item u-tab-item-big" v-on:click="stopPush">
                                     停止推
-                                </div>
+                                </div>*@
 
                                 <div class="u-tab-item u-tab-item-big" style="float:right;margin-right:10px;" onclick="showDev()">
                                     设备管理
@@ -706,15 +706,45 @@
     var usersig = '@Model.UserSig';
     var role = '@Model.Role';
     var classroomcode = '@Model.ClassRoomCode';
+    var iCourseID = '@Model.CourseID';
 
     $(document).ready(function () {
 
         app.initLogin2(username, usersig, role, classroomcode);
+        if(role=="Teacher"){
+            setTimeout(function(){
+                $.ajax({
+                    url: "/Home/GerCourseStatus",
+                    data: { "iCourseID": iCourseID },
+                    dataType: "json",
+                    success: function (rst) {
+                        if (rst.iResult <0) {
+                            alert(rst.strMsg);
+                        } 
+                    }
 
+                });   
+            
+            },10000);
+        }
     });
 
     function InitLogin() {
-        app.initLogin2(username, usersig, role, classroomcode);
+        $.ajax({
+            url: "/Home/GerCourseStatus",
+            data: { "iCourseID": iCourseID },
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult <0) {
+                    alert(rst.strMsg);
+                } else {
+                    app.initLogin2(username, usersig, role, classroomcode);
+                }
+            }
+
+        });
+
+        
     }
 
     function showColor(color) {

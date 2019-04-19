@@ -152,13 +152,6 @@
                                                                 {
                                                                     <a href="#" class="awe-btn awe-btn-default">已结束</a>
                                                                 }
-                                                                else if (course.CourseStatus == 3)
-                                                                {
-                                                                    if (Model.fStatus == "发布")
-                                                                    {
-                                                                        <a href="/Home/Index?iCourseID=@course.fID" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
-                                                                    }
-                                                                }
                                                                 else if (course.CourseStatus == 4)
                                                                 {
                                                                     if (!string.IsNullOrEmpty(course.fFileCoverUrl))
@@ -171,10 +164,7 @@
                                                                     }
                                                                 }
 
-                                                                @if (!string.IsNullOrEmpty(course.fDocoumentUrl))
-                                                                {
-                                                                    <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
-                                                                }
+                                                            
                                                             </div>
                                                         }
 
@@ -235,6 +225,8 @@
 
 <script type="text/javascript">
     function ClassRoomUpdate(classRoomCode, status) {
+
+
 
         $.ajax({
             url: "/classRoom/DoUpdateStatus",
