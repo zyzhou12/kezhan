@@ -1,7 +1,7 @@
 ﻿@model KeZhan.Models.TeacherModel
 
 
-<label>课程类型</label>
+<label>课程一级分类<sup>*</sup></label>
 
 <select style="width:100%; height:42px;" id="cmbK12Type" onchange="ChangeClassType(this)">
     <option value="">请选择</option>
@@ -9,13 +9,13 @@
     <option value="非K12">非K12</option>
 </select>
 
-<label>适应人群</label>
+<label>课程二级分类<sup>*</sup></label>
 <input type="hidden" id="hidPharse" value="@Model.fPharse" />
 <select id="cmbPharse" name="fPharse" onchange="ChangePharse()" style="width:100%; height:42px;">
     
 </select>
 
-<label>学科</label>
+<label>课程三级分类<sup>*</sup></label>
 <div class="shortcode-select">
     <input type="hidden" id="hidSubject" value="@Model.fSubject" />
     <select style="width:100%; height:42px;" id="cmbSubject" onchange="ChangeSubject()">
@@ -57,7 +57,7 @@
         var strPharse = '@Model.fPharse';
         var strSubject = '@Model.fSubject';
         var type = "K12";
-        if (strPharse == "0") {
+        if (strPharse == "0" || strPharse == "8" || strPharse == "9") {
             type = "非K12";
         }
         

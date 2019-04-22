@@ -334,10 +334,33 @@ namespace KeZhan.Controllers
       {
         strCity = "上海";
       }
-
       ClassRoomListModel model = ClassRoomBll.GettClassRoomList(strCity, "", null, null);
-
+        //K12
+      model.classRoomList = model.classRoomList.Where(m => "1;2;3;4".Contains(m.fPharse)).ToList();
       return View(model);
+    }
+
+    public ActionResult ClassRoomList2(string strCity = null)
+    {
+        if (string.IsNullOrEmpty(strCity))
+        {
+            strCity = "上海";
+        }
+
+        ClassRoomListModel model = ClassRoomBll.GettClassRoomList(strCity, "8", null, null);
+
+        return View(model);
+    }
+    public ActionResult ClassRoomList3(string strPharse, string strCity = null)
+    {
+        if (string.IsNullOrEmpty(strCity))
+        {
+            strCity = "上海";
+        }
+
+        ClassRoomListModel model = ClassRoomBll.GettClassRoomList(strCity, "9", null, null);
+
+        return View(model);
     }
 
     /// <summary>
@@ -348,8 +371,12 @@ namespace KeZhan.Controllers
     /// <param name="strGrade"></param>
     /// <param name="strSubjet"></param>
     /// <returns></returns>
-    public ActionResult QueryClassRoom(string strCity, string strPharse, string strGrade, string strSubjet)
+    public ActionResult QueryClassRoom(string strPharse, string strGrade, string strSubjet,string strCity=null)
     {
+        if (string.IsNullOrEmpty(strCity))
+        {
+            strCity = "上海";
+        }
       ClassRoomListModel model = ClassRoomBll.GettClassRoomList(strCity, strPharse, strGrade, strSubjet);
 
 

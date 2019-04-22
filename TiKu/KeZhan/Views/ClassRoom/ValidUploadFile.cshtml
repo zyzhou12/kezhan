@@ -215,6 +215,25 @@
 
 
     function TeacherValid() {
+
+        $(".errorMsg").remove();
+
+        if ($("#txtName").val().trim() == "") {
+            $("#txtName").after("<span class=\"errorMsg\">真实姓名不能为空</span>");
+            $("#txtName").focus();
+            return;
+        }
+        if ($("#cmbIDType").val().trim() == "") {
+            $("#cmbIDType").after("<span class=\"errorMsg\">请选择证件类型</span>");
+            $("#cmbIDType").focus();
+            return;
+        } 
+        if ($("#txtUID").val().trim() == "") {
+            $("#txtUID").after("<span class=\"errorMsg\">证件号码不能为空</span>");
+            $("#txtUID").focus();
+            return;
+        }
+
         var detailList = new Array();
         $("#divValidImg").find("input").each(function (i, val) {
             if (val.value != "") {

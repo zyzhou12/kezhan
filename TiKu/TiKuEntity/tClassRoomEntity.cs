@@ -37,6 +37,9 @@ namespace TiKu.Entity
     public System.DateTime fModifyDate { get; set; }
     public System.String fModifyOpr { get; set; }
 
+
+    public System.String TeacherName { get; set; }
+    public System.String TeacherHead { get; set; }
   }
 
 }

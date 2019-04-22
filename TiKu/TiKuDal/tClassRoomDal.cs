@@ -96,23 +96,36 @@ namespace TiKu.Dal
       return rst;
     }
 
-    public static List<tClassRoomEntity> GettClassRoomListByTeacher(string strTeacher, string strStatus, string strPayType)
+    public static List<tClassRoomEntity> GettClassRoomListByTeacher(string strTeacher, string strStatus, string strPayType, string strType)
     {
       StringBuilder bufSQL = new StringBuilder();
       List<DbParameter> lstParam = new List<DbParameter>();
 
-      bufSQL.Append("SELECT * FROM tClassRoom WHERE fTecharUserName=@UserName ");
+      bufSQL.Append(@"select cr.*,fNickName TeacherName,fHeadImg TeacherHead from tClassRoom cr
+    left join tUser u on u.fUserName=cr.fTecharUserName WHERE cr.fTecharUserName=@UserName ");
       lstParam.Add(new DBParam("@UserName", strTeacher));
 
       if (!string.IsNullOrEmpty(strStatus))
       {
-        bufSQL.Append(" AND fStatus=@Status ");
+          bufSQL.Append(" AND cr.fStatus=@Status ");
         lstParam.Add(new DBParam("@Status", strStatus));
       }
       if (!string.IsNullOrEmpty(strPayType))
       {
-          bufSQL.Append(" AND fPayType=@PayType ");
+          bufSQL.Append(" AND cr.fPayType=@PayType ");
           lstParam.Add(new DBParam("@PayType", strPayType));
+      }
+      if (strType == "未开始")
+      {
+          bufSQL.Append(" AND cr.fClassRoomDate>getdate() ");
+      }
+      else if (strType == "正在上")
+      {
+          bufSQL.Append(" AND cr.fClassRoomDate<getdate() AND cr.fStatus='发布' ");
+      }
+      else if (strType == "已结束")
+      {
+          bufSQL.Append(" AND cr.fStatus='结算' ");
       }
 
       //防止返回数据过多
@@ -123,23 +136,37 @@ namespace TiKu.Dal
     }
 
 
-    public static List<tClassRoomEntity> GettClassRoomListByCreateOpr(string strCreate, string strStatus, string strPayType)
+    public static List<tClassRoomEntity> GettClassRoomListByCreateOpr(string strCreate, string strStatus, string strPayType, string strType)
     {
         StringBuilder bufSQL = new StringBuilder();
         List<DbParameter> lstParam = new List<DbParameter>();
 
-        bufSQL.Append("SELECT * FROM tClassRoom WHERE fCreateOpr=@UserName ");
+        bufSQL.Append(@"select cr.*,fNickName TeacherName,fHeadImg TeacherHead from tClassRoom cr
+    left join tUser u on u.fUserName=cr.fTecharUserName WHERE cr.fCreateOpr=@UserName ");
         lstParam.Add(new DBParam("@UserName", strCreate));
 
         if (!string.IsNullOrEmpty(strStatus))
         {
-            bufSQL.Append(" AND fStatus=@Status ");
+            bufSQL.Append(" AND cr.fStatus=@Status ");
             lstParam.Add(new DBParam("@Status", strStatus));
         }
         if (!string.IsNullOrEmpty(strPayType))
         {
-            bufSQL.Append(" AND fPayType=@PayType ");
+            bufSQL.Append(" AND cr.fPayType=@PayType ");
             lstParam.Add(new DBParam("@PayType", strPayType));
+        }
+
+        if (strType == "未开始")
+        {
+            bufSQL.Append(" AND cr.fClassRoomDate>getdate() ");
+        }
+        else if (strType == "正在上")
+        {
+            bufSQL.Append(" AND cr.fClassRoomDate<getdate() AND cr.fStatus='发布' ");
+        }
+        else if (strType == "已结束")
+        {
+            bufSQL.Append(" AND cr.fStatus='结算' ");
         }
 
         //防止返回数据过多
@@ -149,12 +176,13 @@ namespace TiKu.Dal
         return lstRst;
     }
 
-    public static List<tClassRoomEntity> GetMyClassRoomList(string strUserName)
+    public static List<tClassRoomEntity> GetMyClassRoomList(string strUserName,string strType)
     {
         StringBuilder bufSQL = new StringBuilder();
         List<DbParameter> lstParam = new List<DbParameter>();
 
-        bufSQL.Append(@"SELECT * FROM tClassRoom cr 
+        bufSQL.Append(@"SELECT cr.*,fNickName TeacherName,fHeadImg TeacherHead FROM tClassRoom cr 
+left join tUser u on u.fUserName=cr.fTecharUserName
                       LEFT JOIN tBooking b on cr.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' and b.fStatus='已支付' WHERE 1=1 ");
 
 
@@ -162,6 +190,18 @@ namespace TiKu.Dal
         {
             bufSQL.Append(" AND b.fUserName=@UserName ");
             lstParam.Add(new DBParam("@UserName", strUserName));
+        }
+        if (strType == "未开始")
+        {
+            bufSQL.Append(" AND cr.fClassRoomDate>getdate() ");
+        }
+        else if (strType == "正在上")
+            {
+                bufSQL.Append(" AND cr.fClassRoomDate<getdate() AND cr.fStatus='发布' ");
+            }
+        else if (strType == "已结束")
+        {
+            bufSQL.Append(" AND cr.fStatus='结算' ");
         }
 
         //防止返回数据过多

@@ -11,7 +11,8 @@ sdkAppId: '1400178589',
 userSig: '',
 nickName: sessionStorage.getItem('IIC_NICKNAME'),
 roomInfo: '',
-roomID: Math.floor(Math.random() * 1000000000),
+   // roomID: Math.floor(Math.random() * 100000000),
+    roomID: "",
 isTeacher: 1,    
 enableHand: false,
 enableCamera: true,
@@ -101,6 +102,10 @@ methods: {
         }
         this.step = 'second';
         this.init();
+    },
+    setUser(username,sig){
+        this.account = username;
+        this.userSig=sig;
     },
   initLogin() {
       if (!this.account) {

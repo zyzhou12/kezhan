@@ -85,7 +85,7 @@
       <publishTime>01/02/2019 09:38:50</publishTime>
     </File>
     <File Include="bin/KeZhan.dll">
-      <publishTime>04/19/2019 14:09:57</publishTime>
+      <publishTime>04/22/2019 11:59:26</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.Data.Edm.resources.dll">
       <publishTime>01/02/2019 09:38:53</publishTime>
@@ -175,13 +175,13 @@
       <publishTime>01/02/2019 09:38:30</publishTime>
     </File>
     <File Include="bin/TiKuBll.dll">
-      <publishTime>04/19/2019 11:13:37</publishTime>
+      <publishTime>04/22/2019 11:59:24</publishTime>
     </File>
     <File Include="bin/TiKuDal.dll">
-      <publishTime>04/18/2019 11:50:37</publishTime>
+      <publishTime>04/22/2019 11:59:23</publishTime>
     </File>
     <File Include="bin/TiKuEntity.dll">
-      <publishTime>04/17/2019 15:43:07</publishTime>
+      <publishTime>04/22/2019 10:50:37</publishTime>
     </File>
     <File Include="bin/Trip8H.Common.dll">
       <publishTime>11/15/2013 12:58:58</publishTime>
@@ -409,7 +409,7 @@
       <publishTime>04/17/2019 11:38:53</publishTime>
     </File>
     <File Include="Content/image/jhk-1545185427332.jpg">
-      <publishTime>04/17/2019 11:38:53</publishTime>
+      <publishTime>04/22/2019 09:26:52</publishTime>
     </File>
     <File Include="Content/image/jhk-1545185866624.jpg">
       <publishTime>04/17/2019 11:38:53</publishTime>
@@ -1987,7 +1987,7 @@
       <publishTime>01/02/2019 09:42:28</publishTime>
     </File>
     <File Include="Scripts/ketang/app2.js">
-      <publishTime>01/04/2019 10:21:11</publishTime>
+      <publishTime>04/21/2019 12:54:34</publishTime>
     </File>
     <File Include="Scripts/ketang/axios.js">
       <publishTime>01/04/2019 10:59:00</publishTime>
@@ -1996,7 +1996,7 @@
       <publishTime>01/04/2019 10:59:00</publishTime>
     </File>
     <File Include="Scripts/ketang/kezhan.js">
-      <publishTime>03/22/2019 17:35:02</publishTime>
+      <publishTime>04/21/2019 14:30:17</publishTime>
     </File>
     <File Include="Scripts/ketang/vue-toasted.js">
       <publishTime>01/04/2019 10:59:00</publishTime>
@@ -3061,7 +3061,7 @@
       <publishTime>04/15/2019 12:55:39</publishTime>
     </File>
     <File Include="Views/Booking/UserBooking.cshtml">
-      <publishTime>04/14/2019 15:48:08</publishTime>
+      <publishTime>04/21/2019 20:43:21</publishTime>
     </File>
     <File Include="Views/Booking/UserRefund.cshtml">
       <publishTime>04/18/2019 14:49:38</publishTime>
@@ -3070,19 +3070,19 @@
       <publishTime>04/17/2019 15:33:58</publishTime>
     </File>
     <File Include="Views/ClassRoom/BookingListControl.cshtml">
-      <publishTime>04/15/2019 17:20:51</publishTime>
+      <publishTime>04/21/2019 18:44:24</publishTime>
     </File>
     <File Include="Views/ClassRoom/BookingListManager.cshtml">
       <publishTime>04/15/2019 13:55:08</publishTime>
     </File>
     <File Include="Views/ClassRoom/BookingRefund.cshtml">
-      <publishTime>04/16/2019 17:01:10</publishTime>
+      <publishTime>04/21/2019 17:25:46</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomAdd.cshtml">
-      <publishTime>04/19/2019 14:40:01</publishTime>
+      <publishTime>04/22/2019 10:52:58</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomBooking.cshtml">
-      <publishTime>04/14/2019 17:11:48</publishTime>
+      <publishTime>04/21/2019 16:38:50</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomCourse.cshtml">
       <publishTime>04/11/2019 14:42:01</publishTime>
@@ -3091,10 +3091,10 @@
       <publishTime>03/26/2019 13:30:05</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomEdit.cshtml">
-      <publishTime>04/19/2019 14:45:01</publishTime>
+      <publishTime>04/22/2019 11:51:27</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomManager.cshtml">
-      <publishTime>04/12/2019 16:34:10</publishTime>
+      <publishTime>04/21/2019 18:27:50</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomShow.cshtml">
       <publishTime>04/18/2019 16:13:10</publishTime>
@@ -3103,22 +3103,22 @@
       <publishTime>04/19/2019 10:30:50</publishTime>
     </File>
     <File Include="Views/ClassRoom/CourseListControl.cshtml">
-      <publishTime>04/15/2019 17:07:23</publishTime>
+      <publishTime>04/22/2019 11:10:44</publishTime>
     </File>
     <File Include="Views/ClassRoom/MyClassRoomList.cshtml">
-      <publishTime>04/16/2019 14:18:48</publishTime>
+      <publishTime>04/22/2019 11:57:48</publishTime>
     </File>
     <File Include="Views/ClassRoom/OpenClassRoom.cshtml">
       <publishTime>02/27/2019 16:48:23</publishTime>
     </File>
     <File Include="Views/ClassRoom/TeacherSelect.cshtml">
-      <publishTime>04/19/2019 13:58:13</publishTime>
+      <publishTime>04/21/2019 15:24:00</publishTime>
     </File>
     <File Include="Views/ClassRoom/TeacherValidSelect.cshtml">
       <publishTime>04/01/2019 11:35:37</publishTime>
     </File>
     <File Include="Views/ClassRoom/ValidUploadFile.cshtml">
-      <publishTime>04/19/2019 14:07:49</publishTime>
+      <publishTime>04/19/2019 15:18:17</publishTime>
     </File>
     <File Include="Views/Control/Date.cshtml">
       <publishTime>04/03/2019 15:39:58</publishTime>
@@ -3131,6 +3131,9 @@
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>04/17/2019 13:59:49</publishTime>
+    </File>
+    <File Include="Views/Home/LineClassRoom.cshtml">
+      <publishTime>04/21/2019 17:22:57</publishTime>
     </File>
     <File Include="Views/Home/Message.cshtml">
       <publishTime>01/02/2019 09:42:52</publishTime>
@@ -3168,8 +3171,17 @@
     <File Include="Views/Open/ClassRoomDetail.cshtml">
       <publishTime>04/19/2019 14:18:20</publishTime>
     </File>
+    <File Include="Views/Open/ClassRoomK12List.cshtml">
+      <publishTime>04/19/2019 17:39:18</publishTime>
+    </File>
     <File Include="Views/Open/ClassRoomList.cshtml">
-      <publishTime>04/14/2019 15:51:47</publishTime>
+      <publishTime>04/21/2019 18:26:13</publishTime>
+    </File>
+    <File Include="Views/Open/ClassRoomList2.cshtml">
+      <publishTime>04/21/2019 18:26:08</publishTime>
+    </File>
+    <File Include="Views/Open/ClassRoomList3.cshtml">
+      <publishTime>04/21/2019 18:26:04</publishTime>
     </File>
     <File Include="Views/Open/KeZhanDesc.cshtml">
       <publishTime>04/17/2019 16:58:18</publishTime>
@@ -3181,7 +3193,7 @@
       <publishTime>04/17/2019 17:00:24</publishTime>
     </File>
     <File Include="Views/Open/RegsiterLogin.cshtml">
-      <publishTime>04/19/2019 13:34:31</publishTime>
+      <publishTime>04/22/2019 09:28:21</publishTime>
     </File>
     <File Include="Views/Open/StudentRegsiter.cshtml">
       <publishTime>04/19/2019 13:37:43</publishTime>
@@ -3190,13 +3202,13 @@
       <publishTime>04/19/2019 13:38:02</publishTime>
     </File>
     <File Include="Views/Open/WebInfo.cshtml">
-      <publishTime>04/17/2019 17:04:42</publishTime>
+      <publishTime>04/21/2019 19:25:13</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>01/11/2019 15:56:09</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>04/19/2019 11:20:51</publishTime>
+      <publishTime>04/21/2019 19:31:23</publishTime>
     </File>
     <File Include="Views/Shared/_LogOnPartial.cshtml">
       <publishTime>01/02/2019 09:42:52</publishTime>
@@ -3223,7 +3235,7 @@
       <publishTime>02/28/2019 18:11:43</publishTime>
     </File>
     <File Include="Views/User/UserInfo.cshtml">
-      <publishTime>04/19/2019 14:06:51</publishTime>
+      <publishTime>04/22/2019 11:41:10</publishTime>
     </File>
     <File Include="Views/User/UserInfoEdit.cshtml">
       <publishTime>04/18/2019 11:50:01</publishTime>
@@ -3235,7 +3247,7 @@
       <publishTime>03/28/2019 14:54:26</publishTime>
     </File>
     <File Include="Views/User/UserPay.cshtml">
-      <publishTime>04/16/2019 17:11:53</publishTime>
+      <publishTime>04/22/2019 11:58:23</publishTime>
     </File>
     <File Include="Views/User/ValidInfo.cshtml">
       <publishTime>04/01/2019 15:45:14</publishTime>
@@ -3250,7 +3262,7 @@
       <publishTime>01/02/2019 09:37:47</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/18/2019 15:38:40</publishTime>
+      <publishTime>04/22/2019 11:15:47</publishTime>
     </File>
   </ItemGroup>
 </Project>

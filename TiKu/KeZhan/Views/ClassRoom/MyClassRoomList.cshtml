@@ -9,30 +9,41 @@
     <div class="container">
 
         <div class="activiti">
-            @if (Model.listType == "teacher") { 
-            <div class="gallery-cat activiti-cat ">
+            @if (Model.listType == "teacher")
+            {
+                <div class="gallery-cat activiti-cat ">
+                    <ul class="list-inline">
+                        <li>状态：</li>
+                        <li @if (Model.strPayType == "") { <text> class="active" </text>    }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=">全部</a></li>
+                        <li @if (Model.strPayType == "未开始") { <text> class="active" </text>           }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=未开始">未开始</a></li>
 
-                <ul class="list-inline">
-                    <li>状态：</li>
-                    <li @if (Model.strStatus == "") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=&strPayType=@Model.strPayType">全部</a></li>
-                    <li @if (Model.strStatus == "保存") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=保存&strPayType=@Model.strPayType">草稿</a></li>
+                        <li @if (Model.strPayType == "正在上") { <text> class="active" </text>           }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=正在上">正在上</a></li>
+                        <li @if (Model.strPayType == "已结束") { <text> class="active" </text>            }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=已结束">已结束</a></li>
 
-                    <li @if (Model.strStatus == "发布") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=发布&strPayType=@Model.strPayType">发布</a></li>
+                    </ul>
 
-                    <li @if (Model.strStatus == "下线") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=下线&strPayType=@Model.strPayType">下线</a></li>
+                    <ul class="list-inline">
+                        <li>状态：</li>
+                        <li @if (Model.strStatus == "") { <text> class="active" </text>  }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=&strPayType=@Model.strPayType&strType=@Model.strType">全部</a></li>
+                        <li @if (Model.strStatus == "保存") { <text> class="active" </text>  }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=保存&strPayType=@Model.strPayType&strType=@Model.strType">草稿</a></li>
 
-                </ul>
-                <ul class="list-inline">
-                    <li>付款方式：</li>
-                    <li @if (Model.strPayType == "") { <text> class="active" </text> }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=">全部</a></li>
-                    <li @if (Model.strPayType == "在线支付") { <text> class="active" </text>        }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=在线支付">在线支付</a></li>
+                        <li @if (Model.strStatus == "发布") { <text> class="active" </text>  }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=发布&strPayType=@Model.strPayType&strType=@Model.strType">发布</a></li>
 
-                    <li @if (Model.strPayType == "线下支付") { <text> class="active" </text>        }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=线下支付">线下支付</a></li>
+                        <li @if (Model.strStatus == "下线") { <text> class="active" </text>  }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=下线&strPayType=@Model.strPayType&strType=@Model.strType">下线</a></li>
 
-                </ul>
-            </div>
+                    </ul>
+                    <ul class="list-inline">
+                        <li>付款方式：</li>
+                        <li @if (Model.strPayType == "") { <text> class="active" </text>  }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=&strType=@Model.strType">全部</a></li>
+                        <li @if (Model.strPayType == "在线支付") { <text> class="active" </text>         }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=在线支付&strType=@Model.strType">在线支付</a></li>
+
+                        <li @if (Model.strPayType == "线下支付") { <text> class="active" </text>         }><a href="/ClassRoom/MyClassRoomList?strClassType=@Model.listType&strStatus=@Model.strStatus&strPayType=线下支付&strType=@Model.strType">线下支付</a></li>
+
+                    </ul>
+                </div>
 
             }
+
 
 
 
@@ -42,7 +53,7 @@
 
                     @if (Model.classRoomList.Count > 0)
                     {
-                        var linkUrl="";
+                        var linkUrl = "";
                         foreach (var classRoom in Model.classRoomList)
                         {
                             if (Model.listType == "teacher")
@@ -66,16 +77,13 @@
                                         </a>
                                     </div>
                                     <div class="text">
-                                        <h2>
+                                        <h2 style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
                                             <a href="#">@classRoom.fClassRoomTitle</a>
                                         </h2>
-                                        <p>
-
+                                        <p style="height:40px; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">
                                             @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
-                                            <br />
-
-                                            <span>讲师：@classRoom.TeacherName</span>
                                         </p>
+                                        <span>讲师：@classRoom.TeacherName</span>
                                         <h2>￥ @classRoom.fPrice.ToString()</h2>
                                     </div>
                                 </div>

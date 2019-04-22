@@ -31,7 +31,7 @@ namespace KeZhan.Controllers
         //  public static string appkey = "5AEC0662D38A44DB9A7CCB13CA6E9D04"; //paysignkey(非appkey 在微信商户平台设置 (md5)111111111111) 
 
         public static string mchid = "1270015901"; //mchid
-        public static string appkey = "5AEC0662D38A44DB9A7CCB13CA6E9D04";
+        public static string appkey = "4C891C0C71DE4DDC9953F3197C5CA91F";
 
 
         public static string timeStamp = ""; //时间戳 
@@ -634,7 +634,7 @@ namespace KeZhan.Controllers
                 packageReqHandler.setParameter("refund_fee", refundfee.ToString()); //退款金额,以分为单位(money * 100).ToString()
                
 
-                string sign = packageReqHandler.CreateMd5Sign("key", "4C891C0C71DE4DDC9953F3197C5CA91F");
+                string sign = packageReqHandler.CreateMd5Sign("key", appkey);
                 packageReqHandler.setParameter("sign", sign);
                 string data = "";
 

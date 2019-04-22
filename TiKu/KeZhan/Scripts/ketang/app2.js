@@ -96,6 +96,9 @@ methods: {
         this.step = 'second';
         this.init();
     },
+    setUser(username){
+        this.account = username;
+    },
   initLogin() {
       if (!this.account) {
           this.showErrorTip('账号不能为空');

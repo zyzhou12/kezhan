@@ -43,13 +43,13 @@
                             <label>头像<sup>*</sup></label>
 
                             @if (string.IsNullOrEmpty(Model.userInfo.fHeadImg))
-                                        {
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgHead" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
-                                        }
-                                        else
-                                        {
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.userInfo.fHeadImg?x-oss-process=style/fang" id="imgHead" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
-                                        }
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgHead" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
+                            }
+                            else
+                            {
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.userInfo.fHeadImg?x-oss-process=style/fang" id="imgHead" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
+                            }
                             <input type="hidden" id="hidHead" value="@Model.userInfo.fHeadImg" />
                             <a href="#" class="awe-btn awe-btn-13" id="btnHeadImg" style=" display:none;width:20%;" onclick="DoSaveHeadImg()">头像保存</a>
 
@@ -80,10 +80,10 @@
                             <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnPass" style="width:20%;" onclick="DoSavePass()">保存</a>
 
 
-                            @if (Model.teacherInfo!=null && Model.teacherInfo.fStatus == "已认证")
-                            { 
-                               <label>交易密码<sup>*</sup></label>
-                                   <span id="spanTradePass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;"  id="aTradePass" onclick="updateTradePass()">修改</a>
+                            @if (Model.teacherInfo != null && Model.teacherInfo.fStatus == "已认证")
+                            {
+                                <label>交易密码<sup>*</sup></label>
+                                <span id="spanTradePass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aTradePass" onclick="updateTradePass()">修改</a>
                                 <input type="text" style=" display:none" id="txtTradePass" value="" class="input-text" />
                                 <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnTradePass" style="width:20%;" onclick="DoSaveTradePass()">保存</a>
                             }
@@ -101,7 +101,13 @@
 
                                 <label>状态</label>
                                 <span>@Model.teacherInfo.fStatus</span>
-
+                                @if (Model.teacherInfo.fStatus == "已认证")
+                                {
+                                    <label>真实姓名</label>
+                                    <span>@Model.userInfo.fName</span>
+                                    <label>证件号码</label>
+                                    <span>@Model.userInfo.fUID</span>
+                                }
 
                                 <label>简要介绍</label>
                                 <textarea class="input-textarea" id="txtTeacherDesc" placeholder="请输入老师介绍信息">@Model.teacherInfo.fDesc</textarea>
@@ -113,74 +119,78 @@
                                 }
                                 else
                                 {
-                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.teacherInfo.fQrCode?x-oss-process=style/width" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.teacherInfo.fQrCode?x-oss-process=style/width" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
                                 }
                                 <input type="hidden" id="hidQrCode" value="@Model.teacherInfo.fQrCode" />
 
 
-                                <label>开通功能</label>
-                                <ul class="option-bank">
-                                    <li>
-                                        <label class="label-radio">
-                                            @if (Model.teacherInfo.fIsClassRoom)
-                                              {
-                                                <input type="checkbox" class="input-radio" checked="checked" id="chkClassRoom" />
-                                              }
-                                              else
-                                              {
-                                                <input type="checkbox" class="input-radio" id="chkClassRoom" />
-                                              }
-
-                                            在线课堂
-                                        </label>
-                                        <p>用实时音视频、交互式白板涂鸦、IM 聊天室、PPT 课件共享、屏幕分享、录制回放进行在线教学。</p>
-
-                                    </li>
-
-                                    <li>
-                                        <label class="label-radio">
-                                            @if (Model.teacherInfo.fIsLive)
-                                              {
-                                                <input type="checkbox" class="input-radio" checked="checked" id="chkLives" />
-                                              }
-                                              else
-                                              {
-                                                <input type="checkbox" class="input-radio" id="chkLives" />
-                                              }
-                                            在线辅导
-                                        </label>
-                                        <p>
-                                            老师以一对一或一对多的形式，使用在线课堂进行不定时长的在线辅导，在使
-                                            用前，需要预充值，课站平台按 0.15元/人每分钟收取平台使用费（人数是老师
-                                            +学生的总数），辅导结束后，学生按老师设定的价格和实际使用时间和老师账
-                                            户结算
-                                        </p>
-
-                                        <label>收费价格<sup>*</sup></label>
-                                        <input type="number" id="txtVideoFee" value="@Model.teacherInfo.fVideoFee" class="input-text" />
-
-                                    </li>
-
-                                    @*<li>
+                                <input type="hidden" input-radio" checked="checked" id="chkLives" />
+                                <input type="hidden" class="input-radio" checked="checked" id="chkClassRoom" />
+                                <input type="hidden" id="txtVideoFee" value="" class="input-text" />
+                                @*<label>开通功能</label>
+                                    <ul class="option-bank">
+                                        <li>
                                             <label class="label-radio">
-                                             @if (Model.teacherInfo.fIsProblem)
-                                             {
-                                                <input type="checkbox" class="input-radio" checked="checked" id="chkProblem" />
-                                             }
-                                             else
-                                             {
-                                                <input type="checkbox" class="input-radio" id="chkProblem" />
-                                             }
-                                                在线答疑
+                                                @if (Model.teacherInfo.fIsClassRoom)
+                                                  {
+                                                    <input type="checkbox" class="input-radio" checked="checked" id="chkClassRoom" />
+                                                  }
+                                                  else
+                                                  {
+                                                    <input type="checkbox" class="input-radio" id="chkClassRoom" />
+                                                  }
+
+                                                在线课堂
                                             </label>
+                                            <p>用实时音视频、交互式白板涂鸦、IM 聊天室、PPT 课件共享、屏幕分享、录制回放进行在线教学。</p>
+
+                                        </li>
+
+                                        <li>
+                                            <label class="label-radio">
+                                                @if (Model.teacherInfo.fIsLive)
+                                                  {
+                                                    <input type="checkbox" class="input-radio" checked="checked" id="chkLives" />
+                                                  }
+                                                  else
+                                                  {
+                                                    <input type="checkbox" class="input-radio" id="chkLives" />
+                                                  }
+                                                在线辅导
+                                            </label>
+                                            <p>
+                                                老师以一对一或一对多的形式，使用在线课堂进行不定时长的在线辅导，在使
+                                                用前，需要预充值，课站平台按 0.15元/人每分钟收取平台使用费（人数是老师
+                                                +学生的总数），辅导结束后，学生按老师设定的价格和实际使用时间和老师账
+                                                户结算
+                                            </p>
 
                                             <label>收费价格<sup>*</sup></label>
-                                            <input type="text" id="txtProblemFee" value="@Model.teacherInfo.fProblemFee" class="input-text"/>
+                                            <input type="number" id="txtVideoFee" value="@Model.teacherInfo.fVideoFee" class="input-text" />
 
-                                        </li>*@
+                                        </li>
 
-                                </ul>
+                                        <li>
+                                                <label class="label-radio">
+                                                 @if (Model.teacherInfo.fIsProblem)
+                                                 {
+                                                    <input type="checkbox" class="input-radio" checked="checked" id="chkProblem" />
+                                                 }
+                                                 else
+                                                 {
+                                                    <input type="checkbox" class="input-radio" id="chkProblem" />
+                                                 }
+                                                    在线答疑
+                                                </label>
 
+                                                <label>收费价格<sup>*</sup></label>
+                                                <input type="text" id="txtProblemFee" value="@Model.teacherInfo.fProblemFee" class="input-text"/>
+
+                                            </li>
+
+                                    </ul>*@
+                                <br />
+                                <br />
                                 <button class="awe-btn awe-btn-13" onclick="SaveTeacherInfo()">保存</button>
 
 
@@ -200,7 +210,7 @@
 
                                             <!-- ITEM PACKAGE -->
                                             @foreach (var valid in Model.validInfo.validList)
-                                                {
+                                            {
                                                 <div class="reservation-package_item">
                                                     @*
                                                         <div class="reservation-package_img">
@@ -215,10 +225,10 @@
                                                             <br />
                                                             @*<span>状态：@valid.fStatus</span>*@
                                                             @*@if (valid.fValidDate > DateTime.MinValue)
-                                                        {
-                                                        <span>审核时间：@valid.fValidDate.ToString()</span>
-                                                        <span>@valid.fNote</span>
-                                                        }*@
+                                                                {
+                                                                <span>审核时间：@valid.fValidDate.ToString()</span>
+                                                                <span>@valid.fNote</span>
+                                                                }*@
                                                         </p>
 
                                                         <div class="reservation-package_book-price">
@@ -228,7 +238,7 @@
                                                     </div>
 
                                                 </div>
-                                                }
+                                            }
                                             <!-- END / ITEM PACKAGE -->
                                         </div>
 
@@ -422,7 +432,7 @@
             dataType: "json",
             success: function (rst) {
                 if (rst.iResult >= 0) {
-                   // window.location.href = "/user/userinfoedit";
+                    // window.location.href = "/user/userinfoedit";
                     alert("保存成功");
                     window.location.reload();
                 } else {

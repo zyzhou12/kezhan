@@ -1259,6 +1259,9 @@
     <Content Include="Views\Open\WebInfo.cshtml" />
     <Content Include="Views\Open\QAInfo.cshtml" />
     <Content Include="Views\ClassRoom\ClassRoomAdd.cshtml" />
+    <Content Include="Views\Open\ClassRoomList2.cshtml" />
+    <Content Include="Views\Open\ClassRoomList3.cshtml" />
+    <Content Include="Views\Home\LineClassRoom.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

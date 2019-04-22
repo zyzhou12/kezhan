@@ -37,9 +37,9 @@
                             }
                             if (Model.fStatus == "发布")
                             {
-                                <li onclick="showPanel('booking')"><a href="/ClassRoom/BookingListManager" style=" width:100%;" data-toggle="tab">报名记录</a></li>
+                                <li onclick="showPanel('booking')"><a href="#" style=" width:100%;" data-toggle="tab">报名记录</a></li>
                                 <li onclick="showPanel('private')"><a href="#" style=" width:100%;" data-toggle="tab">推广链接</a></li>
-                                <li onclick="showPanel('update')"><a href="#" style=" width:100%;" data-toggle="tab">修改信息</a></li>
+                                <li onclick="showPanel('update')"><a href="#" style=" width:100%;" data-toggle="tab">更换授课老师</a></li>
                             }
                             if (Model.fStatus == "结算")
                             {
@@ -102,7 +102,7 @@
                             <div class="reservation-billing-detail" id="panelData">
 
 
-                                @*<h4>基本信息</h4>*@
+                                @*<h5>基本信息</h5>*@
                                 @Html.HiddenFor(m => m.fID)
 
                                 <label>课程名称<sup>*</sup></label>
@@ -122,8 +122,8 @@
 
 
                                 <label>课程简介</label>
-                                <textarea class="input-textarea" id="txtInfo" placeholder="课程简介是提要性的，限字数在50个汉字以内">@Model.fInfo</textarea>
-
+                                <textarea class="input-textarea" id="txtInfo" maxlength="50" placeholder="课程简介是提要性的，限字数在50个汉字以内">@Model.fInfo</textarea>
+                                <span style="color:red">最多50个汉字</span>
                                 <label>图文详情</label>
                                 <span style="font-size:12px;">推荐使用第三方，比如135编辑器，制作长图文，支持JPG、JPEG格式，图片尺寸要求小于20M</span>
                                 <br /><br />
@@ -176,18 +176,13 @@
 
 
 
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>截止报名时间<sup>*</sup></label>
-                                        @*<input type="text" class="awe-calendar" id="txtDeadLineDate"  value="@Model.fDeadLineDate.ToShortDateString()" placeholder="Arrival Date">*@
-                                        @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = Model.fDeadLineDate.ToString("yyyy-MM-dd"), datePlaceholder = "截止报名时间" })
-                                    </div>
-                                    @*<div class="col-sm-6">
-                                            <label>开课时间<sup>*</sup></label>
+                                @*<div class="row">
+                                        <div class="col-sm-6">
+                                            <label>截止报名时间<sup>*</sup></label>
 
-                                            @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtClassRoomDate", date = Model.fClassRoomDate.ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "开课时间" })
-                                        </div>*@
-                                </div>
+                                            @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = Model.fDeadLineDate.ToString("yyyy-MM-dd"), datePlaceholder = "截止报名时间" })
+                                        </div>
+                                    </div>*@
 
 
 
@@ -200,28 +195,29 @@
 
                                 <label>支付类型<sup>*</sup></label>
                                 @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
-                                                                                              new SelectListItem { Text = "在线支付", Value = "在线支付" },
-                                                                                              new SelectListItem { Text = "线下支付", Value = "线下支付" }}, new { @class = "awe-select", id = "cmbPayType" })
-
-
-                                <label>是否可退<sup>*</sup></label>
-                                @Html.DropDownListFor(m => m.fIsReturn, new[] {
-                                                                                              new SelectListItem { Text = "是", Value = "true" },
-                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsReturn" })
-
-                                <label>退款类型</label>
-                                @Html.DropDownListFor(m => m.fReturnType, new[] {
-                                                                                              new SelectListItem { Text = "随时退", Value = "随时" },
-                                                                                              new SelectListItem { Text = "开课前退", Value = "课前" }}, new { @class = "awe-select", id = "cmbReturnType" })
+                                                                                              new SelectListItem { Text = "线下支付", Value = "线下支付" },
+                                                                                              new SelectListItem { Text = "在线支付", Value = "在线支付" }}, new { @class = "awe-select", id = "cmbPayType", onchange = "changePayType()" })
 
 
 
-                                <label>退款规则</label>
-                                @Html.DropDownListFor(m => m.fReturnRule, new[] {
-                                                                                              new SelectListItem { Text = "按分钟", Value = "分钟" },
-                                                                                              new SelectListItem { Text = "按课时", Value = "课时" }}, new { @class = "awe-select", id = "cmbReturnRule" })
+                                <label id="labisrefund" style="display:none;">是否可退<sup>*</sup></label>
+                                <select style="width:100%; height:42px; display:none;" id="cmbIsReturn" onchange="changeIsRefund()">
+                                    <option value="false">否</option>
+                                    <option value="true">是</option>
+                                </select>
+
+                                <label id="labrefundtype" style="display:none;">退款类型</label>
+                                <select style="width:100%; height:42px; display:none;" id="cmbReturnType" onchange="ChangeReturnType()">
+                                    <option value="课前">开课前退</option>
+                                    <option value="随时">随时退</option>
+                                </select>
 
 
+                                <label id="labrefundrule" style="display:none;">退款规则</label>
+                                <select style="width:100%; height:42px; display:none;" id="cmbReturnRule">
+                                    <option value="分钟">按分钟</option>
+                                    <option value="课时">按课时</option>
+                                </select>
 
 
 
@@ -263,7 +259,7 @@
                             <div class="reservation-billing-detail" id="panelData">
 
 
-                                @*<h4>基本信息</h4>*@
+                                @*<h5>基本信息</h5>*@
                                 @Html.HiddenFor(m => m.fID)
 
                                 <label>课程名称<sup>*</sup></label>
@@ -298,7 +294,7 @@
 
 
 
-                                <label>适应人群</label>
+                                <label>课程二级分类</label>
                                 @if (Model.fPharse == "1")
                                 {
                                     <span>小学</span>
@@ -307,16 +303,24 @@
                                 {
                                     <span>初中</span>
                                 }
-                                else if (Model.fPharse == "2")
+                                else if (Model.fPharse == "3")
                                 {
                                     <span>高中</span>
+                                }
+                                else if (Model.fPharse == "8")
+                                {
+                                    <span>素质与拓展</span>
+                                }
+                                else if (Model.fPharse == "9")
+                                {
+                                    <span>职业与技能</span>
                                 }
                                 else
                                 {
                                     <span>全部</span>
                                 }
 
-                                <label>学科</label>
+                                <label>课程三级分类</label>
                                 <span>@Model.fSubject</span>
 
 
@@ -429,7 +433,7 @@
                             }
                         </div>
                         <div class="reservation-billing-detail" id="panelAccount" style="display:none;">
-                            @*<h4>结算明细</h4>*@
+                            @*<h5>结算明细</h5>*@
                             @if (Model.account != null)
                             {
                                 <label>收入</label>
@@ -447,44 +451,36 @@
                             }
                         </div>
                         <div class="reservation-billing-detail" id="panelQA" style="display:none;">
-                            <h5>课程发布者</h5>                          
-                            新建课程的老师就是课程发布者，课程发布者也是在线支付课程的收款人和所设课程上课费用的支付人
-                            <br /><br />
-                            <h5>
+                            <span style="font-size:14px; font-weight:bold;">课程发布者</span>
+                            <br />新建课程的老师就是课程发布者，课程发布者也是在线支付课程的收款人和所设课程上课费用的支付人
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
                                 授课老师
-                            </h5>
-                            课程发布者可以选择其他合作老师作为本课程的授课老师，授课老师可以邀请平台注册老师成为自己的合作老师
-                            <br /><br />
-                            <h5>
-                                课程类型
-                            </h5>
-                            课站平台的打雷搜索分类是：K12学科、素质与拓展、职业与技能
-                            <br /><br />
-                            <h5>
+                            </span>
+                            <br />课程发布者可以选择其他合作老师作为本课程的授课老师，授课老师可以邀请平台注册老师成为自己的合作老师
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                课程一级分类、课程二级分类、课程三级分类
+                            </span>
+                            <br />课程分类是课站平台课程的多级搜索条件
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
                                 私课与公开课
-                            </h5>
-                            私课是在课站平台不能搜索的课程，用于老师建议非公开的课程，通常使用非公开渠道推广课程，包括朋友圈和微信群等
-                            <br /><br />
-                            <h5>
+                            </span>
+                            <br />私课是在课站平台不能搜索的课程，用于老师建议非公开的课程，通常使用非公开渠道推广课程，包括朋友圈和微信群等
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
                                 学科或知识类
-                            </h5>
-                            学科或知识类主要分为K12学科、素质与拓展、职业与技能，按照国家规定，K12学科授课必须有教师证，课站平台对于公开课的K12学科课程要求有相应学科的教师证，私课都不限制，只要注册成课站平台老师。学科和知识类，也是公开课程的二级分类搜索条件。
-                           
-                            <br /><br />
-                            <h5>
+                            </span>
+                            <br />学科或知识类主要分为K12学科、素质与拓展、职业与技能，按照国家规定，K12学科授课必须有教师证，课站平台对于公开课的K12学科课程要求有相应学科的教师证，私课都不限制，只要注册成课站平台老师。学科和知识类，也是公开课程的二级分类搜索条件。
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
                                 支付类型
-                            </h5>
-                            无论私课还是公开课，都支持线上支付和线下支付，线上支付支持微信和支付宝
-                            <br /><br />
-                            <h5>
+                            </span>
+                            <br />无论私课还是公开课，都支持线上支付和线下支付，线上支付支持微信和支付宝
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
                                 退款类型
-                            </h5>
-                            课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退；
-                            <br /><br />
-                            <h5>
+                            </span>
+                            <br />课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退；
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
                                 退款规则
-                            </h5>
-                            按课时，是指退款按退款时未开始课时数与总课时数的比率退款；按未开始课时总时长余课程总时长的比率退款
+                            </span>
+                            <br />按课时，是指退款按退款时未开始课时数与总课时数的比率退款；按分钟，是指按未开始课时总时长余课程总时长的比率退款
                             <br />
                         </div>
                     </div>
@@ -499,34 +495,65 @@
 
 
 <div id="divCourse" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
-    <h1>
-        课程信息
-    </h1>
+    @*<h5>
+        课时信息
+    </h5>*@
 
     <p>
         <input type="hidden" id="hidCourseID" />
-        <label>第几章</label>
+        <label>课时标题</label>
+        <input type="text" id="txtDictTitle" maxlength="25" class="input-text form-control" style="border:0">
         <br />
-        <input type="text" id="txtDictTitle" class="input-text form-control">
-        <br />
-        <label> 第几节</label>
-        <br />
-        <input type="text" id="txtCourseTitle" class="input-text form-control">
+        <label>课时简介</label>
+        <input type="text" id="txtCourseTitle" maxlength="50" class="input-text form-control" style="border:0">
         <br />
         <label>
             上课时间
         </label>
         <br />
-        @*<input type="text" class="awe-calendar" id="txtCourseDate"  placeholder="Arrival Date">*@
-        @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtCourseDate", date = DateTime.Now.AddDays(10).ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "上课时间" })
+        @*@Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtCourseDate", date = DateTime.Now.AddDays(10).ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "上课时间" })*@
 
-
+        <input type="text" id="txtCourseDate1" class="awe-calendar awe-input" style="border:0; background-color:white" placeholder="日期">
+        <select style=" width:60px;height:42px;border:0" id="cmbHours">
+            <option value="8">08</option>
+            <option value="9">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+        </select><span>时</span>
+        <select style=" width:60px;height:42px;border:0" id="cmbMM">
+            <option value="0">00</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="45">45</option>
+        </select><span>分</span>
         <br />
-        <label>时长</label>
-        <br /><input type="number" id="txtDateLength" class="input-text form-control">
         <br />
-        <label>排序</label>
-        <br /><input type="number" id="txtOrder" class="input-text form-control">
+        <label>时长</label><br />
+        @*<input type="number" id="txtDateLength" class="input-text form-control">*@
+        <select style=" width:100px;height:42px;border:0" id="txtDateLength">
+            <option value="30">30</option>
+            <option value="45">45</option>
+            <option value="60">60</option>
+            <option value="90">90</option>
+            <option value="120">120</option>
+            <option value="150">150</option>
+            <option value="180">180</option>
+        </select><span>分钟</span>
+        <br />
+        <br />
+        @*<label>排序</label>
+        <br />
+        <input type="number" id="txtOrder" class="input-text form-control">*@
     </p>
     <button class="awe-btn awe-btn-13" onclick="SaveCurse()">保存</button>
 
@@ -540,7 +567,56 @@
     var showType = '@Model.showType';
 
     function SaveClassRoomInfo(status) {
-
+        if ($("#txtTitle").val().trim() == "") {
+            $("#txtTitle").after("<span class=\"errorMsg\">课程名称不能为空</span>");
+            $("#txtTitle").focus();
+            return;
+        }
+        if ($("#hidConver").val().trim() == "") {
+            $("#hidConver").after("<span class=\"errorMsg\">封面图片不能为空</span>");
+            $("#hidConver").focus();
+            return;
+        }
+        if ($("#txtInfo").val().trim() == "") {
+            $("#txtInfo").after("<span class=\"errorMsg\">课程简介不能为空</span>");
+            $("#txtInfo").focus();
+            return;
+        }
+        if ($("#cmbClassType").val().trim() == "") {
+            $("#cmbClassType").after("<span class=\"errorMsg\">请选择是否公开</span>");
+            $("#cmbClassType").focus();
+            return;
+        }
+        if ($("#cmbTeacher").val().trim() == "") {
+            $("#cmbTeacher").after("<span class=\"errorMsg\">授课老师不能为空</span>");
+            $("#cmbTeacher").focus();
+            return;
+        }
+        if ($("#cmbPharse").val().trim() == "") {
+            $("#cmbPharse").after("<span class=\"errorMsg\">请选择课程二级分类</span>");
+            $("#cmbPharse").focus();
+            return;
+        }
+        if ($("#cmbSubject").val().trim() == "") {
+            $("#cmbSubject").after("<span class=\"errorMsg\">请选择课程三级分类</span>");
+            $("#cmbSubject").focus();
+            return;
+        }
+        if ($("#txtPrice").val().trim() == "") {
+            $("#txtPrice").after("<span class=\"errorMsg\">请输入售价</span>");
+            $("#txtPrice").focus();
+            return;
+        }
+        //if ($("#txtDeadLineDate").val().trim() == "") {
+        //    $("#txtDeadLineDate").after("<span class=\"errorMsg\">请输入截止报名时间</span>");
+        //    $("#txtDeadLineDate").focus();
+        //    return;
+        //}
+        if ($("#txtMaxNumber").val().trim() == "") {
+            $("#txtMaxNumber").after("<span class=\"errorMsg\">请输入最大人数</span>");
+            $("#txtMaxNumber").focus();
+            return;
+        }
         var ClassRoomModel = {
             "fID": $("#fID").val(),
             "fClassType": $("#cmbClassType").val(),
@@ -556,7 +632,7 @@
             "fKnowLedge": $("#txtKnowLedge").val(),
             "fMaxNumber": $("#txtMaxNumber").val(),
             //"fClassRoomDate": $("#txtClassRoomDate").val(),
-            "fDeadLineDate": $("#txtDeadLineDate").val(),
+            // "fDeadLineDate": $("#txtDeadLineDate").val(),
             "fPrice": $("#txtPrice").val(),
             "fBasePrice": $("#txtBasePrice").val(),
             "fPayType": $("#cmbPayType").val(),
@@ -771,9 +847,9 @@
         $("#hidCourseID").val(0);
         $("#txtDictTitle").val("");
         $("#txtCourseTitle").val("");
-        $("#txtCourseDate").val("");
-        $("#txtOrder").val("");
-        $("#txtDateLength").val("");
+        $("#txtCourseDate1").val("");
+       // $("#txtOrder").val("");
+        $("#txtDateLength").val("30");
         $("#myBGDiv").show();
         $("#divCourse").show();
     }
@@ -792,12 +868,14 @@
         }
     }
 
-    function UpdateCurse(courseID, dictTitle, courseTitle, date, length, order) {
+    function UpdateCurse(courseID, dictTitle, courseTitle, date, hour, minute, length, order) {
         $("#hidCourseID").val(courseID);
         $("#txtDictTitle").val(dictTitle);
         $("#txtCourseTitle").val(courseTitle);
-        $("#txtCourseDate").val(date);
-        $("#txtOrder").val(order);
+        $("#txtCourseDate1").val(date);
+        $("#cmbHours").val(hour);
+        $("#cmbMM").val(minute);
+       // $("#txtOrder").val(order);
         $("#txtDateLength").val(length);
         $("#myBGDiv").show();
         $("#divCourse").show();
@@ -809,15 +887,27 @@
     }
 
     function SaveCurse() {
+        if ($("#txtCourseDate1").val().trim() == "") {
+            alert("请选择上课时间");
+            return;
+        }
+        var classDate = "";
+        if ($("#txtCourseDate1").val().split("/").length == 1) {
+            classDate=$("#txtCourseDate1").val()+" " + $("#cmbHours").val() + ":" + $("#cmbMM").val();
+        } else
+        {
+            classDate=$("#txtCourseDate1").val().split("/")[2] + "-" + $("#txtCourseDate1").val().split("/")[0] + "-" + $("#txtCourseDate1").val().split("/")[1] + " " + $("#cmbHours").val() + ":" + $("#cmbMM").val();
+        }
+
         var CourseModel = {
             "fID": $("#hidCourseID").val(),
             "fClassType": "ClassRoom",
             "fClassRoomCode": classRoomCode,
             "fDictTitle": $("#txtDictTitle").val(),
             "fCourseTitle": $("#txtCourseTitle").val(),
-            "fClassDate": $("#txtCourseDate").val(),
+            "fClassDate": classDate,
             "fClassDateLength": $("#txtDateLength").val(),
-            "fOrder": $("#txtOrder").val()
+            "fOrder": "0"
         }
         $.ajax({
             url: "/classRoom/DoSaveClassRoomCourse",
@@ -849,6 +939,39 @@
 </script>
 <script type="text/javascript">
     var ClassRoomCode = "@Model.fClassRoomCode";
+
+
+    function changePayType() {
+        if ($("#cmbPayType").val() == "在线支付") {
+            $("#cmbIsReturn").show();
+            $("#labisrefund").show();
+        } else {
+            $("#cmbIsReturn").hide();
+            $("#labisrefund").hide();
+        }
+    }
+
+    function changeIsRefund() {
+        if ($("#cmbIsReturn").val() == "true") {
+
+            $("#cmbReturnType").show();
+            $("#labrefundtype").show();
+        } else {
+            $("#cmbReturnType").hide();
+            $("#labrefundtype").hide();
+        }
+    }
+
+    function ChangeReturnType() {
+        if ($("#cmbReturnType").val() == "随时") {
+            $("#cmbReturnRule").show();
+            $("#labrefundrule").show();
+        } else {
+            $("#cmbReturnRule").hide();
+            $("#labrefundrule").hide();
+
+        }
+    }
 
     function showPanel(div) {
 

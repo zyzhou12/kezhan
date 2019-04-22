@@ -94,6 +94,9 @@
                                     <span>不可退款</span>
                                     }
                                     <br />
+                                    <button class="awe-btn awe-btn-13" onclick="SubmitOrder('@Model.fPayType')">确定</button>
+
+                                    <br />
                                     <br />
                                     @if (Model.courseList != null)
                                     {
@@ -150,10 +153,6 @@
                                                                         }
                                                                     }
 
-                                                                    @if (!string.IsNullOrEmpty(course.fDocoumentUrl))
-                                                                    {
-                                                                        <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
-                                                                    }
                                                                 </div>
                                                             }
 
@@ -163,37 +162,13 @@
                                                     </div>
                                                 }
                                                 <!-- END / ITEM PACKAGE -->
-                                                @Html.Raw(Html.Encode(@Model.fDesc).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
-                                                <br />
-                                                @if (Model.descList != null)
-                                                {
-                                                    foreach (var desc in Model.descList)
-                                                    {
-                                                        if (desc.fType == "text")
-                                                        {
-                                                            <span>@desc.fContent</span>
-                                                            <br />
-                                                        }
-                                                        else if (desc.fType == "img")
-                                                        {
-                                                            <div class="reservation-room_img">
-                                                                <a href="#">
-                                                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@desc.fContent?x-oss-process=style/chang" alt="" />
-                                                                </a>
-                                                            </div>
-
-                                                            <br />
-                                                        }
-                                                    }
-                                                }
+                                              
 
 
                                             </div>
 
                                         </div>
                                     }
-                                    <br />
-                                    <button class="awe-btn awe-btn-13" onclick="SubmitOrder('@Model.fPayType')">确定</button>
                                    
                                   
                                 </div>

@@ -18,6 +18,13 @@ namespace KeZhan.Controllers
         //
         // GET: /UserApi/
 
+
+        public UserInfoModel GetSessionUser()
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            return userInfo;
+        }
+
         /// <summary>
         /// 进入课堂
         /// </summary>
@@ -79,8 +86,7 @@ namespace KeZhan.Controllers
 
 
         public JsonResult SetUserPer(string strUserId, string strGroupId, string strType)
-        {
-            
+        {            
 
            int i=GroupUserBll.UpdateGroupUserInfo(strUserId, strGroupId, strType);
             JsonResult jr = new JsonResult();

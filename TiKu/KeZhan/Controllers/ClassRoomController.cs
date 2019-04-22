@@ -26,7 +26,7 @@ namespace KeZhan.Controllers
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             TeacherClassRoomListModel model = new TeacherClassRoomListModel();
-            ClassRoomListModel list = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType);
+            ClassRoomListModel list = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType,"");
             model.strUserName = userInfo.fUserName;
             model.strStatus = strStatus;
             model.strPayType = strPayType;
@@ -205,11 +205,11 @@ namespace KeZhan.Controllers
             //    response.iResult = -1;
             //    response.strMsg = "开课时间必须大于当天";
             //}
-            else if (model.fDeadLineDate < DateTime.Now)
-            {
-                response.iResult = -1;
-                response.strMsg = "截止报名时间必须大于当天";
-            }
+            //else if (model.fDeadLineDate < DateTime.Now)
+            //{
+            //    response.iResult = -1;
+            //    response.strMsg = "截止报名时间必须大于当天";
+            //}
             else if (string.IsNullOrEmpty(model.fClassType))
             {
                 response.iResult = -1;
@@ -218,12 +218,12 @@ namespace KeZhan.Controllers
             else if (string.IsNullOrEmpty(model.fPharse))
             {
                 response.iResult = -1;
-                response.strMsg = "请选择适应人群";
+                response.strMsg = "请选择课程二级分类";
             }
             else if (string.IsNullOrEmpty(model.fSubject))
             {
                 response.iResult = -1;
-                response.strMsg = "请选择学科";
+                response.strMsg = "请选择课程三级分类";
             }
             else if (string.IsNullOrEmpty(model.fPayType))
             {
@@ -311,12 +311,12 @@ namespace KeZhan.Controllers
             if (string.IsNullOrEmpty(model.fCourseTitle))
             {
                 response.iResult = -1;
-                response.strMsg = "请输入章节标题";
+                response.strMsg = "请输入课时标题";
             }
             else if (model.fClassDate < DateTime.Now)
             {
                 response.iResult = -1;
-                response.strMsg = "上课时间必须大于当天";
+                response.strMsg = "上课时间必须大于当前时间";
             }
             else if (model.fClassDateLength <= 0)
             {
@@ -470,7 +470,7 @@ namespace KeZhan.Controllers
         public ActionResult BookingListManager()
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            ClassRoomListModel model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, "", "");
+            ClassRoomListModel model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, "", "","");
             return View(model);
         }
 
@@ -486,8 +486,8 @@ namespace KeZhan.Controllers
             }
             else
             {
-                ClassRoomModel model = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, null);
-
+               // ClassRoomModel model = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, null);
+                ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, null);
                 return View(model);
             }
         }
@@ -503,7 +503,7 @@ namespace KeZhan.Controllers
 
                 ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, null);
                 BookingListModel list = BookingBll.GetBookingList(classRoom.fTecharUserName, strClassRoomCode, null, null, null, null);
-                if (classRoom.fMaxNumber > list.list.Where(m => m.fIsPay == true).ToList().Count)
+                if (classRoom.fMaxNumber > list.list.Where(m => m.fStatus=="已支付" || m.fStatus=="已驳回").ToList().Count)
                 {
                     response.strMsg = BookingBll.SubmitBooking(userInfo.fUserName, "ClassRoom", strClassRoomCode, classRoom.fPrice, classRoom.fIsReturn, "Web");
                 }
@@ -683,7 +683,7 @@ namespace KeZhan.Controllers
         }
 
 
-        public ActionResult MyClassRoomList(string strClassType, string strStatus = null, string strPayType = null)
+        public ActionResult MyClassRoomList(string strClassType, string strStatus = null, string strPayType = null, string strType = null)
         {
 
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
@@ -691,15 +691,15 @@ namespace KeZhan.Controllers
             ClassRoomListModel model = null;
             if (strClassType == "buy")
             {
-                model = ClassRoomBll.GetMyClassRoom(userInfo.fUserName);
+                model = ClassRoomBll.GetMyClassRoom(userInfo.fUserName, strType);
             }
             else if (strClassType == "create")
             {
-                model = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType);
+                model = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType, strType);
             }
             else if (strClassType == "teacher")
             {
-                model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, strStatus, strPayType);
+                model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, strStatus, strPayType, strType);
             }
             model.listType = strClassType;
             if (strStatus == null)
@@ -717,6 +717,15 @@ namespace KeZhan.Controllers
             else
             {
                 model.strPayType = strPayType;
+            }
+
+            if (strType == null)
+            {
+                model.strType = "";
+            }
+            else
+            {
+                model.strType = strType;
             }
             return View(model);
         }

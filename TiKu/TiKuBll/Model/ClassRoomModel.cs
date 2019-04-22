@@ -57,6 +57,7 @@ namespace TiKuBll.Model
       public string listType { get; set; }
       public string strStatus { get; set; }
       public string strPayType { get; set; }
+      public string strType { get; set; }
     public List<ClassRoomModel> classRoomList { get; set; }
   }
 

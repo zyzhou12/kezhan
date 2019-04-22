@@ -12,9 +12,9 @@ namespace TiKuBll
 {
     public class ClassRoomBll
     {
-        public static ClassRoomListModel GetClassRoomByTeacher(string strTeacher, string strStatus,string strPayType)
+        public static ClassRoomListModel GetClassRoomByTeacher(string strTeacher, string strStatus, string strPayType, string strType)
         {
-            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByTeacher(strTeacher, strStatus, strPayType);
+            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByTeacher(strTeacher, strStatus, strPayType, strType);
 
             List<ClassRoomModel> modelList = new List<ClassRoomModel>();
             foreach (tClassRoomEntity entity in list)
@@ -42,6 +42,8 @@ namespace TiKuBll
                 model.fStatus = entity.fStatus;
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
+                model.TeacherName = entity.TeacherName;
+                model.TeacherHead = entity.TeacherHead;
                 modelList.Add(model);
 
 
@@ -51,9 +53,9 @@ namespace TiKuBll
             return listModel;
         }
 
-        public static ClassRoomListModel GetClassRoomByCreateOpr(string strCreate, string strStatus, string strPayType)
+        public static ClassRoomListModel GetClassRoomByCreateOpr(string strCreate, string strStatus, string strPayType, string strType)
         {
-            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByCreateOpr(strCreate, strStatus, strPayType);
+            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByCreateOpr(strCreate, strStatus, strPayType, strType);
 
             List<ClassRoomModel> modelList = new List<ClassRoomModel>();
             foreach (tClassRoomEntity entity in list)
@@ -81,6 +83,9 @@ namespace TiKuBll
                 model.fStatus = entity.fStatus;
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
+
+                model.TeacherName = entity.TeacherName;
+                model.TeacherHead = entity.TeacherHead;
                 modelList.Add(model);
 
 
@@ -120,6 +125,7 @@ namespace TiKuBll
                 model.fStatus = entity.fStatus;
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
+                model.fCreateOpr = entity.fCreateOpr;
 
                 List<tCourseEntity> courseList = tCourseDal.GetCourseListByClassRoomCode(strClassRoomCode);
                 List<CourseModel> courseModelList = new List<CourseModel>();
@@ -481,9 +487,9 @@ namespace TiKuBll
             return i;
         }
 
-        public static ClassRoomListModel GetMyClassRoom(string strUserName)
+        public static ClassRoomListModel GetMyClassRoom(string strUserName, string strType)
         {
-            List<tClassRoomEntity> list = tClassRoomDal.GetMyClassRoomList(strUserName);
+            List<tClassRoomEntity> list = tClassRoomDal.GetMyClassRoomList(strUserName,strType);
 
             List<ClassRoomModel> modelList = new List<ClassRoomModel>();
             foreach (tClassRoomEntity entity in list)
@@ -510,6 +516,8 @@ namespace TiKuBll
                 model.fStatus = entity.fStatus;
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
+                model.TeacherName = entity.TeacherName;
+                model.TeacherHead = entity.TeacherHead;
                 modelList.Add(model);
             }
             ClassRoomListModel listModel = new ClassRoomListModel();

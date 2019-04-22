@@ -2,40 +2,38 @@
 @{
     ViewBag.Title = "ClassRoomAdd";
 }
-<style>
-    .errorMsg {
-        height:30px;
-        line-height:30px;
-        font-size:15px;
-        color:red;
-    }
 
-
-</style>
 
 <section class="section-reservation-page bg-white">
 
     <div class="container">
         <div class="reservation-page">
-          
+
 
             <div class="row">
                 <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+                        <li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">课程信息设置</a></li>
+
+                        <li onclick="showPanel('qa')"><a href="#" style=" width:100%;" data-toggle="tab">课程设置词汇表</a></li>
+
+                    </ul>
 
                 </div>
 
 
+
                 <!-- CONTENT -->
                 <div class="col-md-8 col-lg-9">
-                   
+
                     <div class="reservation_content">
                         <p class="alert alert-danger" id="pMsg" style=" display:none">
-                            
+
                         </p>
                         <div class="reservation-billing-detail" id="panelData">
 
 
-                            <h4>基本信息</h4>
+                            @*<h4>基本信息</h4>*@
                             @Html.HiddenFor(m => m.fID)
 
                             <label>课程名称<sup>*</sup></label>
@@ -55,8 +53,8 @@
 
 
                             <label>课程简介</label>
-                            <textarea class="input-textarea" id="txtInfo" placeholder="课程简介是提要性的，限字数在50个汉字以内">@Model.fInfo</textarea>
-
+                            <textarea class="input-textarea" id="txtInfo" maxlength="50" placeholder="课程简介是提要性的，限字数在50个汉字以内">@Model.fInfo</textarea>
+                            <span style="color:red">最多50个汉字</span>
                             <label>图文详情</label>
                             <span style="font-size:12px;">推荐使用第三方，比如135编辑器，制作长图文，支持JPG、JPEG格式，图片尺寸要求小于20M</span>
                             <br /><br />
@@ -109,24 +107,20 @@
 
 
 
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <label>截止报名时间<sup>*</sup></label>
-                                    @*<input type="text" class="awe-calendar" id="txtDeadLineDate"  value="@Model.fDeadLineDate.ToShortDateString()" placeholder="Arrival Date">*@
-                                    @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = "", datePlaceholder = "截止报名时间" })
-                                </div>
-                                @*<div class="col-sm-6">
-                                        <label>开课时间<sup>*</sup></label>
+                            @*<div class="row">
+                                    <div class="col-sm-6">
+                                        <label>截止报名时间<sup>*</sup></label>
 
-                                        @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "true", dateID = "txtClassRoomDate", date = Model.fClassRoomDate.ToString("yyyy-MM-dd HH:mm:ss"), datePlaceholder = "开课时间" })
-                                    </div>*@
-                            </div>
+                                        @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = "", datePlaceholder = "截止报名时间" })
+                                    </div>
+                                </div>*@
 
 
 
                             <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
                             <input type="number" id="txtMaxNumber" value="@Model.fMaxNumber" class="input-text">
-                            
+
+
 
 
 
@@ -134,27 +128,29 @@
 
                             <label>支付类型<sup>*</sup></label>
                             @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
-                                                                                              new SelectListItem { Text = "在线支付", Value = "在线支付" },
-                                                                                              new SelectListItem { Text = "线下支付", Value = "线下支付" }}, new { @class = "awe-select", id = "cmbPayType" })
+                                                                                              new SelectListItem { Text = "线下支付", Value = "线下支付" },
+                                                                                              new SelectListItem { Text = "在线支付", Value = "在线支付" }}, new { @class = "awe-select", id = "cmbPayType", onchange = "changePayType()" })
 
 
-                            <label>是否可退<sup>*</sup></label>
-                            @Html.DropDownListFor(m => m.fIsReturn, new[] {
-                                                                                              new SelectListItem { Text = "是", Value = "true" },
-                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsReturn" })
-
-                            <label>退款类型</label>
-                            @Html.DropDownListFor(m => m.fReturnType, new[] {
-                                                                                              new SelectListItem { Text = "随时退", Value = "随时" },
-                                                                                              new SelectListItem { Text = "开课前退", Value = "课前" }}, new { @class = "awe-select", id = "cmbReturnType" })
+                            <label id="labisrefund" style="display:none;">是否可退<sup>*</sup></label>
+                            <select style="width:100%; height:42px; display:none;" id="cmbIsReturn" onchange="changeIsRefund()">
+                                <option value="false">否</option>
+                                <option value="true">是</option>
+                            </select>
 
 
+                            <label id="labrefundtype" style="display:none;">退款类型</label>
+                            <select style="width:100%; height:42px; display:none;" id="cmbReturnType" onchange="ChangeReturnType()">
+                                <option value="课前">开课前退</option>
+                                <option value="随时">随时退</option>
+                            </select>
 
-                            <label>退款规则</label>
-                            @Html.DropDownListFor(m => m.fReturnRule, new[] {
-                                                                                              new SelectListItem { Text = "按分钟", Value = "分钟" },
-                                                                                              new SelectListItem { Text = "按课时", Value = "课时" }}, new { @class = "awe-select", id = "cmbReturnRule" })
 
+                            <label id="labrefundrule" style="display:none;">退款规则</label>
+                            <select style="width:100%; height:42px; display:none;" id="cmbReturnRule">
+                                <option value="分钟">按分钟</option>
+                                <option value="课时">按课时</option>
+                            </select>
 
 
 
@@ -168,10 +164,43 @@
 
 
 
-                       
-                                    <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
-                                 
 
+                            <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
+
+
+                        </div>
+                        <div class="reservation-billing-detail" id="panelQA" style="display:none;">
+                            <span style="font-size:14px; font-weight:bold;">课程发布者</span>
+                            <br />新建课程的老师就是课程发布者，课程发布者也是在线支付课程的收款人和所设课程上课费用的支付人
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                授课老师
+                            </span>
+                            <br />课程发布者可以选择其他合作老师作为本课程的授课老师，授课老师可以邀请平台注册老师成为自己的合作老师
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                课程一级分类、课程二级分类、课程三级分类
+                            </span>
+                            <br />课程分类是课站平台课程的多级搜索条件
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                私课与公开课
+                            </span>
+                            <br />私课是在课站平台不能搜索的课程，用于老师建议非公开的课程，通常使用非公开渠道推广课程，包括朋友圈和微信群等
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                学科或知识类
+                            </span>
+                            <br />学科或知识类主要分为K12学科、素质与拓展、职业与技能，按照国家规定，K12学科授课必须有教师证，课站平台对于公开课的K12学科课程要求有相应学科的教师证，私课都不限制，只要注册成课站平台老师。学科和知识类，也是公开课程的二级分类搜索条件。
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                支付类型
+                            </span>
+                            <br />无论私课还是公开课，都支持线上支付和线下支付，线上支付支持微信和支付宝
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                退款类型
+                            </span>
+                            <br />课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退；
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                退款规则
+                            </span>
+                            <br />按课时，是指退款按退款时未开始课时数与总课时数的比率退款；按分钟，是指按未开始课时总时长余课程总时长的比率退款
+                            <br />
                         </div>
                     </div>
                     <!-- END / CONTENT -->
@@ -186,11 +215,55 @@
 <script type="text/javascript">
 
 
+    function changePayType() {
+        if ($("#cmbPayType").val() == "在线支付") {
+            $("#cmbIsReturn").show();
+            $("#labisrefund").show();
+        } else {
+            $("#cmbIsReturn").hide();
+            $("#labisrefund").hide();
+        }
+    }
+
+    function changeIsRefund() {
+        if ($("#cmbIsReturn").val() == "true") {
+
+            $("#cmbReturnType").show();
+            $("#labrefundtype").show();
+        } else {
+            $("#cmbReturnType").hide();
+            $("#labrefundtype").hide();
+        }
+    }
+
+    function ChangeReturnType() {
+        if ($("#cmbReturnType").val() == "随时") {
+            $("#cmbReturnRule").show();
+            $("#labrefundrule").show();
+        } else {
+            $("#cmbReturnRule").hide();
+            $("#labrefundrule").hide();
+
+        }
+    }
+
+    function showPanel(div) {
+
+        if (div == "info") {
+            $(".reservation-billing-detail").hide();
+            $("#panelData").show();
+        } else if (div == "qa") {
+            $(".reservation-billing-detail").hide();
+            $("#panelQA").show();
+
+        }
+    }
+
+
     function SaveClassRoomInfo() {
         $(".errorMsg").remove();
 
-        if ($("#txtTitle").val().trim() == "")
-        {            
+        if ($("#txtTitle").val().trim() == "") {
             $("#txtTitle").after("<span class=\"errorMsg\">课程名称不能为空</span>");
             $("#txtTitle").focus();
             return;
@@ -205,12 +278,41 @@
             $("#txtInfo").focus();
             return;
         }
+        if ($("#cmbClassType").val().trim() == "") {
+            $("#cmbClassType").after("<span class=\"errorMsg\">请选择是否公开</span>");
+            $("#cmbClassType").focus();
+            return;
+        }
         if ($("#cmbTeacher").val().trim() == "") {
             $("#cmbTeacher").after("<span class=\"errorMsg\">授课老师不能为空</span>");
             $("#cmbTeacher").focus();
             return;
         }
-
+        if ($("#cmbPharse").val().trim() == "") {
+            $("#cmbPharse").after("<span class=\"errorMsg\">请选择课程二级分类</span>");
+            $("#cmbPharse").focus();
+            return;
+        }
+        if ($("#cmbSubject").val().trim() == "") {
+            $("#cmbSubject").after("<span class=\"errorMsg\">请选择课程三级分类</span>");
+            $("#cmbSubject").focus();
+            return;
+        }
+        if ($("#txtPrice").val().trim() == "") {
+            $("#txtPrice").after("<span class=\"errorMsg\">请输入售价</span>");
+            $("#txtPrice").focus();
+            return;
+        }
+        //if ($("#txtDeadLineDate").val().trim() == "") {
+        //    $("#txtDeadLineDate").after("<span class=\"errorMsg\">请输入截止报名时间</span>");
+        //    $("#txtDeadLineDate").focus();
+        //    return;
+        //}
+        if ($("#txtMaxNumber").val().trim() == "") {
+            $("#txtMaxNumber").after("<span class=\"errorMsg\">请输入最大人数</span>");
+            $("#txtMaxNumber").focus();
+            return;
+        }
 
         var ClassRoomModel = {
             "fID": $("#fID").val(),
@@ -227,7 +329,7 @@
             "fKnowLedge": $("#txtKnowLedge").val(),
             "fMaxNumber": $("#txtMaxNumber").val(),
             //"fClassRoomDate": $("#txtClassRoomDate").val(),
-            "fDeadLineDate": $("#txtDeadLineDate").val(),
+            // "fDeadLineDate": $("#txtDeadLineDate").val(),
             "fPrice": $("#txtPrice").val(),
             "fBasePrice": $("#txtBasePrice").val(),
             "fPayType": $("#cmbPayType").val(),
@@ -274,7 +376,7 @@
                     alert("保存成功");
                     window.location.href = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + rst.strMsg + "&strType=Add";
                 } else {
-                    
+
                     $("#pMsg").text(rst.strMsg);
                     $("#pMsg").show();
                 }
@@ -283,7 +385,7 @@
         });
 
 
-       
+
     }
 
 </script>
