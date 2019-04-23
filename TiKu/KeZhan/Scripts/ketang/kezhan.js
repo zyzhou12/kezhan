@@ -115,43 +115,86 @@ methods: {
       this.step = 'two';
   },
   initLogin2(username,sig,role,roomid) {
-      this.account = username;
-      this.userSig=sig;
-      this.roomID=roomid;
-      if(role=="Teacher")
-      {
-          this.isTeacher=1;
-          this.pushModel=1;
-      }else{
-          this.isTeacher=0;
-          this.pushModel=0;
-          this.enableCamera=false;
-          this.enableMic=false;
-      }
-      this.step = 'second';
-      this.init();
+      axios.get(`/UserApi/CheckLoginUser?`,{
+      params:{}
+  })
+    .then(function (response) {
+        if(response.data.iResult==0){
+            app.account = username;
+            app.userSig=sig;
+            app.roomID=roomid;
+            if(role=="Teacher")
+            {
+                app.isTeacher=1;
+                app.pushModel=1;
+            }else{
+                app.isTeacher=0;
+                app.pushModel=0;
+                app.enableCamera=false;
+                app.enableMic=false;
+            }
+            app.step = 'second';
+            app.init();
+        }else
+        {
+            alert(response.data.strMsg);
+        }
+    })
+    .catch(function (error) {
+        alert(error);
+    });
+
+    
   },
   techerStart(){
-      this.isTeacher=1;
-      this.pushModel=1;
-      if (!this.roomID) {
-          this.showErrorTip('房间号不能为空');
-          return;
-      }
-      this.step = 'second';
-      this.init();
+      axios.get(`/UserApi/CheckLoginUser?`,{
+      params:{}
+  })
+    .then(function (response) {
+        if(response.data.iResult==0){
+            app.isTeacher=1;
+            app.pushModel=1;
+            if (!app.roomID) {
+                app.showErrorTip('房间号不能为空');
+                return;
+            }
+            app.step = 'second';
+            app.init();
+        }else
+        {
+            alert(response.data.strMsg);
+        }
+    })
+    .catch(function (error) {
+        alert(error);
+    });
+    
   },
   studentStart(){
-      this.isTeacher=0;
-      this.pushModel=0;
-      this.enableCamera=false;
-      this.enableMic=false;
-      if (!this.roomID) {
-          this.showErrorTip('房间号不能为空');
-          return;
-      }
-      this.step = 'second';
-      this.init();
+    axios.get(`/UserApi/CheckLoginUser?`,{
+    params:{}
+})
+.then(function (response) {
+    if(response.data.iResult==0){
+        app.isTeacher=0;
+        app.pushModel=0;
+        app.enableCamera=false;
+        app.enableMic=false;
+        if (!app.roomID) {
+            app.showErrorTip('房间号不能为空');
+            return;
+        }
+        app.step = 'second';
+        app.init();
+    }else
+    {
+        alert(response.data.strMsg);
+    }
+})
+.catch(function (error) {
+    alert(error);
+});
+     
   },
 
   initData() {
@@ -1116,16 +1159,27 @@ setUserPer(type){
 /**
 举手
 */
-sendHandMsg(teacherUserName) {
-        
-    this.showTip("已举手，等待老师同意");
-    this.ticSdk.sendCustomTextMessage({
+sendHandMsg() {
+axios.get(`/UserApi/GetGroup?`,{
+    params:{
+        strGroupId:this.roomID
+    }
+})
+.then(function (response) {
+    app.ticSdk.sendCustomTextMessage({
         data: "6",
         desc: "test",
         ext: "apply_permission_notify"
-    }, teacherUserName);
+    }, response.data.fTeacherID);
 
-    this.ishand=false;
+    app.ishand=false;
+    app.showTip("已举手，等待老师同意");
+        
+})
+.catch(function (error) {   
+    app.showTip("举手失败，请重新进入课堂再试");
+});
+    
 },
 
 triggerDialog: function (opt) {

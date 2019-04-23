@@ -182,7 +182,7 @@
         <div v-show="step == 'first'">
             <div class="m-header">
                 <div class="logo">
-                    
+
                 </div>
                 <div class="opt">
                     <div class="opt-inner">
@@ -208,7 +208,7 @@
                         </div>
                     </div>
                 }
-                <div class="part part-2" @if (Model.Role == "Student") { <text> style="right:25%;border:0;" </text>            }>
+                <div class="part part-2" @if (Model.Role == "Student") { <text> style="right:25%;border:0;" </text>             }>
                     <div class="icon icon-joinroom">
                     </div>
                     <div class="item item-1 f-tac">
@@ -230,7 +230,7 @@
         </div>
         <div v-if="step == 'second'">
             <div class="m-header">
-                <div class="logo">
+                <div class="logo" v-if="isTeacher===1">
                     课堂号: {{roomID}}
                 </div>
                 <div class="opt">
@@ -242,57 +242,57 @@
             <div class="m-main">
                 <div class="room-info">
 
-                   
-                        <button class="u-btn" style="height:24px; line-height:24px; margin-right:20px;" v-if="isTeacher===1" v-on:click="showClose()">
-                            下课
-                        </button>
-                    
+
+                    <button class="u-btn" style="height:24px; line-height:24px; margin-right:20px;" v-if="isTeacher===1" v-on:click="showClose()">
+                        下课
+                    </button>
+
 
                     <button class="u-btn" style="height:24px; line-height:24px; margin-right:180px;" v-on:click="showQuit()">
                         退出课堂
                     </button>
 
-                  
-                        <button class="u-btn" style="height:24px; line-height:24px;" v-if="isTeacher===1" v-on:click="teacherOpenHand('0')">
-                            {{ enableHand?"停止互动":"开始互动" }}
-                        </button>
-                 
-                      
-                            <button class="u-btn" style="height:24px; line-height:24px;" v-if="ishand && isPushing===0 && isTeacher===0" v-on:click="sendHandMsg('@Model.TeacherUserName')">
-                                请求互动
-                            </button>
 
-    <button class="u-btn" style="height:24px; line-height:24px;" v-if="isPushing===1 && isTeacher===0">
-        连线中
-    </button>
-                        
-                    
+                    <button class="u-btn" style="height:24px; line-height:24px;" v-if="isTeacher===1" v-on:click="teacherOpenHand('0')">
+                        {{ enableHand?"停止互动":"开始互动" }}
+                    </button>
+
+
+                    <button class="u-btn" style="height:24px; line-height:24px;" v-if="ishand && isPushing===0 && isTeacher===0" v-on:click="sendHandMsg()">
+                        请求互动
+                    </button>
+
+                    <button class="u-btn" style="height:24px; line-height:24px;" v-if="isPushing===1 && isTeacher===0">
+                        连线中
+                    </button>
+
+
 
                 </div>
                 <div class="more-opt">
                 </div>
                 <div class="m-whiteboard">
                     <div class="u-tab">
-                      
-                            <div class="u-tab-header u-tab-header-big" v-if="isTeacher===1">
-                                <div class="u-tab-item u-tab-item-big active" onclick="showBoard()">
-                                    白板全屏
-                                </div>
-                                <div class="u-tab-item u-tab-item-big" v-on:click="pushScreen">
-                                    屏幕共享
-                                </div>
-                                <div class="u-tab-item u-tab-item-big" v-on:click="startRTC">
-                                    推摄像头
-                                </div>
-                                @*<div class="u-tab-item u-tab-item-big" v-on:click="stopPush">
-                                        停止推
-                                    </div>*@
 
-                                <div class="u-tab-item u-tab-item-big" style="float:right;margin-right:10px;" onclick="showDev()">
-                                    设备管理
-                                </div>
+                        <div class="u-tab-header u-tab-header-big" v-if="isTeacher===1">
+                            <div class="u-tab-item u-tab-item-big active" onclick="showBoard()">
+                                白板全屏
                             </div>
-                       
+                            <div class="u-tab-item u-tab-item-big" v-on:click="pushScreen">
+                                屏幕共享
+                            </div>
+                            <div class="u-tab-item u-tab-item-big" v-on:click="startRTC">
+                                推摄像头
+                            </div>
+                            @*<div class="u-tab-item u-tab-item-big" v-on:click="stopPush">
+                                    停止推
+                                </div>*@
+
+                            <div class="u-tab-item u-tab-item-big" style="float:right;margin-right:10px;" onclick="showDev()">
+                                设备管理
+                            </div>
+                        </div>
+
                         <div class="u-tab-header u-tab-header-big" v-if="isTeacher===0">
                             <div class="u-tab-item u-tab-item-big active" onclick="showBoard()">
                                 白板全屏
@@ -436,59 +436,59 @@
                                                 橡皮擦
                                             </div>
                                         </div>
-                                       
-                                            <div class="u-tooltip2" onclick="showDetail(this)" v-if="isTeacher===1">
-                                                <div class="m-kit m-kit-color" style="display: none;width:120px;">
-                                                    <div class="u-grid-col flex-6">
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-chexiao2"
-                                                               v-on:click="revert"></i>
-                                                            <div class="u-tooltip-title">撤销</div>
-                                                        </div>
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-huifu"
-                                                               v-on:click="process"></i>
-                                                            <div class="u-tooltip-title">恢复</div>
-                                                        </div>
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-qingping"
-                                                               v-on:click="clearDraws"></i>
-                                                            <div class="u-tooltip-title">清空当前页涂鸦（保留背景）</div>
-                                                        </div>
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-qingping1"
-                                                               v-on:click="clear"></i>
-                                                            <div class="u-tooltip-title">清空当前页涂鸦+背景（全部清空）</div>
-                                                        </div>
+
+                                        <div class="u-tooltip2" onclick="showDetail(this)" v-if="isTeacher===1">
+                                            <div class="m-kit m-kit-color" style="display: none;width:120px;">
+                                                <div class="u-grid-col flex-6">
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-chexiao2"
+                                                           v-on:click="revert"></i>
+                                                        <div class="u-tooltip-title">撤销</div>
+                                                    </div>
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-huifu"
+                                                           v-on:click="process"></i>
+                                                        <div class="u-tooltip-title">恢复</div>
+                                                    </div>
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-qingping"
+                                                           v-on:click="clearDraws"></i>
+                                                        <div class="u-tooltip-title">清空当前页涂鸦（保留背景）</div>
+                                                    </div>
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-qingping1"
+                                                           v-on:click="clear"></i>
+                                                        <div class="u-tooltip-title">清空当前页涂鸦+背景（全部清空）</div>
                                                     </div>
                                                 </div>
-                                                <i class="u-icon iconfont icon-qingping1"></i>
                                             </div>
+                                            <i class="u-icon iconfont icon-qingping1"></i>
+                                        </div>
 
 
-                                            <div class="u-tooltip2" onclick="showDetail(this)">
-                                                <div class="m-kit m-kit-color" style="display: none;width:60px;">
-                                                    <div class="u-grid-col flex-6">
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-baiban" onclick="document.getElementById('divPage').style.display='block';"
-                                                               v-on:click="addBoard"></i>
-                                                            <div class="u-tooltip-title">新增页</div>
-                                                        </div>
-                                                        <div class="u-tooltip">
+                                        <div class="u-tooltip2" onclick="showDetail(this)">
+                                            <div class="m-kit m-kit-color" style="display: none;width:60px;">
+                                                <div class="u-grid-col flex-6">
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-baiban" onclick="document.getElementById('divPage').style.display='block';"
+                                                           v-on:click="addBoard"></i>
+                                                        <div class="u-tooltip-title">新增页</div>
+                                                    </div>
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-huishoushanchu"
+                                                           v-on:click="deleteBoard"></i>
+                                                        <div class="u-tooltip-title">删除当前页</div>
+                                                    </div>
+                                                    @*<div class="u-tooltip">
                                                             <i class="u-icon iconfont icon-huishoushanchu"
-                                                               v-on:click="deleteBoard"></i>
-                                                            <div class="u-tooltip-title">删除当前页</div>
-                                                        </div>
-                                                        @*<div class="u-tooltip">
-                                                                <i class="u-icon iconfont icon-huishoushanchu"
-                                                                   v-on:click="deleteBoard2"></i>
-                                                                <div class="u-tooltip-title">删除第二页</div>
-                                                            </div>*@
-                                                    </div>
+                                                               v-on:click="deleteBoard2"></i>
+                                                            <div class="u-tooltip-title">删除第二页</div>
+                                                        </div>*@
                                                 </div>
-                                                <i class="u-icon iconfont icon-baiban"></i>
                                             </div>
-                                        
+                                            <i class="u-icon iconfont icon-baiban"></i>
+                                        </div>
+
                                     </div>
                                     <div class="m-kit-wb-pagination" id="divPage">
                                         <div class="u-tooltip">
@@ -505,7 +505,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="m-kit-wb-file" v-if="isTeacher===1">
                                         <div class="u-tooltip m-kit-wb-file-item" id="divOpenFile">
                                             <input id="file_input" style="position: absolute; opacity: 0; width:50px;" type="file" v-on:change="uploadFile"
@@ -520,7 +520,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
 
                             </div>
@@ -538,15 +538,15 @@
                 top: 50%; transform: translate(-50%, -50%); width: 100%; height: auto;" autoplay
                                    playsinline></video>
                         </div>
-                       
-                            <div class="video-toolbar" v-if="isTeacher===1">
-                                <span class="video video-open" v-on:click="permissionStudent(value.userId,'0')"></span>
-                                <span class="audio audio-open" v-on:click="permissionStudent(value.userId,'1')"></span>
-                                <span class="iconfont icon-baiban" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'4')"></span>
-                                <span class="iconfont icon-guanbibaiban" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'5')"></span>
-                                <span class="iconfont icon-xiangmuguanlixitong" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'2')"></span>
-                            </div>
-                        
+
+                        <div class="video-toolbar" v-if="isTeacher===1">
+                            <span class="video video-open" v-on:click="permissionStudent(value.userId,'0')"></span>
+                            <span class="audio audio-open" v-on:click="permissionStudent(value.userId,'1')"></span>
+                            <span class="iconfont icon-baiban" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'4')"></span>
+                            <span class="iconfont icon-guanbibaiban" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'5')"></span>
+                            <span class="iconfont icon-xiangmuguanlixitong" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'2')"></span>
+                        </div>
+
                     </div>
                     <div class="m-netcall-video video-4">
                         <div class="video-name">
@@ -558,14 +558,14 @@
                                        autoplay playsinline></video>
                             </div>
                         </div>
-                       
-                            <div class="video-toolbar" v-if="isTeacher===1">
-                                <span v-bind:class="['video', { 'video-open': enableCamera,'video-close': !enableCamera }]"
-                                      v-on:click="toggleCamera"></span>
-                                <span v-bind:class="['audio', { 'audio-open': enableMic,'audio-close': !enableMic }]"
-                                      v-on:click="toggleMic"></span>
-                            </div>
-                        
+
+                        <div class="video-toolbar" v-if="isTeacher===1">
+                            <span v-bind:class="['video', { 'video-open': enableCamera,'video-close': !enableCamera }]"
+                                  v-on:click="toggleCamera"></span>
+                            <span v-bind:class="['audio', { 'audio-open': enableMic,'audio-close': !enableMic }]"
+                                  v-on:click="toggleMic"></span>
+                        </div>
+
                     </div>
                 </div>
 
@@ -650,16 +650,13 @@
                                     <div class="nickname">
                                         {{user.nickName}}
                                     </div>
-                                   
-                                        <div v-if="user.role==='student' && !user.isPush && user.isOnLine && isteacher===1" style="float:right;padding-right:10px;" v-on:click="permissionTeacher(user.userId,'1')">
-                                            邀请互动
-                                        </div>
 
-    <div v-if="user.role==='student' && user.isPush && user.isOnLine && isteacher===1" style="float:right;padding-right:10px; color:red;">
-        连线中
-    </div>
-                                    
-
+                                    <div v-if="user.role==='student' && !user.isPush && user.isOnLine && isTeacher===1" style="float:right;padding-right:10px;" v-on:click="permissionTeacher(user.userId,'1')">
+                                        邀请互动
+                                    </div>
+                                    <div v-if="user.role==='student' && user.isPush && user.isOnLine && isTeacher===1" style="float:right;padding-right:10px; color:red;">
+                                        连线中
+                                    </div>
                                     <div v-if="!user.isOnLine" style="float:right;padding-right:10px; color:red;">
                                         离线
                                     </div>
@@ -689,7 +686,7 @@
     <!-- <script src="./libs/TICSDK.js"></script> -->
     <script src="https://sqimg.qq.com/expert_qq/TICSDK/1.4.0/TICSDK.mini.js"></script>
 
-    <script src="../../Scripts/ketang/kezhan.js?v=1.3"></script>
+    <script src="../../Scripts/ketang/kezhan.js?v=1.4"></script>
 </body>
 <script type="text/javascript" src="../../Scripts/js/lib/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">

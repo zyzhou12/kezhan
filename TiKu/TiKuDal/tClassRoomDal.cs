@@ -183,7 +183,7 @@ namespace TiKu.Dal
 
         bufSQL.Append(@"SELECT cr.*,fNickName TeacherName,fHeadImg TeacherHead FROM tClassRoom cr 
 left join tUser u on u.fUserName=cr.fTecharUserName
-                      LEFT JOIN tBooking b on cr.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' and b.fStatus='已支付' WHERE 1=1 ");
+                      LEFT JOIN tBooking b on cr.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' and b.fStatus in ('已支付','已驳回') WHERE 1=1 ");
 
 
         if (!string.IsNullOrEmpty(strUserName))

@@ -226,7 +226,7 @@
         </div>
         <div v-if="step == 'second'">
             <div class="m-header">
-                <div class="logo">
+                <div class="logo" v-if="isTeacher===1">
                     课堂号: {{roomID}}
                 </div>
                 <div class="opt">
@@ -259,7 +259,7 @@
                     {
                         if (Model.Role == "Student")
                         {
-                            <button class="u-btn" style="height:24px; line-height:24px;" v-if="ishand && isPushing===0" v-on:click="sendHandMsg('@Model.TeacherUserName')">
+                            <button class="u-btn" style="height:24px; line-height:24px;" v-if="ishand && isPushing===0" v-on:click="sendHandMsg()">
                                 请求互动
                             </button>
 
@@ -711,10 +711,10 @@
     $(document).ready(function () {
 
         app.initLogin2(username, usersig, role, classroomcode);
-        if(role=="Teacher"){
-            setTimeout(function(){
+        if (role == "Teacher") {
+            setInterval(function () {
                 $.ajax({
-                    url: "/Home/GerCourseStatus",
+                    url: "/UserApi/GerCourseStatus",
                     data: { "iCourseID": iCourseID },
                     dataType: "json",
                     success: function (rst) {
@@ -731,11 +731,11 @@
 
     function InitLogin() {
         $.ajax({
-            url: "/Home/GerCourseStatus",
+            url: "/UserApi/GerCourseStatus",
             data: { "iCourseID": iCourseID },
             dataType: "json",
             success: function (rst) {
-                if (rst.iResult <0) {
+                if (rst.iResult < 0) {
                     alert(rst.strMsg);
                 } else {
                     app.initLogin2(username, usersig, role, classroomcode);

@@ -88,7 +88,7 @@
                                         }
                                         else
                                         {
-                                            if(course.fClassDate.AddMinutes(course.fClassDateLength)>DateTime.Now)
+                                            if(course.fClassDate.AddMinutes(course.fClassDateLength)<DateTime.Now)
                                             {
                                         <div class="reservation-package_img">
                                             <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fCreateOpr','ClassRoom',@course.fID)" alt="" />

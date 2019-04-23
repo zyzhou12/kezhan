@@ -79,7 +79,7 @@ namespace KeZhan.Controllers
                     if (refund.fPayType == "weixinpay")
                     {
                         WeiXinPayController pay = new WeiXinPayController();
-                        string RefundResult = pay.RefundAmount(strPayNo, refund.fOrderNo, Convert.ToInt32(refund.fApplyAmount * 100), Convert.ToInt32(booking.fAmount * 100), Request.UserHostAddress);
+                        string RefundResult = pay.RefundAmount(strPayNo, refund.fOrderNo, Convert.ToInt32(booking.fAmount * 100), Convert.ToInt32(refund.fApplyAmount * 100), Request.UserHostAddress);
 
 
                         xml result = Deserialize(typeof(xml), RefundResult) as xml;

@@ -141,20 +141,20 @@ namespace KeZhan.Controllers
 
         public ActionResult LineClassRoom()
         {
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this); 
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             try
             {
                 OpenClassRoomModel model = new OpenClassRoomModel();
-                
+
                 model.UserName = userInfo.fUserName;
                 model.UserSig = UserSig.GetSig(userInfo.fUserName);//获取签名
-                
+
                 model.Role = userInfo.fRole;
 
 
-               // model.ClassRoomCode = cr.fClassRoomCode + iCourseID.ToString();//课堂房间号
-               // model.ClassRoomName = cr.fClassRoomTitle;
-               // model.TeacherUserName = cr.fTecharUserName;
+                // model.ClassRoomCode = cr.fClassRoomCode + iCourseID.ToString();//课堂房间号
+                // model.ClassRoomName = cr.fClassRoomTitle;
+                // model.TeacherUserName = cr.fTecharUserName;
                 model.NickName = userInfo.fNickName;
 
                 string u = Request.ServerVariables["HTTP_USER_AGENT"];
@@ -177,23 +177,7 @@ namespace KeZhan.Controllers
         }
 
 
-        public JsonResult GerCourseStatus(int iCourseID)
-        {
-              CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
-              ResponseBaseModel response = new ResponseBaseModel();
-              if (course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
-              {
-                  response.iResult = -1;
-                  response.strMsg = "课时已结束";
-              }
-              else
-              {
-                  response.iResult = 0;
-              }
-              JsonResult jr = new JsonResult();
-              return jr;
-        }
-
+      
         public ActionResult ClassRoom(string strClassRoomType, string strClassRoomCode)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);

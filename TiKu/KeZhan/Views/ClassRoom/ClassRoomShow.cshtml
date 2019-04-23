@@ -139,7 +139,7 @@
                                                         <p>
                                                             @course.fCourseTitle
                                                             <br />
-                                                            <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("yyyy-MM-dd HH:mm")</span>
+                                                            <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("HH:mm")</span>
                                                         </p>
                                                         @if (Model.IsBuy > 0)
                                                         {

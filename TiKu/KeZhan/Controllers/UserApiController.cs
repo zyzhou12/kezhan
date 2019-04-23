@@ -19,10 +19,30 @@ namespace KeZhan.Controllers
         // GET: /UserApi/
 
 
-        public UserInfoModel GetSessionUser()
+        public UserInfoModel GetLoginUser()
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             return userInfo;
+        }
+
+        public JsonResult CheckLoginUser()
+        {
+            UserInfoModel user = GetLoginUser();
+            ResponseBaseModel response = new ResponseBaseModel();
+            if(user==null)
+            {
+                response.iResult = -1;
+                response.strMsg = "请重新登录";
+            }
+            else
+            {
+                response.iResult = 0;
+            }
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
         }
 
         /// <summary>
@@ -181,5 +201,29 @@ namespace KeZhan.Controllers
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
         }
+        /// <summary>
+        /// 获取课时状态
+        /// </summary>
+        /// <param name="iCourseID"></param>
+        /// <returns></returns>
+        public JsonResult GerCourseStatus(int iCourseID)
+        {
+            CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
+            ResponseBaseModel response = new ResponseBaseModel();
+            if (course.fClassDate.AddMinutes(course.fClassDateLength) < DateTime.Now)
+            {
+                response.iResult = -1;
+                response.strMsg = "课时已结束";
+            }
+            else
+            {
+                response.iResult = 0;
+            }
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+
     }
 }

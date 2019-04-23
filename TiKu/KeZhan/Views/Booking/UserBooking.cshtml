@@ -129,7 +129,7 @@
                                 }
                                 else if (Model.fIsReturn && Model.fIsPay && Model.fStatus == "已支付" && Model.ClassRoom.fStatus != "结算")
                                 {
-                                    if ((Model.ClassRoom.fReturnType == "课前" && Model.ClassRoom.fClassRoomDate < DateTime.Now) || Model.ClassRoom.fReturnType == "随时")
+                                    if ((Model.ClassRoom.fReturnType == "课前" && Model.ClassRoom.fClassRoomDate > DateTime.Now) || Model.ClassRoom.fReturnType == "随时")
                                     {
                                         <a class="awe-btn awe-btn-14" href="/ClassRoom/BookingRefund?strBookingNo=@Model.fBookingNo">申请退款</a>
                                     }
