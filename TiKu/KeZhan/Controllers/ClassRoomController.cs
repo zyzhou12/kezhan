@@ -138,71 +138,7 @@ namespace KeZhan.Controllers
 
       
 
-        public ActionResult DeleteCourse(int iCourseID, string strClassRoomCode, bool isEdit)
-        {
-            ClassRoomBll.DoDelClassRoomCourse(iCourseID);
-
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName); ;
-
-            CourseListModel courseModel = new CourseListModel();
-            courseModel.courseList = model.courseList;
-            courseModel.isEdit = isEdit;
-            courseModel.TeacherUserName = model.fTecharUserName;
-
-            return PartialView("CourseListControl", courseModel);
-        }
-
-         /// <summary>
-        /// 查询介绍信息
-        /// </summary>
-        /// <param name="strClassRoomCode"></param>
-        /// <returns></returns>
-        public ActionResult QueryDescList(string strClassRoomCode, bool isEdit)
-        {
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName); ;
-
-            DescListModel descModel = new DescListModel();
-            descModel.descList = model.descList;
-            descModel.isEdit = isEdit;
-            descModel.TeacherUserName = model.fTecharUserName;
-
-            return PartialView("ClassRoomDescControl", descModel);
-        }
-
-        /// <summary>
-        /// 查询章节信息
-        /// </summary>
-        /// <param name="strClassRoomCode"></param>
-        /// <returns></returns>
-        public ActionResult QueryCourseList(string strClassRoomCode, bool isEdit)
-        {
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName); ;
-
-            CourseListModel courseModel = new CourseListModel();
-            courseModel.courseList = model.courseList;
-            courseModel.isEdit = isEdit;
-            courseModel.TeacherUserName = model.fTecharUserName;
-
-            return PartialView("CourseListControl", courseModel);
-        }
-
-
-        public ActionResult QueryBookingList(string strClassRoomCode, string strMobile = null, string strStatus = null, string beginDate = null, string endDate = null)
-        {
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            BookingListModel model = BookingBll.GetBookingList(userInfo.fUserName, strClassRoomCode, strMobile, strStatus, beginDate, endDate);
-            ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, "");
-            model.fClassRoomCode = strClassRoomCode;
-            model.fClassType = classRoom.fClassType;
-            model.fStatus = classRoom.fStatus;
-            model.IsManager = classRoom.fCreateOpr == userInfo.fUserName;
-            // model.list = model.list.Where(m => m.fIsPay == true).ToList();
-            return PartialView("BookingListControl", model);
-        }
-
+      
 
         public ActionResult OpenClassRoom(int iCourseID)
         {

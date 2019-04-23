@@ -92,7 +92,7 @@
         }
 
         $.ajax({
-            url: "/user/QueryUserAccount",
+            url: "/Query/QueryUserAccount",
             type: this.method,
             data: { "strTradingType": TradingType, "strSystem": "Web", "strType": Type, "beginDate": beginDate, "endDate": endDate },
             success: function (msg) {

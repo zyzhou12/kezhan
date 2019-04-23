@@ -186,7 +186,7 @@
             $("#panelBooking").show();
 
             $.ajax({
-                url: "/ClassRoom/QueryBookingList",
+                url: "/Query/QueryBookingList",
                 type: this.method,
                 data: { "strClassRoomCode": ClassRoomCode },
                 success: function (msg) {
@@ -243,7 +243,7 @@
                 if (rst.iResult >= 0) {
                     alert("修改成功");
                     $.ajax({
-                        url: "/ClassRoom/QueryBookingList",
+                        url: "/Query/QueryBookingList",
                         type: this.method,
                         data: { "strClassRoomCode": ClassRoomCode },
                         success: function (msg) {

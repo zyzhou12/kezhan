@@ -210,6 +210,7 @@
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\OpenController.cs" />
+    <Compile Include="Controllers\QueryController.cs" />
     <Compile Include="Controllers\RequestController.cs" />
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\StartController.cs" />
@@ -1186,7 +1187,7 @@
   <ItemGroup>
     <Content Include="Views\User\BookingList.cshtml" />
     <Content Include="Views\User\UserBooking.cshtml" />
-    <Content Include="Views\Manager\BookingListControl.cshtml" />
+    <Content Include="Views\Query\BookingListControl.cshtml" />
     <Content Include="Views\Manager\BookingListManager.cshtml" />
     <Content Include="Views\User\ClassRoomBooking.cshtml" />
     <Content Include="Views\ClassRoom\ClassRoomEdit.cshtml" />
@@ -1196,10 +1197,10 @@
     <Content Include="Views\Home\ClassRoom.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Message.cshtml" />
-    <Content Include="Views\Manager\TeacherValid.cshtml" />
+    <Content Include="Views\Query\TeacherValid.cshtml" />
     <Content Include="Views\Manager\ValidManager.cshtml" />
     <Content Include="Views\Html\About.cshtml" />
-    <Content Include="Views\Open\ClassRoomControl.cshtml" />
+    <Content Include="Views\Query\ClassRoomControl.cshtml" />
     <Content Include="Views\Open\ClassRoomDetail.cshtml" />
     <Content Include="Views\Open\ClassRoomList.cshtml" />
     <Content Include="Views\Html\KeZhanDesc.cshtml" />
@@ -1213,7 +1214,7 @@
     <Content Include="Views\User\UpdatePassWord.cshtml" />
     <Content Include="Views\User\UpdateRole.cshtml" />
     <Content Include="Views\User\UserAccount.cshtml" />
-    <Content Include="Views\User\UserAccountListControl.cshtml" />
+    <Content Include="Views\Query\UserAccountListControl.cshtml" />
     <Content Include="Views\User\UserInfo.cshtml" />
     <Content Include="Views\User\UserInfoEdit.cshtml" />
     <Content Include="Views\Teacher\UserPay.cshtml" />
@@ -1248,11 +1249,11 @@
     <Content Include="Views\Manager\TeacherWithdrawalManager.cshtml" />
     <Content Include="Views\Manager\WithDrawal.cshtml" />
     <Content Include="Views\Home\Index - 复制.cshtml" />
-    <Content Include="Views\ClassRoom\CourseListControl.cshtml" />
-    <Content Include="Views\ClassRoom\ClassRoomDescControl.cshtml" />
+    <Content Include="Views\Query\CourseListControl.cshtml" />
+    <Content Include="Views\Query\ClassRoomDescControl.cshtml" />
     <Content Include="Views\Message\MessageList.cshtml" />
     <Content Include="Views\Teacher\UserMemberList.cshtml" />
-    <Content Include="Views\Teacher\UserMemberListControl.cshtml" />
+    <Content Include="Views\Query\UserMemberListControl.cshtml" />
     <Content Include="Views\ClassRoom\ClassRoomShow.cshtml" />
     <Content Include="Views\ClassRoom\TeacherSelect.cshtml" />
     <Content Include="Views\Teacher\UserRefundList.cshtml" />

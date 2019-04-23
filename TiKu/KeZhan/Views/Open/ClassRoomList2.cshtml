@@ -120,7 +120,7 @@
 
     function QueryClassRoom() {
         $.ajax({
-            url: "/open/QueryClassRoom",
+            url: "/Query/QueryClassRoom",
             type: this.method,
             data: { "strPharse": strPharse, "strGrade": strGrade, "strSubjet": strSubjet },
             success: function (msg) {

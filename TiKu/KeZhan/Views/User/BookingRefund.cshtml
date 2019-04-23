@@ -46,8 +46,9 @@
                             <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
                             @if (Model.fIsReturn)
                             {
-                                <label>@Model.ClassRoom.fReturnType 退 按 @Model.ClassRoom.fReturnRule<sup> </sup></label>
-                                <span>课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退</span>
+                                var strRefund = " 按" + Model.ClassRoom.fReturnRule + "  " + Model.ClassRoom.fReturnType + "退";
+                                <label>@strRefund<sup> </sup></label>
+                                <span>课前退，是指课程的第一课时开始前；随时退，最后一个课时前随时可退</span>
                             }
                             else
                             {
@@ -69,7 +70,7 @@
                             <label>退款金额<sup> </sup></label>
                             <span>@Model.MaxReturnAmount</span>
                             <label>退款原因<sup> </sup></label>
-                            <input type="text" id="txtRemark" />
+                            <input type="text" id="txtRemark" class="input-text" placeholder="请输入退课原因" />
                             <br />
                             <br />
                             <button class="awe-btn awe-btn-13" id="btnSubmit" onclick="SubmitRefund('@Model.fBookingNo',@Model.MaxReturnAmount)">提交退款</button>

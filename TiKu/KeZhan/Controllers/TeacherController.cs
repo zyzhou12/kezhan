@@ -84,14 +84,6 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
-        public ActionResult QueryMemberList()
-        {
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            UserMemberListModel model = UserBll.GetMemberList(userInfo.fUserName, "");
-
-            return PartialView("UserMemberListControl", model);
-        }
-
 
         public ActionResult ValidUploadFile()
         {

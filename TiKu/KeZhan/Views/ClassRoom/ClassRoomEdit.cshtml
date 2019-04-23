@@ -833,7 +833,7 @@
                 if (rst.iResult >= 0) {
                     alert("保存成功");
                     $.ajax({
-                        url: "/ClassRoom/QueryDescList",
+                        url: "/Query/QueryDescList",
                         type: this.method,
                         data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                         success: function (msg) {
@@ -867,7 +867,7 @@
     function DeleteCurse(courseID) {
         if (confirm("确认删除该节课时吗")) {
             $.ajax({
-                url: "/ClassRoom/DeleteCourse",
+                url: "/Query/DeleteCourse",
                 type: this.method,
                 data: { "iCourseID": courseID, "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
@@ -931,7 +931,7 @@
                     $("#btnAdd").show();
                     $("#myBGDiv").hide();
                     $.ajax({
-                        url: "/ClassRoom/QueryCourseList",
+                        url: "/Query/QueryCourseList",
                         type: this.method,
                         data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                         success: function (msg) {
@@ -996,7 +996,7 @@
             $("#panelDesc").show();
 
             $.ajax({
-                url: "/ClassRoom/QueryDescList",
+                url: "/Query/QueryDescList",
                 type: this.method,
                 data: { "strClassRoomCode": ClassRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
@@ -1012,7 +1012,7 @@
 
 
             $.ajax({
-                url: "/ClassRoom/QueryCourseList",
+                url: "/Query/QueryCourseList",
                 type: this.method,
                 data: { "strClassRoomCode": ClassRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
@@ -1055,7 +1055,7 @@
 
     function GetBookingList(mobile, status, begindate, enddate) {
         $.ajax({
-            url: "/ClassRoom/QueryBookingList",
+            url: "/Query/QueryBookingList",
             type: this.method,
             data: { "strClassRoomCode": ClassRoomCode, "strMobile": mobile, "strStatus": status, "beginDate": begindate, "endDate": enddate },
             success: function (msg) {
@@ -1155,7 +1155,7 @@
                 if (rst.iResult >= 0) {
                     alert("修改成功");
                     $.ajax({
-                        url: "/ClassRoom/QueryBookingList",
+                        url: "/Query/QueryBookingList",
                         type: this.method,
                         data: { "strClassRoomCode": ClassRoomCode },
                         success: function (msg) {

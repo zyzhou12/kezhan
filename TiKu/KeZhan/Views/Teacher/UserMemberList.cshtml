@@ -106,11 +106,13 @@
             $(".reservation-billing-detail").hide();
             $("#panelList").show();
             $.ajax({
-                url: "/Teacher/QueryMemberList",
+                url: "/Query/QueryMemberList",
                 type: this.method,
                 data: {},
                 success: function (msg) {
-                    $('#panelList').html(msg);
+                    //if(msg.iResult=="undefined"){
+                        $('#panelList').html(msg);
+                    //}
                 }
             });
 

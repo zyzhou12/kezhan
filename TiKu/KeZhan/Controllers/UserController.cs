@@ -193,14 +193,6 @@ namespace KeZhan.Controllers
             return View();
         }
 
-        public ActionResult QueryUserAccount(string strTradingType, string strSystem, string strType, DateTime beginDate, DateTime endDate)
-        {
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            UserAccountListModel model = UserBll.GetUserAccountData(userInfo.fUserName, strTradingType, strSystem, strType, beginDate, endDate);
-
-            return PartialView("UserAccountListControl", model);
-        }
-
 
 
         //

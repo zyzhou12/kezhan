@@ -24,12 +24,6 @@ namespace KeZhan.Controllers
           return View(model);
         }
 
-        public ActionResult TeacherValid(int iValidFid,int iDetailID)
-        {
-            ValidModel model = UserBll.GetTeacherValid(iValidFid, iDetailID);
-          return PartialView("TeacherValid", model);
-        }
-
 
         [HttpPost]
         public JsonResult DoTeacherValid(int iValidFid, int iValidDetailID, bool ValidResult, string strName, string strIDType, string strUID, string strCertType, string strCertNo, string strEffect, string strPharse, string strSubject, string ValidMessage)

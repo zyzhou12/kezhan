@@ -254,12 +254,10 @@
             success: function (rst) {
                 if (rst.iResult >= 0) {
                     if (rst.iResult == 0) {
-
                         window.location.href = "/User/ClassRoomBooking?strClassRoomCode=" + classRoomCode;
                     }
                 } else if (rst.iResult == -9999) {
-
-                    window.location.href = "/open/RegsiterLogin";
+                    window.location.href = "/open/RegsiterLogin?redirect_uri=/open/ClassRoomDetail?strClassRoomCode=" + classRoomCode;
                 } else {
                     alert(rst.strMsg);
                 }

@@ -71,8 +71,9 @@
 <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
 @if (Model.fIsReturn)
 {
-    <label>@Model.ClassRoom.fReturnType 退 按 @Model.ClassRoom.fReturnRule<sup> </sup></label>
-    <span>课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退</span>
+    var strRefund = " 按" + Model.ClassRoom.fReturnRule+"  "+ Model.ClassRoom.fReturnType + "退" ;
+    <label>@strRefund<sup> </sup></label>
+    <span>课前退，是指课程的第一课时开始前；随时退，最后一个课时前随时可退</span>
 }
 else
 {
