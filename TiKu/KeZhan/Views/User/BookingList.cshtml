@@ -24,10 +24,13 @@
 
                                 <ul class="list-inline">
                                     <li>状态：</li>
-                                    <li><a href="/Booking/BookingList?strStatus=">全部</a></li>
-                                    <li><a href="/Booking/BookingList?strStatus=提交">提交</a></li>
-                                    <li><a href="/Booking/BookingList?strStatus=已支付">已支付</a></li>
-                                    <li><a href="/Booking/BookingList?strStatus=已取消">已取消</a></li>
+                                    <li @if (Model.fStatus == "") { <text> class="active" </text>        }><a href="/User/BookingList?strStatus=">全部</a></li>
+                                    <li @if (Model.fStatus == "提交")
+                                        { <text> class="active" </text>        }><a href="/User/BookingList?strStatus=提交">提交</a></li>
+                                    <li @if (Model.fStatus == "已支付")
+                                        { <text> class="active" </text>        }><a href="/User/BookingList?strStatus=已支付">已支付</a></li>
+                                    <li @if (Model.fStatus == "已取消")
+                                        { <text> class="active" </text>        }><a href="/User/BookingList?strStatus=已取消">已取消</a></li>
                                 </ul>
 
                             </div>
@@ -48,7 +51,7 @@
                                                         <img style=" height:50px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@b.CoverImg?x-oss-process=style/fang" alt="">
                                                     </a>
                                                     <h4 class="comment-subject">
-                                                        订单号：<a href="/Booking/UserBooking?strBookingNo=@b.fBookingNo">@b.fBookingNo</a>
+                                                        订单号：<a href="/User/UserBooking?strBookingNo=@b.fBookingNo">@b.fBookingNo</a>
                                                     </h4>
                                                     <p>
                                                         <a href="/Open/ClassRoomDetail?strClassRoomCode=@b.fTypeCode">课程:@b.Title</a>
@@ -63,7 +66,7 @@
                                                         老师：@b.TeacherName
                                                     </span>
                                                     @*<div class="action">
-                                                        <a href="/Booking/UserBooking?strBookingNo=@b.fBookingNo" class="awe-btn awe-btn-14">@b.fStatus</a>
+                                                        <a href="/User/UserBooking?strBookingNo=@b.fBookingNo" class="awe-btn awe-btn-14">@b.fStatus</a>
                                                     </div>*@
                                                 </div>
                                             </li>

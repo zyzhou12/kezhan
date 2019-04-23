@@ -198,7 +198,7 @@
 
 
                             <div class="reservation-billing-detail" id="panelValid" style=" display:none">
-                                <a href="/ClassRoom/ValidUploadFile" class="awe-btn awe-btn-default">新增认证</a>
+                                <a href="/Teacher/ValidUploadFile" class="awe-btn awe-btn-default">新增认证</a>
                                 <br />
                                 <br />
                                 <br />
@@ -395,7 +395,7 @@
         }
 
         $.ajax({
-            url: "/open/DoSendCode",
+            url: "/Request/DoSendCode",
             data: { "strMobile": $("#txtMobile").val() },
             type: "POST",
             dataType: "json",
@@ -426,7 +426,7 @@
         }
 
         $.ajax({
-            url: "/user/DoUpdateMobile",
+            url: "/LoginRequest/DoUpdateMobile",
             data: { "strMobile": $("#txtMobile").val(), "strCode": $("#txtCode").val() },
             type: "POST",
             dataType: "json",
@@ -435,6 +435,8 @@
                     // window.location.href = "/user/userinfoedit";
                     alert("保存成功");
                     window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }
@@ -508,7 +510,7 @@
 
     function SaveData(type, value) {
         $.ajax({
-            url: "/user/DoSaveInfo",
+            url: "/LoginRequest/DoSaveInfo",
             data: { "strType": type, "strInfo": value },
             type: "POST",
             dataType: "json",
@@ -516,6 +518,8 @@
                 if (rst.iResult >= 0) {
                     alert("保存成功");
                     window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }
@@ -537,7 +541,7 @@
         };
 
         $.ajax({
-            url: "/user/DoSaveTeacherInfo",
+            url: "/LoginRequest/DoSaveTeacherInfo",
             data: TeacherBaseModel,
             type: "POST",
             dataType: "json",
@@ -545,6 +549,8 @@
                 if (rst.iResult >= 0) {
                     alert("保存成功");
                     window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }
@@ -561,7 +567,7 @@
         };
 
         $.ajax({
-            url: "/user/DoSaveStudentInfo",
+            url: "/LoginRequest/DoSaveStudentInfo",
             data: StudentBaseModel,
             type: "POST",
             dataType: "json",
@@ -570,6 +576,8 @@
 
                     alert("保存成功");
                     window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }

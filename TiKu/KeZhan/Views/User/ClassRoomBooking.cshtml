@@ -206,7 +206,7 @@
           function SubmitOrder(classRoomType) {
 
             $.ajax({
-              url: "/ClassRoom/DoBookingClassRoom",
+                url: "/LoginRequest/DoCheckBookingClassRoom",
               data: { "strClassRoomCode": classRoomCode },
               type: "POST",
               dataType: "json",
@@ -222,8 +222,10 @@
                     //  $("#btnPay").attr("href", "/Booking/UserBooking?strBookingNo=" + rst.strMsg);
                     //  $("#btnPay").text("去支付");
                     //}
-                    window.location.href = "/Booking/UserBooking?strBookingNo=" + rst.strMsg;
+                    window.location.href = "/User/UserBooking?strBookingNo=" + rst.strMsg;
                   }
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                   alert(rst.strMsg);
                 }

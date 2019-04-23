@@ -46,7 +46,7 @@
                     @if (Model.userRole == "Teacher" && Model.teacherInfo.fStatus == "未认证")
                     {
 
-                    @Html.Partial("../ClassRoom/ValidUploadFile", new TiKuBll.Model.TeacherValidModel { fUserName = Model.userInfo.fUserName })
+                    @Html.Partial("../Teacher/ValidUploadFile", new TiKuBll.Model.TeacherValidModel { fUserName = Model.userInfo.fUserName })
 
 
                     }
@@ -224,7 +224,7 @@
       };
 
       $.ajax({
-        url: "/user/DoSaveStudentInfo",
+          url: "/LoginRequest/DoSaveStudentInfo",
         data: StudentBaseModel,
         type: "POST",
         dataType: "json",
@@ -233,6 +233,8 @@
 
             alert("保存成功");
             window.location.reload();
+          } else if (rst.iResult == -9999) {
+              alert("请重新登录");
           } else {
             alert(rst.strMsg);
           }

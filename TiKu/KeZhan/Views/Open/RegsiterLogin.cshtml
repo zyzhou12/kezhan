@@ -50,15 +50,15 @@
                                    </p>
                                    <br />
                                   <span class="account-desc" id="bTeacherDesc" style=" display:none">
-                                      <input type="checkbox" id="chkReg" /><a href="/open/KeZhanDesc" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;课站平台服务协议</a>
-                                      <input type="checkbox" id="chkTea" /><a href="/open/KeZhanTeachDesc" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;课站平台教师服务协议</a>
+                                      <input type="checkbox" id="chkReg" /><a href="/html/KeZhanDesc" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;课站平台服务协议</a>
+                                      <input type="checkbox" id="chkTea" /><a href="/html/KeZhanTeachDesc" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;课站平台教师服务协议</a>
                                   </span>
                                   
                                   
                                   
                             </div>
                             <div class="field-form" style=" display:none" id="bStudentDesc">
-                            <span class="account-desc" ><input type="checkbox" id="chksReg" /><a href="/open/KeZhanDesc" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;课站平台服务协议</a></span>
+                            <span class="account-desc" ><input type="checkbox" id="chksReg" /><a href="/html/KeZhanDesc" target="_blank">&nbsp;&nbsp;&nbsp;&nbsp;课站平台服务协议</a></span>
 
                             </div>
                            
@@ -234,7 +234,7 @@
     }
 
     $.ajax({
-      url: "/open/DoSendCode",
+        url: "/Request/DoSendCode",
       data: { "strMobile": $("#txtMobile").val() },
       type: "POST",
       dataType: "json",
@@ -315,7 +315,7 @@
 
 
     $.ajax({
-      url: "/open/DoValidCode",
+        url: "/Request/DoValidCode",
       data: { "strMobile": $("#txtMobile").val(), "strCode": $("#txtCode").val(), "strRole": $("#hidRole").val() },
       type: "POST",
       dataType: "json",
@@ -345,7 +345,7 @@
 
 
     $.ajax({
-      url: "/open/DoValidCode",
+        url: "/Request/DoValidCode",
       data: { "strMobile": $("#txtMobile").val(), "strCode": $("#txtCode").val(), "strRole": $("#hidRole").val() },
       type: "POST",
       dataType: "json",
@@ -365,7 +365,7 @@
 
 
     $.ajax({
-      url: "/open/DoValidPass",
+        url: "/Request/DoValidPass",
       data: { "strMobile": $("#txtMobile").val(), "strPass": $("#txtPass").val() },
       type: "POST",
       dataType: "json",

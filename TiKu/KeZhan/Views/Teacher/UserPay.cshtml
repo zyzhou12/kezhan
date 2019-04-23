@@ -28,17 +28,17 @@
                             <h4 class="widget-title">流量购买</h4>
                             <div class="guest-book_item guest-book_item-2">
                                 @*<span class="icon lotus-icon-quote-left"></span>
-                                <div class="avatar">
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherHead?x-oss-process=style/head" alt="">
-                                </div>
-                                <h2>@Model.TeacherName</h2>*@
+                                    <div class="avatar">
+                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherHead?x-oss-process=style/head" alt="">
+                                    </div>
+                                    <h2>@Model.TeacherName</h2>*@
                                 <p>提示：购买的流量不可退，请注意有效期和购买合适的流量，每个课程的课时所需要的流量是（线下报名人数+在线支付人数+老师）*课时长短，购买的流量不可退，有效期自购买之日起12个月</p>
                                 <span></span>
                             </div>
                         </div>
-                        </div>
-
                     </div>
+
+                </div>
                 <!-- END / SIDEBAR -->
                 <!-- CONTENT -->
                 <div class="col-md-8 col-lg-9">
@@ -57,9 +57,9 @@
                             <div class="text-center">
                                 @*<h4>流量购买 </h4>
 
-                                <p>
-                                    提示：购买的流量不可退，请注意有效期和购买合适的流量，每个课程的课时所需要的流量是（线下报名人数+在线支付人数+老师）*课时长短，购买的流量不可退，有效期自购买之日起12个月?
-                                </p>*@
+                                    <p>
+                                        提示：购买的流量不可退，请注意有效期和购买合适的流量，每个课程的课时所需要的流量是（线下报名人数+在线支付人数+老师）*课时长短，购买的流量不可退，有效期自购买之日起12个月?
+                                    </p>*@
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10)">10分钟<br />￥ @Convert.ToString(Model.ClassFee * 10)</button>
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,30)">30分钟<br />￥ @Convert.ToString(Model.ClassFee * 30)</button>
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,45)">45分钟<br />￥ @Convert.ToString(Model.ClassFee * 45)</button>
@@ -165,7 +165,7 @@
     function UserPay() {
 
         $.ajax({
-            url: "/user/SubmitBuyFlowOrder",
+            url: "/LoginRequest/SubmitBuyFlowOrder",
             data: { "iNum": $("#hidAmount").val(), "dPrice": classfee },
             type: "POST",
             dataType: "json",
@@ -176,7 +176,7 @@
 
                     if (payType == "accountpay") {
                         AiZhuPay(rst);//账号余额支付
-                    }else{
+                    } else {
                         if (IsPC()) {
                             PCPay(rst);
                         } else {
@@ -186,13 +186,15 @@
                                 WapPay(rst);
                             }
                         }
-                }
-            } else {
+                    }
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
                     alert(rst.strMsg);
-    }
-    }
+                }
+            }
 
-    });
+        });
 
 
     }

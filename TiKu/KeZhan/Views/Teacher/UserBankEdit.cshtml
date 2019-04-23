@@ -72,7 +72,7 @@
         }
 
         $.ajax({
-            url: "/User/DoSaveUserBank",
+            url: "/LoginRequest/DoSaveUserBank",
             data: UserBankAccountModel,
             type: "POST",
             dataType: "json",
@@ -80,6 +80,8 @@
                 if (rst.iResult >= 0) {
                     alert("保存成功");
                     self.location = document.referrer;
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }

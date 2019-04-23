@@ -181,7 +181,7 @@
 
         function UpdatePayStatus(strBookingNo, strStatus) {
             $.ajax({
-                url: "/classRoom/DoUpdateBookingStatus",
+                url: "/LoginRequest/DoUpdateBookingStatus",
                 data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
                 type: "POST",
                 dataType: "json",
@@ -196,6 +196,8 @@
                                 $('#panelBooking').html(msg);
                             }
                         });
+                    } else if (rst.iResult == -9999) {
+                        alert("请重新登录");
                     }
                 }
 

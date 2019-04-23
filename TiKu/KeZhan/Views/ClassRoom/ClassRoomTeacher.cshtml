@@ -217,7 +217,7 @@
         }
 
         $.ajax({
-            url: "/classRoom/DoSaveClassRoomInfo",
+            url: "/LoginRequest/DoSaveClassRoomInfo",
             data: { "strClassRoomCode": ClassRoomCode, "strType": "fQrCode", "strInfo": $("#hidQrCode").val() },
             type: "POST",
             dataType: "json",
@@ -225,6 +225,8 @@
                 if (rst.iResult >= 0) {
                     alert("修改成功");
 
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 }
             }
 
@@ -233,7 +235,7 @@
 
     function UpdatePayStatus(strBookingNo, strStatus) {
         $.ajax({
-            url: "/classRoom/DoUpdateBookingStatus",
+            url: "/LoginRequest/DoUpdateBookingStatus",
             data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
             type: "POST",
             dataType: "json",
@@ -248,6 +250,8 @@
                             $('#panelBooking').html(msg);
                         }
                     });
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 }
             }
 
@@ -265,7 +269,7 @@
         if(confirm("确认删除上传的资料文档吗")){
 
             $.ajax({
-                url: "/classRoom/DoDelCourseDocument",
+                url: "/LoginRequest/DoDelCourseDocument",
                 data: { "iCourseId": id },
                 type: "POST",
                 dataType: "json",
@@ -273,6 +277,8 @@
                     if (rst.iResult >= 0) {
                         alert("删除成功");
                         window.location.reload();
+                    } else if (rst.iResult == -9999) {
+                        alert("请重新登录");
                     }
                 }
 
@@ -285,7 +291,7 @@
         if(confirm("确认删除上传的视频吗")){
 
             $.ajax({
-                url: "/classRoom/DoDelCourseResource",
+                url: "/LoginRequest/DoDelCourseResource",
                 data: { "iCourseId": id },
                 type: "POST",
                 dataType: "json",
@@ -293,6 +299,8 @@
                     if (rst.iResult >= 0) {
                         alert("删除成功");
                         window.location.reload();
+                    } else if (rst.iResult == -9999) {
+                        alert("请重新登录");
                     }
                 }
 
@@ -304,7 +312,7 @@
         //打开一个不被拦截的新窗口
         var newWindow = window.open();
         $.ajax({
-            url: "/Home/OpenClassRoom",
+            url: "/LoginRequest/OpenClassRoom",
             data: { "iCourseID": iCourdeID },
             type: "Post",
             success: function (rst) {
@@ -313,6 +321,8 @@
                     //window.open("/Home/Index?iCourseID=" + iCourdeID+"&strRole=Teacher", '_blank').location;
                     newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
 
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     newWindow.close();
                     alert(rst.strMsg);

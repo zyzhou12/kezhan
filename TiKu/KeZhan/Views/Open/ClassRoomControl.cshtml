@@ -15,17 +15,19 @@
                                     <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt=""></a>
                                 </div>
                                 <div class="text">
-                                  <h2>
-                                    <a href="#">@classRoom.fClassRoomTitle</a></h2>
-                                  <p>
-                                    
-                                    @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+                                    <h2 style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+                                        <a href="#">@classRoom.fClassRoomTitle</a>
+                                    </h2>
+                                    <p style="height:40px; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp:2;overflow: hidden;">
+
+                                        @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+
+                                    </p>
                                     <br />
                                     <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
                                     <br />
                                     <span>讲师：@classRoom.TeacherName</span>
-                                    </p>
-                                     <h2>￥ @classRoom.fPrice.ToString()</h2>
+                                    <h2>￥ @classRoom.fPrice.ToString()</h2>
                                 </div>
                               </div>
                             </div>

@@ -23,7 +23,7 @@ namespace KeZhan.Filters
       string redurl = filterContext.HttpContext.Request.Url.ToString();
       if (userInfo == null)
       {
-        filterContext.Result = new RedirectToRouteResult("Default", new RouteValueDictionary(new { controller = "Open", action = "RegsiterLogin", redirect_uri=redurl }));
+          filterContext.Result = new RedirectToRouteResult("Default", new RouteValueDictionary(new { controller = "Request", action = "CheckLoginUser", redirect_uri = redurl }));
       }
       else
       {

@@ -253,7 +253,7 @@
             detailList: detailList
         };
         $.ajax({
-            url: "/user/SaveTeacherValidFile",
+            url: "/LoginRequest/SaveTeacherValidFile",
             data: { "jsonData": JSON.stringify(TeacherValidModel) },
             type: "POST",
             cache: false,
@@ -265,6 +265,8 @@
                     $("#divMessage").show();
                     $("#divValid").hide();
 
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }

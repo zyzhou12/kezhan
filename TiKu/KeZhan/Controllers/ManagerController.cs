@@ -162,5 +162,14 @@ namespace KeZhan.Controllers
             jr.Data = response;
             return jr;
         }
+
+        public ActionResult BookingListManager()
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ClassRoomListModel model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, "", "", "");
+            return View(model);
+        }
+
+
     }
 }

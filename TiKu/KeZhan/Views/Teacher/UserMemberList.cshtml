@@ -106,7 +106,7 @@
             $(".reservation-billing-detail").hide();
             $("#panelList").show();
             $.ajax({
-                url: "/user/QueryMemberList",
+                url: "/Teacher/QueryMemberList",
                 type: this.method,
                 data: {},
                 success: function (msg) {
@@ -120,19 +120,7 @@
 
 
 
-        } else if (div == "booking") {
-            $(".reservation-billing-detail").hide();
-            $("#panelBooking").show();
-
-            $.ajax({
-                url: "/ClassRoom/QueryBookingList",
-                type: this.method,
-                data: { "strClassRoomCode": ClassRoomCode },
-                success: function (msg) {
-                    $('#panelBooking').html(msg);
-                }
-            });
-        }
+        } 
     }
 
     function SendInvite()
@@ -142,24 +130,28 @@
             return;
         }
         $.ajax({
-            url: "/user/CheckUser",
+            url: "/LoginRequest/CheckUser",
             type: this.method,
             data: { "strMobile": $("#txtMobile").val() },
-            success: function (rest) {
-                if (rest.iResult == 0) {
+            success: function (rst) {
+                if (rst.iResult == 0) {
                     $.ajax({
-                        url: "/user/InviteMember",
+                        url: "/LoginRequest/InviteMember",
                         type: this.method,
                         data: { "strMobile": $("#txtMobile").val(), "strNote": "" },
-                        success: function (rest) {
-                            alert(rest.strMsg);
-                            if (rest.iResult == 0) {
+                        success: function (rst) {
+                            alert(rst.strMsg);
+                            if (rst.iResult == 0) {
                                 location.reload();
-                            }
+                            } else if (rst.iResult == -9999) {
+                                alert("请重新登录");
+                            } 
                         }
                     });
-                } else {
-                    alert(rest.strMsg)
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                }  else {
+                    alert(rst.strMsg)
                 }
             }
         });
@@ -167,14 +159,16 @@
 
     function UserInviteCancel(id) {
         $.ajax({
-            url: "/user/InviteCancel",
+            url: "/LoginRequest/InviteCancel",
             type: this.method,
             data: { "id": id },
-            success: function (rest) {
-                if (rest.iResult == 0) {
+            success: function (rst) {
+                if (rst.iResult == 0) {
                     location.reload();
+                }  else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
-                    alert(rest.strMsg);
+                    alert(rst.strMsg);
                 }
             }
         });
@@ -183,14 +177,16 @@
 
     function UserInviteRemove(id) {
         $.ajax({
-            url: "/user/InviteRemove",
+            url: "/LoginRequest/InviteRemove",
             type: this.method,
             data: { "id": id },
-            success: function (rest) {
-                if (rest.iResult == 0) {
+            success: function (rst) {
+                if (rst.iResult == 0) {
                     location.reload();
-                } else {
-                    alert(rest.strMsg);
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                }  else {
+                    alert(rst.strMsg);
                 }
             }
         });

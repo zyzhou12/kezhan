@@ -229,7 +229,7 @@
 
 
         $.ajax({
-            url: "/classRoom/DoUpdateStatus",
+            url: "/LoginRequest/DoUpdateStatus",
             data: { "strClassRoomCode": classRoomCode, "strStatus": status },
             type: "POST",
             dataType: "json",
@@ -237,6 +237,8 @@
                 if (rst.iResult >= 0) {
                     alert("申请提交成功");
                     location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg)
                 }

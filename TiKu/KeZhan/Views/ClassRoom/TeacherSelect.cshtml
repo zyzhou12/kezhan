@@ -147,7 +147,7 @@
             strSubject = "";
         }
 
-        $.getJSON("/ClassRoom/GetTeacherList?strPharse=" + strPharse + "&strSubject=" + strSubject, function (data) {
+        $.getJSON("/LoginRequest/GetTeacherList?strPharse=" + strPharse + "&strSubject=" + strSubject, function (data) {
             $("#cmbTeacher").append("<option value=''>请选择</option>");
 
             $.each(data, function (i, item) {
@@ -173,7 +173,7 @@
     function GetValid(obj) {
         var teacherUserName = $(obj).val();
         $("#cmbTeacherValid").empty();
-        $.getJSON("/ClassRoom/GetTeacherValidList?strUserName=" + teacherUserName, function (data) {
+        $.getJSON("/LoginRequest/GetTeacherValidList?strUserName=" + teacherUserName, function (data) {
             $("#cmbTeacherValid").append("<option value=''>请选择</option>");
 
             $.each(data, function (i, item) {

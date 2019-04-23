@@ -644,7 +644,7 @@
         };
 
         $.ajax({
-            url: "/classRoom/DoSaveClassRoom",
+            url: "/LoginRequest/DoSaveClassRoom",
             data: ClassRoomModel,
             type: "POST",
             dataType: "json",
@@ -652,6 +652,8 @@
                 if (rst.iResult >= 0) {
                     alert("保存成功");
                     window.location.href = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + rst.strMsg;
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     $("#pMsg").text(rst.strMsg);
                     $("#pMsg").show();
@@ -671,7 +673,7 @@
                 "fOrder": "0"
             }
             $.ajax({
-                url: "/classRoom/DoSaveClassRoomDesc",
+                url: "/LoginRequest/DoSaveClassRoomDesc",
                 data: DescModel,
                 type: "POST",
                 dataType: "json",
@@ -679,6 +681,8 @@
                     if (rst.iResult >= 0) {
                         //alert("保存成功");
 
+                    } else if (rst.iResult == -9999) {
+                        alert("请重新登录");
                     } else {
                         alert(rst.strMsg);
                     }
@@ -713,7 +717,7 @@
         }
         if (isexec) {
             $.ajax({
-                url: "/classRoom/DoUpdateStatus",
+                url: "/LoginRequest/DoUpdateStatus",
                 data: { "strClassRoomCode": classRoomCode, "strStatus": status, "strNote": strNote },
                 type: "POST",
                 dataType: "json",
@@ -721,6 +725,8 @@
                     if (rst.iResult >= 0) {
                         alert("申请提交成功");
                         location.reload();
+                    } else if (rst.iResult == -9999) {
+                        alert("请重新登录");
                     } else {
                         alert(rst.strMsg)
                     }
@@ -760,7 +766,7 @@
     function DelDesc(descID) {
 
         $.ajax({
-            url: "/classRoom/DoDelClassRoomDesc",
+            url: "/LoginRequest/DoDelClassRoomDesc",
             data: { "iDescID": descID },
             type: "POST",
             dataType: "json",
@@ -768,6 +774,8 @@
                 if (rst.iResult >= 0) {
                     alert("保存成功");
                     window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }
@@ -817,7 +825,7 @@
             "fOrder": $("#txtDescOrder").val()
         }
         $.ajax({
-            url: "/classRoom/DoSaveClassRoomDesc",
+            url: "/LoginRequest/DoSaveClassRoomDesc",
             data: DescModel,
             type: "POST",
             dataType: "json",
@@ -832,6 +840,8 @@
                             $('#panelDesc').html(msg);
                         }
                     });
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }
@@ -910,7 +920,7 @@
             "fOrder": "0"
         }
         $.ajax({
-            url: "/classRoom/DoSaveClassRoomCourse",
+            url: "/LoginRequest/DoSaveClassRoomCourse",
             data: CourseModel,
             type: "POST",
             dataType: "json",
@@ -928,6 +938,8 @@
                             $('#panelCourseEdit').html(msg);
                         }
                     });
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }
@@ -1054,7 +1066,7 @@
 
     function GetAllTeacher() {
 
-        $.getJSON("/ClassRoom/GetTeacherList?strPharse=&strSubject=", function (data) {
+        $.getJSON("/LoginRequest/GetTeacherList?strPharse=&strSubject=", function (data) {
             $("#cmbAllTeacher").append("<option value=''>请选择</option>");
 
             $.each(data, function (i, item) {
@@ -1094,7 +1106,7 @@
         }
 
         $.ajax({
-            url: "/classRoom/DoSaveClassRoomInfo",
+            url: "/LoginRequest/DoSaveClassRoomInfo",
             data: { "strClassRoomCode": ClassRoomCode, "strType": "fQrCode", "strInfo": $("#hidQrCode").val() },
             type: "POST",
             dataType: "json",
@@ -1102,6 +1114,8 @@
                 if (rst.iResult >= 0) {
                     alert("修改成功");
 
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 }
             }
 
@@ -1115,7 +1129,7 @@
         }
 
         $.ajax({
-            url: "/classRoom/DoSaveClassRoomInfo",
+            url: "/LoginRequest/DoSaveClassRoomInfo",
             data: { "strClassRoomCode": ClassRoomCode, "strType": "fTecharUserName", "strInfo": $("#cmbAllTeacher").val() },
             type: "POST",
             dataType: "json",
@@ -1123,6 +1137,8 @@
                 if (rst.iResult >= 0) {
                     alert("修改成功");
 
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 }
             }
 
@@ -1131,7 +1147,7 @@
 
     function UpdatePayStatus(strBookingNo, strStatus) {
         $.ajax({
-            url: "/classRoom/DoUpdateBookingStatus",
+            url: "/LoginRequest/DoUpdateBookingStatus",
             data: { "strBookingNo": strBookingNo, "strStatus": strStatus, "strRemark": "老师修改" },
             type: "POST",
             dataType: "json",
@@ -1146,6 +1162,8 @@
                             $('#panelBooking').html(msg);
                         }
                     });
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 }
             }
 
@@ -1154,7 +1172,7 @@
 
     function DoClassRoomSettlement() {
         $.ajax({
-            url: "/ClassRoom/DoClassRoomSettlement",
+            url: "/LoginRequest/DoClassRoomSettlement",
             type: this.method,
             data: { "strClassRooomCode": ClassRoomCode },
             success: function (result) {
@@ -1173,7 +1191,7 @@
         //打开一个不被拦截的新窗口
         var newWindow = window.open();
         $.ajax({
-            url: "/Home/OpenClassRoom",
+            url: "/LoginRequest/OpenClassRoom",
             data: { "iCourseID": iCourdeID },
             type: "Post",
             success: function (rst) {
@@ -1182,6 +1200,8 @@
                     //window.open("/Home/Index?iCourseID=" + iCourdeID+"&strRole=Teacher", '_blank').location;
                     newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
 
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     newWindow.close();
                     alert(rst.strMsg);

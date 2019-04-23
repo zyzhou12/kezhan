@@ -58,21 +58,35 @@
 
                             <h4>订单信息</h4>
 
-                            <label>课程名称<sup> </sup></label>
-                            <span>@Model.ClassRoom.fClassRoomTitle</span>
-                            <label>价格<sup></sup></label>
-                            <span>@Model.fAmount </span>
-                            <label>开课时间<sup> </sup></label>
-                            <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
 
-                            <label>课程明细<sup> </sup></label>
+<label>订单编号<sup> </sup></label>
+<span>@Model.fBookingNo</span>
+<label>课程名称<sup> </sup></label>
+<span>@Model.ClassRoom.fClassRoomTitle</span>
+<label>购买时间<sup> </sup></label>
+<span>@Model.fBuyDate.ToString()</span>
+<label>价格<sup></sup></label>
+<span>@Model.fAmount </span>
+<label>开课时间<sup> </sup></label>
+<span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
+@if (Model.fIsReturn)
+{
+    <label>@Model.ClassRoom.fReturnType 退 按 @Model.ClassRoom.fReturnRule<sup> </sup></label>
+    <span>课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退</span>
+}
+else
+{
+    <label>是否可退</label>
+    <span>不可退</span>
+}
+                            @*<label>课程明细<sup> </sup></label>
                             @foreach (var c in Model.ClassRoom.courseList)
                             {
                                 <span>@c.fDictTitle</span>
                                 <span>@c.fCourseTitle</span>
                                 <span>@c.fClassDate.ToString()</span>
                                 <br />
-                            }
+                            }*@
 
                             <br />
 
@@ -131,7 +145,7 @@
                                 {
                                     if ((Model.ClassRoom.fReturnType == "课前" && Model.ClassRoom.fClassRoomDate > DateTime.Now) || Model.ClassRoom.fReturnType == "随时")
                                     {
-                                        <a class="awe-btn awe-btn-14" href="/ClassRoom/BookingRefund?strBookingNo=@Model.fBookingNo">申请退款</a>
+                                        <a class="awe-btn awe-btn-14" href="/User/BookingRefund?strBookingNo=@Model.fBookingNo">申请退款</a>
                                     }
                                 }
                             }

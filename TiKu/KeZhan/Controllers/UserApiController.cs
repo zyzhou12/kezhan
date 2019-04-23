@@ -19,15 +19,11 @@ namespace KeZhan.Controllers
         // GET: /UserApi/
 
 
-        public UserInfoModel GetLoginUser()
-        {
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            return userInfo;
-        }
+      
 
         public JsonResult CheckLoginUser()
         {
-            UserInfoModel user = GetLoginUser();
+            UserInfoModel user = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
             if(user==null)
             {

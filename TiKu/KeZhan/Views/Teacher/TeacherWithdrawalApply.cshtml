@@ -59,7 +59,7 @@
         }
 
         $.ajax({
-            url: "/User/DoSaveTeacherWithDrawal",
+            url: "/LoginRequest/DoSaveTeacherWithDrawal",
             data: TeacherWithdrawalModel,
             type: "POST",
             dataType: "json",
@@ -67,6 +67,8 @@
                 if (rst.iResult >= 0) {
                     alert("提交成功");
                     self.location = document.referrer;
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }

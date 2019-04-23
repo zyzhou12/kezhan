@@ -114,10 +114,10 @@
         $("#pdetail-"+id).show();
         if(status==0){
             $.ajax({
-                url: "/Message/MessageLook",
+                url: "/LoginRequest/MessageLook",
                 type: this.method,
                 data: { "iMessageID": id },
-                success: function (rest) {
+                success: function (rst) {
                
 
                 }
@@ -127,15 +127,17 @@
 
     function UserInviteAgree(id) {
         $.ajax({
-            url: "/user/InviteAgree",
+            url: "/LoginRequest/InviteAgree",
             type: this.method,
             data: { "id": id },
-            success: function (rest) {
-                if (rest.iResult == 0) {
+            success: function (rst) {
+                if (rst.iResult == 0) {
                     //location.reload();
-                    window.location.href = "/user/UserMemberList";
+                    window.location.href = "/Teacher/UserMemberList";
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
-                    alert(rest.strMsg);
+                    alert(rst.strMsg);
                 }
             }
         });
@@ -143,14 +145,16 @@
 
     function UserInviteRefused(id) {
         $.ajax({
-            url: "/user/InviteRefused",
+            url: "/LoginRequest/InviteRefused",
             type: this.method,
             data: { "id": id },
-            success: function (rest) {
-                if (rest.iResult == 0) {
+            success: function (rst) {
+                if (rst.iResult == 0) {
                     location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
-                    alert(rest.strMsg);
+                    alert(rst.strMsg);
                 }
             }
         });

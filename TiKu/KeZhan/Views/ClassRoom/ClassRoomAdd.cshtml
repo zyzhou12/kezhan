@@ -341,7 +341,7 @@
         };
 
         $.ajax({
-            url: "/classRoom/DoSaveClassRoom",
+            url: "/LoginRequest/DoSaveClassRoom",
             data: ClassRoomModel,
             type: "POST",
             dataType: "json",
@@ -357,13 +357,15 @@
                             "fOrder": "0"
                         }
                         $.ajax({
-                            url: "/classRoom/DoSaveClassRoomDesc",
+                            url: "/LoginRequest/DoSaveClassRoomDesc",
                             data: DescModel,
                             type: "POST",
                             dataType: "json",
                             success: function (rst) {
                                 if (rst.iResult >= 0) {
                                     //alert("保存成功");
+                                } else if (rst.iResult == -9999) {
+                                    alert("请重新登录");
                                 } else {
                                     alert(rst.strMsg);
                                 }
@@ -375,6 +377,8 @@
 
                     alert("保存成功");
                     window.location.href = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + rst.strMsg + "&strType=Add";
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
 
                     $("#pMsg").text(rst.strMsg);

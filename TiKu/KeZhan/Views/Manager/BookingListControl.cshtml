@@ -37,7 +37,7 @@
                                 
                                 if ( b.fIsPay && b.fStatus == "已支付")
                                 {
-                                    <a class="awe-btn awe-btn-14" href="/ClassRoom/BookingRefund?strBookingNo=@b.fBookingNo">退款</a>
+                                    <a class="awe-btn awe-btn-14" href="/User/BookingRefund?strBookingNo=@b.fBookingNo">退款</a>
                                 }
                                 else if (Model.fStatus == "发布" && !b.fIsPay && b.fStatus == "提交")
                                 {

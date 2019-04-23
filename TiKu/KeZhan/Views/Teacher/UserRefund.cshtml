@@ -127,7 +127,7 @@
     function ConfirmUserRefund(id, payType) {
 
         $.ajax({
-            url: "/Booking/DoConfrimRefund",
+            url: "/LoginRequest/DoConfrimRefund",
             data: { "refundID": id, "strPayType": payType, "refundPrice": $("#txtRefundAmount").val(), "applyStatus": "1", "applyNote": $("#txtRefundNote").val() },
             type: "POST",
             dataType: "json",
@@ -135,7 +135,9 @@
                 if (rst.iResult >= 0) {
                     alert("操作成功");
                     self.location = document.referrer;
-                }else
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else
                 {
                     alert(rst.strMsg);
                 }
@@ -146,7 +148,7 @@
 
     function RefusedUserRefund(id) {
         $.ajax({
-            url: "/Booking/DoConfrimRefund",
+            url: "/LoginRequest/DoConfrimRefund",
             data: { "refundID": id, "refundPrice": "0", "applyStatus": "2", "applyNote": $("#txtRefundNote").val() },
             type: "POST",
             dataType: "json",
@@ -154,6 +156,11 @@
                 if (rst.iResult >= 0) {
                     alert("操作成功");
                     self.location = document.referrer;
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else
+                {
+                    alert(rst.strMsg);
                 }
             }
 

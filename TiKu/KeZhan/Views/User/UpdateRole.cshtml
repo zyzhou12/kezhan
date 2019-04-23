@@ -1,39 +1,39 @@
 ﻿@{
   ViewBag.Title = "课站";
 }
-<section class="section-account parallax bg-11" style="padding-top: 120px;">
-            <div class="awe-overlay"></div>
-            <div class="container">
-                <div class="login-register">
-                    <div class="text text-center">
-                        <h2>成为老师</h2>
-                         
-                        <div class="account_form"> 
-                            <div class="field-form" >
-                                  <blockquote style="border: 2px solid #FFF;">
-                                      <p>在您提交相关需要认证的信息后，经课站平台审核，就可以注册成为课站平台老师。只有课站平台老师才能发布课程和授课</p>
-                                  </blockquote>
-                            </div>
-                            <div class="field-form" >  
-                                  <span class="account-desc" id="bTeacherDesc" >                                      
-                                      <input type="checkbox" id="chkTea" /><a href="/open/KeZhanTeachDesc" target="_blank"  >&nbsp;&nbsp;同意老师服务协议</a>
-                                  </span>
-                            </div>
-                            <div class="field-form">
-                                <button class="awe-btn awe-btn-13" id="btnLogin" onclick="DoValid()">老师认证</button>                                
-                            </div>
-                            </div>
-                        </div>
+<section class="section-account parallax" style="padding-top:60px; background-image:url('../content/image/jhk-1545185427332.jpg')">
+    <div class="awe-overlay"></div>
+    <div class="container">
+        <div class="login-register">
+            <div class="text text-center">
+                <h2>成为老师</h2>
+
+                <div class="account_form">
+                    <div class="field-form">
+                        <blockquote style="border: 2px solid #FFF;">
+                            <p>在您提交相关需要认证的信息后，经课站平台审核，就可以注册成为课站平台老师。只有课站平台老师才能发布课程和授课</p>
+                        </blockquote>
+                    </div>
+                    <div class="field-form">
+                        <span class="account-desc" id="bTeacherDesc">
+                            <input type="checkbox" id="chkTea" /><a href="/html/KeZhanTeachDesc" target="_blank">&nbsp;&nbsp;同意老师服务协议</a>
+                        </span>
+                    </div>
+                    <div class="field-form">
+                        <button class="awe-btn awe-btn-13" id="btnLogin" onclick="DoValid()">老师认证</button>
                     </div>
                 </div>
-        </section>
+            </div>
+        </div>
+    </div>
+</section>
 <script type="text/javascript">
   function DoValid() {
     if (!$("#chkTea").is(':checked')) {
       alert("请阅读并同意老师条款");
       return;
     } else {
-      window.location.href = "/ClassRoom/ValidUploadFile";
+      window.location.href = "/Teacher/ValidUploadFile";
     }
   }
 </script>

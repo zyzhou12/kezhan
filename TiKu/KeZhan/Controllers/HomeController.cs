@@ -16,73 +16,7 @@ namespace KeZhan.Controllers
     [WeiXingActionFilter]
     public class HomeController : Controller
     {
-        public JsonResult OpenClassRoom(int iCourseID)
-        {
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(iCourseID, userInfo.fUserName);
-            ResponseBaseModel response = new ResponseBaseModel();
-            if (cr.IsBuy > 0 || cr.fTecharUserName == userInfo.fUserName)
-            {
-
-                CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
-                if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
-                {
-                    if (course.fIsPay)
-                    {
-                        response.iResult = 0;
-                    }
-                    else
-                    {
-                        decimal userAccount = UserBll.GetUserAccountAmount(cr.fCreateOpr);
-                        decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(iCourseID);
-
-                        if (classRoomFlow > userAccount)
-                        {
-                            if (cr.fTecharUserName == cr.fCreateOpr)
-                            {
-                                response.iResult = -1;
-                                response.strMsg = "该课时需要" + classRoomFlow.ToString() + "流量，账户剩余" + userAccount.ToString() + "流量。账户余额不足用，请先去购买流量";
-                            }
-                            else
-                            {
-
-                                response.iResult = -2;
-                                response.strMsg = "该课时需要" + classRoomFlow.ToString() + "流量，账户剩余" + userAccount.ToString() + "流量。账户余额不足用，请课程发布者先去购买流量";
-                            }
-                        }
-                        else
-                        {
-                            //支付流量
-                            int i = ClassRoomBll.ClassRoomCoursePay(iCourseID, userInfo.fUserName, "Web");
-                            if (i == 0)
-                            {
-                                response.iResult = 0;
-                            }
-                            else
-                            {
-                                response.iResult = -1;
-                                response.strMsg = "流量扣除失败，请重新再试！";
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    response.iResult = -1;
-                    response.strMsg = "课程已结束！";
-                }
-
-            }
-            else
-            {
-                response.iResult = -1;
-                response.strMsg = "未购买课程，请先购买再进入课堂";
-            }
-            JsonResult jr = new JsonResult();
-            jr.Data = response;
-            return jr;
-        }
-
+     
         public ActionResult Index(int iCourseID, string strRole = "Student")
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);

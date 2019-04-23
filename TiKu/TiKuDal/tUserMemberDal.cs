@@ -115,7 +115,7 @@ namespace TiKu.Dal
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
-            bufSQL.Append(@"select u.fNickName+'-'+u.fMobile as MemberName,u.fHeadImg as MemberHead,um.* from tUserMember um
+            bufSQL.Append(@"select distinct u.fNickName+'-'+u.fMobile as MemberName,u.fHeadImg as MemberHead,um.* from tUserMember um
                             left join tUser u on u.fUserName=um.fMemberUserName
                             left join tTeachValid v on v.fUserName=u.fUserName
                             left join tTeacherValidDetail vd on v.fid=vd.fTeacherValidID WHERE (1=1) and vd.fStatus='已审核' ");
@@ -153,7 +153,7 @@ namespace TiKu.Dal
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
-            bufSQL.Append(@"select u.fNickName+'-'+u.fMobile as MemberName,u.fHeadImg as MemberHead,fMemberUserName fUserName from tUserMember um
+            bufSQL.Append(@"select distinct * from (select u.fNickName+'-'+u.fMobile as MemberName,u.fHeadImg as MemberHead,fMemberUserName fUserName from tUserMember um
                             left join tUser u on u.fUserName=um.fMemberUserName
                             left join tTeachValid v on v.fUserName=u.fUserName
                             inner join tTeacherValidDetail vd on v.fid=vd.fTeacherValidID WHERE (1=1)  
@@ -162,7 +162,8 @@ namespace TiKu.Dal
                             select u.fNickName+'-'+u.fMobile as MemberName,u.fHeadImg as MemberHead,u.fUserName from tUser u 
                             left join tTeachValid v on v.fUserName=u.fUserName
                             inner join tTeacherValidDetail vd on v.fid=vd.fTeacherValidID WHERE (1=1)  
-                            AND u.fUserName=@UserName   and vd.fStatus='已审核'  AND (vd.fPharse>=@Pharse or @Pharse='')  AND (vd.fSubject=@Subject or @Subject='')  ");
+                            AND u.fUserName=@UserName   and vd.fStatus='已审核'  AND (vd.fPharse>=@Pharse or @Pharse='')  AND (vd.fSubject=@Subject or @Subject='')  
+                            )A");
 
             lstParam.Add(new DBParam("@UserName", strUserName));
             lstParam.Add(new DBParam("@Pharse", strPharse));

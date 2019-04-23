@@ -33,16 +33,28 @@
                         <div class="reservation-billing-detail">
 
 
-                            <h4>订单信息</h4>
-
+                            <h4>申请退款</h4>
+                            <label>订单编号<sup> </sup></label>
+                            <span>@Model.fBookingNo</span>
                             <label>课程名称<sup> </sup></label>
                             <span>@Model.ClassRoom.fClassRoomTitle</span>
+                            <label>购买时间<sup> </sup></label>
+                            <span>@Model.fBuyDate.ToString()</span>
                             <label>价格<sup></sup></label>
                             <span>@Model.fAmount </span>
                             <label>开课时间<sup> </sup></label>
                             <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
-
-                            <label>课程明细<sup> </sup></label>
+                            @if (Model.fIsReturn)
+                            {
+                                <label>@Model.ClassRoom.fReturnType 退 按 @Model.ClassRoom.fReturnRule<sup> </sup></label>
+                                <span>课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退</span>
+                            }
+                            else
+                            {
+                                <label>是否可退</label>
+                                <span>不可退</span>
+                            }
+                            @*<label>课程明细<sup> </sup></label>
                             @foreach (var c in Model.ClassRoom.courseList)
                             {
                                 <span>@c.fDictTitle</span>
@@ -52,8 +64,10 @@
                             }
                             <br />
                             <label>退款金额<sup>最大可退款金额 @Model.MaxReturnAmount </sup></label>
-                            <input type="number" id="txtRefundAmount" value="@Model.MaxReturnAmount" disabled="disabled" />
+                            <input type="number" id="txtRefundAmount" value="@Model.MaxReturnAmount" disabled="disabled" />*@
 
+                            <label>退款金额<sup> </sup></label>
+                            <span>@Model.MaxReturnAmount</span>
                             <label>退款原因<sup> </sup></label>
                             <input type="text" id="txtRemark" />
                             <br />
@@ -92,7 +106,7 @@
         $("#btnSubmit").attr("disabled", "disabled");
 
         $.ajax({
-            url: "/classRoom/DoSubmitBookingRefund",
+            url: "/LoginRequest/DoSubmitBookingRefund",
             data: { "strOrderNo": bookingNo, "dAmount": $("#txtRefundAmount").val().trim(), "strRemark": $("#txtRemark").val().trim() },
             type: "POST",
             dataType: "json",
@@ -100,6 +114,8 @@
                 if (rst.iResult >= 0) {
                     alert("提交成功");
                     window.location.href=document.referrer;
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
                 } else {
                     alert(rst.strMsg);
                 }

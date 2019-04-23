@@ -3,63 +3,63 @@
   ViewBag.Title = "课站";
 }
 
-<section class="section-account parallax bg-11" style=" padding-top:60px;">
-            <div class="awe-overlay"></div>
-            <div class="container">
-                <div class="login-register">
-                    <div class="text text-center">
-                        <h2>老师注册</h2>
-                         
-                        <div class="account_form">
-                        
+<section class="section-account parallax" style=" padding-top:60px; background-image:url('../content/image/jhk-1545185427332.jpg')">
+    <div class="awe-overlay"></div>
+    <div class="container">
+        <div class="login-register">
+            <div class="text text-center">
+                <h2>老师注册</h2>
 
-                            <div class="field-form">
-                                <input type="text" class="field-text" id="txtNewMobile"  onkeyup="inputMobile(this)" placeholder="请输入手机号" />
-                            </div>
-                            <div class="field-form" style=" margin-top:1px;">
-                                <span class="account-desc" style=" margin-top:1px;" >
-                                  <p style=" text-align:right; width:100%; font-size:12px;" >                                 
-                                        <a href="#" id="btnCode" onclick="DoSendCode()">发送验证码</a>
-                                  </p>
-                                </span>
-                             </div>
-                            <div class="field-form">
-                                <input type="text" class="field-text" id="txtCode" disabled="disabled" onkeyup="inputCode(this)"  placeholder="请输入验证码" />                                
-                            </div>
-                                <div class="field-form">
-                                <input type="password" class="field-text" id="txtNewPass"placeholder="请输入密码">
-                                <span class="view-pass"><i class="lotus-icon-view"></i></span>
-                                </div>
-                                 <div class="field-form">
-                                <input type="password" class="field-text" id="txtPass2"placeholder="请再次输入密码">
-                                <span class="view-pass"><i class="lotus-icon-view"></i></span>
-                                </div>
-                            <div class="field-form" >                               
-                                   
-                                  <span class="account-desc" id="bTeacherDesc" >
-                                      
-                                      <input type="checkbox" id="chkReg" /><a href="/open/KeZhanDesc" target="_blank">&nbsp;&nbsp;课站平台服务协议</a>
-                                     <input type="checkbox" id="chkTea" /><a href="/open/KeZhanTeachDesc" target="_blank">&nbsp;&nbsp;课站平台教师服务协议</a>
-                                  </span>
-                                  
-                            </div>
-                           
-                            <div class="field-form">
-                                <button class="awe-btn awe-btn-12" id="btnLogin" onclick="DoLogin()">注册</button>
-                                
-                            </div>
-                              <div class="field-form" >                              
-                                   
-                                  <span class="account-desc" id="bTeacherDesc" >
-                                      
-                                      <p><a href="/open/RegsiterLogin" >已有账号，去登录</a></p>
-                                  </span>
-                                  
-                            </div>
+                <div class="account_form">
+
+
+                    <div class="field-form">
+                        <input type="text" class="field-text" id="txtNewMobile" onkeyup="inputMobile(this)" placeholder="请输入手机号" />
+                    </div>
+                    <div class="field-form" style=" margin-top:1px;">
+                        <span class="account-desc" style=" margin-top:1px;">
+                            <p style=" text-align:right; width:100%; font-size:12px;">
+                                <a href="#" id="btnCode" onclick="DoSendCode()">发送验证码</a>
+                            </p>
+                        </span>
+                    </div>
+                    <div class="field-form">
+                        <input type="text" class="field-text" id="txtCode" disabled="disabled" onkeyup="inputCode(this)" placeholder="请输入验证码" />
+                    </div>
+                    <div class="field-form">
+                        <input type="password" class="field-text" id="txtNewPass" placeholder="请输入密码">
+                        <span class="view-pass"><i class="lotus-icon-view"></i></span>
+                    </div>
+                    <div class="field-form">
+                        <input type="password" class="field-text" id="txtPass2" placeholder="请再次输入密码">
+                        <span class="view-pass"><i class="lotus-icon-view"></i></span>
+                    </div>
+                    <div class="field-form">
+
+                        <span class="account-desc" id="bTeacherDesc">
+
+                            <input type="checkbox" id="chkReg" /><a href="/html/KeZhanDesc" target="_blank">&nbsp;&nbsp;课站平台服务协议</a>
+                            <input type="checkbox" id="chkTea" /><a href="/html/KeZhanTeachDesc" target="_blank">&nbsp;&nbsp;课站平台教师服务协议</a>
+                        </span>
+
+                    </div>
+
+                    <div class="field-form">
+                        <button class="awe-btn awe-btn-12" id="btnLogin" onclick="DoLogin()">注册</button>
+
+                    </div>
+                    <div class="field-form">
+
+                        <span class="account-desc" id="bTeacherDesc">
+
+                            <p><a href="/open/RegsiterLogin">已有账号，去登录</a></p>
+                        </span>
+
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+</section>
 <script type="text/javascript">
   var redirect_uri = "@Model.redirect_uri";
   var isNewUser = 0;
@@ -154,7 +154,7 @@
     }
 
     $.ajax({
-      url: "/open/DoSendCode",
+        url: "/Request/DoSendCode",
       data: { "strMobile": $("#txtNewMobile").val() },
       type: "POST",
       dataType: "json",
@@ -200,7 +200,7 @@
 
 
     $.ajax({
-      url: "/open/DoTeacherValidCode",
+        url: "/Request/DoTeacherValidCode",
       data: { "strMobile": $("#txtNewMobile").val(), "strCode": $("#txtCode").val(), "strPass": $("#txtNewPass").val(), "strPass2": $("#txtPass2").val() },
       type: "POST",
       dataType: "json",
