@@ -85,7 +85,7 @@
       <publishTime>01/02/2019 09:38:50</publishTime>
     </File>
     <File Include="bin/KeZhan.dll">
-      <publishTime>04/23/2019 17:39:34</publishTime>
+      <publishTime>04/24/2019 17:16:12</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.Data.Edm.resources.dll">
       <publishTime>01/02/2019 09:38:53</publishTime>
@@ -175,13 +175,13 @@
       <publishTime>01/02/2019 09:38:30</publishTime>
     </File>
     <File Include="bin/TiKuBll.dll">
-      <publishTime>04/23/2019 16:09:52</publishTime>
+      <publishTime>04/24/2019 17:16:11</publishTime>
     </File>
     <File Include="bin/TiKuDal.dll">
-      <publishTime>04/23/2019 16:09:51</publishTime>
+      <publishTime>04/24/2019 16:38:00</publishTime>
     </File>
     <File Include="bin/TiKuEntity.dll">
-      <publishTime>04/22/2019 10:50:37</publishTime>
+      <publishTime>04/24/2019 16:26:00</publishTime>
     </File>
     <File Include="bin/Trip8H.Common.dll">
       <publishTime>11/15/2013 12:58:58</publishTime>
@@ -3079,7 +3079,7 @@
       <publishTime>04/21/2019 17:25:46</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomAdd.cshtml">
-      <publishTime>04/23/2019 16:35:30</publishTime>
+      <publishTime>04/24/2019 16:37:09</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomBooking.cshtml">
       <publishTime>04/23/2019 09:29:24</publishTime>
@@ -3091,16 +3091,16 @@
       <publishTime>03/26/2019 13:30:05</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomEdit.cshtml">
-      <publishTime>04/23/2019 17:26:48</publishTime>
+      <publishTime>04/24/2019 16:37:23</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomManager.cshtml">
       <publishTime>04/21/2019 18:27:50</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomShow.cshtml">
-      <publishTime>04/23/2019 16:37:26</publishTime>
+      <publishTime>04/24/2019 12:05:57</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomTeacher.cshtml">
-      <publishTime>04/23/2019 17:27:05</publishTime>
+      <publishTime>04/24/2019 10:19:43</publishTime>
     </File>
     <File Include="Views/ClassRoom/CourseListControl.cshtml">
       <publishTime>04/22/2019 11:10:44</publishTime>
@@ -3124,7 +3124,7 @@
       <publishTime>04/03/2019 15:39:58</publishTime>
     </File>
     <File Include="Views/Home/ClassRoom.cshtml">
-      <publishTime>01/02/2019 09:42:52</publishTime>
+      <publishTime>04/24/2019 10:35:47</publishTime>
     </File>
     <File Include="Views/Home/Index - 复制.cshtml">
       <publishTime>02/26/2019 16:32:35</publishTime>
@@ -3150,17 +3150,38 @@
     <File Include="Views/Html/QAInfo.cshtml">
       <publishTime>04/17/2019 17:00:24</publishTime>
     </File>
+    <File Include="Views/Html/UpdateRole.cshtml">
+      <publishTime>04/23/2019 16:13:44</publishTime>
+    </File>
     <File Include="Views/Html/WebInfo.cshtml">
       <publishTime>04/21/2019 19:25:13</publishTime>
+    </File>
+    <File Include="Views/LoginQuery/BookingListControl.cshtml">
+      <publishTime>04/23/2019 15:36:26</publishTime>
+    </File>
+    <File Include="Views/LoginQuery/ClassRoomDescControl.cshtml">
+      <publishTime>03/26/2019 13:30:05</publishTime>
+    </File>
+    <File Include="Views/LoginQuery/CourseListControl.cshtml">
+      <publishTime>04/22/2019 11:10:44</publishTime>
+    </File>
+    <File Include="Views/LoginQuery/TeacherValid.cshtml">
+      <publishTime>04/01/2019 13:48:15</publishTime>
+    </File>
+    <File Include="Views/LoginQuery/UserAccountListControl.cshtml">
+      <publishTime>04/23/2019 13:29:04</publishTime>
+    </File>
+    <File Include="Views/LoginQuery/UserMemberListControl.cshtml">
+      <publishTime>03/28/2019 14:54:26</publishTime>
     </File>
     <File Include="Views/Manager/BookingListControl.cshtml">
       <publishTime>04/23/2019 15:36:26</publishTime>
     </File>
     <File Include="Views/Manager/BookingListManager.cshtml">
-      <publishTime>04/23/2019 17:27:33</publishTime>
+      <publishTime>04/24/2019 10:20:22</publishTime>
     </File>
     <File Include="Views/Manager/ClassRoomApplyDetail.cshtml">
-      <publishTime>04/14/2019 15:51:24</publishTime>
+      <publishTime>04/24/2019 12:06:16</publishTime>
     </File>
     <File Include="Views/Manager/ClassRoomApplyManager.cshtml">
       <publishTime>02/20/2019 10:45:41</publishTime>
@@ -3175,13 +3196,13 @@
       <publishTime>02/26/2019 15:58:41</publishTime>
     </File>
     <File Include="Views/Manager/ValidManager.cshtml">
-      <publishTime>04/23/2019 17:28:09</publishTime>
+      <publishTime>04/24/2019 10:21:09</publishTime>
     </File>
     <File Include="Views/Manager/WithDrawal.cshtml">
       <publishTime>02/26/2019 15:24:38</publishTime>
     </File>
     <File Include="Views/Message/MessageList.cshtml">
-      <publishTime>04/23/2019 16:57:37</publishTime>
+      <publishTime>04/24/2019 17:03:10</publishTime>
     </File>
     <File Include="Views/Open/About.cshtml">
       <publishTime>04/18/2019 13:33:41</publishTime>
@@ -3190,7 +3211,7 @@
       <publishTime>04/23/2019 13:13:16</publishTime>
     </File>
     <File Include="Views/Open/ClassRoomDetail.cshtml">
-      <publishTime>04/23/2019 17:04:58</publishTime>
+      <publishTime>04/24/2019 12:05:01</publishTime>
     </File>
     <File Include="Views/Open/ClassRoomK12List.cshtml">
       <publishTime>04/19/2019 17:39:18</publishTime>
@@ -3250,13 +3271,19 @@
       <publishTime>01/11/2019 15:56:09</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>04/23/2019 16:57:47</publishTime>
+      <publishTime>04/24/2019 14:37:19</publishTime>
     </File>
     <File Include="Views/Shared/_LogOnPartial.cshtml">
       <publishTime>01/02/2019 09:42:52</publishTime>
     </File>
+    <File Include="Views/Start/CreateOnLineClass.cshtml">
+      <publishTime>04/24/2019 17:15:25</publishTime>
+    </File>
     <File Include="Views/Start/MyClassRoomList.cshtml">
       <publishTime>04/23/2019 15:38:35</publishTime>
+    </File>
+    <File Include="Views/Start/OnLineClass.cshtml">
+      <publishTime>04/24/2019 15:12:23</publishTime>
     </File>
     <File Include="Views/Teacher/TeacherWithdrawalApply.cshtml">
       <publishTime>04/23/2019 16:39:27</publishTime>
@@ -3268,7 +3295,7 @@
       <publishTime>04/23/2019 15:44:00</publishTime>
     </File>
     <File Include="Views/Teacher/UserMemberList.cshtml">
-      <publishTime>04/23/2019 17:38:33</publishTime>
+      <publishTime>04/24/2019 10:21:31</publishTime>
     </File>
     <File Include="Views/Teacher/UserMemberListControl.cshtml">
       <publishTime>03/28/2019 14:54:26</publishTime>
@@ -3280,7 +3307,7 @@
       <publishTime>04/23/2019 16:41:07</publishTime>
     </File>
     <File Include="Views/Teacher/UserRefundList.cshtml">
-      <publishTime>04/23/2019 13:34:44</publishTime>
+      <publishTime>04/23/2019 17:48:48</publishTime>
     </File>
     <File Include="Views/Teacher/ValidUploadFile.cshtml">
       <publishTime>04/23/2019 16:41:15</publishTime>
@@ -3289,10 +3316,10 @@
       <publishTime>04/23/2019 15:44:58</publishTime>
     </File>
     <File Include="Views/User/BookingRefund.cshtml">
-      <publishTime>04/23/2019 17:42:05</publishTime>
+      <publishTime>04/24/2019 11:09:31</publishTime>
     </File>
     <File Include="Views/User/ClassRoomBooking.cshtml">
-      <publishTime>04/23/2019 16:41:31</publishTime>
+      <publishTime>04/24/2019 15:14:44</publishTime>
     </File>
     <File Include="Views/User/TeacherWithdrawalApply.cshtml">
       <publishTime>04/12/2019 13:59:30</publishTime>
@@ -3304,7 +3331,7 @@
       <publishTime>04/23/2019 16:13:44</publishTime>
     </File>
     <File Include="Views/User/UserAccount.cshtml">
-      <publishTime>04/23/2019 17:29:50</publishTime>
+      <publishTime>04/24/2019 15:50:43</publishTime>
     </File>
     <File Include="Views/User/UserAccountListControl.cshtml">
       <publishTime>04/23/2019 13:29:04</publishTime>

@@ -143,7 +143,7 @@
 
                                 <label>是否公开<sup>*</sup></label>
 
-                                @Html.DropDownListFor(m => m.fClassType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                                @Html.DropDownListFor(m => m.fClassType, new[] { new SelectListItem { Text = "请选择", Value = "" },
                                                                                               new SelectListItem { Text = "公开课", Value = "Public" },
                                                                                               new SelectListItem { Text = "私课", Value = "Private" }}, new { @class = "awe-select", id = "cmbClassType", onchange = "ChangeType()" })
 
@@ -194,7 +194,7 @@
 
 
                                 <label>支付类型<sup>*</sup></label>
-                                @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                                @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "" },
                                                                                               new SelectListItem { Text = "线下支付", Value = "线下支付" },
                                                                                               new SelectListItem { Text = "在线支付", Value = "在线支付" }}, new { @class = "awe-select", id = "cmbPayType", onchange = "changePayType()" })
 
@@ -346,7 +346,7 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <label>截止报名时间<sup>*</sup></label>
-                                        <span>@Model.fDeadLineDate.ToString("yyyy-MM-dd")</span>
+                                        <span>@Model.fDeadLineDate.ToString()</span>
                                     </div>
                                     <div class="col-sm-6">
                                         <label>开课时间<sup>*</sup></label>
@@ -496,8 +496,8 @@
 
 <div id="divCourse" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
     @*<h5>
-        课时信息
-    </h5>*@
+            课时信息
+        </h5>*@
 
     <p>
         <input type="hidden" id="hidCourseID" />
@@ -552,8 +552,8 @@
         <br />
         <br />
         @*<label>排序</label>
-        <br />
-        <input type="number" id="txtOrder" class="input-text form-control">*@
+            <br />
+            <input type="number" id="txtOrder" class="input-text form-control">*@
     </p>
     <button class="awe-btn awe-btn-13" onclick="SaveCurse()">保存</button>
 
@@ -833,11 +833,15 @@
                 if (rst.iResult >= 0) {
                     alert("保存成功");
                     $.ajax({
-                        url: "/Query/QueryDescList",
+                        url: "/LoginQuery/QueryDescList",
                         type: this.method,
                         data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                         success: function (msg) {
-                            $('#panelDesc').html(msg);
+                            if (msg.iResult == "-9999") {
+                                alert("请重新登录");
+                            } else {
+                                $('#panelDesc').html(msg);
+                            }
                         }
                     });
                 } else if (rst.iResult == -9999) {
@@ -858,7 +862,7 @@
         $("#txtDictTitle").val("");
         $("#txtCourseTitle").val("");
         $("#txtCourseDate1").val("");
-       // $("#txtOrder").val("");
+        // $("#txtOrder").val("");
         $("#txtDateLength").val("30");
         $("#myBGDiv").show();
         $("#divCourse").show();
@@ -867,12 +871,16 @@
     function DeleteCurse(courseID) {
         if (confirm("确认删除该节课时吗")) {
             $.ajax({
-                url: "/Query/DeleteCourse",
+                url: "/LoginQuery/DeleteCourse",
                 type: this.method,
                 data: { "iCourseID": courseID, "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
-                    $('#panelCourseEdit').html(msg);
-                    $("#myBGDiv").hide();
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#panelCourseEdit').html(msg);
+                        $("#myBGDiv").hide();
+                    }
                 }
             });
         }
@@ -885,7 +893,7 @@
         $("#txtCourseDate1").val(date);
         $("#cmbHours").val(hour);
         $("#cmbMM").val(minute);
-       // $("#txtOrder").val(order);
+        // $("#txtOrder").val(order);
         $("#txtDateLength").val(length);
         $("#myBGDiv").show();
         $("#divCourse").show();
@@ -903,10 +911,9 @@
         }
         var classDate = "";
         if ($("#txtCourseDate1").val().split("/").length == 1) {
-            classDate=$("#txtCourseDate1").val()+" " + $("#cmbHours").val() + ":" + $("#cmbMM").val();
-        } else
-        {
-            classDate=$("#txtCourseDate1").val().split("/")[2] + "-" + $("#txtCourseDate1").val().split("/")[0] + "-" + $("#txtCourseDate1").val().split("/")[1] + " " + $("#cmbHours").val() + ":" + $("#cmbMM").val();
+            classDate = $("#txtCourseDate1").val() + " " + $("#cmbHours").val() + ":" + $("#cmbMM").val();
+        } else {
+            classDate = $("#txtCourseDate1").val().split("/")[2] + "-" + $("#txtCourseDate1").val().split("/")[0] + "-" + $("#txtCourseDate1").val().split("/")[1] + " " + $("#cmbHours").val() + ":" + $("#cmbMM").val();
         }
 
         var CourseModel = {
@@ -931,11 +938,15 @@
                     $("#btnAdd").show();
                     $("#myBGDiv").hide();
                     $.ajax({
-                        url: "/Query/QueryCourseList",
+                        url: "/LoginQuery/QueryCourseList",
                         type: this.method,
                         data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                         success: function (msg) {
-                            $('#panelCourseEdit').html(msg);
+                            if (msg.iResult == "-9999") {
+                                alert("请重新登录");
+                            } else {
+                                $('#panelCourseEdit').html(msg);
+                            }
                         }
                     });
                 } else if (rst.iResult == -9999) {
@@ -996,11 +1007,15 @@
             $("#panelDesc").show();
 
             $.ajax({
-                url: "/Query/QueryDescList",
+                url: "/LoginQuery/QueryDescList",
                 type: this.method,
                 data: { "strClassRoomCode": ClassRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
-                    $('#panelDesc').html(msg);
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#panelDesc').html(msg);
+                    }
                 },
                 fail: function (err) {
                     alert(err)
@@ -1012,11 +1027,15 @@
 
 
             $.ajax({
-                url: "/Query/QueryCourseList",
+                url: "/LoginQuery/QueryCourseList",
                 type: this.method,
                 data: { "strClassRoomCode": ClassRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
-                    $('#panelCourseEdit').html(msg);
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#panelCourseEdit').html(msg);
+                    }
                 }
             });
 
@@ -1055,11 +1074,15 @@
 
     function GetBookingList(mobile, status, begindate, enddate) {
         $.ajax({
-            url: "/Query/QueryBookingList",
+            url: "/LoginQuery/QueryBookingList",
             type: this.method,
             data: { "strClassRoomCode": ClassRoomCode, "strMobile": mobile, "strStatus": status, "beginDate": begindate, "endDate": enddate },
             success: function (msg) {
-                $('#panelBooking').html(msg);
+                if (msg.iResult == "-9999") {
+                    alert("请重新登录");
+                } else {
+                    $('#panelBooking').html(msg);
+                }
             }
         });
     }
@@ -1155,11 +1178,15 @@
                 if (rst.iResult >= 0) {
                     alert("修改成功");
                     $.ajax({
-                        url: "/Query/QueryBookingList",
+                        url: "/LoginQuery/QueryBookingList",
                         type: this.method,
                         data: { "strClassRoomCode": ClassRoomCode },
                         success: function (msg) {
-                            $('#panelBooking').html(msg);
+                            if (msg.iResult == "-9999") {
+                                alert("请重新登录");
+                            } else {
+                                $('#panelBooking').html(msg);
+                            }
                         }
                     });
                 } else if (rst.iResult == -9999) {

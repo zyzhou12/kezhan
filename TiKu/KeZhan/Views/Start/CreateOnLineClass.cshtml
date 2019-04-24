@@ -1,0 +1,161 @@
+﻿@model TiKuBll.Model.ClassRoomModel
+@{
+    ViewBag.Title = "创建在线课堂";
+}
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+                        <li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">创建课堂</a></li>
+
+                        <li onclick="showPanel('list')"><a href="#" style=" width:100%;" data-toggle="tab">历史课堂</a></li>
+                        <li ><a href="/Start/OnLineClass" style=" width:100%;" >进入课堂</a></li>
+                    </ul>
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+                        <p class="alert alert-danger" id="pMsg" style=" display:none">
+
+                        </p>
+                        <div class="reservation-billing-detail" id="panelData">
+                            <p>
+
+
+                            </p>
+
+
+                            <label>课程名称<sup>*</sup></label>
+                            <input type="text" id="txtDictTitle" value="@Model.fClassRoomTitle" class="input-text">
+
+
+                            <label>课程时长</label>
+                            <select style="width:100%; height:42px; " id="txtDateLength">
+                                <option value="10">10</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                                <option value="60">60</option>
+                                <option value="90">90</option>
+                                <option value="120">120</option>
+                                <option value="180">180</option>
+                            </select>
+                            <button class="awe-btn awe-btn-13" onclick="SaveClassCourse()">创建课堂</button>
+
+
+                        </div>
+                        <div class="reservation-billing-detail" id="panelList" style="display:none;">
+
+                            <div class="reservation-room_package">
+                              
+                                <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+
+                                    @if (Model.courseList != null)
+                                    {
+                                                <!-- ITEM PACKAGE -->
+                                        foreach (var course in Model.courseList)
+                                        {
+                                            <div class="reservation-package_item">
+                                               
+                                                <div class="reservation-package_text">
+
+                                                    <h4><a href="#">@course.fDictTitle</a></h4>
+                                                    <p>
+                                                       
+                                                        <span>上课时间：@course.fClassDate.ToString()</span>
+                                                        <span>时长：@course.fClassDateLength</span>
+                                                    </p>
+
+                                                    <div class="reservation-package_book-price">
+                                                        @*<a href="#" class="awe-btn awe-btn-default">进入课堂</a>*@
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        }
+
+
+                                    }
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- END / CONTENT -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+    var classRoomCode = '@Model.fClassRoomCode';
+    var classDate = '@DateTime.Now.AddMinutes(10).ToString()';
+
+    function showPanel(div) {
+
+        if (div == "info") {
+            $(".reservation-billing-detail").hide();
+            $("#panelData").show();
+        } else if (div == "list") {
+            $(".reservation-billing-detail").hide();
+            $("#panelList").show();
+
+        }
+    }
+
+
+    function SaveClassCourse() {
+        $(".errorMsg").remove();
+
+        if ($("#txtDictTitle").val().trim() == "") {
+            $("#txtDictTitle").after("<span class=\"errorMsg\">课程名称不能为空</span>");
+            $("#txtDictTitle").focus();
+            return;
+        }
+
+        var CourseModel = {
+            "fID": 0,
+            "fClassType": "OnLine",
+            "fClassRoomCode": classRoomCode,
+            "fDictTitle": $("#txtDictTitle").val(),
+            "fCourseTitle": $("#txtDictTitle").val(),
+            "fClassDate": classDate,
+            "fClassDateLength": $("#txtDateLength").val(),
+            "fOrder": "0"
+        }
+        $.ajax({
+            url: "/LoginRequest/DoSaveClassRoomCourse",
+            data: CourseModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    window.location.href = "/home/index?iCourseID=" + rst.iResult + "&strRole=Teacher";
+
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+</script>

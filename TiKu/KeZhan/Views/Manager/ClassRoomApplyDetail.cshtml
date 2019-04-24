@@ -26,7 +26,17 @@
                                     <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherHead?x-oss-process=style/head" alt="">
                                 </div>
                                 <h2>@Model.TeacherName</h2>
-                                <p>@Model.TeacherDesc</p>
+                                <p style="word-wrap:break-word;">
+                                    @if (Model.validList != null)
+                                    {
+                                        <span>证书编号：</span>
+                                        foreach (var valid in Model.validList)
+                                        {
+                                            <label>@valid.fCertNo</label>
+                                        }
+                                    }
+                                    <span>@Model.TeacherDesc</span>
+                                </p>
                                 <span></span>
                             </div>
                         </div>

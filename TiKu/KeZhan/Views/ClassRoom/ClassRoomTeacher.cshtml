@@ -186,11 +186,15 @@
             $("#panelBooking").show();
 
             $.ajax({
-                url: "/Query/QueryBookingList",
+                url: "/LoginQuery/QueryBookingList",
                 type: this.method,
                 data: { "strClassRoomCode": ClassRoomCode },
                 success: function (msg) {
-                    $('#panelBooking').html(msg);
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#panelBooking').html(msg);
+                    }
                 }
             });
         } else if (div == "course") {
@@ -243,11 +247,15 @@
                 if (rst.iResult >= 0) {
                     alert("修改成功");
                     $.ajax({
-                        url: "/Query/QueryBookingList",
+                        url: "/LoginQuery/QueryBookingList",
                         type: this.method,
                         data: { "strClassRoomCode": ClassRoomCode },
                         success: function (msg) {
-                            $('#panelBooking').html(msg);
+                            if (msg.iResult == "-9999") {
+                                alert("请重新登录");
+                            } else {
+                                $('#panelBooking').html(msg);
+                            }
                         }
                     });
                 } else if (rst.iResult == -9999) {

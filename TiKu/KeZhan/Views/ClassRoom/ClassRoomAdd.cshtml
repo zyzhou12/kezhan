@@ -74,7 +74,7 @@
 
                             <label>是否公开<sup>*</sup></label>
 
-                            @Html.DropDownListFor(m => m.fClassType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                            @Html.DropDownListFor(m => m.fClassType, new[] { new SelectListItem { Text = "请选择", Value = "" },
                                                                                               new SelectListItem { Text = "公开课", Value = "Public" },
                                                                                               new SelectListItem { Text = "私课", Value = "Private" }}, new { @class = "awe-select", id = "cmbClassType", onchange = "ChangeType()" })
 
@@ -127,7 +127,7 @@
 
 
                             <label>支付类型<sup>*</sup></label>
-                            @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "请选择" },
+                            @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "" },
                                                                                               new SelectListItem { Text = "线下支付", Value = "线下支付" },
                                                                                               new SelectListItem { Text = "在线支付", Value = "在线支付" }}, new { @class = "awe-select", id = "cmbPayType", onchange = "changePayType()" })
 
@@ -308,6 +308,11 @@
         //    $("#txtDeadLineDate").focus();
         //    return;
         //}
+        if ($("#cmbPayType").val().trim() == "") {
+            $("#cmbPayType").after("<span class=\"errorMsg\">请选择支付类型</span>");
+            $("#cmbPayType").focus();
+            return;
+        }
         if ($("#txtMaxNumber").val().trim() == "") {
             $("#txtMaxNumber").after("<span class=\"errorMsg\">请输入最大人数</span>");
             $("#txtMaxNumber").focus();

@@ -73,6 +73,7 @@
     <Compile Include="tGradeEntity.cs" />
     <Compile Include="tGroupEntity.cs" />
     <Compile Include="tGroupUserInfoEntity.cs" />
+    <Compile Include="tGroupUserJoinHistoryEntity.cs" />
     <Compile Include="tHistoryEntity.cs" />
     <Compile Include="tKnowLedgeBasicEntity.cs" />
     <Compile Include="tKonwLedgeLevelEntity.cs" />

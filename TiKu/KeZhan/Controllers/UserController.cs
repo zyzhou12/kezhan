@@ -180,12 +180,6 @@ namespace KeZhan.Controllers
 
 
 
-        public ActionResult UpdateRole()
-        {
-            return View();
-        }
-
-
 
 
         public ActionResult UserAccount()

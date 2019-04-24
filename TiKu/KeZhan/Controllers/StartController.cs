@@ -63,6 +63,16 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
+        public ActionResult CreateOnLineClass()
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ClassRoomModel model= ClassRoomBll.GettClassRoomByOnLine(userInfo.fUserName);
+            return View(model);
+        }
 
+        public ActionResult OnLineClass()
+        {
+            return View();
+        }
     }
 }

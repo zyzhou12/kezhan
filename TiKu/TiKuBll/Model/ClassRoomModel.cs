@@ -48,6 +48,7 @@ namespace TiKuBll.Model
     public System.String showType { get; set; }
     public List<DescModel> descList { get; set; }
     public List<CourseModel> courseList { get; set; }
+    public List<TeacherValidDetailModel> validList { get; set; }
 
     public ClassRoomAccountModel account { get; set; }
   }

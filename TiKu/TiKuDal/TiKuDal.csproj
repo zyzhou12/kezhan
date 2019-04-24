@@ -79,6 +79,7 @@
     <Compile Include="tGradeDal.cs" />
     <Compile Include="tGroupDal.cs" />
     <Compile Include="tGroupUserInfoDal.cs" />
+    <Compile Include="tGroupUserJoinHistoryDal.cs" />
     <Compile Include="tHistoryDal.cs" />
     <Compile Include="tKnowLedgeBasicDal.cs" />
     <Compile Include="tKonwLedgeLevelDal.cs" />

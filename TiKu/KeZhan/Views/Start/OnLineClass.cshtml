@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "在线课堂";
+}
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+                        <li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">在线课堂</a></li>
+
+                        @*<li onclick="showPanel('list')"><a href="#" style=" width:100%;" data-toggle="tab">列表</a></li>*@
+                    </ul>
+
+                </div>
+
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+                        <p class="alert alert-danger" id="pMsg" style=" display:none">
+
+                        </p>
+                        <div class="reservation-billing-detail" id="panelData">
+
+
+
+                            <label>课堂号<sup>*</sup></label>
+                            <input type="number" maxlength="12" id="txtCourseNo" value="" placeholder="请输入老师提供的课堂号" class="input-text">
+
+
+
+                            <button class="awe-btn awe-btn-13" onclick="JoinClass()">进入课堂</button>
+
+
+                        </div>
+                        <div class="reservation-billing-detail" id="panelQA" style="display:none;">
+                            <span style="font-size:14px; font-weight:bold;">课程发布者</span>
+                            <br />新建课程的老师就是课程发布者，课程发布者也是在线支付课程的收款人和所设课程上课费用的支付人
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                授课老师
+                            </span>
+                            <br />课程发布者可以选择其他合作老师作为本课程的授课老师，授课老师可以邀请平台注册老师成为自己的合作老师
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                课程一级分类、课程二级分类、课程三级分类
+                            </span>
+                            <br />课程分类是课站平台课程的多级搜索条件
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                私课与公开课
+                            </span>
+                            <br />私课是在课站平台不能搜索的课程，用于老师建议非公开的课程，通常使用非公开渠道推广课程，包括朋友圈和微信群等
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                学科或知识类
+                            </span>
+                            <br />学科或知识类主要分为K12学科、素质与拓展、职业与技能，按照国家规定，K12学科授课必须有教师证，课站平台对于公开课的K12学科课程要求有相应学科的教师证，私课都不限制，只要注册成课站平台老师。学科和知识类，也是公开课程的二级分类搜索条件。
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                支付类型
+                            </span>
+                            <br />无论私课还是公开课，都支持线上支付和线下支付，线上支付支持微信和支付宝
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                退款类型
+                            </span>
+                            <br />课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退；
+                            <br /><br /><span style="font-size:14px; font-weight:bold;">
+                                退款规则
+                            </span>
+                            <br />按课时，是指退款按退款时未开始课时数与总课时数的比率退款；按分钟，是指按未开始课时总时长余课程总时长的比率退款
+                            <br />
+                        </div>
+                    </div>
+                    <!-- END / CONTENT -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script type="text/javascript">
+
+
+    function showPanel(div) {
+
+        if (div == "info") {
+            $(".reservation-billing-detail").hide();
+            $("#panelData").show();
+        } else if (div == "list") {
+            $(".reservation-billing-detail").hide();
+            $("#panelQA").show();
+
+        }
+    }
+
+
+    function JoinClass() {
+
+        if ($("#txtCourseNo").val().trim() == "") {
+            $("#txtCourseNo").after("<span class=\"errorMsg\">请输入老师提供的课堂号</span>");
+            $("#txtCourseNo").focus();
+            return;
+        }
+        $.ajax({
+            url: "/LoginRequest/CheckOnlineClass",
+            data: { "strCourseNo": $("#txtCourseNo").val() },
+            dataType: "json",
+            success: function (rst) {
+                
+                if (rst.iResult > 0) {
+                    window.location.href = "/home/index?iCourseID=" + rst.iResult;
+
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+
+    }
+
+</script>

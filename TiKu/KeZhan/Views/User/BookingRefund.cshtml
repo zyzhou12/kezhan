@@ -56,19 +56,20 @@
                                 <span>不可退</span>
                             }
                             @*<label>课程明细<sup> </sup></label>
-                            @foreach (var c in Model.ClassRoom.courseList)
-                            {
-                                <span>@c.fDictTitle</span>
-                                <span>@c.fCourseTitle</span>
-                                <span>@c.fClassDate.ToString()</span>
-                                <br />
-                            }
-                            <br />
-                            <label>退款金额<sup>最大可退款金额 @Model.MaxReturnAmount </sup></label>
-                            <input type="number" id="txtRefundAmount" value="@Model.MaxReturnAmount" disabled="disabled" />*@
+    @foreach (var c in Model.ClassRoom.courseList)
+    {
+        <span>@c.fDictTitle</span>
+        <span>@c.fCourseTitle</span>
+        <span>@c.fClassDate.ToString()</span>
+        <br />
+    }
+    <br />
+    <label>退款金额<sup>最大可退款金额 @Model.MaxReturnAmount </sup></label>
+    <input type="number" id="txtRefundAmount"  class="input-text"  value="@Model.MaxReturnAmount" disabled="disabled" />*@
 
                             <label>退款金额<sup> </sup></label>
                             <span>@Model.MaxReturnAmount</span>
+                            <input type="hidden" id="txtRefundAmount" value="@Model.MaxReturnAmount" />
                             <label>退款原因<sup> </sup></label>
                             <input type="text" id="txtRemark" class="input-text" placeholder="请输入退课原因" />
                             <br />
@@ -95,6 +96,9 @@
     {
         if($("#txtRefundAmount").val().trim()==""){
             alert("退款金额不能为空");
+            return;
+        } else if (parseFloat($("#txtRefundAmount").val()) <=0) {
+            alert("退款金额必须大于0");
             return;
         }else if($("#txtRemark").val().trim()==""){
             alert("退款原因不能为空");

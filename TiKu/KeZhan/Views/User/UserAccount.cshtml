@@ -21,12 +21,12 @@
 
                             <div class="check_availability-field">
                                 <label>开始日期</label>
-                                <input type="text" id="txtBeginDate" class="awe-calendar awe-input" placeholder="开始日期">
+                                <input type="text" id="txtBeginDate" class="awe-calendar awe-input" value="@DateTime.Now.AddDays(-30).ToShortDateString()" placeholder="开始日期">
                             </div>
 
                             <div class="check_availability-field">
                                 <label>结束日期</label>
-                                <input type="text" id="txtEndDate" class="awe-calendar awe-input to" placeholder="结束日期">
+                                <input type="text" id="txtEndDate" class="awe-calendar awe-input" value="@DateTime.Now.ToShortDateString()" placeholder="结束日期">
                             </div>
 
 
@@ -75,7 +75,7 @@
 
     $(document).ready(function () {
 
-        GetAccountList();
+      //  GetAccountList();
     });
 
 
@@ -92,11 +92,15 @@
         }
 
         $.ajax({
-            url: "/Query/QueryUserAccount",
+            url: "/LoginQuery/QueryUserAccount",
             type: this.method,
             data: { "strTradingType": TradingType, "strSystem": "Web", "strType": Type, "beginDate": beginDate, "endDate": endDate },
             success: function (msg) {
-                $('#accountList').html(msg);
+                if (msg.iResult == "-9999") {
+                    alert("请重新登录");
+                } else {
+                    $('#accountList').html(msg);
+                }
             }
         });
     }

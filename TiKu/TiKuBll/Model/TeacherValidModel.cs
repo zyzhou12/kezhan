@@ -45,6 +45,8 @@ namespace TiKuBll.Model
       public System.DateTime fUploadDate { get; set; }
       public System.String fPharse { get; set; }
       public System.String fSubject { get; set; }
+      public System.String fCertNo { get; set; }
+      public System.DateTime fEffectDate { get; set; }
 
       public System.String fValidUser { get; set; }
       public System.DateTime fValidDate { get; set; }

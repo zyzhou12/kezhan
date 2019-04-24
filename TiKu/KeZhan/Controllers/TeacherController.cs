@@ -42,7 +42,7 @@ namespace KeZhan.Controllers
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             UserRefundListModel model = BookingBll.GetBookingRefundList(strUserName, strStatus, userInfo.fUserName);
-
+            model.iStatus = strStatus;
             return View(model);
         }
 

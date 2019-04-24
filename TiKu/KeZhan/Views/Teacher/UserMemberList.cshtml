@@ -106,22 +106,22 @@
             $(".reservation-billing-detail").hide();
             $("#panelList").show();
             $.ajax({
-                url: "/Query/QueryMemberList",
+                url: "/LoginQuery/QueryMemberList",
                 type: this.method,
                 data: {},
                 success: function (msg) {
-                    //if(msg.iResult=="undefined"){
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    }else
+                    {
                         $('#panelList').html(msg);
-                    //}
+                    }
                 }
             });
 
         } else if (div == "add") {
             $(".reservation-billing-detail").hide();
             $("#panelAdd").show();
-
-
-
         } 
     }
 

@@ -11,7 +11,7 @@ using TiKu.Bll;
 
 namespace KeZhan.Filters
 {
-  public class TeacherActionFilter : ActionFilterAttribute
+  public class LoginActionFilter : ActionFilterAttribute
   {
     public override void OnActionExecuting(ActionExecutingContext filterContext)
     {

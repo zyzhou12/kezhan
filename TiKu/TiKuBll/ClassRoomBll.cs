@@ -95,7 +95,63 @@ namespace TiKuBll
             return listModel;
         }
 
+        public static ClassRoomModel GettClassRoomByOnLine(string strUserName)
+        {
+            ClassRoomModel model = new ClassRoomModel();
+            tClassRoomEntity entity = tClassRoomDal.GettClassRoomByOnLine(strUserName);
+            if (entity != null)
+            {
+                model.fID = entity.fID;
+                model.fBasePrice = entity.fBasePrice;
+                model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassType = entity.fClassType;
+                model.fClassRoomDate = entity.fClassRoomDate;
+                model.fClassRoomTitle = entity.fClassRoomTitle;
+                model.fCoverImg = entity.fCoverImg;
+                model.fDeadLineDate = entity.fDeadLineDate;
+                model.fDesc = entity.fDesc;
+                model.fGrade = entity.fGrade;
+                model.fInfo = entity.fInfo;
+                model.fIsRecord = entity.fIsRecord;
+                model.fIsReturn = entity.fIsReturn;
+                model.fReturnType = entity.fReturnType;
+                model.fReturnRule = entity.fReturnRule;
+                model.fKnowLedge = entity.fKnowLedge;
+                model.fMaxNumber = entity.fMaxNumber;
+                model.fPayType = entity.fPayType;
+                model.fPharse = entity.fPharse;
+                model.fPrice = entity.fPrice;
+                model.fStatus = entity.fStatus;
+                model.fSubject = entity.fSubject;
+                model.fTecharUserName = entity.fTecharUserName;
+                model.fCreateOpr = entity.fCreateOpr;
 
+                List<tCourseEntity> courseList = tCourseDal.GetCourseListByClassRoomCode(entity.fClassRoomCode);
+                List<CourseModel> courseModelList = new List<CourseModel>();
+                foreach (tCourseEntity ce in courseList)
+                {
+                    CourseModel cm = new CourseModel();
+                    cm.fAuthor = ce.fAuthor;
+                    cm.fClassDate = ce.fClassDate;
+                    cm.fClassDateLength = ce.fClassDateLength;
+                    cm.fClassRoomCode = ce.fClassRoomCode;
+                    cm.fClassType = ce.fClassType;
+                    cm.fCourseTitle = ce.fCourseTitle;
+                    cm.fDictTitle = ce.fDictTitle;
+                    cm.fFileSize = ce.fFileSize;
+                    cm.fFileType = ce.fFileType;
+                    cm.fID = ce.fID;
+                    cm.fOrder = ce.fOrder;
+                    cm.fResourceUrl = ce.fResourceUrl;
+                    cm.fSource = ce.fSource;
+                    cm.fUploadDate = ce.fUploadDate;
+                    cm.fUploadOpr = ce.fUploadOpr;
+                    courseModelList.Add(cm);
+                }
+                model.courseList = courseModelList;
+            }
+            return model;
+        }
         public static ClassRoomModel GetClassRoomByCode(string strClassRoomCode, string strUserName)
         {
             ClassRoomModel model = new ClassRoomModel();
@@ -163,6 +219,9 @@ namespace TiKuBll
 
             List<ClassRoomAccountModel> accountList = PubFun.DataTableToObjects<ClassRoomAccountModel>(dsRst.Tables[3]);
 
+
+            List<TeacherValidDetailModel> validList = PubFun.DataTableToObjects<TeacherValidDetailModel>(dsRst.Tables[4]);
+
             ClassRoomModel model = new ClassRoomModel();
             if (modelList.Count > 0)
             {
@@ -174,6 +233,7 @@ namespace TiKuBll
             }
             model.descList = descList;
             model.courseList = courseList;
+            model.validList = validList;
 
             return model;
         }
@@ -198,25 +258,28 @@ namespace TiKuBll
         {
             tCourseEntity entity = tCourseDal.GettCourse(iCourseId);
             CourseModel model = new CourseModel();
-            model.fAuthor = entity.fAuthor;
-            model.fClassDate = entity.fClassDate;
-            model.fClassDateLength = entity.fClassDateLength;
-            model.fClassRoomCode = entity.fClassRoomCode;
-            model.fClassType = entity.fClassType;
-            model.fClassType = entity.fClassType;
-            model.fCourseTitle = entity.fCourseTitle;
-            model.fDictTitle = entity.fDictTitle;
-            model.fFileCoverUrl = entity.fFileCoverUrl;
-            model.fFileSize = entity.fFileSize;
-            model.fFileType = entity.fFileType;
-            model.fID = entity.fID;
-            model.fOrder = entity.fOrder;
-            model.fResourceUrl = entity.fResourceUrl;
-            model.fSource = entity.fSource;
-            model.fStatus = entity.fStatus;
-            model.fIsPay = entity.fIsPay;
-            model.fUploadDate = entity.fUploadDate;
-            model.fUploadOpr = entity.fUploadOpr;
+            if (entity != null)
+            {
+                model.fAuthor = entity.fAuthor;
+                model.fClassDate = entity.fClassDate;
+                model.fClassDateLength = entity.fClassDateLength;
+                model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassType = entity.fClassType;
+                model.fClassType = entity.fClassType;
+                model.fCourseTitle = entity.fCourseTitle;
+                model.fDictTitle = entity.fDictTitle;
+                model.fFileCoverUrl = entity.fFileCoverUrl;
+                model.fFileSize = entity.fFileSize;
+                model.fFileType = entity.fFileType;
+                model.fID = entity.fID;
+                model.fOrder = entity.fOrder;
+                model.fResourceUrl = entity.fResourceUrl;
+                model.fSource = entity.fSource;
+                model.fStatus = entity.fStatus;
+                model.fIsPay = entity.fIsPay;
+                model.fUploadDate = entity.fUploadDate;
+                model.fUploadOpr = entity.fUploadOpr;
+            }
             return model;
         }
 

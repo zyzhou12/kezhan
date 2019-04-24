@@ -43,16 +43,16 @@
                                                 {
                                                     <h2 class="comment-subject" style="font-weight:normal" onclick="showDetail(@msg.fID,@msg.fStatus)">@msg.fTitle</h2>
                                                 }
-                                                
+
                                                 <p id="pdetail-@msg.fID" style="display:none;">@msg.fContent</p>
                                                 <span class="comment-meta">
                                                     <a href="#"></a> @msg.fCreateDate.ToString()
                                                 </span>
                                                 <div class="action">
-                                                    @if (msg.fStatus == 0 && msg.fType.Trim() == "Invite")
+                                                    @if (msg.fStatus != 2 && msg.fType.Trim() == "Invite")
                                                     {
                                                         <a href="#" class="awe-btn awe-btn-14" onclick="UserInviteAgree(@msg.fTypeID)">接受邀请</a>
-    <a href="#" class="awe-btn awe-btn-14" onclick="UserInviteRefused(@msg.fTypeID)">拒绝邀请</a>
+                                                        <a href="#" class="awe-btn awe-btn-14" onclick="UserInviteRefused(@msg.fTypeID)">拒绝邀请</a>
                                                     }
                                                 </div>
                                             </div>
@@ -65,37 +65,37 @@
 
                         @*<div class="reservation-billing-detail" id="panelMemberList">
 
-                            @if (Model.messageList != null)
-                            {
-                                foreach (var msg in Model.messageList)
+                                @if (Model.messageList != null)
                                 {
-                                    <div class="reservation-package_item" title="@msg.fStatus">
-                                     
+                                    foreach (var msg in Model.messageList)
+                                    {
+                                        <div class="reservation-package_item" title="@msg.fStatus">
 
-                                        <div class="reservation-package_text">
 
-                                            <h4><a href="#">@msg.fTitle</a></h4>
-                                            <p>
-                                                <span>@msg.fContent</span>
-                                            </p>
+                                            <div class="reservation-package_text">
 
-                                            <div class="reservation-package_book-price">
+                                                <h4><a href="#">@msg.fTitle</a></h4>
+                                                <p>
+                                                    <span>@msg.fContent</span>
+                                                </p>
 
-                                                @if (msg.fStatus == 0 && msg.fType.Trim() == "Invite")
-                                                {
-                                                    <button class="awe-btn awe-btn-13" onclick="UserInviteAgree(@msg.fTypeID)">接受邀请</button>
-                                                    <button class="awe-btn awe-btn-12" onclick="UserInviteRefused(@msg.fTypeID)">拒绝邀请</button>
-                                                }
+                                                <div class="reservation-package_book-price">
+
+                                                    @if (msg.fStatus == 0 && msg.fType.Trim() == "Invite")
+                                                    {
+                                                        <button class="awe-btn awe-btn-13" onclick="UserInviteAgree(@msg.fTypeID)">接受邀请</button>
+                                                        <button class="awe-btn awe-btn-12" onclick="UserInviteRefused(@msg.fTypeID)">拒绝邀请</button>
+                                                    }
+                                                </div>
                                             </div>
-                                        </div>
 
-                                    </div>
+                                        </div>
+                                    }
+
+
                                 }
 
-
-                            }
-
-                        </div>*@
+                            </div>*@
 
                     </div>
 
@@ -109,16 +109,15 @@
 </section>
 
 <script type="text/javascript">
-    function showDetail(id,status)
-    {
-        $("#pdetail-"+id).show();
-        if(status==0){
+    function showDetail(id, status) {
+        $("#pdetail-" + id).show();
+        if (status == 0) {
             $.ajax({
                 url: "/LoginRequest/MessageLook",
                 type: this.method,
                 data: { "iMessageID": id },
                 success: function (rst) {
-               
+
 
                 }
             });

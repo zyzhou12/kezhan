@@ -34,5 +34,13 @@ namespace KeZhan.Controllers
             return View();
         }
 
+
+
+        public ActionResult UpdateRole()
+        {
+            return View();
+        }
+
+
     }
 }

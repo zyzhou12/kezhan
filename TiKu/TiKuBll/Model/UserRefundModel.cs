@@ -30,6 +30,7 @@ namespace TiKuBll.Model
 
     public class UserRefundListModel
     {
+        public string iStatus { get; set; }
         public List<UserRefundModel> refundList { get; set; }
     }
 }

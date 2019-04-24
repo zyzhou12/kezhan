@@ -79,7 +79,7 @@ namespace TiKu.Dal
     public static tBookingEntity GettBooking(string strUserName,string strType,string strCode,string strStatus)
     {
         tBookingEntity rst = null;
-        string strSQL = "SELECT * FROM tBooking WHERE fStatus=@Status and fUserName=@UserName and fType=@Type and fTypeCode=@TypeCode";
+        string strSQL = "SELECT * FROM tBooking WHERE (fStatus=@Status or isnull(@Status,'')='')  and fUserName=@UserName and fType=@Type and fTypeCode=@TypeCode order by fCreateDate desc";
         List<DbParameter> lstParam = new List<DbParameter>();
         lstParam.Add(new DBParam("@Status", strStatus));
         lstParam.Add(new DBParam("@UserName", strUserName));

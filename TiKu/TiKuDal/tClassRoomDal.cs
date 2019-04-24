@@ -96,6 +96,26 @@ namespace TiKu.Dal
       return rst;
     }
 
+    public static tClassRoomEntity GettClassRoomByOnLine(string strUserName)
+    {
+        tClassRoomEntity rst = null;
+        string strSQL = "SELECT * FROM tClassRoom WHERE fClassType='OnLine'";
+        List<DbParameter> lstParam = new List<DbParameter>();
+    
+        if (!string.IsNullOrEmpty(strUserName))
+        {
+            strSQL += " and fTecharUserName=@UserName";
+            lstParam.Add(new DBParam("@UserName", strUserName));
+        }
+        DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
+        if (dt.Rows.Count > 0)
+        {
+            rst = new tClassRoomEntity();
+            Trip8H.Common.PubFun.DataRowToObject(dt.Rows[0], rst);
+        }
+        return rst;
+    }
+
     public static List<tClassRoomEntity> GettClassRoomListByTeacher(string strTeacher, string strStatus, string strPayType, string strType)
     {
       StringBuilder bufSQL = new StringBuilder();
@@ -273,7 +293,7 @@ left join tUser u on u.fUserName=cr.fTecharUserName
 
         bufSQL.Append(@"select isnull(b.fID,0) IsBuy,cr.* from tCourse c
                         left join tClassRoom cr on cr.fClassRoomCode=c.fClassRoomCode
-                        left join tbooking b on b.fType='ClassRoom' and b.fIsPay=1 and b.fStatus='已支付' and b.fTypeCode=c.fClassRoomCode and fUserName=@UserName
+                        left join tbooking b on b.fType='ClassRoom' and b.fIsPay=1 and b.fStatus in ('已支付','已驳回') and b.fTypeCode=c.fClassRoomCode and fUserName=@UserName
                         where c.fId=@CourseID ");
         lstParam.Add(new DBParam("@CourseID", iCourseID));
         lstParam.Add(new DBParam("@UserName", strUserName));

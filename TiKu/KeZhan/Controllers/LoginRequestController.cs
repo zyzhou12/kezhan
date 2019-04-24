@@ -14,11 +14,11 @@ using TiKuBll.Model;
 
 namespace KeZhan.Controllers
 {
-    [TeacherActionFilter]
+    [LoginActionFilter]
     public class LoginRequestController : Controller
     {
 
-      
+
 
         #region ClassRoom
         [HttpPost]
@@ -117,7 +117,6 @@ namespace KeZhan.Controllers
                 response.iResult = -1;
                 response.strMsg = "请选择支付类型";
             }
-
             else
             {
                 // model.fGrade = "";
@@ -293,7 +292,7 @@ namespace KeZhan.Controllers
                 BookingListModel list = BookingBll.GetBookingList(classRoom.fTecharUserName, strClassRoomCode, null, null, null, null);
                 if (classRoom.fMaxNumber > list.list.Where(m => m.fStatus == "已支付" || m.fStatus == "已驳回").ToList().Count)
                 {
-                    response.strMsg = BookingBll.SubmitBooking(userInfo.fUserName, "ClassRoom", strClassRoomCode, classRoom.fPrice, classRoom.fIsReturn, "Web");
+                    response.iResult = 0;
                 }
                 else
                 {
@@ -314,6 +313,57 @@ namespace KeZhan.Controllers
             else
             {
                 response.iResult = 0;
+            }
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+        [HttpPost]
+        public JsonResult DoSubmitBooking(string strClassRoomCode)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            BookingModel booking = BookingBll.GettBooking(userInfo.fUserName, "ClassRoom", strClassRoomCode, "");
+            if (booking == null)
+            {
+
+                ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, null);
+                BookingListModel list = BookingBll.GetBookingList(classRoom.fTecharUserName, strClassRoomCode, null, null, null, null);
+                if (classRoom.fMaxNumber > list.list.Where(m => m.fStatus == "已支付" || m.fStatus == "已驳回").ToList().Count)
+                {
+                    response.strMsg = BookingBll.SubmitBooking(userInfo.fUserName, "ClassRoom", strClassRoomCode, classRoom.fPrice, classRoom.fIsReturn, "Web");
+                }
+                else
+                {
+                    response.strMsg = "课程已达到最大报名人数，请选择其他课程";
+                    response.iResult = -1;
+                }
+            }
+            else if (booking.fStatus == "提交")
+            {
+                response.strMsg = booking.fBookingNo;
+                response.iResult = 0;
+            }
+            else if (booking.fStatus == "已支付")
+            {
+                response.strMsg = "不能重复购买";
+                response.iResult = -1;
+            }
+            else
+            {
+                ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, null);
+                BookingListModel list = BookingBll.GetBookingList(classRoom.fTecharUserName, strClassRoomCode, null, null, null, null);
+                if (classRoom.fMaxNumber > list.list.Where(m => m.fStatus == "已支付" || m.fStatus == "已驳回").ToList().Count)
+                {
+                    response.iResult = 0;
+                    response.strMsg = BookingBll.SubmitBooking(userInfo.fUserName, "ClassRoom", strClassRoomCode, classRoom.fPrice, classRoom.fIsReturn, "Web");
+                }
+                else
+                {
+                    response.strMsg = "课程已达到最大报名人数，请选择其他课程";
+                    response.iResult = -1;
+                }
             }
 
             JsonResult jr = new JsonResult();
@@ -398,7 +448,7 @@ namespace KeZhan.Controllers
         #endregion
 
         #region Message
-      
+
         public JsonResult MessageLook(int iMessageID)
         {
             ResponseBaseModel response = new ResponseBaseModel();
@@ -866,6 +916,11 @@ namespace KeZhan.Controllers
         }
 
 
+
+        #endregion
+
+        #region Home
+
         public JsonResult OpenClassRoom(int iCourseID)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
@@ -930,10 +985,60 @@ namespace KeZhan.Controllers
             }
             JsonResult jr = new JsonResult();
             jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
         }
 
+
         #endregion
+
+        #region Start
+       
+
+        public JsonResult CheckOnlineClass(string strCourseNo)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            string strCourseID = strCourseNo.Substring(6, strCourseNo.Length - 6);
+            ResponseBaseModel response = new ResponseBaseModel();
+            ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(Convert.ToInt32(strCourseID), userInfo.fUserName);
+            if (cr.fClassType == "OnLine")
+            {
+                GroupUserInfoListModel ListModel = GroupUserBll.GetGroupUserInfiList(strCourseNo);
+                if (ListModel.infoList != null && ListModel.infoList.Count > cr.fMaxNumber)
+                {
+                    response.iResult = -1;
+                    response.strMsg = "课堂已达到最大人数，不能进入！";
+                }
+                else
+                {
+
+                    CourseModel course = ClassRoomBll.GetCourseByID(Convert.ToInt32(strCourseID));
+                    if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
+                    {
+                        response.iResult = Convert.ToInt32(strCourseID);
+                        response.strMsg = "";
+                    }
+                    else
+                    {
+                        response.iResult = -1;
+                        response.strMsg = "课程已结束！";
+                    }
+                }
+            }
+            else
+            {
+                response.iResult = -1;
+                response.strMsg = "课堂号错误！";
+            }
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+
+
+        #endregion
+
         public static object Deserialize(Type type, string xml)
         {
             try

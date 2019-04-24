@@ -150,11 +150,15 @@
         function showPanel(code) {
             classRoomCode = code;
             $.ajax({
-                url: "/Query/QueryBookingList",
+                url: "/LoginQuery/QueryBookingList",
                 type: this.method,
                 data: { "strClassRoomCode": classRoomCode },
                 success: function (msg) {
-                    $('#panelBooking').html(msg);
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#panelBooking').html(msg);
+                    }
                 }
             });
 
@@ -169,11 +173,15 @@
             var begindate = $("#txtBeginDate").val();
             var enddate = $("#txtEndDate").val();
             $.ajax({
-                url: "/Query/QueryBookingList",
+                url: "/LoginQuery/QueryBookingList",
                 type: this.method,
                 data: { "strClassRoomCode": classRoomCode, "strMobile": mobile, "strStatus": status, "beginDate": begindate, "endDate": enddate },
                 success: function (msg) {
-                    $('#panelBooking').html(msg);
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#panelBooking').html(msg);
+                    }
                 }
             });
         }
@@ -189,11 +197,15 @@
                     if (rst.iResult >= 0) {
                         alert("修改成功");
                         $.ajax({
-                            url: "/Query/QueryBookingList",
+                            url: "/LoginQuery/QueryBookingList",
                             type: this.method,
                             data: { "strClassRoomCode": classRoomCode },
                             success: function (msg) {
-                                $('#panelBooking').html(msg);
+                                if (msg.iResult == "-9999") {
+                                    alert("请重新登录");
+                                } else {
+                                    $('#panelBooking').html(msg);
+                                }
                             }
                         });
                     } else if (rst.iResult == -9999) {

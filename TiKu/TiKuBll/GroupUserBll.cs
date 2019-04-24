@@ -162,6 +162,16 @@ namespace TiKuBll
                 strUpdateFiels = "fIsOnLine,fLastJoinTime";
                 entity.fIsOnLine = true;
                 entity.fLastJoinTime = DateTime.Now;
+
+
+                tGroupUserJoinHistoryEntity histoty=new tGroupUserJoinHistoryEntity();
+                histoty.fGroupID=strGroupId;
+                histoty.fJoinTime=DateTime.Now;
+                histoty.fUserId=strUserId;
+                histoty.fUserName=strUserId;
+                List<tGroupUserJoinHistoryEntity> hisList=new List<tGroupUserJoinHistoryEntity>();
+                hisList.Add(histoty);
+                tGroupUserJoinHistoryDal.Modify(hisList,"insert",null,null);
             }
             else if (strType == "offline")
             {
@@ -171,6 +181,12 @@ namespace TiKuBll
                 entity.fIsVideo = false;
                 entity.fIsAudio = false;
                 entity.fIsBorad = false;
+
+                tGroupUserJoinHistoryEntity histoty = tGroupUserJoinHistoryDal.GettGroupUserJoinHistory(strUserId,strGroupId);
+                histoty.fQuitTime = DateTime.Now;
+                List<tGroupUserJoinHistoryEntity> hisList = new List<tGroupUserJoinHistoryEntity>();
+                hisList.Add(histoty);
+                tGroupUserJoinHistoryDal.Modify(hisList, "update", "fID,fQuitTime", null);
             }
             else if (strType == "OpenPush")
             {

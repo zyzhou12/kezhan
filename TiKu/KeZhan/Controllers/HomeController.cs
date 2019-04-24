@@ -26,8 +26,17 @@ namespace KeZhan.Controllers
                 CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
                 if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
                 {
-
+                    bool isJoin = false;
                     if (cr.IsBuy > 0 || cr.fTecharUserName == userInfo.fUserName)//老师本人不用管是否支付
+                    {
+                        isJoin = true;
+                    }
+                    if (cr.fClassType == "OnLine")
+                    {
+                        isJoin = true;
+                    }
+
+                    if (isJoin)
                     {
                         OpenClassRoomModel model = new OpenClassRoomModel();
                         model.ClassRoomCode = cr.fClassRoomCode + iCourseID.ToString();//课堂房间号
