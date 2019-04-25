@@ -94,6 +94,16 @@ namespace TiKuBll
             List<tGroupUserInfoEntity> list = new List<tGroupUserInfoEntity>();
             list.Add(entity);
             int i = tGroupUserInfoDal.Modify(list, "insert", null, null);
+
+
+            tGroupUserJoinHistoryEntity history = new tGroupUserJoinHistoryEntity();
+            history.fUserId = strUserId;
+            history.fUserName = strUserId;
+            history.fGroupID = strGroupId;
+            history.fJoinTime = DateTime.Now;
+            List<tGroupUserJoinHistoryEntity> historyList = new List<tGroupUserJoinHistoryEntity>();
+            historyList.Add(history);
+            int j = tGroupUserJoinHistoryDal.Modify(historyList, "insert", null, null);
             return i;
         }
 
@@ -127,8 +137,9 @@ namespace TiKuBll
             }
             else if (strType == "closegroup")
             {
-                strUpdateFiels = "fIsValid";
+                strUpdateFiels = "fIsValid,fDestoryDate";
                 entity.fIsValid = false;
+                entity.fDestoryDate = DateTime.Now;
             }
 
             List<tGroupEntity> list = new List<tGroupEntity>();
@@ -163,30 +174,50 @@ namespace TiKuBll
                 entity.fIsOnLine = true;
                 entity.fLastJoinTime = DateTime.Now;
 
-
+                List<tGroupUserJoinHistoryEntity> hisList = new List<tGroupUserJoinHistoryEntity>();
+                tGroupUserJoinHistoryEntity his = tGroupUserJoinHistoryDal.GettGroupUserJoinHistory(strUserId, strGroupId);
+                if(his.fQuitTime==DateTime.MinValue)
+                {
+                    his.fQuitTime = DateTime.Now;
+                    hisList.Add(his);
+                    tGroupUserJoinHistoryDal.Modify(hisList, "update", "fID,fQuitTime", null);
+                }
+                    
                 tGroupUserJoinHistoryEntity histoty=new tGroupUserJoinHistoryEntity();
                 histoty.fGroupID=strGroupId;
                 histoty.fJoinTime=DateTime.Now;
                 histoty.fUserId=strUserId;
                 histoty.fUserName=strUserId;
-                List<tGroupUserJoinHistoryEntity> hisList=new List<tGroupUserJoinHistoryEntity>();
+                hisList=new List<tGroupUserJoinHistoryEntity>();
                 hisList.Add(histoty);
                 tGroupUserJoinHistoryDal.Modify(hisList,"insert",null,null);
             }
             else if (strType == "offline")
             {
-                strUpdateFiels = "fIsOnLine,fIsPush,fIsVideo,fIsAudio,fIsBorad";
-                entity.fIsOnLine = false;
-                entity.fIsPush = false;
-                entity.fIsVideo = false;
-                entity.fIsAudio = false;
-                entity.fIsBorad = false;
+                if (entity.fIsOnLine)
+                {
+                    strUpdateFiels = "fIsOnLine,fIsPush,fIsVideo,fIsAudio,fIsBorad,fLastQuitTime";
+                    entity.fIsOnLine = false;
+                    entity.fIsPush = false;
+                    entity.fIsVideo = false;
+                    entity.fIsAudio = false;
+                    entity.fIsBorad = false;
+                    entity.fLastQuitTime = DateTime.Now;
 
-                tGroupUserJoinHistoryEntity histoty = tGroupUserJoinHistoryDal.GettGroupUserJoinHistory(strUserId,strGroupId);
-                histoty.fQuitTime = DateTime.Now;
-                List<tGroupUserJoinHistoryEntity> hisList = new List<tGroupUserJoinHistoryEntity>();
-                hisList.Add(histoty);
-                tGroupUserJoinHistoryDal.Modify(hisList, "update", "fID,fQuitTime", null);
+                    tGroupUserJoinHistoryEntity histoty = tGroupUserJoinHistoryDal.GettGroupUserJoinHistory(strUserId, strGroupId);
+                    histoty.fQuitTime = DateTime.Now;
+                    List<tGroupUserJoinHistoryEntity> hisList = new List<tGroupUserJoinHistoryEntity>();
+                    hisList.Add(histoty);
+                    tGroupUserJoinHistoryDal.Modify(hisList, "update", "fID,fQuitTime", null);
+                }
+                else
+                {
+                    strUpdateFiels = "fIsPush,fIsVideo,fIsAudio,fIsBorad";
+                    entity.fIsPush = false;
+                    entity.fIsVideo = false;
+                    entity.fIsAudio = false;
+                    entity.fIsBorad = false;
+                }
             }
             else if (strType == "OpenPush")
             {

@@ -19,4 +19,12 @@ namespace TiKuService.Model
         public string To_Account { get; set; }
         public string State { get; set; }
     }
+
+    public class GroupDestoryResponseModel
+    {
+
+        public string ActionStatus { get; set; }
+        public string ErrorInfo { get; set; }
+        public string ErrorCode { get; set; }
+    }
 }

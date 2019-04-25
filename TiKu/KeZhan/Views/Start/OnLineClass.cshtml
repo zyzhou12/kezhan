@@ -29,14 +29,15 @@
 
                         </p>
                         <div class="reservation-billing-detail" id="panelData">
-
+                            <p></p>
 
 
                             <label>课堂号<sup>*</sup></label>
                             <input type="number" maxlength="12" id="txtCourseNo" value="" placeholder="请输入老师提供的课堂号" class="input-text">
 
 
-
+                            <br />
+                            <br />
                             <button class="awe-btn awe-btn-13" onclick="JoinClass()">进入课堂</button>
 
 
@@ -101,6 +102,7 @@
 
 
     function JoinClass() {
+        $(".errorMsg").remove();
 
         if ($("#txtCourseNo").val().trim() == "") {
             $("#txtCourseNo").after("<span class=\"errorMsg\">请输入老师提供的课堂号</span>");

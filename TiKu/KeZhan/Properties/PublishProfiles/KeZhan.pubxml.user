@@ -85,7 +85,7 @@
       <publishTime>01/02/2019 09:38:50</publishTime>
     </File>
     <File Include="bin/KeZhan.dll">
-      <publishTime>04/24/2019 17:16:12</publishTime>
+      <publishTime>04/25/2019 16:42:50</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.Data.Edm.resources.dll">
       <publishTime>01/02/2019 09:38:53</publishTime>
@@ -175,13 +175,13 @@
       <publishTime>01/02/2019 09:38:30</publishTime>
     </File>
     <File Include="bin/TiKuBll.dll">
-      <publishTime>04/24/2019 17:16:11</publishTime>
+      <publishTime>04/25/2019 15:17:53</publishTime>
     </File>
     <File Include="bin/TiKuDal.dll">
-      <publishTime>04/24/2019 16:38:00</publishTime>
+      <publishTime>04/25/2019 14:17:24</publishTime>
     </File>
     <File Include="bin/TiKuEntity.dll">
-      <publishTime>04/24/2019 16:26:00</publishTime>
+      <publishTime>04/25/2019 13:37:39</publishTime>
     </File>
     <File Include="bin/Trip8H.Common.dll">
       <publishTime>11/15/2013 12:58:58</publishTime>
@@ -3130,13 +3130,13 @@
       <publishTime>02/26/2019 16:32:35</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>04/22/2019 15:57:18</publishTime>
+      <publishTime>04/25/2019 14:44:35</publishTime>
     </File>
     <File Include="Views/Home/LineClassRoom.cshtml">
       <publishTime>04/22/2019 15:57:15</publishTime>
     </File>
     <File Include="Views/Home/Message.cshtml">
-      <publishTime>01/02/2019 09:42:52</publishTime>
+      <publishTime>04/25/2019 09:35:11</publishTime>
     </File>
     <File Include="Views/Html/About.cshtml">
       <publishTime>04/18/2019 13:33:41</publishTime>
@@ -3235,7 +3235,7 @@
       <publishTime>04/17/2019 17:00:24</publishTime>
     </File>
     <File Include="Views/Open/RegsiterLogin.cshtml">
-      <publishTime>04/23/2019 14:30:12</publishTime>
+      <publishTime>04/25/2019 09:35:06</publishTime>
     </File>
     <File Include="Views/Open/StudentRegsiter.cshtml">
       <publishTime>04/23/2019 14:29:49</publishTime>
@@ -3277,13 +3277,13 @@
       <publishTime>01/02/2019 09:42:52</publishTime>
     </File>
     <File Include="Views/Start/CreateOnLineClass.cshtml">
-      <publishTime>04/24/2019 17:15:25</publishTime>
+      <publishTime>04/25/2019 17:11:04</publishTime>
     </File>
     <File Include="Views/Start/MyClassRoomList.cshtml">
       <publishTime>04/23/2019 15:38:35</publishTime>
     </File>
     <File Include="Views/Start/OnLineClass.cshtml">
-      <publishTime>04/24/2019 15:12:23</publishTime>
+      <publishTime>04/25/2019 16:40:05</publishTime>
     </File>
     <File Include="Views/Teacher/TeacherWithdrawalApply.cshtml">
       <publishTime>04/23/2019 16:39:27</publishTime>

@@ -41,7 +41,7 @@
                             <input type="text" id="txtDictTitle" value="@Model.fClassRoomTitle" class="input-text">
 
 
-                            <label>课程时长</label>
+                            <label>最大时长</label>
                             <select style="width:100%; height:42px; " id="txtDateLength">
                                 <option value="10">10</option>
                                 <option value="30">30</option>
@@ -51,6 +51,8 @@
                                 <option value="120">120</option>
                                 <option value="180">180</option>
                             </select>
+
+
                             <button class="awe-btn awe-btn-13" onclick="SaveClassCourse()">创建课堂</button>
 
 
@@ -78,8 +80,8 @@
                                                     </p>
 
                                                     <div class="reservation-package_book-price">
-                                                        @*<a href="#" class="awe-btn awe-btn-default">进入课堂</a>*@
-
+                                                        <a href="#" class="awe-btn awe-btn-default">进入课堂</a>
+                                                        <a href="#" class="awe-btn awe-btn-default">结算</a>
                                                     </div>
                                                 </div>
 
@@ -146,6 +148,8 @@
             dataType: "json",
             success: function (rst) {
                 if (rst.iResult >= 0) {
+                    alert("课堂号：" + classRoomCode + rst.iResult);
+
                     window.location.href = "/home/index?iCourseID=" + rst.iResult + "&strRole=Teacher";
 
                 } else if (rst.iResult == -9999) {

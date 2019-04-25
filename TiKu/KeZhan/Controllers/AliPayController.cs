@@ -182,11 +182,11 @@ namespace KeZhan.Controllers
 
       if (payType == "pay")
       {
-        return RedirectToAction("UserPay", "User");
+        return RedirectToAction("UserPay", "Teacher");
       }
       else
       {
-        return RedirectToAction("UserBooking", "Booking", new { strBookingNo = strBookingNo });
+        return RedirectToAction("UserBooking", "User", new { strBookingNo = strBookingNo });
       }
     }
 

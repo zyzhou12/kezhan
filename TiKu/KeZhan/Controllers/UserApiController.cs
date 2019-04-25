@@ -21,7 +21,7 @@ namespace KeZhan.Controllers
         {
             UserInfoModel user = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
-            if(user==null)
+            if (user == null)
             {
                 response.iResult = -1;
                 response.strMsg = "请重新登录";
@@ -98,15 +98,15 @@ namespace KeZhan.Controllers
 
 
         public JsonResult SetUserPer(string strUserId, string strGroupId, string strType)
-        {            
+        {
 
-           int i=GroupUserBll.UpdateGroupUserInfo(strUserId, strGroupId, strType);
+            int i = GroupUserBll.UpdateGroupUserInfo(strUserId, strGroupId, strType);
             JsonResult jr = new JsonResult();
             jr.Data = "success";
             return jr;
         }
 
-        public JsonResult GetGroup( string strGroupId)
+        public JsonResult GetGroup(string strGroupId)
         {
             GroupModel model = GroupUserBll.GetGroup(strGroupId);
 
@@ -198,18 +198,42 @@ namespace KeZhan.Controllers
         /// </summary>
         /// <param name="iCourseID"></param>
         /// <returns></returns>
-        public JsonResult GerCourseStatus(int iCourseID)
+        public JsonResult GerCourseStatus(string strCourseNo)
         {
-            CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
             ResponseBaseModel response = new ResponseBaseModel();
-            if (course.fClassDate.AddMinutes(course.fClassDateLength) < DateTime.Now)
+            string strCourseID = strCourseNo.Substring(7, strCourseNo.Length - 7);
+            GroupModel group = GroupUserBll.GetGroup(strCourseNo);
+            if (group != null && group.fIsValid)
             {
-                response.iResult = -1;
-                response.strMsg = "课时已结束";
+                CourseModel course = ClassRoomBll.GetCourseByID(Convert.ToInt32(strCourseID));
+
+                if (course.fClassDate.AddMinutes(course.fClassDateLength) < DateTime.Now.AddMinutes(-3))
+                {
+                    response.iResult = -4;
+                    response.strMsg = "课时已超时,系统将在30秒后自动退出";
+                }
+                else if (course.fClassDate.AddMinutes(course.fClassDateLength) < DateTime.Now)
+                {
+                    response.iResult = -3;
+                    response.strMsg = "课时已结束，请尽快下课";
+                }
+                else if (course.fClassDate.AddMinutes(course.fClassDateLength) < DateTime.Now.AddMinutes(5))
+                {
+                    response.iResult = -2;
+                    TimeSpan ts1 = new TimeSpan(course.fClassDate.AddMinutes(course.fClassDateLength).Ticks);
+                    TimeSpan ts2 = new TimeSpan(DateTime.Now.Ticks);
+                    TimeSpan ts = ts1.Subtract(ts2).Duration();
+                    response.strMsg = "课时还剩" + ts.Minutes + "分钟";
+                }
+                else
+                {
+                    response.iResult = 0;
+                }
             }
             else
             {
-                response.iResult = 0;
+                response.iResult = -1;
+                response.strMsg = "课时已结束";
             }
             JsonResult jr = new JsonResult();
             jr.Data = response;

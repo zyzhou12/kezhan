@@ -162,7 +162,7 @@ namespace TiKu.Dal
         List<DbParameter> lstParam = new List<DbParameter>();
 
         bufSQL.Append(@"select cr.*,fNickName TeacherName,fHeadImg TeacherHead from tClassRoom cr
-    left join tUser u on u.fUserName=cr.fTecharUserName WHERE cr.fCreateOpr=@UserName ");
+    left join tUser u on u.fUserName=cr.fTecharUserName WHERE cr.fclasstype<>'online' and cr.fCreateOpr=@UserName ");
         lstParam.Add(new DBParam("@UserName", strCreate));
 
         if (!string.IsNullOrEmpty(strStatus))

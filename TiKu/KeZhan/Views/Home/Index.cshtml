@@ -149,6 +149,22 @@
 
             <a class="close-reveal-modal" onclick="hideDev()">&#215;</a>
         </div>
+
+        <div class="reveal-modal" style="top: 300px; width:300px; opacity: 1; visibility: visible; display:none; " id="divMessge">
+            <h1 style="font-size:20px; font-weight:bold">消息提示</h1>
+            <p style="height:100px; margin-top:30px;" id="pMsg"></p>
+
+            <table>
+                <tr>
+                    <td style="padding-right:20px;">
+                        <div class="u-btn"  onclick="hideDev()">确定</div>
+                    </td>
+                </tr>
+            </table>
+
+
+            <a class="close-reveal-modal" onclick="hideDev()">&#215;</a>
+        </div>
         <div class="reveal-modal-bg" id="divback"></div>
 
 
@@ -226,8 +242,9 @@
         </div>
         <div v-if="step == 'second'">
             <div class="m-header">
-                <div class="logo" v-if="isTeacher===1">
-                    课堂号: {{roomID}}
+                <div class="logo">
+                    <span>@Model.ClassRoomName</span>
+                    <span v-if="isTeacher===1"> 课堂号: {{roomID}}</span>
                 </div>
                 <div class="opt">
                     {{account}} @Model.NickName<div class="opt-inner" onclick="showQuit()">
@@ -715,24 +732,30 @@
             setInterval(function () {
                 $.ajax({
                     url: "/UserApi/GerCourseStatus",
-                    data: { "iCourseID": iCourseID },
+                    data: { "strCourseNo": classroomcode },
                     dataType: "json",
                     success: function (rst) {
                         if (rst.iResult <0) {
-                            alert(rst.strMsg);
+                            if(rst.iResult==-4)
+                            {
+                                setTimeout(function () {
+                                    app.destroy();
+                                },1000*30)
+                            }
+                            showMessage(rst.strMsg);
                         } 
                     }
 
                 });   
             
-            },10000);
+            },1000*60);
         }
     });
 
     function InitLogin() {
         $.ajax({
             url: "/UserApi/GerCourseStatus",
-            data: { "iCourseID": iCourseID },
+            data: { "strCourseNo": classroomcode },
             dataType: "json",
             success: function (rst) {
                 if (rst.iResult < 0) {
@@ -866,7 +889,8 @@
         $("#divDev").hide();
         $("#divquit").hide();
         $("#divclose").hide();
-        $("#divback").hide();
+        $("#divback").hide(); 
+        $("#divMessge").hide();
     }
 
     function showQuit() {
@@ -880,12 +904,20 @@
         $("#divquit").hide();
         $("#divclose").hide();
         $("#divback").hide();
+        $("#divMessge").hide();
         //self.location = document.referrer;
     }
 
 
     function showClose() {
         $("#divclose").show();
+        $("#divback").show();
+    }
+
+
+    function showMessage(msg) {
+        $("#pMsg").text(msg);
+        $("#divMessge").show();
         $("#divback").show();
     }
 

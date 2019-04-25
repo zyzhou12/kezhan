@@ -926,62 +926,71 @@ namespace KeZhan.Controllers
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(iCourseID, userInfo.fUserName);
             ResponseBaseModel response = new ResponseBaseModel();
-            if (cr.IsBuy > 0 || cr.fTecharUserName == userInfo.fUserName)
+            GroupModel group = GroupUserBll.GetGroup(cr.fClassRoomCode + iCourseID.ToString());
+            if (group == null ||(group != null && group.fIsValid))//判断是否已销毁课堂
             {
-
-                CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
-                if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
+                if (cr.IsBuy > 0 || cr.fTecharUserName == userInfo.fUserName)
                 {
-                    if (course.fIsPay)
-                    {
-                        response.iResult = 0;
-                    }
-                    else
-                    {
-                        decimal userAccount = UserBll.GetUserAccountAmount(cr.fCreateOpr);
-                        decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(iCourseID);
 
-                        if (classRoomFlow > userAccount)
+                    CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
+                    if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
+                    {
+                        if (course.fIsPay)
                         {
-                            if (cr.fTecharUserName == cr.fCreateOpr)
-                            {
-                                response.iResult = -1;
-                                response.strMsg = "该课时需要" + classRoomFlow.ToString() + "流量，账户剩余" + userAccount.ToString() + "流量。账户余额不足用，请先去购买流量";
-                            }
-                            else
-                            {
-
-                                response.iResult = -2;
-                                response.strMsg = "该课时需要" + classRoomFlow.ToString() + "流量，账户剩余" + userAccount.ToString() + "流量。账户余额不足用，请课程发布者先去购买流量";
-                            }
+                            response.iResult = 0;
                         }
                         else
                         {
-                            //支付流量
-                            int i = ClassRoomBll.ClassRoomCoursePay(iCourseID, userInfo.fUserName, "Web");
-                            if (i == 0)
+                            decimal userAccount = UserBll.GetUserAccountAmount(cr.fCreateOpr);
+                            decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(iCourseID);
+
+                            if (classRoomFlow > userAccount)
                             {
-                                response.iResult = 0;
+                                if (cr.fTecharUserName == cr.fCreateOpr)
+                                {
+                                    response.iResult = -1;
+                                    response.strMsg = "该课时需要" + classRoomFlow.ToString() + "流量，账户剩余" + userAccount.ToString() + "流量。账户余额不足用，请先去购买流量";
+                                }
+                                else
+                                {
+
+                                    response.iResult = -2;
+                                    response.strMsg = "该课时需要" + classRoomFlow.ToString() + "流量，账户剩余" + userAccount.ToString() + "流量。账户余额不足用，请课程发布者先去购买流量";
+                                }
                             }
                             else
                             {
-                                response.iResult = -1;
-                                response.strMsg = "流量扣除失败，请重新再试！";
+                                //支付流量
+                                int i = ClassRoomBll.ClassRoomCoursePay(iCourseID, userInfo.fUserName, "Web");
+                                if (i == 0)
+                                {
+                                    response.iResult = 0;
+                                }
+                                else
+                                {
+                                    response.iResult = -1;
+                                    response.strMsg = "流量扣除失败，请重新再试！";
+                                }
                             }
                         }
                     }
+                    else
+                    {
+                        response.iResult = -1;
+                        response.strMsg = "课程已结束！";
+                    }
+
                 }
                 else
                 {
                     response.iResult = -1;
-                    response.strMsg = "课程已结束！";
+                    response.strMsg = "未购买课程，请先购买再进入课堂";
                 }
-
             }
             else
             {
                 response.iResult = -1;
-                response.strMsg = "未购买课程，请先购买再进入课堂";
+                response.strMsg = "课程已结束！";
             }
             JsonResult jr = new JsonResult();
             jr.Data = response;
@@ -993,36 +1002,55 @@ namespace KeZhan.Controllers
         #endregion
 
         #region Start
-       
+
 
         public JsonResult CheckOnlineClass(string strCourseNo)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            string strCourseID = strCourseNo.Substring(6, strCourseNo.Length - 6);
             ResponseBaseModel response = new ResponseBaseModel();
-            ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(Convert.ToInt32(strCourseID), userInfo.fUserName);
-            if (cr.fClassType == "OnLine")
+            if (strCourseNo.Length > 8)
             {
-                GroupUserInfoListModel ListModel = GroupUserBll.GetGroupUserInfiList(strCourseNo);
-                if (ListModel.infoList != null && ListModel.infoList.Count > cr.fMaxNumber)
+                string strCourseID = strCourseNo.Substring(7, strCourseNo.Length - 7);
+                ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(Convert.ToInt32(strCourseID), userInfo.fUserName);
+                if (cr.fClassType == "OnLine")
                 {
-                    response.iResult = -1;
-                    response.strMsg = "课堂已达到最大人数，不能进入！";
-                }
-                else
-                {
-
-                    CourseModel course = ClassRoomBll.GetCourseByID(Convert.ToInt32(strCourseID));
-                    if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
+                    GroupUserInfoListModel ListModel = GroupUserBll.GetGroupUserInfiList(strCourseNo);
+                    if (ListModel.infoList != null && ListModel.infoList.Count > cr.fMaxNumber)
                     {
-                        response.iResult = Convert.ToInt32(strCourseID);
-                        response.strMsg = "";
+                        response.iResult = -1;
+                        response.strMsg = "课堂已达到最大人数，不能进入！";
                     }
                     else
                     {
-                        response.iResult = -1;
-                        response.strMsg = "课程已结束！";
+                        decimal userAccount = UserBll.GetUserAccountAmount(userInfo.fUserName);
+                        decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(Convert.ToInt32(strCourseID));
+
+
+                        if (userAccount < 20)
+                        {
+                            response.iResult = -1;
+                            response.strMsg = "该课时最大需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString()+ "分钟。请先去购买流量";
+                        }
+                        else
+                        {
+                            CourseModel course = ClassRoomBll.GetCourseByID(Convert.ToInt32(strCourseID));
+                            if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
+                            {
+                                response.iResult = Convert.ToInt32(strCourseID);
+                                response.strMsg = "";
+                            }
+                            else
+                            {
+                                response.iResult = -1;
+                                response.strMsg = "课程已结束！";
+                            }
+                        }
                     }
+                }
+                else
+                {
+                    response.iResult = -1;
+                    response.strMsg = "课堂号错误！";
                 }
             }
             else

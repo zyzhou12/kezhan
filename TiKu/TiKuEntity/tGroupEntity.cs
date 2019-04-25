@@ -12,6 +12,7 @@ namespace TiKu.Entity
         public System.String fGroupName { get; set; }
         public System.String fTeacherID { get; set; }
         public System.DateTime fCreateDate { get; set; }
+        public System.DateTime fDestoryDate { get; set; }
         public System.Boolean fIsOpenHand { get; set; }
         public System.Boolean fIsValid { get; set; }
 

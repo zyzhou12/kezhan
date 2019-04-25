@@ -19,6 +19,8 @@ namespace TiKu.Entity
         public System.Boolean fIsBorad { get; set; }
         public System.DateTime fLastJoinTime { get; set; }
 
+        public System.DateTime fLastQuitTime { get; set; }
+
         public System.String fNickName { get; set; }
     }
 
