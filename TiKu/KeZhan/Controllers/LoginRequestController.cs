@@ -1061,7 +1061,7 @@ namespace KeZhan.Controllers
                         decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(Convert.ToInt32(strCourseID));
 
 
-                        if (userAccount < 20 && strRole == "Teacher")
+                        if (userAccount < classRoomFlow && strRole == "Teacher")
                         {
                             response.iResult = -1;
                             response.strMsg = "该课时最大需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString()+ "分钟。请先去购买流量";

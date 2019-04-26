@@ -148,7 +148,6 @@
             dataType: "json",
             success: function (rst) {
                 if (rst.iResult >= 0) {
-                    alert("课堂号：" + classRoomCode + rst.iResult);
                     $.ajax({
                         url: "/LoginRequest/CheckOnlineClass",
                         data: { "strCourseNo": classRoomCode + rst.iResult,"strRole":"Teacher" },
@@ -156,6 +155,7 @@
                         success: function (result) {
 
                             if (result.iResult > 0) {
+                                alert("课堂号：" + classRoomCode + rst.iResult);
                                 window.location.href = "/home/index?iCourseID=" + rst.iResult + "&strRole=Teacher";
 
                             } else if (result.iResult == -9999) {
