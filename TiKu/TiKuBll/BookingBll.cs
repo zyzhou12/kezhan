@@ -284,8 +284,37 @@ namespace TiKuBll
             refund.fRefundUserName = entity.fRefundUserName;
             refund.fStatus = entity.fStatus;
             refund.fUserName = entity.fUserName;
-
+            refund.fClassRoomTitle = entity.fClassRoomTitle;
             refund.fPayType = tUserPayDal.GettUserPayByBookingNo(refund.fBookingNo).fPayType;
+            return refund;
+        }
+
+        public static UserRefundModel GetRefundByBookingNo(string strBookingNo)
+        {
+            tUserRefundEntity entity = tUserRefundDal.GettUserRefundByBookingNo(strBookingNo);
+            UserRefundModel refund =null;
+            if (entity != null)
+            {
+                refund = new UserRefundModel();
+                refund.fApplyAmount = entity.fApplyAmount;
+                refund.fApplyDate = entity.fApplyDate;
+                refund.fApplyRemark = entity.fApplyRemark;
+                refund.fCreateDate = entity.fCreateDate;
+                refund.fCreateOpr = entity.fCreateOpr;
+                refund.fID = entity.fID;
+                refund.fModifyDate = entity.fModifyDate;
+                refund.fModifyOpr = entity.fModifyOpr;
+                refund.fOrderNo = entity.fOrderNo;
+                refund.fBookingNo = entity.fBookingNo;
+                refund.fRefundAmount = entity.fRefundAmount;
+                refund.fRefundDate = entity.fRefundDate;
+                refund.fRefundNote = entity.fRefundNote;
+                refund.fRefundUserName = entity.fRefundUserName;
+                refund.fStatus = entity.fStatus;
+                refund.fUserName = entity.fUserName;
+
+                refund.fPayType = tUserPayDal.GettUserPayByBookingNo(refund.fBookingNo).fPayType;
+            }
             return refund;
         }
 
@@ -305,6 +334,8 @@ namespace TiKuBll
             tUserRefundEntity refund = tUserRefundDal.GettUserRefund(iRefundID);
             refund.fStatus = 2;
             refund.fRefundNote = "驳回退款";
+            refund.fRefundDate = DateTime.Now;
+            refund.fRefundUserName = strApplyOpr;
             refund.fModifyDate = DateTime.Now;
             refund.fModifyOpr = strApplyOpr;
             List<tUserRefundEntity> list = new List<tUserRefundEntity>();
@@ -312,7 +343,7 @@ namespace TiKuBll
 
             BookingUpdateStatus(refund.fBookingNo, "已驳回", strApplyNote, strApplyOpr);
 
-            return tUserRefundDal.Modify(list, "update", "fID,fStatus,fRefundNote,fModifyDate,fModifyOpr", null);
+            return tUserRefundDal.Modify(list, "update", "fID,fStatus,fRefundNote,fRefundDate,fRefundUserName,fModifyDate,fModifyOpr", null);
         }
     }
 }

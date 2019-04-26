@@ -8,6 +8,7 @@ namespace KeZhan.Models
     public class UserPayModel
     {
         public string UserName { get; set; }
+        public string OpenID { get; set; }
         public decimal ClassFee { get; set; }
     }
 }

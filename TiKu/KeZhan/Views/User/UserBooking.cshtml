@@ -80,6 +80,12 @@ else
     <label>是否可退</label>
     <span>不可退</span>
 }
+                            @if (@Model.BookingRefund!=null)
+                            {
+                                <label>退款信息<sup> </sup></label>
+                                <span>退款金额：@Model.BookingRefund.fRefundAmount</span>
+    <span>退款时间：@Model.BookingRefund.fApplyDate</span>
+                            }
                             @*<label>课程明细<sup> </sup></label>
                             @foreach (var c in Model.ClassRoom.courseList)
                             {
@@ -183,6 +189,7 @@ else
 
 <script type="text/javascript">
     var username = '@Model.UserName';
+    var openid = '@Model.OpenID';
 
     $(document).ready(function () {
         if (is_weixn()) {
@@ -317,7 +324,7 @@ else
 
         $.ajax({
             url: "/weixinpay/UserWeiXinPay",
-            data: { "openid": "", "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
+            data: { "openid": openid, "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
             type: "POST",
             dataType: "json",
             success: function (rst) {
@@ -335,12 +342,16 @@ else
                         setTimeout(window.location.reload(), 1000);
                     } else {
                         // alert(res.err_msg);
-                        $("#getBrandWCPayRequest").attr("disabled", false)
-                        $("#getBrandWCPayRequest").val("支付");
+                        $("#btnPay").attr("disabled", false)
+                        $("#btnPay").val("支付");
                     }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
 
                 }
                );
+            },
+            fail:function(err)
+            {
+                alert(err);
             }
 
         });

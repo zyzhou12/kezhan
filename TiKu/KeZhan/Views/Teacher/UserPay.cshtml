@@ -139,6 +139,7 @@
 
 <script type="text/javascript">
     var username = "@Model.UserName";
+    var openid = "@Model.OpenID";
     var classfee = "@Model.ClassFee";
 
     $(document).ready(function () {
@@ -250,7 +251,7 @@
 
         $.ajax({
             url: "/weixinpay/UserWeiXinPay",
-            data: { "openid": "", "strUserName": username, "strType": "BuyFlow", "strBookingNo": bookingNo, "strFee": fee },
+            data: { "openid": openid, "strUserName": username, "strType": "BuyFlow", "strBookingNo": bookingNo, "strFee": fee },
             type: "POST",
             dataType: "json",
             success: function (rst) {

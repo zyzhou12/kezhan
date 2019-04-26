@@ -12,6 +12,8 @@ using System.Text;
 using System.Security.Cryptography;
 using KeZhan.Code;
 using System.Web.Security;
+using System.Web.Script.Serialization;
+using System.Configuration;
 
 namespace KeZhan.Controllers
 {
@@ -108,7 +110,7 @@ namespace KeZhan.Controllers
 
         return View(model);
     }
-    public ActionResult ClassRoomList3(string strPharse, string strCity = null)
+    public ActionResult ClassRoomList3(string strCity = null)
     {
         if (string.IsNullOrEmpty(strCity))
         {
@@ -144,6 +146,77 @@ namespace KeZhan.Controllers
 
         return View(model);
       }
+    }
+
+
+    public ActionResult WeiXinLogin(string strParam, string strState)
+    {
+
+        string strAppID = "wx67d892b056103f43";
+
+        string oauthUrl = string.Format(WXApiRequest.GetUrl("authorize"), strAppID, "http://weixin.aizhusoft.com/AuthoRedirect.aspx?url=http://test.2kezhan.com/open/DoWeiXinLogin?strParams=" + strParam, strState);
+
+        return Redirect(oauthUrl);
+        
+    }
+
+
+
+
+    public ActionResult DoWeiXinLogin(string code, string strParams, string state)
+    {
+        string redirecturi = "http://www.baidu.com?1=" + code + strParams + state;
+
+        try
+        {
+            string strAppID = "wx67d892b056103f43";
+            string strAppSecret = "293e98866a3ee91bf3c485a569b90319";
+
+            string sUrl = String.Format(WXApiRequest.GetUrl("getaccesstoken"), strAppID, strAppSecret, code);
+
+            String strJson = WXApiRequest.GetData(sUrl);
+
+            JavaScriptSerializer jss = new JavaScriptSerializer();
+
+            PublicTokenModel token = jss.Deserialize<PublicTokenModel>(strJson);
+
+            if (token.access_token != null)
+            {
+                //更新用户信息
+                //ResponseModel<UserModel> Response = UserBll.getUser(microPublic.fPublicID, token.openid);
+                string strMsg = "";
+                UserInfoModel userInfo = UserBll.UserWeiChatLogin(token.openid,state, ref strMsg);
+               
+               // userInfo.User = Response.ResultObj;
+
+
+                //if (!string.IsNullOrEmpty(token.access_token))
+                //{
+                //    string strtoken = HotelLife.Bll.ConfigBll.GetToken(strAppID);
+
+                //    //获取个人信息
+                //    sUrl = String.Format(WXApiRequest.GetUrl("getuserinfo"), strtoken, token.openid);
+                //    strJson = WXApiRequest.GetData(sUrl);
+                //    PublicUserModel user = jss.Deserialize<PublicUserModel>(strJson);
+                //    userInfo.User.fNickName = user.nickname;
+                //    userInfo.User.fHeadImg = user.headimgurl;
+                //    userInfo.User.fsubscribe = user.subscribe;
+                //}
+                Code.Fun.SetSessionUserInfo(this, userInfo);
+
+
+            }
+
+
+            string redirect_uri = ConfigurationManager.AppSettings["PayCallBack"].ToString()+"/user/userBooking?strBookingNo=" + strParams;
+
+
+            return Redirect(redirect_uri);
+        }
+        catch (Exception ex)
+        {
+            return Redirect(redirecturi + "&" + ex.Message);
+        }
     }
 
 

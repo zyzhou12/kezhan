@@ -35,9 +35,10 @@
                             {
                                 <li onclick="ShowDetail('@Model.fClassRoomCode')"><a href="#" style=" width:100%;" data-toggle="tab">课程预览发布</a></li>
                             }
+                            <li onclick="showPanel('booking')"><a href="#" style=" width:100%;" data-toggle="tab">报名记录</a></li>
+
                             if (Model.fStatus == "发布")
                             {
-                                <li onclick="showPanel('booking')"><a href="#" style=" width:100%;" data-toggle="tab">报名记录</a></li>
                                 <li onclick="showPanel('private')"><a href="#" style=" width:100%;" data-toggle="tab">推广链接</a></li>
                                 <li onclick="showPanel('update')"><a href="#" style=" width:100%;" data-toggle="tab">更换授课老师</a></li>
                             }
@@ -222,13 +223,13 @@
 
 
 
-                                <label>是否录屏回看</label>
+                                @*<label>是否录屏回看</label>
                                 @Html.DropDownListFor(m => m.fIsRecord, new[] {
                                                                                               new SelectListItem { Text = "是", Value = "true" },
-                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })
+                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })*@
 
 
-
+                                <br />
 
                                 @if (isCreateOpr)
                                 {
@@ -248,7 +249,7 @@
                                     }
                                     else if (Model.fStatus == "下线")
                                     {
-                                        <button class="awe-btn awe-btn-13" onclick="DoClassRoomSettlement()">结算</button>
+                                        @*<button class="awe-btn awe-btn-13" onclick="DoClassRoomSettlement()">结算</button>*@
                                     }
                                 }
 
@@ -383,7 +384,7 @@
                                 <label>退款规则</label>
                                 <span>@Model.fReturnRule</span>
 
-                                <label>是否录屏回看</label>
+                                @*<label>是否录屏回看</label>
                                 @if (Model.fIsRecord)
                                 {
                                     <span>是</span>
@@ -391,8 +392,22 @@
                                 else
                                 {
                                     <span>否</span>
-                                }
+                                }*@
+                                <br />
+                                @if (isCreateOpr)
+                                {
+                                    if (Model.fStatus == "发布")
+                                    {
+                                        <label>下线原因<sup>*</sup></label>
+                                        <input type="text" id="txtDownLoadNote" value="" class="input-text">
 
+                                        <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('下线')">下线</button>
+                                    }
+                                    else if (Model.fStatus == "下线")
+                                    {
+                                        @*<button class="awe-btn awe-btn-13" onclick="DoClassRoomSettlement()">结算</button>*@
+                                    }
+                                }
 
 
                             </div>
@@ -437,17 +452,17 @@
                             @if (Model.account != null)
                             {
                                 <label>收入</label>
-                                <input type="text" value="@Model.account.fIncome" class="input-text" disabled="disabled">
+                                <span>@Model.account.fIncome</span>
                                 <label>使用流量</label>
-                                <input type="text" value="@Model.account.fUsedFlow" class="input-text" disabled="disabled">
+                                <span>@Model.account.fUsedFlow</span>
                                 <label>退款</label>
-                                <input type="text" value="@Model.account.fRefund" class="input-text" disabled="disabled">
+                                <span>@Model.account.fRefund</span>
                                 <label>平台费用</label>
-                                <input type="text" value="@Model.account.fFee" class="input-text" disabled="disabled">
+                                <span>@Model.account.fFee</span>
                                 <label>应收</label>
-                                <input type="text" value="@Model.account.fAmount" class="input-text" disabled="disabled">
+                                <span>@Model.account.fAmount</span>
                                 <label>结算时间</label>
-                                <input type="text" value="@Model.account.fCreateDate.ToString()" class="input-text" disabled="disabled">
+                                <span>@Model.account.fCreateDate.ToString()</span>
                             }
                         </div>
                         <div class="reservation-billing-detail" id="panelQA" style="display:none;">
@@ -639,7 +654,7 @@
             "fIsReturn": $("#cmbIsReturn").val(),
             "fReturnType": $("#cmbReturnType").val(),
             "fReturnRule": $("#cmbReturnRule").val(),
-            "fIsRecord": $("#cmbIsRecord").val(),
+           // "fIsRecord": $("#cmbIsRecord").val(),
             "fStatus": status
         };
 
@@ -1203,7 +1218,6 @@
             type: this.method,
             data: { "strClassRooomCode": ClassRoomCode },
             success: function (result) {
-
                 alert(result.strMsg);
                 window.location.reload();
             }

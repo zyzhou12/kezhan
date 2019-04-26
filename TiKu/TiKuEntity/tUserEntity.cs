@@ -10,6 +10,7 @@ namespace TiKu.Entity
     public System.Int32 fID { get; set; }
     public System.String fUserName { get; set; }
     public System.String fMobile { get; set; }
+    public System.String fOpenID { get; set; }
     public System.String fEmail { get; set; }
     public System.String fPassWord { get; set; }
     public System.String fTradePassWord { get; set; }

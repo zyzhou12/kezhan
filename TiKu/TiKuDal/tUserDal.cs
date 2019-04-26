@@ -143,6 +143,25 @@ namespace TiKu.Dal
       return user;
     }
 
+    public static tUserEntity UserWeiChatLogin(string strOpenID, string strUserName, ref string strMsg)
+    {
+        List<DbParameter> lstParam = new List<DbParameter>();
+        lstParam.Add(new DBParam("@OpenID", strOpenID));
+        lstParam.Add(new DBParam("@UserName", strUserName));
+
+        DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "User_WeiChatLogin", lstParam, DBHelper.ProcRstTypes.All);
+        strMsg = rst.Message;
+
+        tUserEntity user = null;
+        if (rst.DataSet.Tables.Count > 0)
+        {
+            List<tUserEntity> lstRst = PubFun.DataTableToObjects<tUserEntity>(rst.DataSet.Tables[0]);
+            user = lstRst[0];
+        }
+
+        return user;
+    }
+
     public static tUserEntity UserPassLogin(string strMobile, string strPass, string strSystem, ref string strMsg)
     {
       List<DbParameter> lstParam = new List<DbParameter>();

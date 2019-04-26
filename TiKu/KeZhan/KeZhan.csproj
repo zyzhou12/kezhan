@@ -196,6 +196,7 @@
     <Compile Include="Code\Alipay\RSA.cs" />
     <Compile Include="Code\Fun.cs" />
     <Compile Include="Code\UserSig.cs" />
+    <Compile Include="Code\WXApiRequest.cs" />
     <Compile Include="Code\wxpay\HttpUtil.cs" />
     <Compile Include="Code\wxpay\MD5Util.cs" />
     <Compile Include="Code\wxpay\RequestHandler.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Models\GroupUserStatusModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OpenClassRoomModel.cs" />
+    <Compile Include="Models\PublicTokenModel.cs" />
     <Compile Include="Models\xml.cs" />
     <Compile Include="Models\ResponseBaseModel.cs" />
     <Compile Include="Models\TeacherClassRoomListModel.cs" />

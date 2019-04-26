@@ -35,7 +35,7 @@
                             @if (Model.IsManager)
                             {
                                 
-                                if ( b.fIsPay && b.fStatus == "已支付")
+                                if ( b.fIsPay && b.fStatus == "已支付" && Model.fStatus != "结算")
                                 {
                                     <a class="awe-btn awe-btn-14" href="/User/BookingRefund?strBookingNo=@b.fBookingNo">退款</a>
                                 }

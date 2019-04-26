@@ -43,6 +43,7 @@ namespace TiKu.Bll
                 model.fEmail = user.fEmail;
                 model.fHeadImg = user.fHeadImg;
                 model.fMobile = user.fMobile;
+                model.fOpenID = user.fOpenID;
                 model.fName = user.fName;
                 model.fNickName = user.fNickName;
                 model.fRegSystem = user.fRegSystem;
@@ -69,6 +70,7 @@ namespace TiKu.Bll
                 model.fEmail = user.fEmail;
                 model.fHeadImg = user.fHeadImg;
                 model.fMobile = user.fMobile;
+                model.fOpenID = user.fOpenID;
                 model.fName = user.fName;
                 model.fNickName = user.fNickName;
                 model.fRegSystem = user.fRegSystem;
@@ -76,6 +78,33 @@ namespace TiKu.Bll
                 model.fStatus = user.fStatus;
                 model.fUID = user.fUID;
                 model.fUserName = user.fUserName;
+            }
+            return model;
+        }
+
+        public static UserInfoModel UserWeiChatLogin(string strOpenID,string strUserName, ref string strMsg)
+        {
+            UserInfoModel model = null;
+            tUserEntity user = tUserDal.UserWeiChatLogin(strOpenID, strUserName,  ref strMsg);
+            if (user != null)
+            {
+                model = new UserInfoModel();
+                model.fCity = user.fCity;
+                model.fEmail = user.fEmail;
+                model.fHeadImg = user.fHeadImg;
+                model.fMobile = user.fMobile;
+                model.fOpenID = user.fOpenID;
+                model.fName = user.fName;
+                model.fNickName = user.fNickName;
+                model.fRegSystem = user.fRegSystem;
+                model.fRole = user.fRole;
+                model.fStatus = user.fStatus;
+                model.fUID = user.fUID;
+                model.fUserName = user.fUserName;
+                if (!string.IsNullOrEmpty(user.fPassWord))
+                {
+                    model.IsPassWord = "true";
+                }
             }
             return model;
         }
@@ -88,6 +117,7 @@ namespace TiKu.Bll
             model.fEmail = user.fEmail;
             model.fHeadImg = user.fHeadImg;
             model.fMobile = user.fMobile;
+            model.fOpenID = user.fOpenID;
             model.fCode = user.fCode;
             model.fName = user.fName;
             model.fNickName = user.fNickName;
@@ -107,6 +137,7 @@ namespace TiKu.Bll
             model.fEmail = user.fEmail;
             model.fHeadImg = user.fHeadImg;
             model.fMobile = user.fMobile;
+            model.fOpenID = user.fOpenID;
             model.fCode = user.fCode;
             model.fName = user.fName;
             model.fNickName = user.fNickName;

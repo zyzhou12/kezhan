@@ -140,6 +140,8 @@ namespace TiKuBll
                 strUpdateFiels = "fIsValid,fDestoryDate";
                 entity.fIsValid = false;
                 entity.fDestoryDate = DateTime.Now;
+
+               
             }
 
             List<tGroupEntity> list = new List<tGroupEntity>();

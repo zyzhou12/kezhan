@@ -182,14 +182,7 @@ namespace KeZhan.Controllers
             jr.Data = response;
             return jr;
         }
-        [HttpPost]
-        public JsonResult UserWeiXinPay(string openid, string strUserName, string strType, string strBookingNo, string strFee)
-        {
-            string sp_billno = UserBll.UserPay(strUserName, "weixinpay", strType, strBookingNo, Convert.ToDecimal(strFee), "web");
-
-
-            return GetJSUnifiedOrder(openid, "NATIVE", sp_billno, strType, Convert.ToInt32(Convert.ToDecimal(strFee) * 100));
-        }
+       
        
 
         [HttpPost]
@@ -205,7 +198,14 @@ namespace KeZhan.Controllers
             jr.Data = response;
             return jr;
         }
+        [HttpPost]
+        public JsonResult UserWeiXinPay(string openid, string strUserName, string strType, string strBookingNo, string strFee)
+        {
+            string sp_billno = UserBll.UserPay(strUserName, "weixinpay", strType, strBookingNo, Convert.ToDecimal(strFee), "web");
 
+
+            return GetJSUnifiedOrder(openid, sp_billno, strType, Convert.ToInt32(Convert.ToDecimal(strFee) * 100));
+        }
         /// <summary>
         /// 公众号支付
         /// </summary>
@@ -214,10 +214,8 @@ namespace KeZhan.Controllers
         /// <param name="strBody"></param>
         /// <param name="strFee"></param>
         /// <returns></returns>
-        public JsonResult GetJSUnifiedOrder(string openid, string strUserName,string strType, string strBody, int strFee)
+        public JsonResult GetJSUnifiedOrder(string openid,  string sp_billno, string strBody, int strFee)
         {
-
-            string sp_billno = UserBll.UserPay(strUserName, "weixinpay", strType, null, strFee, "web");
 
             TenPayModel model = new TenPayModel();
             JsonResult rst = new JsonResult();

@@ -9,6 +9,7 @@ namespace TiKuBll.Model
   {
     public System.String fUserName { get; set; }
     public System.String fMobile { get; set; }
+    public System.String fOpenID { get; set; }
 
     public System.String fCode { get; set; }
     public System.String IsPassWord { get; set; }

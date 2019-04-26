@@ -293,7 +293,15 @@ namespace TiKuBll
         {
             return tClassRoomDal.ClassRoomCoursePay(iCourseID, strOprUser,strSystem);
         }
+        public static int OnLineCoursePay(int iCourseID, string strOprUser)
+        {
+            return tClassRoomDal.OnLineCoursePay(iCourseID, strOprUser);
+        }
 
+        public static int OnLineCourseOwePay(int iOweID, string strOprUser)
+        {
+            return tClassRoomDal.OnLineCourseOwePay(iOweID, strOprUser);
+        }
 
         public static int ClassRoomSettlement(string strClassRoomCode, string strOprUser, ref string strMsg)
         {

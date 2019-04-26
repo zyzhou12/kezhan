@@ -165,7 +165,7 @@ namespace TiKuService
                         }
                     }
 
-                    //获取群自动解散（老师退出后三小时）
+                    //获取群自动解散
                     strSql = @" select * from tgroup 
                                  where fgroupid in (
                                  select fClassRoomCode+Convert(varchar(10),fid) from tCourse where dateadd(minute,fClassDateLength+5,fClassDate)<getdate())
@@ -234,6 +234,111 @@ namespace TiKuService
                             }
                         }
                     }
+
+                    //在线课堂结算
+                    strSql = @" select c.* from tCourse c
+                                left join tClassRoom r on r.fClassRoomCode=c.fClassRoomCode
+                                 where isnull(fispay,0)=0 and r.fClassType='OnLine'
+                                 and dateadd(minute,fClassDateLength,fClassDate)<dateadd(minute,5,getdate())";
+                    daSMS = new SqlDataAdapter(strSql, conn);
+                    dsSms = new DataSet();
+
+                    daSMS.Fill(dsSms);
+
+
+                    if (dsSms.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
+                        {
+                            int iCourseID = Convert.ToInt32(dsSms.Tables[0].Rows[i]["fID"]);
+                            try
+                            {
+
+                                SaveLog("The CourseSettlement is Begin" + DateTime.Now.ToString() + "\t" + iCourseID);
+                                CourseSettlement(iCourseID);
+
+
+                                SaveLog("The CourseSettlement is end\t" + DateTime.Now.ToString() + "\t" + iCourseID);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                SaveLog("The  CourseSettlement Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+                            }
+
+
+                        }
+                    }
+
+
+                    //清算欠费流量
+                    strSql = @" select * from tuserowe where fStatus<2";
+                    daSMS = new SqlDataAdapter(strSql, conn);
+                    dsSms = new DataSet();
+
+                    daSMS.Fill(dsSms);
+
+
+                    if (dsSms.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
+                        {
+                            int iOweID = Convert.ToInt32(dsSms.Tables[0].Rows[i]["fID"]);
+                            try
+                            {
+
+                                SaveLog("The CourseOweSettlement is Begin" + DateTime.Now.ToString() + "\t" + iOweID);
+                                CourseOweSettlement(iOweID);
+
+
+                                SaveLog("The CourseOweSettlement is end\t" + DateTime.Now.ToString() + "\t" + iOweID);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                SaveLog("The  CourseSettlement Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+                            }
+
+
+                        }
+                    }
+
+                    //课程结算
+                    strSql = @" select * from tClassRoom where fClassRoomCode in 
+                                (select distinct fClassRoomCode from tCourse where dateadd(minute,fClassDateLength,fClassDate)<dateadd(day,-7,getdate()))
+                                and fStatus<>'结算' 
+                                and fClassType<>'OnLine'";
+                    daSMS = new SqlDataAdapter(strSql, conn);
+                    dsSms = new DataSet();
+
+                    daSMS.Fill(dsSms);
+
+
+                    if (dsSms.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
+                        {
+                            string strClassRoomCode = dsSms.Tables[0].Rows[i]["fClassRoomCode"].ToString();
+                            try
+                            {
+
+                                SaveLog("The ClassRoomSettlement is Begin" + DateTime.Now.ToString() + "\t" + strClassRoomCode);
+                                ClassRoomSettlement(strClassRoomCode);
+
+
+                                SaveLog("The ClassRoomSettlement is end\t" + DateTime.Now.ToString() + "\t" + strClassRoomCode);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                SaveLog("The  ClassRoomSettlement Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+                            }
+
+
+                        }
+                    }
+
+
                     try
                     {
                         //检查流量是否过期
@@ -534,6 +639,23 @@ namespace TiKuService
             }
         }
 
+        public void ClassRoomSettlement(string strClassRooomCode)
+        {
+            string strMsg = "";
+            ClassRoomBll.ClassRoomSettlement(strClassRooomCode, "MediaService", ref strMsg);
+        }
+
+        public void CourseSettlement(int iCourseID)
+        {
+            int i = ClassRoomBll.OnLineCoursePay(iCourseID, "MediaService");
+                               
+        }
+
+        public void CourseOweSettlement(int iOweID)
+        {
+            int i = ClassRoomBll.OnLineCourseOwePay(iOweID, "MediaService");
+                               
+        }
         public void UpdateBookingStatus(string strBookingNo)
         {
             BookingBll.BookingUpdateStatus(strBookingNo, "已取消", "支付时间到自动取消", "System");

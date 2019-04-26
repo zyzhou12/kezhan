@@ -11,6 +11,7 @@ using System.Web.Script.Serialization;
 using TiKuBll;
 using System.IO;
 using System.Xml.Serialization;
+using System.Configuration;
 
 namespace KeZhan.Controllers
 {
@@ -200,15 +201,26 @@ namespace KeZhan.Controllers
         }
 
 
-
+        protected virtual bool IsWechatBrowser
+        { get { return (Request.UserAgent.ToLower().Contains("micromessenger")); } }
 
         public ActionResult UserBooking(string strBookingNo)
         {
+
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             BookingModel model = BookingBll.GetBookingByNo(strBookingNo);
             model.UserAccountAmount = UserBll.GetUserAccountAmount(userInfo.fUserName);
             model.UserName = userInfo.fUserName;
+            model.OpenID = userInfo.fOpenID;
+            model.BookingRefund = BookingBll.GetRefundByBookingNo(strBookingNo);
+            if(IsWechatBrowser)
+            {
+                if (string.IsNullOrEmpty(userInfo.fOpenID))
+                {
 
+                    return Redirect(ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/Open/WeiXinLogin?strParam=" + strBookingNo + "&strState=" + userInfo.fUserName);
+                }
+            }
 
             return View(model);
         }

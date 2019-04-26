@@ -347,6 +347,34 @@ left join tUser u on u.fUserName=cr.fTecharUserName
         return dtRst;
     }
 
+    public static int OnLineCoursePay(int iCourseID, string strOprUser)
+    {
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        lstParam.Add(new DBParam("@iCourseID", iCourseID));
+        lstParam.Add(new DBParam("@OprUser", strOprUser));
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        int dtRst = DBHelper.ExecuteProc("TiKu", "OnLineCourse_Pay", lstParam, DBHelper.ProcRstTypes.All).Result;
+
+        return dtRst;
+    }
+
+    public static int OnLineCourseOwePay(int iOweID, string strOprUser)
+    {
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        lstParam.Add(new DBParam("@OweID", iOweID));
+        lstParam.Add(new DBParam("@OprUser", strOprUser));
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        int dtRst = DBHelper.ExecuteProc("TiKu", "OnLineCourse_LeftOwePay", lstParam, DBHelper.ProcRstTypes.All).Result;
+
+        return dtRst;
+    }
+
     public static int ClassRoomSettlement(string strClassRoomCode, string strOprUser,ref string strMsg)
     {
         List<DbParameter> lstParam = new List<DbParameter>();

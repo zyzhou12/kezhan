@@ -65,8 +65,26 @@ namespace TiKu.Dal
             tUserRefundEntity rst = null;
             string strSQL = @"select fClassRoomTitle,r.* from tUserRefund r 
 	left join tBooking b on b.fBookingNo=r.fBookingNO
-	left join tClassRoom c on c.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' WHERE r.fID=" + id.ToString();
-            DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
+	left join tClassRoom c on c.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' WHERE r.fID=@id";
+
+            List<DbParameter> lstParam = new List<DbParameter>();
+            lstParam.Add(new DBParam("@id", id));
+            DataTable dt = DBHelper.QueryToTable("TiKu", strSQL,lstParam);
+            if (dt.Rows.Count > 0)
+            {
+                rst = new tUserRefundEntity();
+                Trip8H.Common.PubFun.DataRowToObject(dt.Rows[0], rst);
+            }
+            return rst;
+        }
+
+        public static tUserRefundEntity GettUserRefundByBookingNo(string strBooking)
+        {
+            tUserRefundEntity rst = null;
+            string strSQL = @"select * from tUserRefund  WHERE fStatus=1 and fBookingNO=@bookingNo";
+            List<DbParameter> lstParam = new List<DbParameter>();
+            lstParam.Add(new DBParam("@bookingNo", strBooking));
+            DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
             if (dt.Rows.Count > 0)
             {
                 rst = new tUserRefundEntity();

@@ -156,10 +156,10 @@
 
 
 
-                            <label>是否录屏回看</label>
+                            @*<label>是否录屏回看</label>
                             @Html.DropDownListFor(m => m.fIsRecord, new[] {
                                                                                               new SelectListItem { Text = "是", Value = "true" },
-                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })
+                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })*@
 
 
 
@@ -341,7 +341,7 @@
             "fIsReturn": $("#cmbIsReturn").val(),
             "fReturnType": $("#cmbReturnType").val(),
             "fReturnRule": $("#cmbReturnRule").val(),
-            "fIsRecord": $("#cmbIsRecord").val(),
+            //"fIsRecord": $("#cmbIsRecord").val(),
             "fStatus": "保存"
         };
 

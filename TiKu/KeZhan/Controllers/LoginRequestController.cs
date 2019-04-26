@@ -438,8 +438,17 @@ namespace KeZhan.Controllers
 
             string strMsg = "";
             JsonResult jr = new JsonResult();
-            response.iResult = ClassRoomBll.ClassRoomSettlement(strClassRooomCode, userInfo.fUserName, ref strMsg);
-            response.strMsg = strMsg;
+            try
+            {
+                response.iResult = ClassRoomBll.ClassRoomSettlement(strClassRooomCode, userInfo.fUserName, ref strMsg);
+                response.strMsg = strMsg;
+            }
+            catch (Exception ex)
+            {
+                 response.iResult = -1;
+                response.strMsg = "结算失败";
+            }
+            
             jr.Data = response;
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;

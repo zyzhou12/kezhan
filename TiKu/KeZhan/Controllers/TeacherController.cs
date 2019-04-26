@@ -32,6 +32,7 @@ namespace KeZhan.Controllers
             ConfigModel config = ManagerBll.GetSystemConfig("上海");
             UserPayModel model = new UserPayModel();
             model.UserName = userInfo.fUserName;
+            model.OpenID = userInfo.fOpenID;
             model.ClassFee = config.fClassFee;
             return View(model);
         }

@@ -24,6 +24,7 @@ namespace TiKuBll.Model
         public System.String fModifyOpr { get; set; }
 
         public System.String UserName { get; set; }
+        public System.String OpenID { get; set; }
         public System.String UserHead { get; set; }
         public System.String Mobile { get; set; }
         public System.String Title { get; set; }
@@ -35,6 +36,7 @@ namespace TiKuBll.Model
         public System.Decimal MaxReturnAmount { get; set; }
 
         public ClassRoomModel ClassRoom { get; set; }
+        public UserRefundModel BookingRefund { get; set; }
     }
 
     public class BookingListModel
