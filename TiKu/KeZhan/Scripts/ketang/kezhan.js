@@ -589,6 +589,20 @@ this.ticSdk.on(TICSDK.CONSTANT.EVENT.IM.GROUP_SYSTEM_NOTIFYS, imEvent => {
     if (imEvent.event_type === 5) { // 群被解散
     this.ticSdk.quitClassroom();
 this.showTip(`老师解散了课堂`);
+
+axios.get(`/UserApi/QuitClass?`,{
+params:{
+    strUserId:this.account,
+    strGroupId:this.roomID
+}
+})
+.then(function (response) {
+    console.log(response.data);
+})
+.catch(function (error) {
+    console.log(error);
+});
+
 } else if (imEvent.event_type === 8) {
     this.showTip(`退出了课堂`);
 

@@ -80,8 +80,8 @@
                                                     </p>
 
                                                     <div class="reservation-package_book-price">
-                                                        <a href="#" class="awe-btn awe-btn-default">进入课堂</a>
-                                                        <a href="#" class="awe-btn awe-btn-default">结算</a>
+                                                        @*<a href="#" class="awe-btn awe-btn-default">进入课堂</a>
+                                                        <a href="#" class="awe-btn awe-btn-default">结算</a>*@
                                                     </div>
                                                 </div>
 
@@ -142,15 +142,33 @@
             "fOrder": "0"
         }
         $.ajax({
-            url: "/LoginRequest/DoSaveClassRoomCourse",
+            url: "/LoginRequest/DoSaveOnLineCourse",
             data: CourseModel,
             type: "POST",
             dataType: "json",
             success: function (rst) {
                 if (rst.iResult >= 0) {
                     alert("课堂号：" + classRoomCode + rst.iResult);
+                    $.ajax({
+                        url: "/LoginRequest/CheckOnlineClass",
+                        data: { "strCourseNo": classRoomCode + rst.iResult,"strRole":"Teacher" },
+                        dataType: "json",
+                        success: function (result) {
 
-                    window.location.href = "/home/index?iCourseID=" + rst.iResult + "&strRole=Teacher";
+                            if (result.iResult > 0) {
+                                window.location.href = "/home/index?iCourseID=" + rst.iResult + "&strRole=Teacher";
+
+                            } else if (result.iResult == -9999) {
+                                alert("请重新登录");
+                            } else {
+                                alert(result.strMsg);
+                            }
+                        }
+
+                    });
+
+
+                    
 
                 } else if (rst.iResult == -9999) {
                     alert("请重新登录");

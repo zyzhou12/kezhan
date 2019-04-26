@@ -202,6 +202,32 @@ namespace KeZhan.Controllers
             return jr;
         }
 
+        [HttpPost]
+        public JsonResult DoSaveOnLineCourse(CourseModel model)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            if (string.IsNullOrEmpty(model.fCourseTitle))
+            {
+                response.iResult = -1;
+                response.strMsg = "请输入课时标题";
+            }
+            else if (model.fClassDateLength <= 0)
+            {
+                response.iResult = -1;
+                response.strMsg = "上课时长必须大于0";
+            }
+            else
+            {
+                model.fClassDate = DateTime.Now;
+                response.iResult = ClassRoomBll.DoSaveClassRoomCourse(model);
+            }
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
         /// <summary>
         /// 修改状态（发布/下架）
         /// </summary>
@@ -1013,7 +1039,7 @@ namespace KeZhan.Controllers
         #region Start
 
 
-        public JsonResult CheckOnlineClass(string strCourseNo)
+        public JsonResult CheckOnlineClass(string strCourseNo, string strRole="Student")
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
@@ -1035,7 +1061,7 @@ namespace KeZhan.Controllers
                         decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(Convert.ToInt32(strCourseID));
 
 
-                        if (userAccount < 20)
+                        if (userAccount < 20 && strRole == "Teacher")
                         {
                             response.iResult = -1;
                             response.strMsg = "该课时最大需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString()+ "分钟。请先去购买流量";
