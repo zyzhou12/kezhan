@@ -101,6 +101,7 @@
     <Compile Include="tUserAccountEntity.cs" />
     <Compile Include="tUserBankAccountEntity.cs" />
     <Compile Include="tUserEntity.cs" />
+    <Compile Include="tUserFocusEntity.cs" />
     <Compile Include="tUserMemberEntity.cs" />
     <Compile Include="tUserPayEntity.cs" />
     <Compile Include="tUserRefundEntity.cs" />

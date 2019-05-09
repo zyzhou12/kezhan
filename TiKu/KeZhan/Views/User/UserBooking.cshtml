@@ -24,7 +24,7 @@
                             <div class="widget widget_recent_entries has_thumbnail">
                                 <h4 class="widget-title">老师微信二维码</h4>
                                 <div class="guest-book_item guest-book_item-2">
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.ClassRoom.TeacherQrCode?x-oss-process=style/zheng" alt="" />
+                                    <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.ClassRoom.TeacherQrCode?x-oss-process=style/zheng" alt="" />
 
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                                 <div class="widget widget_recent_entries has_thumbnail">
                                     <h4 class="widget-title">课程微信群</h4>
                                     <div class="guest-book_item guest-book_item-2">
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.ClassRoom.fQrCode?x-oss-process=style/zheng" alt="" />
+                                        <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.ClassRoom.fQrCode?x-oss-process=style/zheng" alt="" />
 
                                     </div>
                                 </div>
@@ -59,45 +59,59 @@
                             <h4>订单信息</h4>
 
 
-<label>订单编号<sup> </sup></label>
-<span>@Model.fBookingNo</span>
-<label>课程名称<sup> </sup></label>
-<span>@Model.ClassRoom.fClassRoomTitle</span>
-<label>购买时间<sup> </sup></label>
-<span>@Model.fBuyDate.ToString()</span>
-<label>价格<sup></sup></label>
-<span>@Model.fAmount </span>
-<label>开课时间<sup> </sup></label>
-<span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
-@if (Model.fIsReturn)
-{
-    var strRefund = " 按" + Model.ClassRoom.fReturnRule+"  "+ Model.ClassRoom.fReturnType + "退" ;
-    <label>@strRefund<sup> </sup></label>
-    <span>课前退，是指课程的第一课时开始前；随时退，最后一个课时前随时可退</span>
-}
-else
-{
-    <label>是否可退</label>
-    <span>不可退</span>
-}
-                            @if (@Model.BookingRefund!=null)
+                            <label>订单编号<sup> </sup></label>
+                            <span>@Model.fBookingNo</span>
+                            <label>课程名称<sup> </sup></label>
+                            @if (Model.fType == "ClassRoom")
+                            {
+                                <span>@Model.ClassRoom.fClassRoomTitle</span>
+                            }
+                            else
+                            {
+                                <span>在线课堂</span>
+                            }
+                            <label>购买时间<sup> </sup></label>
+                            <span>@Model.fBuyDate.ToString()</span>
+                            <label>价格<sup></sup></label>
+                            <span>@Model.fAmount </span>
+                            @if (Model.fType == "ClassRoom")
+                            {
+                                <label>开课时间<sup> </sup></label>
+                                <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
+                            }
+                            @if (Model.fIsReturn)
+                            {
+                                var strRefund = Model.ClassRoom.fReturnType + "退";
+                                if (Model.ClassRoom.fReturnType == "随时")
+                                {
+                                    strRefund += " 按" + Model.ClassRoom.fReturnRule;
+                                }
+                                <label>@strRefund<sup> </sup></label>
+                                <span>课前退，是指课程的第一课时开始前；随时退，最后一个课时前随时可退</span>
+                            }
+                            else
+                            {
+                                <label>是否可退</label>
+                                <span>不可退</span>
+                            }
+                            @if (@Model.BookingRefund != null)
                             {
                                 <label>退款信息<sup> </sup></label>
                                 <span>退款金额：@Model.BookingRefund.fRefundAmount</span>
-    <span>退款时间：@Model.BookingRefund.fApplyDate</span>
+                                <span>退款时间：@Model.BookingRefund.fApplyDate</span>
                             }
                             @*<label>课程明细<sup> </sup></label>
-                            @foreach (var c in Model.ClassRoom.courseList)
-                            {
-                                <span>@c.fDictTitle</span>
-                                <span>@c.fCourseTitle</span>
-                                <span>@c.fClassDate.ToString()</span>
-                                <br />
-                            }*@
+                                @foreach (var c in Model.ClassRoom.courseList)
+                                {
+                                    <span>@c.fDictTitle</span>
+                                    <span>@c.fCourseTitle</span>
+                                    <span>@c.fClassDate.ToString()</span>
+                                    <br />
+                                }*@
 
                             <br />
 
-                            @if (Model.ClassRoom.fPayType == "在线支付")
+                            @if (Model.fType == "ClassRoom" && Model.ClassRoom.fPayType == "在线支付")
                             {
                                 if (!Model.fIsPay && Model.fStatus == "提交")
                                 {
@@ -145,7 +159,7 @@ else
                                     <div id="divQrCode" style=" display:none;">
                                     </div>
                                     <br />
-                                    <button class="awe-btn awe-btn-13" id="btnPay" onclick="UserPay('@Model.fBookingNo',@Model.fAmount)">支付订单</button>
+                                    <button class="awe-btn awe-btn-13" id="btnPay" data-reveal-id="divPayCode" onclick="UserPay('@Model.fBookingNo',@Model.fAmount)">支付订单</button>
                                     //}
                                 }
                                 else if (Model.fIsReturn && Model.fIsPay && Model.fStatus == "已支付" && Model.ClassRoom.fStatus != "结算")
@@ -170,21 +184,6 @@ else
 </section>
 
 
-
-<div id="divPayCode" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
-    <h1>
-        微信扫码支付
-    </h1>
-
-    <p>
-        <img id="imgQrCode" src="" />
-
-    </p>
-    <button class="awe-btn awe-btn-13" onclick="ClosePayCode()">支付完成</button>
-
-
-    <a class="close-reveal-modal" onclick="ClosePayCode()">&#215;</a>
-</div>
 
 
 <script type="text/javascript">
@@ -349,8 +348,7 @@ else
                 }
                );
             },
-            fail:function(err)
-            {
+            fail: function (err) {
                 alert(err);
             }
 

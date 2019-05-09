@@ -43,7 +43,7 @@
                     </div>
                     <!-- END / STEP -->
 
-                    @if (Model.userRole == "Teacher" && Model.teacherInfo.fStatus == "未认证")
+                    @if (Model.userRole == "Teacher" && Model.teacherInfo.fStatus == "未认证" && Model.validInfo==null)
                     {
 
                     @Html.Partial("../Teacher/ValidUploadFile", new TiKuBll.Model.TeacherValidModel { fUserName = Model.userInfo.fUserName })
@@ -71,8 +71,7 @@
 
                                     @if (Model.userRole == "Teacher")
                                     {
-                                        if (Model.teacherInfo.fStatus == "已认证")
-                                      {
+                                      
                                        <h4>老师基本资料</h4>
                                    
                                   
@@ -81,45 +80,45 @@
                                     <textarea class="input-textarea" id="txtTeacherDesc" placeholder="请输入老师介绍信息"></textarea>
 
 
-                                    
-                                     <label>开通功能</label>
-                                       <ul class="option-bank">
-                                        <li>
-                                            <label class="label-radio">
-                                                <input type="checkbox" class="input-radio" id="chkClassRoom">
-                                                在线课堂
-                                            </label>
-                                            <p>在线课堂介绍</p>
-                                           
-                                        </li>
 
-                                        <li>
-                                            <label class="label-radio">
-                                                <input type="checkbox" class="input-radio" id="chkLives">
-                                                一对一辅导
-                                            </label>
-                                            <p>一对一介绍，开通需缴纳押金才能使用</p>
-                                           
-                                            <label>收费价格<sup>*</sup></label>
-                                            <input type="number" id="txtVideoFee" class="input-text">
-                                        
-                                        </li>
+    @*   <label>开通功能</label>
+    <ul class="option-bank">
+     <li>
+         <label class="label-radio">
+             <input type="checkbox" class="input-radio" id="chkClassRoom">
+             在线课堂
+         </label>
+         <p>在线课堂介绍</p>
 
-                                        @*<li>
-                                            <label class="label-radio">
-                                                <input type="checkbox" class="input-radio" id="chkProblem">
-                                                在线答疑
-                                            </label>
-                                            
-                                            <label>收费价格<sup>*</sup></label>
-                                            <input type="text" id="txtProblemFee" class="input-text">
-                                           
-                                        </li>*@
+     </li>
 
-                                    </ul>
-                                      
+     <li>
+         <label class="label-radio">
+             <input type="checkbox" class="input-radio" id="chkLives">
+             一对一辅导
+         </label>
+         <p>一对一介绍，开通需缴纳押金才能使用</p>
+
+         <label>收费价格<sup>*</sup></label>
+         <input type="number" id="txtVideoFee" class="input-text">
+
+     </li>
+
+    <li>
+         <label class="label-radio">
+             <input type="checkbox" class="input-radio" id="chkProblem">
+             在线答疑
+         </label>
+
+         <label>收费价格<sup>*</sup></label>
+         <input type="text" id="txtProblemFee" class="input-text">
+
+     </li>
+
+                                </ul>
+    *@
                                     <button class="awe-btn awe-btn-13" onclick="SaveInfo('@Model.userRole')">保存</button>
-                                      }
+                                      
                                    
                                     }
                                     else if (Model.userRole == "Student")
@@ -191,12 +190,11 @@
 
     if (userRole == "Teacher") {
       var TeacherBaseModel = {
-        fDesc: $("#txtTeacherDesc").val(),
-        fIsClassRoom: $("#chkClassRoom").prop('checked'),
-        fIsLive: $("#chkLives").prop('checked'),
-        fIsProblem: $("#chkProblem").prop('checked'),
-        fVideoFee: $("#txtVideoFee").val()
-        //  ,
+        fDesc: $("#txtTeacherDesc").val()
+        //fIsClassRoom: $("#chkClassRoom").prop('checked'),
+        //fIsLive: $("#chkLives").prop('checked'),
+        //fIsProblem: $("#chkProblem").prop('checked'),
+        //fVideoFee: $("#txtVideoFee").val(),
         //fProblemFee: $("#txtProblemFee").val()
       };
 

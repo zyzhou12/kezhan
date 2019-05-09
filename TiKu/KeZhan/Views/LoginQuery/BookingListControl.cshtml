@@ -33,13 +33,12 @@
 
                         <div class="action">
                             @if (Model.IsManager)
-                            {
-                                
+                            {                                
                                 if ( b.fIsPay && b.fStatus == "已支付" && Model.fStatus != "结算")
                                 {
                                     <a class="awe-btn awe-btn-14" href="/User/BookingRefund?strBookingNo=@b.fBookingNo">退款</a>
                                 }
-                                else if (Model.fStatus == "发布" && !b.fIsPay && b.fStatus == "提交")
+                                else if (Model.fPayType.Trim() == "线下支付" && Model.fStatus == "发布" && !b.fIsPay && b.fStatus == "提交")
                                 {
                                     <button class="awe-btn awe-btn-14" onclick="UpdatePayStatus('@b.fBookingNo','已支付')">线下已支付</button>
                                 }

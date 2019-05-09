@@ -16,6 +16,8 @@ namespace TiKu.Entity
     public System.String fTradePassWord { get; set; }
     public System.String fCode { get; set; }
     public System.DateTime fCodeEffectDate { get; set; }
+    public System.String fEmailCode { get; set; }
+    public System.DateTime fEmailCodeEffectDate { get; set; }
     public System.String fNickName { get; set; }
     public System.String fHeadImg { get; set; }
     public System.String fWeiXinUnionID { get; set; }

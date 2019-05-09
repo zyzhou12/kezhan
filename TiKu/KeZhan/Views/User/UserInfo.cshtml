@@ -62,14 +62,24 @@
                             <label>手机<sup>*</sup></label>
                             <span id="spanMobile">@Model.userInfo.fMobile</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aMobile" onclick="updateMobile()">修改</a>
                             <input type="text" style=" display:none" id="txtMobile" placeholder="请输入新手机" class="input-text">
-                            <br />
+                            <br /><br />
                             <input type="text" style=" display:none" id="txtCode" placeholder="请输入验证码" value="" class="input-text">
                             <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnCode" onclick="DoSendCode()">发送验证码</a>
 
-                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnMobile" style="width:20%;" onclick="DoSaveMobile()">保存</a>
+                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnMobile" onclick="DoSaveMobile()">保存</a>
 
                             @*<label>邮箱</label>
                                 <input type="text" id="txtEmail" value="@Model.userInfo.fEmail" class="input-text">*@
+                            <label>邮箱<sup>*</sup></label>
+                            <span id="spanEmail">@Model.userInfo.fEmail</span>
+                            <a href="#" style="padding-left:20px; color:#e1bd85;" id="aEmail" onclick="updateEmail()">修改</a>
+                            <input type="text" style=" display:none" id="txtEmail" placeholder="请输入新邮箱" class="input-text">
+                            <br /><br />
+                            <input type="text" style=" display:none" id="txtEmailCode" placeholder="请输入邮箱验证码" value="" class="input-text">
+                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnEmailCode" onclick="DoSendEmailCode()">发送验证码</a>
+
+                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnEmail"  onclick="DoSaveEmail()">保存</a>
+
 
                             <label>密码<sup>*</sup></label>
                             <span id="spanPass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aPass" onclick="updatePass()">修改</a>
@@ -115,11 +125,12 @@
                                 <label>微信二维码</label>
                                 @if (string.IsNullOrEmpty(Model.teacherInfo.fQrCode))
                                 {
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/width" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
+                                    
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
                                 }
                                 else
                                 {
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.teacherInfo.fQrCode?x-oss-process=style/width" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
+                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.teacherInfo.fQrCode?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
                                 }
                                 <input type="hidden" id="hidQrCode" value="@Model.teacherInfo.fQrCode" />
 
@@ -379,11 +390,11 @@
 
         if ($("#txtMobile").val() == "") {
             alert("请输入联系手机");
-            $("#txtNewMobile").focus();
+            $("#txtMobile").focus();
             return;
         } else if (!reg.test($("#txtMobile").val())) {
             alert("手机号格式错误，请重新输入");
-            $("#txtNewMobile").focus();
+            $("#txtMobile").focus();
             return;
         }
 
@@ -444,6 +455,90 @@
 
         });
     }
+
+
+
+    function updateEmail() {
+        $("#aEmail").hide();
+        $("#txtEmail").show();
+        $("#btnEmailCode").show();
+        $("#btnEmail").show();
+        $("#txtEmail").focus();
+    }
+
+    function DoSendEmailCode() {
+        var reg = /^([a-zA-Z]|[0-9])(\w|\-)+@@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+
+        if ($("#txtEmail").val() == "") {
+            alert("请输入邮箱");
+            $("#txtEmail").focus();
+            return;
+        } else if (!reg.test($("#txtEmail").val())) {
+            alert("邮箱格式错误，请重新输入");
+            $("#txtEmail").focus();
+            return;
+        }
+
+
+        var tm = left_time();
+        if (tm > 0) {
+            alert("请在 " + tm + " 秒后再次点击发送");
+            return;
+        }
+
+        $.ajax({
+            url: "/LoginRequest/DoSendEmailCode",
+            data: { "strEmail": $("#txtEmail").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+
+                if (rst.iResult >= 0) {
+                    $("#txtEmail").attr("disabled", true);
+                    $("#txtEmailCode").show();
+                    $("#txtEmailCode").attr("disabled", false);
+                    alert("验证邮件已发送，请注意查收");
+                    flag = 1;
+                    time_ok = get_time_add(30);
+                    updateLabNo();
+
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+
+
+    function DoSaveEmail() {
+        if ($("#txtEmailCode").val() == "") {
+            alert("请输入邮箱验证码");
+            return;
+        }
+
+        $.ajax({
+            url: "/LoginRequest/DoUpdateEmail",
+            data: { "strEmail": $("#txtEmail").val(), "strCode": $("#txtEmailCode").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("保存成功");
+                    window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+
+
 
     function updateNickName() {
         $("#spanNickName").hide();

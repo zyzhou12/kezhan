@@ -33,6 +33,8 @@ namespace KeZhan.Controllers
             return jr;
         }
 
+       
+
 
         [HttpPost]
         public JsonResult DoValidCode(string strMobile, string strCode, string strRole)

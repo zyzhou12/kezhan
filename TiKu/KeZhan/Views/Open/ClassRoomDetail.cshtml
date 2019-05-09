@@ -19,16 +19,28 @@
                                     <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherHead?x-oss-process=style/head" alt="">
                                 </div>
                                 <h2>@Model.TeacherName</h2>
-                                <p style="word-wrap:break-word;">
-                                @if (Model.validList != null)
+                                @if (!string.IsNullOrEmpty(Model.UserName))
                                 {
-                                    <span>证书编号：</span>
-                                    foreach (var valid in Model.validList)
+                                    if (Model.IsFocus <= 0)
                                     {
-                                        <label>@valid.fCertNo</label>
+                                        <button class="awe-btn awe-btn-13" id="btnFocus" onclick="FocusTeacher('@Model.fTecharUserName',true)">关注</button>
+                                    }
+                                    else
+                                    {
+                                        <button class="awe-btn awe-btn-13" id="btnFocus" onclick="FocusTeacher('@Model.fTecharUserName',false)">取消关注</button>
                                     }
                                 }
-                                    <span>@Model.TeacherDesc</span></p>
+                                <p style="word-wrap:break-word;">
+                                    @if (Model.validList != null)
+                                    {
+                                        <span>证书编号：</span>
+                                        foreach (var valid in Model.validList)
+                                        {
+                                            <label>@valid.fCertNo</label>
+                                        }
+                                    }
+                                    <span>@Model.TeacherDesc</span>
+                                </p>
                                 <span></span>
                             </div>
                         </div>
@@ -48,12 +60,10 @@
                         {
                             if (!string.IsNullOrEmpty(Model.fQrCode))
                             {
-
                                 <div class="widget widget_recent_entries has_thumbnail">
                                     <h4 class="widget-title">课程微信群</h4>
                                     <div class="guest-book_item guest-book_item-2">
                                         <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/zheng" alt="" />
-
                                     </div>
                                 </div>
                             }
@@ -94,7 +104,13 @@
                                             <li>授课老师：@Model.TeacherName</li>
                                             @if (Model.fIsReturn)
                                             {
-                                                <li>可退</li>
+                                                if (Model.fReturnType == "随时")
+                                                {
+                                                    <li>随时退（课时开课前1小时本课时不能退）</li>}
+                                                else
+                                                {
+                                                    <li>课前退（课程第一课时开始前1小时不能退）</li>
+                                                }
                                             }
                                             else
                                             {
@@ -264,6 +280,33 @@
                 if (rst.iResult >= 0) {
                     if (rst.iResult == 0) {
                         window.location.href = "/User/ClassRoomBooking?strClassRoomCode=" + classRoomCode;
+                    }
+                } else if (rst.iResult == -9999) {
+                    window.location.href = "/open/RegsiterLogin?redirect_uri=/open/ClassRoomDetail?strClassRoomCode=" + classRoomCode;
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+    function FocusTeacher(TeacherUser,IsFocus)
+    {
+        $.ajax({
+            url: "/LoginRequest/DoUserFocus",
+            data: { "strTeacherUser": TeacherUser, "IsFocus": IsFocus },
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    if (IsFocus) {
+                        alert("关注成功");
+                        $("#btnFocus").text("取消关注");
+                        $("#btnFocus").attr("onclick", "FocusTeacher('" + TeacherUser + "',false)");
+                    } else {
+                        alert("取消关注成功");
+                        $("#btnFocus").text("关注");
+                        $("#btnFocus").attr("onclick", "FocusTeacher('" + TeacherUser + "',true)");
                     }
                 } else if (rst.iResult == -9999) {
                     window.location.href = "/open/RegsiterLogin?redirect_uri=/open/ClassRoomDetail?strClassRoomCode=" + classRoomCode;

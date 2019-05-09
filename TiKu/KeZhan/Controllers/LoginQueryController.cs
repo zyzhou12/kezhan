@@ -75,6 +75,7 @@ namespace KeZhan.Controllers
             ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, "");
             model.fClassRoomCode = strClassRoomCode;
             model.fClassType = classRoom.fClassType;
+            model.fPayType = classRoom.fPayType;
             model.fStatus = classRoom.fStatus;
             model.IsManager = classRoom.fCreateOpr == userInfo.fUserName;
             // model.list = model.list.Where(m => m.fIsPay == true).ToList();

@@ -107,6 +107,7 @@
     <Compile Include="tUserAccountDal.cs" />
     <Compile Include="tUserBankAccountDal.cs" />
     <Compile Include="tUserDal.cs" />
+    <Compile Include="tUserFocusDal.cs" />
     <Compile Include="tUserMemberDal.cs" />
     <Compile Include="tUserPayDal.cs" />
     <Compile Include="tUserRefundDal.cs" />

@@ -16,25 +16,25 @@ namespace KeZhan.Controllers
         // GET: /Start/
 
 
-        public ActionResult MyClassRoomList(string strClassType, string strStatus = null, string strPayType = null, string strType = null)
+        public ActionResult MyClassRoomList(string strRoleType, string strStatus = null, string strPayType = null, string strType = null,string strClassType=null)
         {
 
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
 
             ClassRoomListModel model = null;
-            if (strClassType == "buy")
+            if (strRoleType == "buy")
             {
                 model = ClassRoomBll.GetMyClassRoom(userInfo.fUserName, strType);
             }
-            else if (strClassType == "create")
+            else if (strRoleType == "create")
             {
-                model = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType, strType);
+                model = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType, strType, strClassType);
             }
-            else if (strClassType == "teacher")
+            else if (strRoleType == "teacher")
             {
-                model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, strStatus, strPayType, strType);
+                model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, strStatus, strPayType, strType, strClassType);
             }
-            model.listType = strClassType;
+            model.listType = strRoleType;
             if (strStatus == null)
             {
                 model.strStatus = "";
@@ -60,6 +60,14 @@ namespace KeZhan.Controllers
             {
                 model.strType = strType;
             }
+            if (strClassType == null)
+            {
+                model.strClassType = "";
+            }
+            else
+            {
+                model.strClassType = strClassType;
+            }
             return View(model);
         }
 
@@ -72,7 +80,9 @@ namespace KeZhan.Controllers
 
         public ActionResult OnLineClass()
         {
-            return View();
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+            return View(userInfo);
         }
     }
 }

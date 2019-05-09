@@ -31,6 +31,10 @@
                                         { <text> class="active" </text>        }><a href="/User/BookingList?strStatus=已支付">已支付</a></li>
                                     <li @if (Model.fStatus == "已取消")
                                         { <text> class="active" </text>        }><a href="/User/BookingList?strStatus=已取消">已取消</a></li>
+                                    <li @if (Model.fStatus == "退款中") { <text> class="active" </text>         }><a href="/User/BookingList?strStatus=退款中">退款中</a></li>
+                                    <li @if (Model.fStatus == "已退款") { <text> class="active" </text>         }><a href="/User/BookingList?strStatus=已退款">已退款</a></li>
+                                    <li @if (Model.fStatus == "已驳回") { <text> class="active" </text>         }><a href="/User/BookingList?strStatus=已驳回">已驳回</a></li>
+
                                 </ul>
 
                             </div>

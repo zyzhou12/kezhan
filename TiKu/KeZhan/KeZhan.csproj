@@ -238,6 +238,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OpenClassRoomModel.cs" />
     <Compile Include="Models\PublicTokenModel.cs" />
+    <Compile Include="Models\ResponseCourseModel.cs" />
     <Compile Include="Models\xml.cs" />
     <Compile Include="Models\ResponseBaseModel.cs" />
     <Compile Include="Models\TeacherClassRoomListModel.cs" />
@@ -530,9 +531,7 @@
     <Content Include="Content\images\large_left.png" />
     <Content Include="Content\images\large_right.png" />
     <Content Include="Content\images\less\style.css" />
-    <Content Include="Content\images\logo-footer .png" />
     <Content Include="Content\images\logo-footer.png" />
-    <Content Include="Content\images\logo-header.jpg" />
     <Content Include="Content\images\logo-header.png" />
     <Content Include="Content\images\plugin\css\lib\bootstrap.min.css" />
     <Content Include="Content\images\plugin\css\lib\font-awesome.min.css" />
@@ -661,6 +660,7 @@
     <Content Include="Content\images\team\img-3.jpg" />
     <Content Include="Content\images\team\img-4.jpg" />
     <Content Include="Content\images\tripadvisor.png" />
+    <Content Include="Content\image\20190509115412.png" />
     <Content Include="Content\image\jhk-1545184170763.jpg" />
     <Content Include="Content\image\jhk-1545184415752.jpg" />
     <Content Include="Content\image\jhk-1545184515313.jpg" />
@@ -1271,6 +1271,7 @@
     <Content Include="Views\Home\LineClassRoom.cshtml" />
     <Content Include="Views\Start\CreateOnLineClass.cshtml" />
     <Content Include="Views\Start\OnLineClass.cshtml" />
+    <Content Include="Views\User\MyFocusTeacher.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,143 @@
+﻿@model TiKuBll.Model.UserListModel
+@{
+    ViewBag.Title = "MyFocusTeacher";
+}
+<!-- OUR BEST -->
+<section class="ot-out-best mt60">
+    <div class="container">
+        <div class="content">
+            @if (Model.userList == null || Model.userList.Count == 0)
+            { <div class="row">
+                <div class="col col-xs-12 col-lg-6 col-lg-offset-3">
+                    <div class="ot-heading mb40 row-20 text-center">
+                        <h2>您目前没有关注的老师</h2>
+                    </div>
+                </div>
+            </div>
+            }
+            @if (Model.userList != null || Model.userList.Count > 0)
+            {
+                <div class="owl-single owl-best" data-single_item="false" data-desktop="6"
+                     data-small_desktop="4"
+                     data-tablet="3" data-mobile="2"
+                     data-nav="true"
+                     data-pagination="false">
+                    @foreach (var user in Model.userList)
+                    {
+                        <div class="item text-center" onclick="QueryClassRoom(this,'@user.fUserName')">
+                            <img class="img-responsive mb10" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@user.fHeadImg?x-oss-process=style/head" alt="icon">
+
+                            <span class="font-hind f-500">@user.fNickName</span>
+                            <br />
+                            <span><button class="awe-btn awe-btn-13" id="btnFocus" onclick="FocusTeacher('@user.fUserName',false)">取消关注</button></span>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!-- END / OUR BEST -->
+
+@*<section class="section-team">
+        <div class="container">
+            <div class="team">
+                <h2 class="heading text-center">我关注的老师</h2>
+                @if (Model.userList == null || Model.userList.Count == 0)
+                {
+                    <p class="sub-heading text-center">您目前没有关注的老师</p>
+                }
+                @if (Model.userList != null || Model.userList.Count > 0)
+                {
+                    <div class="team_content">
+                        <div class="row">
+                            <!-- ITEM -->
+                            @foreach (var user in Model.userList)
+                            {
+                                <div class="col-xs-6 col-md-3">
+                                    <div class="team_item text-center">
+                                        <div class="img">
+                                            <a href="#" onclick="QueryClassRoom('@user.fUserName')"><img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@user.fHeadImg?x-oss-process=style/zheng" alt=""></a>
+                                        </div>
+                                        <div class="text">
+                                            <h2>@user.fNickName</h2>
+                                            <span><button class="awe-btn awe-btn-13" id="btnFocus" onclick="FocusTeacher('@user.fUserName',false)">取消关注</button></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <!-- END / ITEM -->
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>*@
+
+<!-- ACTIVITI -->
+<section class="section-activiti bg-white">
+    <div class="container">
+
+        <div class="activiti">
+
+            <div class="activiti_content">
+
+                <div class="row" id="divClassRoom">
+
+
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<!-- END / ACTIVITI -->
+
+<script type="text/javascript">
+    function QueryClassRoom(obj,TeacherUser) {
+        $(".text-center").removeClass("checkBoard");
+        $(obj).addClass("checkBoard");
+
+        $.ajax({
+            url: "/Query/QueryTeacherClassRoom",
+            type: this.method,
+            data: { "strTeacherUser": TeacherUser },
+            success: function (msg) {
+                $('#divClassRoom').html(msg);
+            }
+        });
+
+    }
+
+    function FocusTeacher(TeacherUser, IsFocus) {
+        $.ajax({
+            url: "/LoginRequest/DoUserFocus",
+            data: { "strTeacherUser": TeacherUser, "IsFocus": IsFocus },
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    if (IsFocus) {
+                        alert("关注成功");
+                        $("#btnFocus").text("取消关注");
+                        $("#btnFocus").attr("onclick", "FocusTeacher('" + TeacherUser + "',false)");
+                    } else {
+                        alert("取消关注成功");
+                        window.location.reload();
+                    }
+                } else if (rst.iResult == -9999) {
+                    window.location.href = "/open/RegsiterLogin?redirect_uri=/User/MyFocusTeacher";
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+</script>

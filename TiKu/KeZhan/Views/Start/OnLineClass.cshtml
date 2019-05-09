@@ -1,4 +1,5 @@
-﻿@{
+﻿@model TiKuBll.Model.UserInfoModel
+@{
     ViewBag.Title = "在线课堂";
 }
 
@@ -38,43 +39,57 @@
 
                             <br />
                             <br />
-                            <button class="awe-btn awe-btn-13" onclick="JoinClass()">进入课堂</button>
+                            <button class="awe-btn awe-btn-13" id="btnJoin" onclick="JoinClass()">进入课堂</button>
+                            <div id="divCourse" style=" display:none">
+                                <p></p>
+                                <label>课堂名称</label>
+                                <span id="spanTitle"></span>
+                                <label>开课时间</label>
+                                <span id="spanDate"></span>
+                                <label>课程时长</label>
+                                <span id="spanDateLength"></span>
+                                <label>价格</label>
+                                <span id="spanPrice"></span>
+                                
+                                <label>支付方式</label>
+                                <ul class="option-bank">
 
+                                    <li id="liAli">
+                                        <label class="label-radio">
+                                            <input type="radio" class="input-radio" name="rPayType" value="alipay">
+                                            支付宝
+                                        </label>
+
+                                        @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                    </li>
+                                    <li>
+                                        <label class="label-radio">
+                                            <input type="radio" class="input-radio" name="rPayType" value="weixinpay">
+                                            微信
+                                        </label>
+
+                                        @* <img src="../../Content/images/icon-card.jpg" alt="">*@
+                                    </li>
+                                    @*@if (Model.UserAccountAmount > Model.fAmount)
+                                    {
+                                        <li>
+                                            <label class="label-radio">
+                                                <input type="radio" class="input-radio" name="rPayType" value="aizhupay">
+                                                账户余额
+                                            </label>
+
+                                        </li>
+                                    }*@
+                                </ul>
+                                <div id="divQrCode" style=" display:none;">
+                                </div>
+                                <br />
+                                <button class="awe-btn awe-btn-13" data-reveal-id="divPayCode" id="btnPay">支付订单</button>
+
+                            </div>
 
                         </div>
-                        <div class="reservation-billing-detail" id="panelQA" style="display:none;">
-                            <span style="font-size:14px; font-weight:bold;">课程发布者</span>
-                            <br />新建课程的老师就是课程发布者，课程发布者也是在线支付课程的收款人和所设课程上课费用的支付人
-                            <br /><br /><span style="font-size:14px; font-weight:bold;">
-                                授课老师
-                            </span>
-                            <br />课程发布者可以选择其他合作老师作为本课程的授课老师，授课老师可以邀请平台注册老师成为自己的合作老师
-                            <br /><br /><span style="font-size:14px; font-weight:bold;">
-                                课程一级分类、课程二级分类、课程三级分类
-                            </span>
-                            <br />课程分类是课站平台课程的多级搜索条件
-                            <br /><br /><span style="font-size:14px; font-weight:bold;">
-                                私课与公开课
-                            </span>
-                            <br />私课是在课站平台不能搜索的课程，用于老师建议非公开的课程，通常使用非公开渠道推广课程，包括朋友圈和微信群等
-                            <br /><br /><span style="font-size:14px; font-weight:bold;">
-                                学科或知识类
-                            </span>
-                            <br />学科或知识类主要分为K12学科、素质与拓展、职业与技能，按照国家规定，K12学科授课必须有教师证，课站平台对于公开课的K12学科课程要求有相应学科的教师证，私课都不限制，只要注册成课站平台老师。学科和知识类，也是公开课程的二级分类搜索条件。
-                            <br /><br /><span style="font-size:14px; font-weight:bold;">
-                                支付类型
-                            </span>
-                            <br />无论私课还是公开课，都支持线上支付和线下支付，线上支付支持微信和支付宝
-                            <br /><br /><span style="font-size:14px; font-weight:bold;">
-                                退款类型
-                            </span>
-                            <br />课前退，是指课程的第一课时开始前；随时退，除课时最后一个课时后，任何时候都可退；
-                            <br /><br /><span style="font-size:14px; font-weight:bold;">
-                                退款规则
-                            </span>
-                            <br />按课时，是指退款按退款时未开始课时数与总课时数的比率退款；按分钟，是指按未开始课时总时长余课程总时长的比率退款
-                            <br />
-                        </div>
+
                     </div>
                     <!-- END / CONTENT -->
 
@@ -85,8 +100,17 @@
 </section>
 
 
-<script type="text/javascript">
 
+
+<script type="text/javascript">
+    var username = '@Model.fUserName';
+    var openid = '@Model.fOpenID';
+
+    $(document).ready(function () {
+        if (is_weixn()) {
+            $("#liAli").hide();
+        }
+    })
 
     function showPanel(div) {
 
@@ -98,6 +122,186 @@
             $("#panelQA").show();
 
         }
+    }
+
+    function SubmitOrder(iCourseID,price) {
+
+        $.ajax({
+            url: "/LoginRequest/DoSubmitCourseBooking",
+            data: { "iCourseID": iCourseID },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    if (rst.iResult == 0) {
+                        var payType = $("input[name='rPayType']:checked").val();
+                       
+                        if (payType == "aizhupay") {
+                            AiZhuPay(rst.strMsg);
+                        } else {
+                            if (IsPC()) {
+                                PCPay(rst.strMsg, price);
+                            } else {
+                                if (is_weixn()) {
+                                    WXPay(rst.strMsg, price);
+                                } else {
+                                    WapPay(rst.strMsg, price);
+                                }
+                            }
+                        } 
+                    }
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+
+
+    function PCPay(bookingNo, leftAmount) {
+        var payType = $("input[name='rPayType']:checked").val();
+        if (payType == "weixinpay") {
+
+
+            $.ajax({
+                url: "/weixinpay/UserPay",
+                data: { "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+                    if (rst.iResult >= 0) {
+                        $("#imgQrCode").attr("src", "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + rst.strMsg);
+                        $("#myBGDiv").show();
+                        $("#divPayCode").show();
+
+                        setTimeout("GetBookingNo('" + bookingNo + "')", 2000);//获取支付结果
+                    } else {
+                        alert(rst.strMsg);
+                    }
+                }
+
+            });
+        } else {
+            $.ajax({
+                url: "/alipay/UserPay",
+                data: { "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+                    if (rst.iResult >= 0) {
+                        $("#divQrCode").html(rst.strMsg);
+                        $("#divQrCode").show();
+                        $("#btnPay").hide();
+                    } else {
+                        alert(rst.strMsg);
+                    }
+                }
+
+            });
+        }
+    }
+
+    function WapPay(bookingNo, leftAmount) {
+        var payType = $("input[name='rPayType']:checked").val();
+        if (payType == "weixinpay") {
+            $.ajax({
+                url: "/weixinpay/UserWapPay",
+                data: { "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+                    if (rst.iResult >= 0) {
+                        window.location.href = rst.strMsg;
+                    } else {
+                        alert(rst.strMsg);
+                    }
+                }
+
+            });
+        } else {
+            $.ajax({
+                url: "/alipay/UserWapPay",
+                data: { "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
+                type: "POST",
+                dataType: "json",
+                success: function (rst) {
+
+                    if (rst.iResult >= 0) {
+                        $("#divQrCode").html(rst.strMsg);
+                        $("#divQrCode").show();
+                    } else {
+                        alert(rst.strMsg);
+                    }
+                }
+
+            });
+        }
+    }
+
+    function WXPay(bookingNo, leftAmount) {
+
+        $.ajax({
+            url: "/weixinpay/UserWeiXinPay",
+            data: { "openid": openid, "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', {
+                    "appId": rst.appId,     //公众号名称，由商户传入
+                    "timeStamp": rst.timeStamp,         //时间戳，自1970年以来的秒数
+                    "nonceStr": rst.nonceStr, //随机串
+                    "package": rst.packageValue,
+                    "signType": "MD5",         //微信签名方式:
+                    "paySign": rst.paySign //微信签名
+                },
+                function (res) {
+                    if (res.err_msg == "get_brand_wcpay_request:ok") {
+                        setTimeout(window.location.reload(), 1000);
+                    } else {
+                        // alert(res.err_msg);
+                        $("#btnPay").attr("disabled", false)
+                        $("#btnPay").val("支付");
+                    }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+
+                }
+               );
+            },
+            fail: function (err) {
+                alert(err);
+            }
+
+        });
+
+    }
+
+    function AiZhuPay(bookingNo) {
+        var tradePass = "";
+        tradePass = prompt("请输入交易密码")
+        if (tradePass == "") {
+            alert("请输入交易密码");
+            return;
+        }
+
+        $.ajax({
+            url: "/AiZhuPay/BookingPay",
+            data: { "strBookingType": "Booking", "strBookingNo": bookingNo, "strTradePass": tradePass },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("支付成功");
+                    window.location.reload();
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
     }
 
 
@@ -114,8 +318,18 @@
             data: { "strCourseNo": $("#txtCourseNo").val() },
             dataType: "json",
             success: function (rst) {
-                
-                if (rst.iResult > 0) {
+                if (rst.iResult == 0) {
+                    $("#spanTitle").text(rst.ClassTitle);
+                    $("#spanDate").text(rst.ClassDate);
+                    $("#spanDateLength").text(rst.ClassLength);
+                    $("#spanPrice").text(rst.Price);
+                    $("#btnPay").attr("onclick", "SubmitOrder(" + rst.CourseID + "," + rst.Price + ")");
+
+                    
+                    $("#btnJoin").hide();
+                    $("#divCourse").show();
+                }
+                else if (rst.iResult > 0) {
                     window.location.href = "/home/index?iCourseID=" + rst.iResult;
 
                 } else if (rst.iResult == -9999) {
@@ -129,4 +343,31 @@
 
     }
 
+
+    function GetBookingNo(bookingno) {
+        $.ajax({
+            url: "/weixinpay/GetBookingStatus",
+            data: { "strBookingNo": bookingno },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult == 0) {
+                    alert("支付成功,请重新点击进入课堂按钮");
+                    ClosePayCode();
+                    $("#divCourse").hide();
+                    $("#btnJoin").show();
+                } else {
+                    setTimeout("GetBookingNo('" + bookingno + "')", 2000);
+                }
+            }
+
+        });
+
+    }
+
+
+    function ClosePayCode() {
+        $("#myBGDiv").hide();
+        $("#divPayCode").hide();
+    }
 </script>

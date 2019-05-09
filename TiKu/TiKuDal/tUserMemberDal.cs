@@ -118,7 +118,7 @@ namespace TiKu.Dal
             bufSQL.Append(@"select distinct u.fNickName+'-'+u.fMobile as MemberName,u.fHeadImg as MemberHead,um.* from tUserMember um
                             left join tUser u on u.fUserName=um.fMemberUserName
                             left join tTeachValid v on v.fUserName=u.fUserName
-                            left join tTeacherValidDetail vd on v.fid=vd.fTeacherValidID WHERE (1=1) and vd.fStatus='已审核' ");
+                            left join tTeacherValidDetail vd on v.fid=vd.fTeacherValidID WHERE (1=1) and vd.fStatus='已审核' and um.fStatus<>5 ");
 
             if (!string.IsNullOrEmpty(strUserName))
             {
@@ -184,7 +184,7 @@ namespace TiKu.Dal
             List<DbParameter> lstParam = new List<DbParameter>();
 
             bufSQL.Append(@"select u.fNickName+'-'+u.fMobile as MemberName,u.fHeadImg as MemberHead,um.* from tUserMember um
-                            left join tUser u on u.fUserName=um.fUserName WHERE (1=1) ");
+                            left join tUser u on u.fUserName=um.fUserName WHERE (1=1) and um.fStatus<>5 ");
 
             if (!string.IsNullOrEmpty(strUserName))
             {

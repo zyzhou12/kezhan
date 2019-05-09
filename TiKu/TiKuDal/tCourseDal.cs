@@ -93,5 +93,23 @@ namespace TiKu.Dal
       return lstRst;
     }
 
+
+    public static DataTable GetCourseById(int iCourseID, string strUserName)
+    {
+        StringBuilder bufSQL = new StringBuilder();
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        bufSQL.Append(@"select isnull(b.fID,0) IsBuy,c.* from tCourse c
+                        left join tbooking b on b.fType='OnLineClass' and b.fStatus in ('已支付','已驳回') and b.fTypeCode=c.fid and fUserName=@UserName
+                        where c.fId=@CourseID ");
+        lstParam.Add(new DBParam("@CourseID", iCourseID));
+        lstParam.Add(new DBParam("@UserName", strUserName));
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+        return dtRst;
+    }
+
   }
 }

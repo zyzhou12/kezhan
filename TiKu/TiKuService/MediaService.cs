@@ -20,6 +20,7 @@ using TiKuBll;
 using TiKuBll.Model;
 using TiKuService.Code;
 using TiKu.Bll;
+using System.Net.Mail;
 
 namespace TiKuService
 {
@@ -99,6 +100,79 @@ namespace TiKuService
 
 
 
+
+                    // TiKu Email
+                    strSql = "exec  sQueryHotelMail";
+                    SqlDataAdapter da = new SqlDataAdapter(strSql, conn);
+                    DataSet ds = new DataSet();
+
+                    da.Fill(ds);
+
+                    string sTo, sFrom, sSender, sSubject, sBody, sId;
+                    string sUser, sPass, sServer;
+                    int iPort;
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= ds.Tables[0].Rows.Count - 1; i++)
+                        {
+                            sTo = ds.Tables[0].Rows[i]["fEmailAddress"].ToString();
+                           // sFrom = ds.Tables[0].Rows[i]["fSendMail"].ToString();
+                           // sSender = ds.Tables[0].Rows[i]["fSendMail"].ToString();
+                            sSubject = ds.Tables[0].Rows[i]["fHeadline"].ToString();
+                            sBody = ds.Tables[0].Rows[i]["fContent"].ToString(); ;
+                            //sUser = ds.Tables[0].Rows[i]["fMailUser"].ToString();
+                            //sPass = ds.Tables[0].Rows[i]["fMailPass"].ToString();
+                            //sServer = ds.Tables[0].Rows[i]["fSmtpAddress"].ToString();
+                            //iPort = Convert.ToInt32(ds.Tables[0].Rows[i]["fPort"].ToString());
+                            sId = ds.Tables[0].Rows[i]["fID"].ToString();
+                            // send mail
+
+                            try
+                            {
+                                Encoding encoding = Encoding.GetEncoding(936);
+
+                                
+
+                                SmtpClient _smtpClient = new SmtpClient();
+                                _smtpClient.EnableSsl = true;
+                                _smtpClient.UseDefaultCredentials = false;
+
+                                _smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                                _smtpClient.Host = "smtp.exmail.qq.com";
+                                _smtpClient.Port = 587;
+                                _smtpClient.Credentials = new System.Net.NetworkCredential("service@aizhusoft.com", "Zhou900712");
+
+
+                                MailMessage _mailMessage = new MailMessage("service@aizhusoft.com", sTo);
+                                _mailMessage.Subject = sSubject;//主题  
+                                _mailMessage.Body = "<html><body>" + sBody + "</body><html/>"; ;//内容
+                                _mailMessage.BodyEncoding = Encoding.Default;//正文编码  
+                                _mailMessage.IsBodyHtml = true;//设置为HTML格式  
+                                _mailMessage.Priority = MailPriority.High;//优先级  
+
+                                _smtpClient.Send(_mailMessage);
+
+
+
+                                strSql = "exec SP_SendMailOk " + sId;
+                                SqlCommand cmd;
+                                cmd = new SqlCommand(strSql, conn);
+                                cmd.ExecuteNonQuery();
+
+                                SaveLog("The Mail is Send\t" + DateTime.Now.ToString() + "\t" + sTo + "\t" + sId);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                SaveLog("The Mail Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+                            }
+
+                        }
+                    }
+
+
+
+
                     // sms procedure
                     strSql = "exec  [QueryCourseMedia]";
                     SqlDataAdapter daSMS = new SqlDataAdapter(strSql, conn);
@@ -165,40 +239,6 @@ namespace TiKuService
                         }
                     }
 
-                    //获取群自动解散
-                    strSql = @" select * from tgroup 
-                                 where fgroupid in (
-                                 select fClassRoomCode+Convert(varchar(10),fid) from tCourse where dateadd(minute,fClassDateLength+5,fClassDate)<getdate())
-                                 and fIsValid=1";
-                    daSMS = new SqlDataAdapter(strSql, conn);
-                    dsSms = new DataSet();
-
-                    daSMS.Fill(dsSms);
-
-
-                    if (dsSms.Tables[0].Rows.Count > 0)
-                    {
-                        for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
-                        {
-                            string groupID = dsSms.Tables[0].Rows[i]["fGroupID"].ToString();
-                            try
-                            {
-
-                                SaveLog("The UpdateGroupStatus is Begin" + DateTime.Now.ToString() + "\t" + groupID);
-                                UpdateGroupStatus(groupID);
-
-
-                                SaveLog("The UpdateGroupStatus is end\t" + DateTime.Now.ToString() + "\t" + groupID);
-
-                            }
-                            catch (Exception ex)
-                            {
-                                SaveLog("The  UpdateGroupStatus Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
-                            }
-
-
-                        }
-                    }
 
 
 
@@ -232,6 +272,41 @@ namespace TiKuService
                                     SaveLog("The  UpdateGroupUserStatus Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
                                 }
                             }
+                        }
+                    }
+
+                    //获取群自动解散
+                    strSql = @" select * from tgroup 
+                                 where fgroupid in (
+                                 select fClassRoomCode+Convert(varchar(10),fid) from tCourse where dateadd(minute,fClassDateLength+5,fClassDate)<getdate())
+                                 and fIsValid=1";
+                    daSMS = new SqlDataAdapter(strSql, conn);
+                    dsSms = new DataSet();
+
+                    daSMS.Fill(dsSms);
+
+
+                    if (dsSms.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
+                        {
+                            string groupID = dsSms.Tables[0].Rows[i]["fGroupID"].ToString();
+                            try
+                            {
+
+                                SaveLog("The UpdateGroupStatus is Begin" + DateTime.Now.ToString() + "\t" + groupID);
+                                UpdateGroupStatus(groupID);
+
+
+                                SaveLog("The UpdateGroupStatus is end\t" + DateTime.Now.ToString() + "\t" + groupID);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                SaveLog("The  UpdateGroupStatus Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+                            }
+
+
                         }
                     }
 

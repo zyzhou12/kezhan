@@ -26,6 +26,7 @@ namespace TiKuBll.Model
         public System.String fModifyOpr { get; set; }
 
         public System.String fClassRoomTitle { get; set; }
+        public System.String fNickName { get; set; }
     }
 
     public class UserRefundListModel

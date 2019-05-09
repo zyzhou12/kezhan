@@ -12,9 +12,9 @@ namespace TiKuBll
 {
     public class ClassRoomBll
     {
-        public static ClassRoomListModel GetClassRoomByTeacher(string strTeacher, string strStatus, string strPayType, string strType)
+        public static ClassRoomListModel GetClassRoomByTeacher(string strTeacher, string strStatus, string strPayType, string strType, string strClassType)
         {
-            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByTeacher(strTeacher, strStatus, strPayType, strType);
+            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByTeacher(strTeacher, strStatus, strPayType, strType, strClassType);
 
             List<ClassRoomModel> modelList = new List<ClassRoomModel>();
             foreach (tClassRoomEntity entity in list)
@@ -53,9 +53,9 @@ namespace TiKuBll
             return listModel;
         }
 
-        public static ClassRoomListModel GetClassRoomByCreateOpr(string strCreate, string strStatus, string strPayType, string strType)
+        public static ClassRoomListModel GetClassRoomByCreateOpr(string strCreate, string strStatus, string strPayType, string strType, string strClassType)
         {
-            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByCreateOpr(strCreate, strStatus, strPayType, strType);
+            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByCreateOpr(strCreate, strStatus, strPayType, strType, strClassType);
 
             List<ClassRoomModel> modelList = new List<ClassRoomModel>();
             foreach (tClassRoomEntity entity in list)
@@ -134,6 +134,7 @@ namespace TiKuBll
                     cm.fAuthor = ce.fAuthor;
                     cm.fClassDate = ce.fClassDate;
                     cm.fClassDateLength = ce.fClassDateLength;
+                    cm.fPrice = ce.fPrice;
                     cm.fClassRoomCode = ce.fClassRoomCode;
                     cm.fClassType = ce.fClassType;
                     cm.fCourseTitle = ce.fCourseTitle;
@@ -191,6 +192,7 @@ namespace TiKuBll
                     cm.fAuthor = ce.fAuthor;
                     cm.fClassDate = ce.fClassDate;
                     cm.fClassRoomCode = ce.fClassRoomCode;
+                    cm.fPrice = ce.fPrice;
                     cm.fClassType = ce.fClassType;
                     cm.fCourseTitle = ce.fCourseTitle;
                     cm.fDictTitle = ce.fDictTitle;
@@ -263,6 +265,7 @@ namespace TiKuBll
                 model.fAuthor = entity.fAuthor;
                 model.fClassDate = entity.fClassDate;
                 model.fClassDateLength = entity.fClassDateLength;
+                model.fPrice = entity.fPrice;
                 model.fClassRoomCode = entity.fClassRoomCode;
                 model.fClassType = entity.fClassType;
                 model.fClassType = entity.fClassType;
@@ -280,6 +283,21 @@ namespace TiKuBll
                 model.fUploadDate = entity.fUploadDate;
                 model.fUploadOpr = entity.fUploadOpr;
             }
+            return model;
+        }
+
+        public static CourseModel GetCourseById(int iCourdeId, string strUserName)
+        {
+            DataTable dsRst = tCourseDal.GetCourseById(iCourdeId, strUserName);
+            List<CourseModel> modelList = PubFun.DataTableToObjects<CourseModel>(dsRst);
+
+
+            CourseModel model = new CourseModel();
+            if (modelList.Count > 0)
+            {
+                model = modelList[0];
+            }
+
             return model;
         }
 
@@ -472,6 +490,7 @@ namespace TiKuBll
             cm.fAuthor = model.fAuthor;
             cm.fClassDate = model.fClassDate;
             cm.fClassDateLength = model.fClassDateLength;
+            cm.fPrice = model.fPrice;
             cm.fClassRoomCode = model.fClassRoomCode;
             cm.fClassType = model.fClassType;
             cm.fCourseTitle = model.fCourseTitle;
@@ -633,6 +652,42 @@ namespace TiKuBll
             return listModel;
         }
 
+        public static ClassRoomListModel GettClassRoomListByTeacher(string strTeacherUser, string strStatus)
+        {
+            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByTeacher(strTeacherUser, strStatus);
+
+            List<ClassRoomModel> modelList = new List<ClassRoomModel>();
+            foreach (tClassRoomEntity entity in list)
+            {
+                ClassRoomModel model = new ClassRoomModel();
+                model.fBasePrice = entity.fBasePrice;
+                model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassRoomDate = entity.fClassRoomDate;
+                model.fClassRoomTitle = entity.fClassRoomTitle;
+                model.fCoverImg = entity.fCoverImg;
+                model.fDeadLineDate = entity.fDeadLineDate;
+                model.fDesc = entity.fDesc;
+                model.fGrade = entity.fGrade;
+                model.fInfo = entity.fInfo;
+                model.fIsRecord = entity.fIsRecord;
+                model.fIsReturn = entity.fIsReturn;
+                model.fReturnType = entity.fReturnType;
+                model.fReturnRule = entity.fReturnRule;
+                model.fKnowLedge = entity.fKnowLedge;
+                model.fMaxNumber = entity.fMaxNumber;
+                model.fPayType = entity.fPayType;
+                model.fPharse = entity.fPharse;
+                model.fPrice = entity.fPrice;
+                model.fStatus = entity.fStatus;
+                model.fSubject = entity.fSubject;
+                model.fTecharUserName = entity.fTecharUserName;
+                modelList.Add(model);
+            }
+            ClassRoomListModel listModel = new ClassRoomListModel();
+            listModel.classRoomList = modelList;
+            return listModel;
+        }
+        
         public static ClassRoomListModel GettClassRoomList(string strCity, string strPharse, string strGrade, string strSubject)
         {
             DataTable dt = tClassRoomDal.GettClassRoomList(strCity, strPharse, strGrade, strSubject);

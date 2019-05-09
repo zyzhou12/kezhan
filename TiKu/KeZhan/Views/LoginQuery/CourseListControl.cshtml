@@ -22,7 +22,7 @@
                         if (!string.IsNullOrEmpty(course.fFileCoverUrl))
                         {
                             <div class="reservation-package_img">
-                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal"  alt="">
+                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl"   alt="">
 
                             </div>
                         }
@@ -30,7 +30,7 @@
                         {
 
                             <div class="reservation-package_img">
-                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal" alt="">
+                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl"  alt="">
 
                             </div>
                         }
@@ -38,7 +38,7 @@
                     else if (Model.isEdit)
                     {
                         <div class="reservation-package_img">
-                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" alt="" />
+                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" alt="" />
                         </div>
                     }
 
@@ -66,7 +66,7 @@
                             }
                             @if (Model.isEdit)
                             {
-                                <button class="awe-btn awe-btn-default" onclick="UpdateCurse(@course.fID,'@course.fDictTitle','@course.fCourseTitle','@course.fClassDate.ToShortDateString()',@course.fClassDate.Hour,@course.fClassDate.Minute,@course.fClassDateLength,@course.fOrder)">修改</button>
+                                <button class="awe-btn awe-btn-default" onclick="UpdateCurse(@course.fID,'@course.fDictTitle','@course.fCourseTitle','@course.fClassDate.ToString("yyyy-MM-dd")',@course.fClassDate.Hour,@course.fClassDate.Minute,@course.fClassDateLength,@course.fOrder)">修改</button>
                                 <button class="awe-btn awe-btn-default" onclick="DeleteCurse(@course.fID)">删除</button>
 
                             }

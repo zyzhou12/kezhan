@@ -25,6 +25,7 @@ namespace TiKu.Entity
     public System.String fModifyOpr { get; set; }
 
     public System.String fClassRoomTitle { get; set; }
+    public System.String fNickName { get; set; }
 
   }
 

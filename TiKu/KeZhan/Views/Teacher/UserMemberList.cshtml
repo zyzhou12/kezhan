@@ -31,7 +31,7 @@
                                 {
                                     <div class="reservation-package_item">
                                         <div class="reservation-package_img">
-                                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@member.MemberHead" data-reveal-id="myModal" alt="">
+                                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@member.MemberHead"  alt="">
 
                                         </div>
 
@@ -160,37 +160,41 @@
     }
 
     function UserInviteCancel(id) {
-        $.ajax({
-            url: "/LoginRequest/InviteCancel",
-            type: this.method,
-            data: { "id": id },
-            success: function (rst) {
-                if (rst.iResult == 0) {
-                    location.reload();
-                }  else if (rst.iResult == -9999) {
-                    alert("请重新登录");
-                } else {
-                    alert(rst.strMsg);
+        if(confirm("确认取消授权吗")){
+            $.ajax({
+                url: "/LoginRequest/InviteCancel",
+                type: this.method,
+                data: { "id": id },
+                success: function (rst) {
+                    if (rst.iResult == 0) {
+                        location.reload();
+                    }  else if (rst.iResult == -9999) {
+                        alert("请重新登录");
+                    } else {
+                        alert(rst.strMsg);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 
     function UserInviteRemove(id) {
-        $.ajax({
-            url: "/LoginRequest/InviteRemove",
-            type: this.method,
-            data: { "id": id },
-            success: function (rst) {
-                if (rst.iResult == 0) {
-                    location.reload();
-                } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
-                }  else {
-                    alert(rst.strMsg);
+        if(confirm("确认取消邀请吗")){
+            $.ajax({
+                url: "/LoginRequest/InviteRemove",
+                type: this.method,
+                data: { "id": id },
+                success: function (rst) {
+                    if (rst.iResult == 0) {
+                        location.reload();
+                    } else if (rst.iResult == -9999) {
+                        alert("请重新登录");
+                    }  else {
+                        alert(rst.strMsg);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 </script>

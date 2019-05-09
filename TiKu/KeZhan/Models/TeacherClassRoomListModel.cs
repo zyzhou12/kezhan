@@ -12,6 +12,7 @@ namespace KeZhan.Models
     public bool IsValid { get; set; }
     public string strStatus { get; set; }
     public string strPayType { get; set; }
+    public string strType { get; set; }
     public ClassRoomListModel list { get; set; }
   }
 }

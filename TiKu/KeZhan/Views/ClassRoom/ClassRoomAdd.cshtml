@@ -141,6 +141,7 @@
 
                             <label id="labrefundtype" style="display:none;">退款类型</label>
                             <select style="width:100%; height:42px; display:none;" id="cmbReturnType" onchange="ChangeReturnType()">
+                                <option value="">请选择</option>
                                 <option value="课前">开课前退</option>
                                 <option value="随时">随时退</option>
                             </select>
@@ -148,6 +149,7 @@
 
                             <label id="labrefundrule" style="display:none;">退款规则</label>
                             <select style="width:100%; height:42px; display:none;" id="cmbReturnRule">
+                                <option value="">请选择</option>
                                 <option value="分钟">按分钟</option>
                                 <option value="课时">按课时</option>
                             </select>
@@ -225,14 +227,19 @@
         }
     }
 
+
     function changeIsRefund() {
         if ($("#cmbIsReturn").val() == "true") {
 
             $("#cmbReturnType").show();
             $("#labrefundtype").show();
         } else {
+            $("#cmbReturnType").val("");
             $("#cmbReturnType").hide();
             $("#labrefundtype").hide();
+            $("#cmbReturnRule").val("");
+            $("#cmbReturnRule").hide();
+            $("#labrefundrule").hide();
         }
     }
 
@@ -241,6 +248,7 @@
             $("#cmbReturnRule").show();
             $("#labrefundrule").show();
         } else {
+            $("#cmbReturnRule").val("");
             $("#cmbReturnRule").hide();
             $("#labrefundrule").hide();
 

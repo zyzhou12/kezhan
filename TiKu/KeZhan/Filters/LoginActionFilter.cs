@@ -11,45 +11,43 @@ using TiKu.Bll;
 
 namespace KeZhan.Filters
 {
-  public class LoginActionFilter : ActionFilterAttribute
-  {
-    public override void OnActionExecuting(ActionExecutingContext filterContext)
+    public class LoginActionFilter : ActionFilterAttribute
     {
-      //MicroPublicModel microInfo = filterContext.HttpContext.Session["microInfo"] as MicroPublicModel;
-      UserInfoModel userInfo = filterContext.HttpContext.Session["userInfo"] as UserInfoModel;
-      string msg = string.Empty;   
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            //MicroPublicModel microInfo = filterContext.HttpContext.Session["microInfo"] as MicroPublicModel;
+            UserInfoModel userInfo = filterContext.HttpContext.Session["userInfo"] as UserInfoModel;
+            string msg = string.Empty;
 
 
-      string redurl = filterContext.HttpContext.Request.Url.ToString();
-      if (userInfo == null)
-      {
-          filterContext.Result = new RedirectToRouteResult("Default", new RouteValueDictionary(new { controller = "Request", action = "CheckLoginUser", redirect_uri = redurl }));
-      }
-      else
-      {
-        filterContext.Controller.ViewData["userInfo"] = userInfo;
-      }
+            string redurl = filterContext.HttpContext.Request.Url.ToString();
+            if (userInfo == null)
+            {
+                filterContext.Result = new RedirectToRouteResult("Default", new RouteValueDictionary(new { controller = "Request", action = "CheckLoginUser", redirect_uri = redurl }));
+            }
+            else
+            {
+                filterContext.Controller.ViewData["userInfo"] = userInfo;
+            }
 
-    
-     
-      base.OnActionExecuting(filterContext);
+            base.OnActionExecuting(filterContext);
+        }
+
+
+        public static void WriteFile(string content)
+        {
+            try
+            {
+                StreamWriter sw = new StreamWriter(@"\\" + DateTime.Now.ToString("yyyyMMdd") + ".txt", true);
+                sw.WriteLine(DateTime.Now.ToString() + content + "\r\n----------------------------------------\r\n");
+                sw.Close();//写入
+            }
+            catch
+            {
+
+            }
+
+
+        }
     }
-
-
-    public static void WriteFile(string content)
-    {
-      try
-      {
-        StreamWriter sw = new StreamWriter(@"\\" + DateTime.Now.ToString("yyyyMMdd") + ".txt", true);
-        sw.WriteLine(DateTime.Now.ToString() + content + "\r\n----------------------------------------\r\n");
-        sw.Close();//写入
-      }
-      catch
-      {
-
-      }
-
-
-    }
-  }
 }

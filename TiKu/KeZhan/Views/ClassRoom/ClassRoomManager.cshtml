@@ -17,9 +17,10 @@
                     <li @if (Model.strStatus == "发布") { <text> class="active" </text>}><a href="/ClassRoom/ClassRoomManager?strStatus=发布&strPayType=@Model.strPayType">发布</a></li>
 
                     <li @if (Model.strStatus == "下线") { <text> class="active" </text>}><a href="/ClassRoom/ClassRoomManager?strStatus=下线&strPayType=@Model.strPayType">下线</a></li>
-
+                    <li @if (Model.strStatus == "结算")
+                        { <text> class="active" </text> }><a href="/ClassRoom/ClassRoomManager?strStatus=结算&strPayType=@Model.strPayType">结算</a></li>
                 </ul>
-                <ul class="list-inline">
+                @*<ul class="list-inline">
                     <li>付款方式：</li>
                     <li @if (Model.strPayType == "") { <text> class="active" </text>}><a href="/ClassRoom/ClassRoomManager?strStatus=@Model.strStatus&strPayType=">全部</a></li>
                     <li @if (Model.strPayType == "在线支付")
@@ -28,7 +29,18 @@
                     <li @if (Model.strPayType == "线下支付")
                         { <text> class="active" </text>       }><a href="/ClassRoom/ClassRoomManager?strStatus=@Model.strStatus&strPayType=线下支付">线下支付</a></li>
 
+                </ul>*@
+                <ul class="list-inline">
+                    <li>公开方式：</li>
+                    <li @if (Model.strType == "") { <text> class="active" </text> }><a href="/ClassRoom/ClassRoomManager?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=">全部</a></li>
+                    <li @if (Model.strType == "Public")
+                        { <text> class="active" </text>        }><a href="/ClassRoom/ClassRoomManager?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=Public">公开课</a></li>
+
+                    <li @if (Model.strType == "Private")
+                        { <text> class="active" </text>        }><a href="/ClassRoom/ClassRoomManager?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=Private">私课</a></li>
+
                 </ul>
+
                 </div>
 
                 <div class="activiti_content">

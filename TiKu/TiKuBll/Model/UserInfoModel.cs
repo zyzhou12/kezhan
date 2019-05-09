@@ -12,6 +12,8 @@ namespace TiKuBll.Model
     public System.String fOpenID { get; set; }
 
     public System.String fCode { get; set; }
+    public System.String fEmailCode { get; set; }
+    public System.DateTime fEmailCodeEffectDate { get; set; }
     public System.String IsPassWord { get; set; }
     public System.String fEmail { get; set; }
     public System.String fNickName { get; set; }
@@ -25,4 +27,9 @@ namespace TiKuBll.Model
 
 
   }
+
+    public class UserListModel
+    {
+        public List<UserInfoModel> userList { get; set; }
+    }
 }

@@ -256,7 +256,12 @@ namespace KeZhan.Controllers
         }
 
       
-
+        public ActionResult MyFocusTeacher()
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            UserListModel model = UserBll.GetFocusTeacherList(userInfo.fUserName);
+            return View(model);
+        }
 
 
     }

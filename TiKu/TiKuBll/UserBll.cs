@@ -24,6 +24,12 @@ namespace TiKu.Bll
             return tUserDal.UserSendCode(strMobile, strCode, ref strMsg);
         }
 
+        public static int UserSendEmailCode(string strUserName,string strEmail, ref string strMsg)
+        {
+            string strCode = new Random().Next(100000, 999999).ToString();
+            return tUserDal.UserSendEmailCode(strUserName,strEmail, strCode, ref strMsg);
+        }
+
         /// <summary>
         /// 验证验证码登录
         /// </summary>
@@ -119,6 +125,8 @@ namespace TiKu.Bll
             model.fMobile = user.fMobile;
             model.fOpenID = user.fOpenID;
             model.fCode = user.fCode;
+            model.fEmailCode = user.fEmailCode;
+            model.fEmailCodeEffectDate = user.fEmailCodeEffectDate;
             model.fName = user.fName;
             model.fNickName = user.fNickName;
             model.fRegSystem = user.fRegSystem;
@@ -335,10 +343,10 @@ namespace TiKu.Bll
                 {
                     IsCheck = false;
                 }
-                else if (string.IsNullOrEmpty(teacher.fDesc))
-                {
-                    IsCheck = false;
-                }
+                //else if (string.IsNullOrEmpty(teacher.fDesc))
+                //{
+                //    IsCheck = false;
+                //}
                 else if (teacher.fStatus != "已认证")
                 {
                     IsCheck = false;
@@ -365,6 +373,10 @@ namespace TiKu.Bll
             if (InfoType == "fMobile")
             {
                 user.fMobile = strValue;
+            }
+            else if (InfoType == "fEmail")
+            {
+                user.fEmail = strValue;
             }
             else if (InfoType == "fNickName")
             {
@@ -916,6 +928,28 @@ namespace TiKu.Bll
         public static int CheckFlowEffect()
         {
             return tFlowStoredDal.CheckFlowEffect();
+        }
+
+        public static int TeacherFocus(string strUserName, string strTeacherUser, bool IsFocus)
+        {
+            return tUserFocusDal.TeacherFocus(strUserName, strTeacherUser, IsFocus);
+        }
+
+        public static UserListModel GetFocusTeacherList(string strUserName)
+        {
+            List<tUserEntity> list = tUserDal.GetFocusTeacherList(strUserName);
+            UserListModel model = new UserListModel();
+            List<UserInfoModel> userList = new List<UserInfoModel>();
+            foreach(tUserEntity user in list)
+            {
+                UserInfoModel info = new UserInfoModel();
+                info.fUserName = user.fUserName;
+                info.fHeadImg = user.fHeadImg;
+                info.fNickName = user.fNickName;
+                userList.Add(info);
+            }
+            model.userList = userList;
+            return model;
         }
     }
 }

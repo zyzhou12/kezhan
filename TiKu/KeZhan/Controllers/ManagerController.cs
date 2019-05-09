@@ -160,7 +160,7 @@ namespace KeZhan.Controllers
         public ActionResult BookingListManager()
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            ClassRoomListModel model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, "", "", "");
+            ClassRoomListModel model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, "", "", "","");
             return View(model);
         }
 

@@ -43,8 +43,7 @@ namespace KeZhan.Controllers
                         model.CourseID = iCourseID;
                         model.ClassRoomName = cr.fClassRoomTitle;
                         model.UserName = userInfo.fUserName;
-                        model.UserSig = UserSig.GetSig(userInfo.fUserName);//获取签名
-                        //model.UserSig = "eJxlz1FPgzAQwPF3PgXp64xpgYOyxAdGMEOdy2RsuhdC1kKaKSulbGzG767ijCTe6-*X3N27YZomWj4k1-l2u28rnemT5Mgcmwijq78opWBZrjNbsX*Rd1IonuWF5qqPBAAsjIdGMF5pUYhfQcDFxAdMbDpQDdtl-aof5GBMPArUHxJR9nEWpWE8SafS3iS4Zota1kzJ12Yab4LRmtL5oYgf163XagfUQqeBiIIy2Lm5Oz*uVk9nSO9pGLJZF430y21XPXtLnkysO*9cdk19vBms1OKNX-5yvK*LwIdBPXDViH3VAwsTIJaNvwcZH8Ynl51eDA__";
+                        model.UserSig = UserSig.GetSig(userInfo.fUserName);//获取签名                        
                         model.Role = strRole;
 
                         model.TeacherUserName = cr.fTecharUserName;

@@ -103,7 +103,7 @@
                             <div id="divQrCode" style=" display:none;">
 
                             </div>
-                            <button class="awe-btn awe-btn-13" onclick="UserPay()">支付</button>
+                            <button class="awe-btn awe-btn-13" data-reveal-id="divPayCode" onclick="UserPay()">支付</button>
 
                         </div>
 
@@ -119,22 +119,6 @@
 </section>
 
 
-
-
-<div id="divPayCode" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
-    <h1>
-        微信扫码支付
-    </h1>
-
-    <p>
-        <img id="imgQrCode" src="" />
-
-    </p>
-    <button class="awe-btn awe-btn-13" onclick="ClosePayCode()">支付完成</button>
-
-
-    <a class="close-reveal-modal" onclick="ClosePayCode()">&#215;</a>
-</div>
 
 
 <script type="text/javascript">

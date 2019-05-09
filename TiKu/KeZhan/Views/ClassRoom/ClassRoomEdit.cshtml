@@ -35,8 +35,10 @@
                             {
                                 <li onclick="ShowDetail('@Model.fClassRoomCode')"><a href="#" style=" width:100%;" data-toggle="tab">课程预览发布</a></li>
                             }
-                            <li onclick="showPanel('booking')"><a href="#" style=" width:100%;" data-toggle="tab">报名记录</a></li>
-
+                            else
+                            {
+                                <li onclick="showPanel('booking')"><a href="#" style=" width:100%;" data-toggle="tab">报名记录</a></li>
+                            }
                             if (Model.fStatus == "发布")
                             {
                                 <li onclick="showPanel('private')"><a href="#" style=" width:100%;" data-toggle="tab">推广链接</a></li>
@@ -201,32 +203,73 @@
 
 
 
-                                <label id="labisrefund" style="display:none;">是否可退<sup>*</sup></label>
-                                <select style="width:100%; height:42px; display:none;" id="cmbIsReturn" onchange="changeIsRefund()">
-                                    <option value="false">否</option>
-                                    <option value="true">是</option>
+                                <label id="labisrefund" @if (Model.fPayType == "线下支付") { <text> style="display:none;" </text>     }>是否可退<sup>*</sup></label>
+
+                                <select @if (Model.fPayType == "线下支付") { <text> style="display:none;" </text>      } class="select" id="cmbIsReturn" onchange="changeIsRefund()">
+                                    @if (Model.fIsReturn)
+                                    {
+                                        <option value="false">否</option>
+                                        <option value="true" selected>是</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="false" selected>否</option>
+                                        <option value="true">是</option>
+                                    }
                                 </select>
 
-                                <label id="labrefundtype" style="display:none;">退款类型</label>
-                                <select style="width:100%; height:42px; display:none;" id="cmbReturnType" onchange="ChangeReturnType()">
-                                    <option value="课前">开课前退</option>
-                                    <option value="随时">随时退</option>
+
+
+                                <label id="labrefundtype" @if (Model.fIsReturn == false) { <text> style="display:none;" </text>     }>退款类型</label>
+
+                                <select @if (Model.fIsReturn == false) { <text> style="display:none;" </text>       } class="select" id="cmbReturnType" onchange="ChangeReturnType()">
+                                    <option value="">请选择</option>
+                                    @if (Model.fReturnType == "课前")
+                                    {
+                                        <option value="课前" selected>开课前退</option>
+                                        <option value="随时">随时退</option>
+                                    }
+                                    else
+                                    {
+                                        {
+                                            <option value="课前">开课前退</option>
+                                            <option value="随时" selected>随时退</option>
+                                        }
+                                    }
                                 </select>
 
 
-                                <label id="labrefundrule" style="display:none;">退款规则</label>
-                                <select style="width:100%; height:42px; display:none;" id="cmbReturnRule">
-                                    <option value="分钟">按分钟</option>
-                                    <option value="课时">按课时</option>
+
+
+
+                                <label id="labrefundrule" @if (Model.fIsReturn == false || Model.fReturnType == "课前") { <text> style="display:none;" </text>      }>退款规则</label>
+
+                                <select @if (Model.fIsReturn == false || Model.fReturnType == "课前") { <text> style="display:none;" </text>        } class="select" id="cmbReturnRule">
+                                    <option value="">请选择</option>
+                                    @if (Model.fReturnRule == "分钟")
+                                    {
+                                        <option value="分钟" selected>按分钟</option>
+                                        <option value="课时">按课时</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="分钟">按分钟</option>
+                                        <option value="课时" selected>按课时</option>
+                                    }
                                 </select>
+
+
+
+
+
 
 
 
 
                                 @*<label>是否录屏回看</label>
-                                @Html.DropDownListFor(m => m.fIsRecord, new[] {
-                                                                                              new SelectListItem { Text = "是", Value = "true" },
-                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })*@
+                                    @Html.DropDownListFor(m => m.fIsRecord, new[] {
+                                                                                                  new SelectListItem { Text = "是", Value = "true" },
+                                                                                                  new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })*@
 
 
                                 <br />
@@ -372,27 +415,30 @@
                                 @if (Model.fIsReturn)
                                 {
                                     <span>可退</span>
+
+                                    <label>退款类型</label>
+                                    <span>@Model.fReturnType</span>
+
+                                    if (Model.fReturnType == "随时")
+                                    {
+                                        <label>退款规则</label>
+                                        <span>@Model.fReturnRule</span>
+                                    }
                                 }
                                 else
                                 {
                                     <span>不可退</span>
                                 }
-                                <label>退款类型</label>
-                                <span>@Model.fReturnType</span>
-
-
-                                <label>退款规则</label>
-                                <span>@Model.fReturnRule</span>
 
                                 @*<label>是否录屏回看</label>
-                                @if (Model.fIsRecord)
-                                {
-                                    <span>是</span>
-                                }
-                                else
-                                {
-                                    <span>否</span>
-                                }*@
+                                    @if (Model.fIsRecord)
+                                    {
+                                        <span>是</span>
+                                    }
+                                    else
+                                    {
+                                        <span>否</span>
+                                    }*@
                                 <br />
                                 @if (isCreateOpr)
                                 {
@@ -654,7 +700,7 @@
             "fIsReturn": $("#cmbIsReturn").val(),
             "fReturnType": $("#cmbReturnType").val(),
             "fReturnRule": $("#cmbReturnRule").val(),
-           // "fIsRecord": $("#cmbIsRecord").val(),
+            // "fIsRecord": $("#cmbIsRecord").val(),
             "fStatus": status
         };
 
@@ -995,8 +1041,12 @@
             $("#cmbReturnType").show();
             $("#labrefundtype").show();
         } else {
+            $("#cmbReturnType").val("");
             $("#cmbReturnType").hide();
             $("#labrefundtype").hide();
+            $("#cmbReturnRule").val("");
+            $("#cmbReturnRule").hide();
+            $("#labrefundrule").hide();
         }
     }
 
@@ -1005,6 +1055,7 @@
             $("#cmbReturnRule").show();
             $("#labrefundrule").show();
         } else {
+            $("#cmbReturnRule").val("");
             $("#cmbReturnRule").hide();
             $("#labrefundrule").hide();
 

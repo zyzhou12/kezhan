@@ -91,18 +91,17 @@ namespace TiKu.Dal
         return rst;
     }
 
-    public static List<tUserEntity> GettUserList(int id)
+    public static List<tUserEntity> GetFocusTeacherList(string strUserName)
     {
       StringBuilder bufSQL = new StringBuilder();
       List<DbParameter> lstParam = new List<DbParameter>();
 
-      bufSQL.Append("SELECT * FROM tUser WHERE (1=1) ");
+      bufSQL.Append(@"select u.*,fFocusDate from tuserfocus f
+                        left join tUser u on u.fUserName=f.fTeacherUser
+                        where f.fUserName=@UserName ");
 
-      if (id > 0)
-      {
-        bufSQL.Append(" AND tUserID=@id ");
-        lstParam.Add(new DBParam("@id", id));
-      }
+      lstParam.Add(new DBParam("@UserName", strUserName));
+      
 
       //防止返回数据过多
       if (lstParam.Count <= 0) throw new Exception("没有查询条件");
@@ -110,6 +109,8 @@ namespace TiKu.Dal
       List<tUserEntity> lstRst = PubFun.DataTableToObjects<tUserEntity>(dtRst);
       return lstRst;
     }
+
+
 
     public static int UserSendCode(string strMobile,string strCode,ref string strMsg)
     {
@@ -120,6 +121,18 @@ namespace TiKu.Dal
         DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "User_SendCode", lstParam, DBHelper.ProcRstTypes.AllRst);
        strMsg = rst.Message;
        return rst.Result;
+    }
+
+    public static int UserSendEmailCode(string strUserName,string strEmail, string strCode, ref string strMsg)
+    {
+        List<DbParameter> lstParam = new List<DbParameter>();
+        lstParam.Add(new DBParam("@UserName", strUserName));
+        lstParam.Add(new DBParam("@Email", strEmail));
+        lstParam.Add(new DBParam("@Code", strCode));
+
+        DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "User_SendEmailCode", lstParam, DBHelper.ProcRstTypes.AllRst);
+        strMsg = rst.Message;
+        return rst.Result;
     }
 
     public static tUserEntity UserLogin(string strMobile, string strCode,string strRole,string strSystem, ref string strMsg)

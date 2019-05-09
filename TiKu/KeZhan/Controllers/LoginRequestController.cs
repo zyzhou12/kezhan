@@ -177,7 +177,7 @@ namespace KeZhan.Controllers
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
-            if (string.IsNullOrEmpty(model.fCourseTitle))
+            if (string.IsNullOrEmpty(model.fDictTitle))
             {
                 response.iResult = -1;
                 response.strMsg = "请输入课时标题";
@@ -206,6 +206,8 @@ namespace KeZhan.Controllers
         public JsonResult DoSaveOnLineCourse(CourseModel model)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+
             ResponseBaseModel response = new ResponseBaseModel();
             if (string.IsNullOrEmpty(model.fCourseTitle))
             {
@@ -228,6 +230,7 @@ namespace KeZhan.Controllers
             return jr;
         }
 
+
         /// <summary>
         /// 修改状态（发布/下架）
         /// </summary>
@@ -246,11 +249,17 @@ namespace KeZhan.Controllers
             else
             {
 
-                ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName); ;
+                ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName);
+                BookingListModel bookingList = BookingBll.GetBookingList(userInfo.fUserName, strClassRoomCode, null, "退款中", null, null);
                 if (strStatus == "发布" && model.courseList.Count == 0)
                 {
                     response.iResult = -1;
                     response.strMsg = "至少要一节课时才能发布";
+                }
+                else if (strStatus == "下线" && bookingList.list.Count > 0)
+                {
+                    response.iResult = -1;
+                    response.strMsg = "退款处理完成才能下线";
                 }
                 else
                 {
@@ -283,7 +292,7 @@ namespace KeZhan.Controllers
         /// <param name="strBookingNo"></param>
         /// <param name="dAmount"></param>
         /// <returns></returns>
-        public JsonResult DoSubmitBookingRefund(string strOrderNo, decimal dAmount, string strRemark)
+        public JsonResult DoSubmitBookingRefund(string strOrderNo, string strUserName, decimal dAmount, string strRemark)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
@@ -291,7 +300,7 @@ namespace KeZhan.Controllers
             int i = BookingBll.CheckRefund(dAmount, strOrderNo, ref strMsg);
             if (i >= 0)
             {
-                response.iResult = BookingBll.SubmitBookingRefund(strOrderNo, userInfo.fUserName, dAmount, strRemark);
+                response.iResult = BookingBll.SubmitBookingRefund(strOrderNo, strUserName, userInfo.fUserName, dAmount, strRemark);
             }
             else
             {
@@ -371,7 +380,7 @@ namespace KeZhan.Controllers
                 response.strMsg = booking.fBookingNo;
                 response.iResult = 0;
             }
-            else if (booking.fStatus == "已支付")
+            else if (booking.fStatus == "已支付" || booking.fStatus == "退款中" || booking.fStatus == "已驳回")
             {
                 response.strMsg = "不能重复购买";
                 response.iResult = -1;
@@ -390,6 +399,42 @@ namespace KeZhan.Controllers
                     response.strMsg = "课程已达到最大报名人数，请选择其他课程";
                     response.iResult = -1;
                 }
+            }
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
+        [HttpPost]
+        public JsonResult DoSubmitCourseBooking(int iCourseID)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            BookingModel booking = BookingBll.GettBooking(userInfo.fUserName, "OnLineClass", iCourseID.ToString(), "");
+            if (booking == null)
+            {
+                CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
+
+                response.strMsg = BookingBll.SubmitBooking(userInfo.fUserName, "OnLineClass", iCourseID.ToString(), course.fPrice, false, "Web");
+
+            }
+            else if (booking.fStatus == "提交")
+            {
+                response.strMsg = booking.fBookingNo;
+                response.iResult = 0;
+            }
+            else if (booking.fStatus == "已支付" || booking.fStatus == "退款中" || booking.fStatus == "已驳回")
+            {
+                response.strMsg = "不能重复购买";
+                response.iResult = -1;
+            }
+            else
+            {
+                CourseModel course = ClassRoomBll.GetCourseByID(iCourseID);
+
+                response.strMsg = BookingBll.SubmitBooking(userInfo.fUserName, "OnLineClass", iCourseID.ToString(), course.fPrice, false, "Web");
+
             }
 
             JsonResult jr = new JsonResult();
@@ -471,10 +516,10 @@ namespace KeZhan.Controllers
             }
             catch (Exception ex)
             {
-                 response.iResult = -1;
+                response.iResult = -1;
                 response.strMsg = "结算失败";
             }
-            
+
             jr.Data = response;
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
@@ -506,16 +551,16 @@ namespace KeZhan.Controllers
                 response.iResult = -1;
                 response.strMsg = "请输入介绍";
             }
-            else if (model.fIsLive && model.fVideoFee <= 0)
-            {
-                response.iResult = -1;
-                response.strMsg = "开通一对一必须填写费用";
-            }
-            else if (model.fIsProblem && model.fProblemFee <= 0)
-            {
-                response.iResult = -1;
-                response.strMsg = "开通答疑必须填写费用";
-            }
+            //else if (model.fIsLive && model.fVideoFee <= 0)
+            //{
+            //    response.iResult = -1;
+            //    response.strMsg = "开通一对一必须填写费用";
+            //}
+            //else if (model.fIsProblem && model.fProblemFee <= 0)
+            //{
+            //    response.iResult = -1;
+            //    response.strMsg = "开通答疑必须填写费用";
+            //}
             else
             {
                 UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
@@ -670,6 +715,88 @@ namespace KeZhan.Controllers
 
             JsonResult jr = new JsonResult();
             jr.Data = response;
+            return jr;
+        }
+
+
+        [HttpPost]
+        public JsonResult DoSendEmailCode(string strEmail)
+        {
+            string strMsg = "";
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            if (string.IsNullOrEmpty(strEmail))
+            {
+                response.iResult = -1;
+                response.strMsg = "请输入邮箱";
+            }
+            else
+            {
+                response.iResult = UserBll.UserSendEmailCode(userInfo.fUserName, strEmail, ref strMsg);
+                response.strMsg = strMsg;
+            }
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+
+        [HttpPost]
+        public JsonResult DoUpdateEmail(string strEmail, string strCode)
+        {
+            ResponseBaseModel response = new ResponseBaseModel();
+            if (string.IsNullOrEmpty(strEmail))
+            {
+                response.iResult = -1;
+                response.strMsg = "请输入邮箱";
+            }
+            else if (string.IsNullOrEmpty(strCode))
+            {
+                response.iResult = -1;
+                response.strMsg = "请输入验证码";
+            }
+            else
+            {
+                UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+                //校验验证码
+                UserInfoModel newUser = UserBll.GetUserInfo(userInfo.fUserName);
+                if (newUser.fEmailCode == strCode && newUser.fEmailCodeEffectDate > DateTime.Now)
+                {
+                    UserBll.SaveUserInfo(userInfo.fUserName, "fEmail", strEmail);
+
+                    response.iResult = 0;
+                }
+                else
+                {
+                    response.strMsg = "验证码不对";
+                    response.iResult = -1;
+                }
+
+
+
+            }
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
+        /// <summary>
+        /// 关注老师
+        /// </summary>
+        /// <param name="strTeacherUser"></param>
+        /// <param name="IsFocus"></param>
+        /// <returns></returns>
+        public JsonResult DoUserFocus(string strTeacherUser, bool IsFocus)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            response.iResult = UserBll.TeacherFocus(userInfo.fUserName, strTeacherUser, IsFocus);
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
         }
         #endregion
@@ -962,7 +1089,7 @@ namespace KeZhan.Controllers
             ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(iCourseID, userInfo.fUserName);
             ResponseBaseModel response = new ResponseBaseModel();
             GroupModel group = GroupUserBll.GetGroup(cr.fClassRoomCode + iCourseID.ToString());
-            if (group == null ||(group != null && group.fIsValid))//判断是否已销毁课堂
+            if (group == null || (group != null && group.fIsValid))//判断是否已销毁课堂
             {
                 if (cr.IsBuy > 0 || cr.fTecharUserName == userInfo.fUserName)
                 {
@@ -1039,10 +1166,10 @@ namespace KeZhan.Controllers
         #region Start
 
 
-        public JsonResult CheckOnlineClass(string strCourseNo, string strRole="Student")
+        public JsonResult CheckOnlineClass(string strCourseNo, string strRole = "Student")
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            ResponseBaseModel response = new ResponseBaseModel();
+            ResponseCourseModel response = new ResponseCourseModel();
             if (strCourseNo.Length > 8)
             {
                 string strCourseID = strCourseNo.Substring(7, strCourseNo.Length - 7);
@@ -1064,15 +1191,32 @@ namespace KeZhan.Controllers
                         if (userAccount < classRoomFlow && strRole == "Teacher")
                         {
                             response.iResult = -1;
-                            response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString()+ "分钟。请先去购买流量";
+                            response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString() + "分钟。请先去购买流量";
                         }
                         else
                         {
-                            CourseModel course = ClassRoomBll.GetCourseByID(Convert.ToInt32(strCourseID));
+
+
+                            CourseModel course = ClassRoomBll.GetCourseById(Convert.ToInt32(strCourseID), userInfo.fUserName);
+
                             if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
                             {
-                                response.iResult = Convert.ToInt32(strCourseID);
-                                response.strMsg = "";
+                                if (course != null && strRole == "Student" && course.fPrice > 0 && course.IsBuy == 0)
+                                {
+                                    response.iResult = 0;
+                                    response.strMsg = "未购买";
+                                    response.CourseID = course.fID;
+                                    response.CourseNo = strCourseNo;
+                                    response.ClassTitle = course.fCourseTitle;
+                                    response.ClassDate = course.fClassDate.ToString();
+                                    response.ClassLength = course.fClassDateLength.ToString();
+                                    response.Price = course.fPrice.ToString();
+                                }
+                                else
+                                {
+                                    response.iResult = Convert.ToInt32(strCourseID);
+                                    response.strMsg = "";
+                                }
                             }
                             else
                             {

@@ -14,6 +14,7 @@ namespace TiKu.Entity
     public System.String fCourseTitle { get; set; }
     public System.DateTime fClassDate { get; set; }
     public System.Int32 fClassDateLength { get; set; }
+    public System.Decimal fPrice { get; set; }
 
     public System.String fDocoumentUrl { get; set; }
     public System.Int32 fOrder { get; set; }

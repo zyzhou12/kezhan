@@ -21,6 +21,10 @@ namespace TiKuBll
             {
                 booking.fBookingNo = "C" + DateTime.Now.ToString("yyyyMMddHHmmssssss") + rd.Next(10, 100).ToString();
             }
+            else if (strType == "OnLineClass")
+            {
+                booking.fBookingNo = "O" + DateTime.Now.ToString("yyyyMMddHHmmssssss") + rd.Next(10, 100).ToString(); ;
+            }
             else if (strType == "Resource")
             {
                 booking.fBookingNo = "R" + DateTime.Now.ToString("yyyyMMddHHmmssssss") + rd.Next(10, 100).ToString(); ;
@@ -161,18 +165,29 @@ namespace TiKuBll
             model.fUserName = booking.fUserName;
 
             //课程信息
-            DataSet dsRst = tClassRoomDal.GettClassRoomDetail(booking.fTypeCode, booking.fUserName);
-            List<ClassRoomModel> modelList = PubFun.DataTableToObjects<ClassRoomModel>(dsRst.Tables[0]);
-            // List<DescModel> descList = PubFun.DataTableToObjects<DescModel>(dsRst.Tables[1]);
-            List<CourseModel> courseList = PubFun.DataTableToObjects<CourseModel>(dsRst.Tables[2]);
-            ClassRoomModel classRoom = new ClassRoomModel();
-            if (modelList.Count > 0)
+            string strClassRoomCode = "";
+            if (booking.fType == "ClassRoom")
             {
-                classRoom = modelList[0];
+                strClassRoomCode = booking.fTypeCode;
             }
-            //classRoom.descList = descList;
-            classRoom.courseList = courseList;
-            model.ClassRoom = classRoom;
+            else if (booking.fType == "OnLineClass")
+            {
+                tCourseEntity course = tCourseDal.GettCourse(Convert.ToInt32(booking.fTypeCode));
+                strClassRoomCode = course.fClassRoomCode;
+            }
+            DataSet dsRst = tClassRoomDal.GettClassRoomDetail(strClassRoomCode, booking.fUserName);
+                List<ClassRoomModel> modelList = PubFun.DataTableToObjects<ClassRoomModel>(dsRst.Tables[0]);
+                // List<DescModel> descList = PubFun.DataTableToObjects<DescModel>(dsRst.Tables[1]);
+                List<CourseModel> courseList = PubFun.DataTableToObjects<CourseModel>(dsRst.Tables[2]);
+                ClassRoomModel classRoom = new ClassRoomModel();
+                if (modelList.Count > 0)
+                {
+                    classRoom = modelList[0];
+                }
+                //classRoom.descList = descList;
+                classRoom.courseList = courseList;
+                model.ClassRoom = classRoom;
+            
 
             tUserPayEntity pay = tUserPayDal.GettUserPayByBookingNo(booking.fBookingNo);
             if (pay != null)
@@ -213,14 +228,14 @@ namespace TiKuBll
             return tUserRefundDal.CheckRefund(iAmount, strBookingNo, ref strMsg);
         }
 
-        public static int SubmitBookingRefund(string strBookingNo, string strUserName, decimal dAmount, string strRemark)
+        public static int SubmitBookingRefund(string strBookingNo, string strUserName,string strOpr, decimal dAmount, string strRemark)
         {
             tUserRefundEntity entity = new tUserRefundEntity();
             entity.fApplyAmount = dAmount;
             entity.fApplyDate = DateTime.Now;
             entity.fApplyRemark = strRemark;
             entity.fCreateDate = DateTime.Now;
-            entity.fCreateOpr = strUserName;
+            entity.fCreateOpr = strOpr;
             entity.fOrderNo = "T"+DateTime.Now.ToString("yyyyMMddHHmmssssss");
             entity.fBookingNo = strBookingNo;
             entity.fStatus = 0;
@@ -258,6 +273,11 @@ namespace TiKuBll
                 refund.fStatus = entity.fStatus;
                 refund.fUserName = entity.fUserName;
                 refund.fClassRoomTitle = entity.fClassRoomTitle;
+                refund.fNickName = entity.fNickName;
+               if(entity.fUserName!=entity.fCreateOpr)
+               {
+                   refund.fApplyRemark += "(老师提交)";
+               }
                 refundList.Add(refund);
             }
             model.refundList = refundList;

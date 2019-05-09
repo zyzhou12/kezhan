@@ -43,6 +43,7 @@ namespace TiKuBll.Model
     {
         public System.String fClassRoomCode { get; set; }
         public System.String fClassType { get; set; }
+        public System.String fPayType { get; set; }
 
         public System.String fStatus { get; set; }
         public System.Boolean IsManager { get; set; }

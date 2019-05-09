@@ -22,14 +22,15 @@ namespace KeZhan.Controllers
         //
         // GET: /ClassRoom/
 
-        public ActionResult ClassRoomManager(string strStatus = null, string strPayType = null)
+        public ActionResult ClassRoomManager(string strStatus = null, string strPayType = null,string strType=null)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             TeacherClassRoomListModel model = new TeacherClassRoomListModel();
-            ClassRoomListModel list = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType,"");
+            ClassRoomListModel list = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType,null, strType);
             model.strUserName = userInfo.fUserName;
             model.strStatus = strStatus;
             model.strPayType = strPayType;
+            model.strType = strType;
             model.list = list;
             return View(model);
         }

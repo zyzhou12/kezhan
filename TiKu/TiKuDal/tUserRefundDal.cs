@@ -98,9 +98,10 @@ namespace TiKu.Dal
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
-            bufSQL.Append(@"select fClassRoomTitle,r.* from tUserRefund r 
+            bufSQL.Append(@"select fClassRoomTitle,fNickName+'('+fMobile+')' fNickName,r.* from tUserRefund r 
 	left join tBooking b on b.fBookingNo=r.fBookingNO
-	left join tClassRoom c on c.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' WHERE (1=1) ");
+	left join tClassRoom c on c.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom'
+	left join tUser u on u.fUserName=r.fUserName WHERE (1=1) ");
 
             if (!string.IsNullOrEmpty(strUserName))
             {
@@ -119,6 +120,7 @@ namespace TiKu.Dal
                 lstParam.Add(new DBParam("@Teacher", strTeacher));
             }
 
+            bufSQL.Append(" order by r.fCreateDate desc ");
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");
             DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);

@@ -44,6 +44,7 @@ namespace TiKuBll.Model
     public System.String TeacherHead { get; set; }
     public System.String TeacherDesc { get; set; }
     public System.String TeacherQrCode { get; set; }
+    public System.Int32 IsFocus { get; set; }
 
     public System.String showType { get; set; }
     public List<DescModel> descList { get; set; }
@@ -59,6 +60,7 @@ namespace TiKuBll.Model
       public string strStatus { get; set; }
       public string strPayType { get; set; }
       public string strType { get; set; }
+      public string strClassType { get; set; }
     public List<ClassRoomModel> classRoomList { get; set; }
   }
 
@@ -92,6 +94,8 @@ namespace TiKuBll.Model
     public System.String fDictTitle { get; set; }
     public System.String fCourseTitle { get; set; }
     public System.DateTime fClassDate { get; set; }
+
+    public System.Decimal fPrice { get; set; }
     public System.String fDocoumentUrl { get; set; }
     public System.Int32 fClassDateLength { get; set; }
     public System.Int32 fOrder { get; set; }
@@ -107,5 +111,6 @@ namespace TiKuBll.Model
     public System.String fFileCoverUrl { get; set; }
 
     public System.Int32 CourseStatus { get; set; }
+    public System.Int32 IsBuy { get; set; }
   }
 }

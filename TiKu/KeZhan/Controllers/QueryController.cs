@@ -12,7 +12,7 @@ namespace KeZhan.Controllers
 {
     public class QueryController : Controller
     {
-     
+
 
         /// <summary>
         /// 条件查询
@@ -29,6 +29,12 @@ namespace KeZhan.Controllers
                 strCity = "上海";
             }
             ClassRoomListModel model = ClassRoomBll.GettClassRoomList(strCity, strPharse, strGrade, strSubjet);
+            return PartialView("ClassRoomControl", model);
+        }
+
+        public ActionResult QueryTeacherClassRoom(string strTeacherUser)
+        {
+            ClassRoomListModel model = ClassRoomBll.GettClassRoomListByTeacher(strTeacherUser, "发布");
             return PartialView("ClassRoomControl", model);
         }
 

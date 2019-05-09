@@ -46,7 +46,11 @@
                             <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>
                             @if (Model.fIsReturn)
                             {
-                                var strRefund = " 按" + Model.ClassRoom.fReturnRule + "  " + Model.ClassRoom.fReturnType + "退";
+                                var strRefund =  Model.ClassRoom.fReturnType + "退";
+                                if(Model.ClassRoom.fReturnType=="随时")
+                                {
+                                    strRefund += " 按" + Model.ClassRoom.fReturnRule;
+                                }
                                 <label>@strRefund<sup> </sup></label>
                                 <span>课前退，是指课程的第一课时开始前；随时退，最后一个课时前随时可退</span>
                             }
@@ -74,7 +78,7 @@
                             <input type="text" id="txtRemark" class="input-text" placeholder="请输入退课原因" />
                             <br />
                             <br />
-                            <button class="awe-btn awe-btn-13" id="btnSubmit" onclick="SubmitRefund('@Model.fBookingNo',@Model.MaxReturnAmount)">提交退款</button>
+                            <button class="awe-btn awe-btn-13" id="btnSubmit" onclick="SubmitRefund('@Model.fBookingNo','@Model.fUserName',@Model.MaxReturnAmount)">提交退款</button>
 
 
 
@@ -92,7 +96,7 @@
 </section>
 
 <script type="text/javascript">
-    function SubmitRefund(bookingNo,maxAmount)
+    function SubmitRefund(bookingNo,userName,maxAmount)
     {
         if($("#txtRefundAmount").val().trim()==""){
             alert("退款金额不能为空");
@@ -112,7 +116,7 @@
 
         $.ajax({
             url: "/LoginRequest/DoSubmitBookingRefund",
-            data: { "strOrderNo": bookingNo, "dAmount": $("#txtRefundAmount").val().trim(), "strRemark": $("#txtRemark").val().trim() },
+            data: { "strOrderNo": bookingNo,"strUserName":userName, "dAmount": $("#txtRefundAmount").val().trim(), "strRemark": $("#txtRemark").val().trim() },
             type: "POST",
             dataType: "json",
             success: function (rst) {
