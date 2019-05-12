@@ -15,26 +15,60 @@ namespace KeZhan.Controllers
         //
         // GET: /Start/
 
-
-        public ActionResult MyClassRoomList(string strRoleType, string strStatus = null, string strPayType = null, string strType = null,string strClassType=null)
+        public ActionResult BuyClassRoomList(string strStatus = null, string strPayType = null, string strType = null, string strClassType = null)
         {
 
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
 
             ClassRoomListModel model = null;
-            if (strRoleType == "buy")
-            {
+            
                 model = ClassRoomBll.GetMyClassRoom(userInfo.fUserName, strType);
-            }
-            else if (strRoleType == "create")
+          
+            if (strStatus == null)
             {
-                model = ClassRoomBll.GetClassRoomByCreateOpr(userInfo.fUserName, strStatus, strPayType, strType, strClassType);
+                model.strStatus = "";
             }
-            else if (strRoleType == "teacher")
+            else
             {
+                model.strStatus = strStatus;
+            }
+            if (strPayType == null)
+            {
+                model.strPayType = "";
+            }
+            else
+            {
+                model.strPayType = strPayType;
+            }
+
+            if (strType == null)
+            {
+                model.strType = "";
+            }
+            else
+            {
+                model.strType = strType;
+            }
+            if (strClassType == null)
+            {
+                model.strClassType = "";
+            }
+            else
+            {
+                model.strClassType = strClassType;
+            }
+            return View(model);
+        }
+
+        public ActionResult MyClassRoomList( string strStatus = null, string strPayType = null, string strType = null,string strClassType=null)
+        {
+
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+            ClassRoomListModel model = null;
+           
                 model = ClassRoomBll.GetClassRoomByTeacher(userInfo.fUserName, strStatus, strPayType, strType, strClassType);
-            }
-            model.listType = strRoleType;
+           
             if (strStatus == null)
             {
                 model.strStatus = "";

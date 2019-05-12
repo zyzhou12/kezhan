@@ -60,6 +60,29 @@ namespace TiKu.Dal
       return rst.Result;
     }
 
+
+
+    public static int TeachValidSubmit(IList<tTeachValidEntity> objList, IList<tTeacherValidDetailEntity> detailList)
+    {
+        string xmlData = PubFun.EntityListToXml(objList, "tTeachValid", "DataSet",
+            "", "", null);
+        string detailxmlData = PubFun.EntityListToXml(detailList, "tTeacherValidDetail", "DataSet",
+            "", "", null);
+
+        DBParam[] lstParam = new DBParam[2];
+        lstParam[0] = new DBParam("@XmlData", xmlData);
+        lstParam[1] = new DBParam("@DetailXmlData", detailxmlData);
+        DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "TeachValid_Submit",
+            lstParam, DBHelper.ProcRstTypes.All);
+        if (rst.Result < 0)
+        {
+            if (DBHelper.Log != null) DBHelper.Log.Error(rst.Message);
+            throw new Exception(rst.Message);
+        }
+        return rst.Result;
+    }
+
+
     public static tTeachValidEntity GettTeachValid(int iFID)
     {
       tTeachValidEntity rst = null;

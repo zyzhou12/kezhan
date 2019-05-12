@@ -139,7 +139,7 @@ namespace TiKu.Dal
 
             if (strType == "未开始")
             {
-                bufSQL.Append(" AND cr.fClassRoomDate>getdate() AND cr.fStatus='发布' ");
+                bufSQL.Append(" AND ((cr.fClassRoomDate>getdate() AND cr.fStatus='发布')  or cr.fStatus='保存' or cr.fStatus='发布中')");
             }
             else if (strType == "正在上")
             {
@@ -147,7 +147,7 @@ namespace TiKu.Dal
             }
             else if (strType == "已结束")
             {
-                bufSQL.Append(" AND cr.fStatus='结算' ");
+                bufSQL.Append(" AND (cr.fStatus='结算' or cr.fStatus='下线中' or cr.fStatus='下线') ");
             }
             else
             {
@@ -190,7 +190,7 @@ namespace TiKu.Dal
 
             if (strType == "未开始")
             {
-                bufSQL.Append(" AND cr.fClassRoomDate>getdate() AND cr.fStatus='发布'");
+                bufSQL.Append(" AND ((cr.fClassRoomDate>getdate() AND cr.fStatus='发布')  or cr.fStatus='保存' or cr.fStatus='发布中')");
             }
             else if (strType == "正在上")
             {
@@ -198,7 +198,7 @@ namespace TiKu.Dal
             }
             else if (strType == "已结束")
             {
-                bufSQL.Append(" AND cr.fStatus='结算' ");
+                bufSQL.Append(" AND (cr.fStatus='结算' or cr.fStatus='下线中' or cr.fStatus='下线') ");
             }
             else
             {
@@ -235,7 +235,7 @@ left join tUser u on u.fUserName=cr.fTecharUserName
             }
             if (strType == "未开始")
             {
-                bufSQL.Append(" AND cr.fClassRoomDate>getdate()  AND cr.fStatus='发布' ");
+                bufSQL.Append(" AND ((cr.fClassRoomDate>getdate() AND cr.fStatus='发布')  or cr.fStatus='保存' or cr.fStatus='发布中')");
             }
             else if (strType == "正在上")
             {
@@ -243,7 +243,7 @@ left join tUser u on u.fUserName=cr.fTecharUserName
             }
             else if (strType == "已结束")
             {
-                bufSQL.Append(" AND cr.fStatus='结算' ");
+                bufSQL.Append(" AND (cr.fStatus='结算' or cr.fStatus='下线中' or cr.fStatus='下线') ");
             }
             bufSQL.Append(" order by cr.fCreateDate desc ");
             //防止返回数据过多

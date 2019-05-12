@@ -344,9 +344,9 @@ namespace TiKuBll
         }
 
 
-        public static int ConfirmUserRefund(int iRefundID, decimal refundAmount, string strApplyNote, string strApplyOpr, ref string strMsg)
+        public static int ConfirmUserRefund(bool bResult,int iRefundID, decimal refundAmount, string strApplyNote, string strApplyOpr, ref string strMsg)
         {
-            return tUserRefundDal.ConfirmUserRefund(iRefundID, refundAmount, strApplyNote, strApplyOpr, ref strMsg);
+            return tUserRefundDal.ConfirmUserRefund(bResult,iRefundID, refundAmount, strApplyNote, strApplyOpr, ref strMsg);
         }
 
         public static int RefusedUserRefund(int iRefundID, string strApplyNote, string strApplyOpr)

@@ -123,40 +123,41 @@
                                     }
                                     else if (Model.userRole == "Student")
                                     {
-                                    @*<h4>基本资料</h4>
-                                    
-                                  
-                                    <label>学段 <sup>*</sup></label>
-                                    <div class="shortcode-select">
-                                        <select class="awe-select" id="cmbPharse">
-                                            <option value="">请选择</option>
-                                            <option value="1">小学</option>
-                                            <option value="2">初中</option>
-                                            <option value="3">高中</option>
-                                        </select>
-                                    </div>
+                                                                        @*<h4>基本资料</h4>
 
-                                      
-                                     <label>学校</label>
-                                     <input type="text" id="txtSchool" class="input-text" />
-                                    
-                                    <label>年级 <sup>*</sup></label>
-                                    <div class="shortcode-select">
-                                        <select class="awe-select" id="cmgGrade">
-                                            <option value="">请选择</option>
-                                            <option value="1">一年级</option>
-                                            <option value="2">二年级</option>
-                                            <option value="3">三年级</option>
-                                            <option value="4">四年级</option>
-                                            <option value="5">五年级</option>
-                                            <option value="6">六年级</option>
-                                            <option value="7">七年级</option>
-                                            <option value="8">八年级</option>
-                                            <option value="9">九年级</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <button class="awe-btn awe-btn-13" onclick="SaveInfo('@Model.userRole')">保存</button>*@
+
+        <label>学段 <sup>*</sup></label>
+        <div class="shortcode-select">
+            <select class="awe-select" id="cmbPharse">
+                <option value="">请选择</option>
+                <option value="1">小学</option>
+                <option value="2">初中</option>
+                <option value="3">高中</option>
+                <option value="4">大学</option>
+            </select>
+        </div>
+
+
+         <label>学校</label>
+         <input type="text" id="txtSchool" class="input-text" />
+
+        <label>年级 <sup>*</sup></label>
+        <div class="shortcode-select">
+            <select class="awe-select" id="cmgGrade">
+                <option value="">请选择</option>
+                <option value="1">一年级</option>
+                <option value="2">二年级</option>
+                <option value="3">三年级</option>
+                <option value="4">四年级</option>
+                <option value="5">五年级</option>
+                <option value="6">六年级</option>
+                <option value="7">七年级</option>
+                <option value="8">八年级</option>
+                <option value="9">九年级</option>
+            </select>
+        </div>
+
+        <button class="awe-btn awe-btn-13" onclick="SaveInfo('@Model.userRole')">保存</button>*@
 
     <div class="reservation-chosen-message bg-gray text-center">
         <h4>提示 </h4>

@@ -84,6 +84,7 @@
                                         <option value="1">小学</option>
                                         <option value="2">初中</option>
                                         <option value="3">高中</option>
+                                        <option value="4">大学</option>
                                     </select>
                                 </div>
                                 <label>学科</label>
@@ -171,6 +172,8 @@
             $("#cmbSubject").append("<option value='物理'>物理</option>");
             $("#cmbSubject").append("<option value='化学'>化学</option>");
             $("#cmbSubject").append("<option value='地理'>地理</option>");
+        } else if ($(obj).val() == "4") {
+            $("#cmbSubject").append("<option value='全部'>全部</option>");
         } 
     }
 

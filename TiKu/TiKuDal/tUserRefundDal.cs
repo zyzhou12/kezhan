@@ -166,7 +166,7 @@ namespace TiKu.Dal
             return rst.Result;
         }
 
-        public static int ConfirmUserRefund(int iRefundID, decimal refundAmount, string strApplyNote, string strApplyOpr, ref string strMsg)
+        public static int ConfirmUserRefund(bool bResult,int iRefundID, decimal refundAmount, string strApplyNote, string strApplyOpr, ref string strMsg)
         {
             List<DbParameter> lstParam = new List<DbParameter>();
 
@@ -175,6 +175,7 @@ namespace TiKu.Dal
             lstParam.Add(new DBParam("@RefundAmount", refundAmount));
             lstParam.Add(new DBParam("@Note", strApplyNote));
             lstParam.Add(new DBParam("@OprUser", strApplyOpr));
+            lstParam.Add(new DBParam("@Result", bResult));
 
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");

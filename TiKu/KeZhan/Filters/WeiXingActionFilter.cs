@@ -25,7 +25,15 @@ namespace KeZhan.Filters
       string redurl = filterContext.HttpContext.Request.Url.ToString();
       if (userInfo == null)
       {
-        filterContext.Result = new RedirectToRouteResult("Default", new RouteValueDictionary(new { controller = "Open", action = "RegsiterLogin", redirect_uri = redurl }));
+          if (filterContext.HttpContext.Request.UserAgent.ToLower().Contains("micromessenger"))
+          {
+              //return Redirect(ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/Open/WeiXinLogin?strParam=" + strBookingNo + "&strState=" + userInfo.fUserName);
+              filterContext.Result = new RedirectToRouteResult("Default", new RouteValueDictionary(new { controller = "Open", action = "WeiXinLogin", strParam = filterContext.RouteData.Values["controller"].ToString(), strState = redurl }));
+          }
+          else
+          {
+              filterContext.Result = new RedirectToRouteResult("Default", new RouteValueDictionary(new { controller = "Open", action = "RegsiterLogin", redirect_uri = redurl }));
+          }
       }
       else
       {

@@ -60,51 +60,58 @@
                                 <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnCity" style="width:20%;" onclick="DoSaveCity()">保存</a>*@
 
                             <label>手机<sup>*</sup></label>
-                            <span id="spanMobile">@Model.userInfo.fMobile</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aMobile" onclick="updateMobile()">修改</a>
+                            <span id="spanMobile">@Model.userInfo.fMobile</span>
+                            <a href="#" style="padding-left:20px; color:#e1bd85;" id="aMobile" onclick="updateMobile()">修改</a>
                             <input type="text" style=" display:none" id="txtMobile" placeholder="请输入新手机" class="input-text">
                             <br /><br />
                             <input type="text" style=" display:none" id="txtCode" placeholder="请输入验证码" value="" class="input-text">
-                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnCode" onclick="DoSendCode()">发送验证码</a>
-
-                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnMobile" onclick="DoSaveMobile()">保存</a>
-
-                            @*<label>邮箱</label>
-                                <input type="text" id="txtEmail" value="@Model.userInfo.fEmail" class="input-text">*@
-                            <label>邮箱<sup>*</sup></label>
-                            <span id="spanEmail">@Model.userInfo.fEmail</span>
-                            <a href="#" style="padding-left:20px; color:#e1bd85;" id="aEmail" onclick="updateEmail()">修改</a>
-                            <input type="text" style=" display:none" id="txtEmail" placeholder="请输入新邮箱" class="input-text">
-                            <br /><br />
-                            <input type="text" style=" display:none" id="txtEmailCode" placeholder="请输入邮箱验证码" value="" class="input-text">
-                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnEmailCode" onclick="DoSendEmailCode()">发送验证码</a>
-
-                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnEmail"  onclick="DoSaveEmail()">保存</a>
-
-
-                            <label>密码<sup>*</sup></label>
-                            <span id="spanPass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aPass" onclick="updatePass()">修改</a>
-                            <input type="text" style=" display:none" id="txtPass" value="" placeholder="请输入密码" class="input-text" />
-                            <br />
-                            <br />
-                            <input type="text" style=" display:none" id="txtPass2" value="" placeholder="请再次输入密码" class="input-text" />
-                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnPass" style="width:20%;" onclick="DoSavePass()">保存</a>
-
-
-                            @if (Model.teacherInfo != null && Model.teacherInfo.fStatus == "已认证")
-                            {
-                                <label>交易密码<sup>*</sup></label>
-                                <span id="spanTradePass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aTradePass" onclick="updateTradePass()">修改</a>
-                                <input type="text" style=" display:none" id="txtTradePass" value="" class="input-text" />
-                                <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnTradePass" style="width:20%;" onclick="DoSaveTradePass()">保存</a>
-                            }
+                            <p style=" text-align:right; width:100%; font-size:12px;">
+                                <a href="#"  style=" display:none" id="btnCode" onclick="DoSendCode()">发送验证码</a>
+                                </p>
+                                <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnMobile" onclick="DoSaveMobile()">保存</a>
 
 
 
 
+                                @*<label>邮箱</label>
+            <input type="text" id="txtEmail" value="@Model.userInfo.fEmail" class="input-text">*@
+                                <label>邮箱<sup>*</sup></label>
+                                <span id="spanEmail">@Model.userInfo.fEmail</span>
+                                <a href="#" style="padding-left:20px; color:#e1bd85;" id="aEmail" onclick="updateEmail()">修改</a>
+                                <input type="text" style=" display:none" id="txtEmail" placeholder="请输入新邮箱" class="input-text">
+                                <br /><br />
+                                <input type="text" style=" display:none" id="txtEmailCode" placeholder="请输入邮箱验证码" value="" class="input-text">
+                            <p style=" text-align:right; width:100%; font-size:12px;">
+                                <a href="#"  style=" display:none" id="btnEmailCode" onclick="DoSendEmailCode()">发送验证码</a>
+                                </p>
+                                <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnEmail" onclick="DoSaveEmail()">保存</a>
+
+
+                                <label>密码<sup>*</sup></label>
+                                <span id="spanPass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aPass" onclick="updatePass()">修改</a>
+                                <input type="text" style=" display:none" id="txtPass" value="" placeholder="请输入密码" class="input-text" />
+                                <br />
+                                <br />
+                                <input type="text" style=" display:none" id="txtPass2" value="" placeholder="请再次输入密码" class="input-text" />
+                                <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnPass" style="width:20%;" onclick="DoSavePass()">保存</a>
+
+
+                                @if (Model.teacherInfo != null && Model.teacherInfo.fStatus == "已认证")
+                                {
+                                    <label>交易密码<sup>*</sup></label>
+                                    <span id="spanTradePass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aTradePass" onclick="updateTradePass()">修改</a>
+                                    
+                                    <input type="text" style=" display:none" id="txtTradePass" value="" class="input-text" />
+                                    <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnTradePass" style="width:20%;" onclick="DoSaveTradePass()">保存</a>
+                                }
 
 
 
-                        </div>
+
+
+
+
+</div>
                         @if (Model.userRole == "Teacher")
                         {
                             <div class="reservation-billing-detail" id="panelTeacher" style=" display:none">
@@ -272,7 +279,8 @@
                                     @Html.DropDownListFor(m => m.studentInfo.Pharse, new[] { new SelectListItem { Text = "请选择", Value = "" },
                                                                                               new SelectListItem { Text = "小学", Value = "1" },
                                                                                               new SelectListItem { Text = "初中", Value = "2" },
-                                                                                              new SelectListItem { Text = "高中", Value = "3" }}, new { @class = "awe-select", id = "cmbPharse" })
+                                                                                              new SelectListItem { Text = "高中", Value = "3" },
+                                                                                              new SelectListItem { Text = "大学", Value = "4" }}, new { @class = "awe-select", id = "cmbPharse" })
 
                                 </div>
                                 <label>学校<sup>*</sup></label>
@@ -329,6 +337,7 @@
         // $("#spanMobile").hide();
         $("#aMobile").hide();
         $("#txtMobile").show();
+        $("#txtCode").show();
         $("#btnCode").show();
         $("#btnMobile").show();
         $("#txtMobile").focus();
@@ -414,7 +423,6 @@
 
                 if (rst.iResult >= 0) {
                     $("#txtMobile").attr("disabled", true);
-                    $("#txtCode").show();
                     $("#txtCode").attr("disabled", false);
                     flag = 1;
                     time_ok = get_time_add(30);
@@ -462,6 +470,7 @@
         $("#aEmail").hide();
         $("#txtEmail").show();
         $("#btnEmailCode").show();
+        $("#txtEmailCode").show();
         $("#btnEmail").show();
         $("#txtEmail").focus();
     }
@@ -495,7 +504,6 @@
 
                 if (rst.iResult >= 0) {
                     $("#txtEmail").attr("disabled", true);
-                    $("#txtEmailCode").show();
                     $("#txtEmailCode").attr("disabled", false);
                     alert("验证邮件已发送，请注意查收");
                     flag = 1;

@@ -91,6 +91,21 @@ namespace TiKu.Dal
         return rst;
     }
 
+    public static tUserEntity GettUserByOpenID(string strOpenID)
+    {
+        tUserEntity rst = null;
+        List<DbParameter> lstParam = new List<DbParameter>();
+        string strSQL = "SELECT * FROM tUser WHERE fOpenID=@OpenID";
+        lstParam.Add(new DBParam("@OpenID", strOpenID));
+        DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
+        if (dt.Rows.Count > 0)
+        {
+            rst = new tUserEntity();
+            Trip8H.Common.PubFun.DataRowToObject(dt.Rows[0], rst);
+        }
+        return rst;
+    }
+
     public static List<tUserEntity> GetFocusTeacherList(string strUserName)
     {
       StringBuilder bufSQL = new StringBuilder();

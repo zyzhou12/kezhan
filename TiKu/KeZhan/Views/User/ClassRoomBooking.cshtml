@@ -134,38 +134,7 @@
                                                         <br />
                                                         <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("HH:mm")</span>
                                                     </p>
-                                                    @if (Model.IsBuy > 0)
-                                                    {
-                                                        <div class="reservation-package_book-price">
-                                                            @if (course.CourseStatus == 1)
-                                                            {
-                                                                <a href="#" class="awe-btn awe-btn-default">未开始</a>
-                                                            }
-                                                            else if (course.CourseStatus == 2)
-                                                            {
-                                                                <a href="#" class="awe-btn awe-btn-default">已结束</a>
-                                                            }
-                                                            else if (course.CourseStatus == 3)
-                                                            {
-                                                                if (Model.fStatus == "发布")
-                                                                {
-                                                                    <a href="/Home/Index?iCourseID=@course.fID" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
-                                                                }
-                                                            }
-                                                            else if (course.CourseStatus == 4)
-                                                            {
-                                                                if (!string.IsNullOrEmpty(course.fFileCoverUrl))
-                                                                {
-                                                                    <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <a href="#" class="awe-btn awe-btn-default">转码中</a>
-                                                                }
-                                                            }
-
-                                                        </div>
-                                                    }
+                                                   
 
                                                 </div>
                                                 <br />

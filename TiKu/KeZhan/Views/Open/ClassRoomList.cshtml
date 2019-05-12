@@ -16,6 +16,7 @@
                     <li onclick="CheckPharse(this,'1')"><a href="#">小学</a></li>
                     <li onclick="CheckPharse(this,'2')"><a href="#">初中</a></li>
                     <li onclick="CheckPharse(this,'3')"><a href="#">高中</a></li>
+                    <li onclick="CheckPharse(this,'4')"><a href="#">大学</a></li>
                 </ul>
                 <ul class="list-inline" id="gradeXX" style=" display:none;">
                     <li><a href="#">一年级</a></li>
@@ -145,11 +146,19 @@
             $("#subjectZX").hide();
             $("#subjectZX").children("li").removeClass("active");
             $("#subjectXX").children("li").removeClass("active");
-        } else {
+        } else if (pharse == "2") {
             $("#subjectZX").show();
             $("#subjectXX").hide();
             $("#subjectZX").children("li").removeClass("active");
             $("#subjectXX").children("li").removeClass("active");
+        } else if (pharse == "3") {
+            $("#subjectZX").show();
+            $("#subjectXX").hide();
+            $("#subjectZX").children("li").removeClass("active");
+            $("#subjectXX").children("li").removeClass("active");
+        } else if (pharse == "4") {
+            $("#subjectZX").hide();
+            $("#subjectXX").hide();
         }
         QueryClassRoom();
     }

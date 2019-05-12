@@ -23,38 +23,6 @@
                         { <text> class="active" </text>              }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=已结束&strClassType=@Model.strClassType">已结束</a></li>
 
                 </ul>
-              
-
-                    @*<ul class="list-inline">
-        <li>状态：</li>
-        <li @if (Model.strStatus == "") { <text> class="active" </text>   }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=&strPayType=@Model.strPayType&strType=@Model.strType">全部</a></li>
-        <li @if (Model.strStatus == "保存") { <text> class="active" </text>   }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=保存&strPayType=@Model.strPayType&strType=@Model.strType">草稿</a></li>
-
-        <li @if (Model.strStatus == "发布") { <text> class="active" </text>   }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=发布&strPayType=@Model.strPayType&strType=@Model.strType">发布</a></li>
-
-        <li @if (Model.strStatus == "下线") { <text> class="active" </text>   }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=下线&strPayType=@Model.strPayType&strType=@Model.strType">下线</a></li>
-
-    </ul>
-                    <ul class="list-inline">
-                        <li>付款方式：</li>
-                        <li @if (Model.strPayType == "") { <text> class="active" </text>    }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=&strType=@Model.strType&strClassType=@Model.strClassType">全部</a></li>
-                        <li @if (Model.strPayType == "在线支付") { <text> class="active" </text>           }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=在线支付&strType=@Model.strType&strClassType=@Model.strClassType">在线支付</a></li>
-
-                        <li @if (Model.strPayType == "线下支付") { <text> class="active" </text>           }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=线下支付&strType=@Model.strType&strClassType=@Model.strClassType">线下支付</a></li>
-
-                    </ul>*@
-
-    <ul class="list-inline">
-        <li>公开类型：</li>
-        <li @if (Model.strClassType == "")
-            { <text> class="active" </text>     }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=">全部</a></li>
-        <li @if (Model.strClassType == "Public")
-            { <text> class="active" </text>            }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Public">公开课</a></li>
-
-        <li @if (Model.strClassType == "Private")
-            { <text> class="active" </text>            }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Private">私课</a></li>
-
-    </ul>
 
             </div>
 

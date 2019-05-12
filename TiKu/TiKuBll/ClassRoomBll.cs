@@ -766,11 +766,11 @@ namespace TiKuBll
             list.Add(entity);
             int i = tClassRoomApplyDal.Modify(list, "insert", null, null);
 
-            tClassRoomEntity classRoom = tClassRoomDal.GettClassRoomByCode(strClassRoomCode,null);
-            classRoom.fStatus = strStatus + "中";
-            List<tClassRoomEntity> classRoomList=new List<tClassRoomEntity>();
-            classRoomList.Add(classRoom);
-            i = tClassRoomDal.Modify(classRoomList, "update", "fID,fStatus", null);
+            //tClassRoomEntity classRoom = tClassRoomDal.GettClassRoomByCode(strClassRoomCode,null);
+            //classRoom.fStatus = strStatus + "中";
+            //List<tClassRoomEntity> classRoomList=new List<tClassRoomEntity>();
+            //classRoomList.Add(classRoom);
+            //i = tClassRoomDal.Modify(classRoomList, "update", "fID,fStatus", null);
 
 
             return i;

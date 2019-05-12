@@ -100,84 +100,7 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
-      
-        public ActionResult WeiXinLogin(string redirect_uri = null)
-        {
-
-            if (string.IsNullOrEmpty(redirect_uri))
-            {
-                redirect_uri = Request.Url.ToString();
-            }
-            string strAppID = "";
-            string strState = "kezhanlogin";
-
-            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-
-
-            string oauthUrl = string.Format("https://open.weixin.qq.com/connect/oauth2/authorize?appid={0}&redirect_uri={1}&response_type=code&scope=snsapi_base&state={2}#wechat_redirect", strAppID, "http://weixin.aizhusoft.com/AuthoRedirect.aspx?url=http://hotellife.aizhusoft.com/usercount/DoWeiXinLogin?strParams=" + strAppID, strState);
-
-
-            return Redirect(oauthUrl);
-        }
-
-
-
-
-        //public ActionResult DoWeiXinLogin(string code, string strParams, string state)
-        //{
-        //  string redirecturi = "http://www.baidu.com?1=" + code + strParams + state;
-
-        //  try
-        //  {
-        //    string strAppID = "";
-        //    string strAppSecret = "";
-
-        //    string sUrl = String.Format(APIRequest.GetUrl("getaccesstoken"), strAppID, strAppSecret, code);
-
-        //    String strJson = APIRequest.GetData(sUrl);
-
-        //    JavaScriptSerializer jss = new JavaScriptSerializer();
-
-        //    PublicTokenModel token = jss.Deserialize<PublicTokenModel>(strJson);
-
-        //    if (token.access_token != null)
-        //    {
-        //      //更新用户信息
-        //      ResponseModel<UserModel> Response = UserBll.getUser(microPublic.fPublicID, token.openid);
-
-        //      //先登录
-
-        //      UserInfoModel userInfo = new UserInfoModel();
-        //      userInfo.User = Response.ResultObj;
-
-
-        //      if (!string.IsNullOrEmpty(token.access_token))
-        //      {
-        //        string strtoken = HotelLife.Bll.ConfigBll.GetToken(strAppID);
-
-        //        //获取个人信息
-        //        //sUrl = String.Format(APIRequest.GetUrl("getuserinfo"), strtoken, token.openid);
-        //        //strJson = APIRequest.GetData(sUrl);
-        //        //PublicUserModel user = jss.Deserialize<PublicUserModel>(strJson);
-        //        //userInfo.User.fNickName = user.nickname;
-        //        //userInfo.User.fHeadImg = user.headimgurl;
-        //        //userInfo.User.fsubscribe = user.subscribe;
-        //      }
-        //      Code.Fun.SetSessionUserInfo(this, userInfo);
-
-
-
-        //    }
-
-
-        //    return Redirect("");
-        //  }
-        //  catch (Exception ex)
-        //  {
-        //    return Redirect(redirecturi + "&" + ex.Message);
-        //  }
-        //}
-
+     
 
 
 
@@ -218,7 +141,7 @@ namespace KeZhan.Controllers
                 if (string.IsNullOrEmpty(userInfo.fOpenID))
                 {
 
-                    return Redirect(ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/Open/WeiXinLogin?strParam=" + strBookingNo + "&strState=" + userInfo.fUserName);
+                    return Redirect(ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/Open/WeiXinBooking?strParam=" + strBookingNo + "&strState=" + userInfo.fUserName);
                 }
             }
 

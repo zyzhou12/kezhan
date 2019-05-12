@@ -351,6 +351,10 @@
                                 {
                                     <span>高中</span>
                                 }
+                                else if (Model.fPharse == "4")
+                                {
+                                    <span>大学</span>
+                                }
                                 else if (Model.fPharse == "8")
                                 {
                                     <span>素质与拓展</span>
@@ -635,7 +639,7 @@
         }
         if ($("#hidConver").val().trim() == "") {
             $("#hidConver").after("<span class=\"errorMsg\">封面图片不能为空</span>");
-            $("#hidConver").focus();
+            $("#imgCover").focus();
             return;
         }
         if ($("#txtInfo").val().trim() == "") {
@@ -648,11 +652,6 @@
             $("#cmbClassType").focus();
             return;
         }
-        if ($("#cmbTeacher").val().trim() == "") {
-            $("#cmbTeacher").after("<span class=\"errorMsg\">授课老师不能为空</span>");
-            $("#cmbTeacher").focus();
-            return;
-        }
         if ($("#cmbPharse").val().trim() == "") {
             $("#cmbPharse").after("<span class=\"errorMsg\">请选择课程二级分类</span>");
             $("#cmbPharse").focus();
@@ -663,9 +662,9 @@
             $("#cmbSubject").focus();
             return;
         }
-        if ($("#txtPrice").val().trim() == "") {
-            $("#txtPrice").after("<span class=\"errorMsg\">请输入售价</span>");
-            $("#txtPrice").focus();
+        if ($("#cmbTeacher").val().trim() == "") {
+            $("#cmbTeacher").after("<span class=\"errorMsg\">授课老师不能为空</span>");
+            $("#cmbTeacher").focus();
             return;
         }
         //if ($("#txtDeadLineDate").val().trim() == "") {
@@ -673,6 +672,27 @@
         //    $("#txtDeadLineDate").focus();
         //    return;
         //}
+        if ($("#txtPrice").val().trim() == "") {
+            $("#txtPrice").after("<span class=\"errorMsg\">价格不能为空</span>");
+            $("#txtPrice").focus();
+            return;
+        } else {
+            if (parseFloat($("#txtPrice").val()) <= 0) {
+                $("#txtPrice").after("<span class=\"errorMsg\">价格不能小于0</span>");
+                $("#txtPrice").focus();
+                return;
+            }
+        }
+        if ($("#txtBasePrice").val().trim() == "") {
+            $("#txtBasePrice").after("<span class=\"errorMsg\">原价不能为空</span>");
+            $("#txtBasePrice").focus();
+            return;
+        }
+        if ($("#cmbPayType").val().trim() == "") {
+            $("#cmbPayType").after("<span class=\"errorMsg\">请选择支付类型</span>");
+            $("#cmbPayType").focus();
+            return;
+        }
         if ($("#txtMaxNumber").val().trim() == "") {
             $("#txtMaxNumber").after("<span class=\"errorMsg\">请输入最大人数</span>");
             $("#txtMaxNumber").focus();

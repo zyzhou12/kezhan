@@ -197,17 +197,20 @@
                                                                 }
                                                                 else if (course.CourseStatus == 4)
                                                                 {
-                                                                    if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                                                    if (Model.fStatus != "结算")
                                                                     {
-                                                                        <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                                        if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                                                        {
+                                                                            <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                                        }
                                                                     }
                                                                 }
 
-                                                                @if (!string.IsNullOrEmpty(course.fDocoumentUrl))
+                                                                @if (!string.IsNullOrEmpty(course.fDocoumentUrl) && Model.fStatus != "结算")
                                                                 {
                                                                     <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
                                                                 }
@@ -291,8 +294,7 @@
         });
     }
 
-    function FocusTeacher(TeacherUser,IsFocus)
-    {
+    function FocusTeacher(TeacherUser, IsFocus) {
         $.ajax({
             url: "/LoginRequest/DoUserFocus",
             data: { "strTeacherUser": TeacherUser, "IsFocus": IsFocus },

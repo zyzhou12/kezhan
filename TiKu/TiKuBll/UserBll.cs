@@ -157,6 +157,26 @@ namespace TiKu.Bll
             return model;
         }
 
+        public static UserInfoModel GettUserByOpenID(string strOpenID)
+        {
+            UserInfoModel model = new UserInfoModel();
+            tUserEntity user = tUserDal.GettUserByOpenID(strOpenID);
+            model.fCity = user.fCity;
+            model.fEmail = user.fEmail;
+            model.fHeadImg = user.fHeadImg;
+            model.fMobile = user.fMobile;
+            model.fOpenID = user.fOpenID;
+            model.fCode = user.fCode;
+            model.fName = user.fName;
+            model.fNickName = user.fNickName;
+            model.fRegSystem = user.fRegSystem;
+            model.fRole = user.fRole;
+            model.fStatus = user.fStatus;
+            model.fUID = user.fUID;
+            model.fUserName = user.fUserName;
+            return model;
+        }
+
 
         public static TeacherBaseModel GetUserTeacherBase(string strUserName)
         {
@@ -492,15 +512,14 @@ namespace TiKu.Bll
             entity.fCreateOpr = strUserName;
             entity.fStatus = "提交";
             list.Add(entity);
-            int i = tTeachValidDal.Modify(list, "insert", null, null);
-
+         
             List<tTeacherValidDetailEntity> detailList = new List<tTeacherValidDetailEntity>();
             foreach (TeacherValidDetailModel d in model.detailList)
             {
                 if (!string.IsNullOrEmpty(d.fTeachCert1))
                 {
                     tTeacherValidDetailEntity detail = new tTeacherValidDetailEntity();
-                    detail.fTeacherValidID = i;
+                   // detail.fTeacherValidID = i;
                     detail.fTeachCert1 = d.fTeachCert1;
                     detail.fStatus = "提交";
                     detail.fUploadDate = DateTime.Now;
@@ -509,7 +528,9 @@ namespace TiKu.Bll
                     detailList.Add(detail);
                 }
             }
-            int j = tTeacherValidDetailDal.Modify(detailList, "insert", null, null);
+            int i = tTeachValidDal.TeachValidSubmit(list, detailList);
+
+
 
             //tTeachInfoEntity teacher = tTeachInfoDal.GettTeachInfoByUserName(strUserName);
             //teacher.fStatus = "已提交认证";

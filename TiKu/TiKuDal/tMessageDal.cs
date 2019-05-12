@@ -88,6 +88,7 @@ namespace TiKu.Dal
             bufSQL.Append(" AND fStatus=@Status ");
             lstParam.Add(new DBParam("@Status", strStatus));
         }
+        bufSQL.Append(" order by 1 desc  ");
 
       //防止返回数据过多
       if (lstParam.Count <= 0) throw new Exception("没有查询条件");

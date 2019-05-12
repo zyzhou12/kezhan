@@ -248,7 +248,6 @@ namespace KeZhan.Controllers
             }
             else
             {
-
                 ClassRoomModel model = ClassRoomBll.GetClassRoomDetail(strClassRoomCode, userInfo.fUserName);
                 BookingListModel bookingList = BookingBll.GetBookingList(userInfo.fUserName, strClassRoomCode, null, "退款中", null, null);
                 if (strStatus == "发布" && model.courseList.Count == 0)
@@ -256,12 +255,26 @@ namespace KeZhan.Controllers
                     response.iResult = -1;
                     response.strMsg = "至少要一节课时才能发布";
                 }
+                else if (strStatus == "发布" && model.courseList.Count > 0)
+                {
+                    DateTime classDate = model.courseList[0].fClassDate.AddMinutes(model.courseList[0].fClassDateLength);
+                    int iCourseID = model.courseList[0].fID;
+                    foreach (CourseModel course in model.courseList)
+                    {
+                        if (iCourseID != course.fID && classDate > course.fClassDate)
+                        {
+                            response.iResult = -1;
+                            response.strMsg = "上课时间不能重叠，请检查每个课时上课时间";
+                        }
+                    }
+                }
                 else if (strStatus == "下线" && bookingList.list.Count > 0)
                 {
                     response.iResult = -1;
                     response.strMsg = "退款处理完成才能下线";
                 }
-                else
+
+                if (response.iResult>=0)
                 {
                     response.iResult = ClassRoomBll.ClassRoomSubmitSend(strClassRoomCode, strStatus, strNote, userInfo.fUserName);
                 }
@@ -1020,17 +1033,16 @@ namespace KeZhan.Controllers
 
                     if (issuccess)
                     {
-                        response.iResult = BookingBll.ConfirmUserRefund(refundID, refundPrice, applyNote, userInfo.fUserName, ref strMessage);
+                        response.iResult = BookingBll.ConfirmUserRefund(true, refundID, refundPrice, applyNote, userInfo.fUserName, ref strMessage);
 
                         strMessage = "退款成功";
-
                     }
                 }
                 else
                 {
-
+                    //response.iResult = BookingBll.RefusedUserRefund(refundID, applyNote, userInfo.fUserName);
+                    response.iResult = BookingBll.ConfirmUserRefund(false, refundID, 0, applyNote, userInfo.fUserName, ref strMessage);
                     strMessage = "退款已驳回";
-                    response.iResult = BookingBll.RefusedUserRefund(refundID, applyNote, userInfo.fUserName);
 
 
                 }

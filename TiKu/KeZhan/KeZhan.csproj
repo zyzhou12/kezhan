@@ -1272,6 +1272,7 @@
     <Content Include="Views\Start\CreateOnLineClass.cshtml" />
     <Content Include="Views\Start\OnLineClass.cshtml" />
     <Content Include="Views\User\MyFocusTeacher.cshtml" />
+    <Content Include="Views\Start\BuyClassRoomList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

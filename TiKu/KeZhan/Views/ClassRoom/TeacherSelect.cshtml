@@ -78,6 +78,7 @@
             $("#cmbPharse").append("<option value=\"1\">小学</option>");
             $("#cmbPharse").append(" <option value=\"2\">初中</option>");
             $("#cmbPharse").append("<option value=\"3\">高中</option>");
+            $("#cmbPharse").append("<option value=\"4\">大学</option>");
         } else {
             $("#cmbPharse").append("<option value=\"0\">全部</option>");
             $("#cmbPharse").append("<option value=\"8\">素质与拓展</option>");
@@ -109,6 +110,9 @@
             $("#cmbSubject").append("<option value='物理'>物理</option>");
             $("#cmbSubject").append("<option value='化学'>化学</option>");
             $("#cmbSubject").append("<option value='地理'>地理</option>");
+        } else if (pharse == "4") {
+            $("#cmbSubject").append("<option value=\"\">请选择</option>");
+            $("#cmbSubject").append("<option value='其他'>其他</option>");
         } else if (pharse == "0") {
             $("#cmbSubject").append("<option value=\"\">请选择</option>");
             $("#cmbSubject").append("<option value='其他'>其他</option>");
