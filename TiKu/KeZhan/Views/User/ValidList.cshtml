@@ -1,0 +1,65 @@
+﻿@model TiKuBll.Model.TeacherValidListModel
+@{
+    ViewBag.Title = "ValidList";
+}
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+                        <div class="reservation-billing-detail" id="panelValid" >
+
+
+
+                            @if (Model.validList != null)
+                                {
+                                    <div class="reservation-room_package">
+
+                                        <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+                                            @foreach (var valid in Model.validList)
+                                            {
+                                                <div class="reservation-package_item">
+
+
+                                                    <div class="reservation-package_text">
+
+                                                        <h4><a href="#">@valid.fName </a></h4>
+                                                        <p>
+                                                            上传时间:@valid.fCreateDate.ToString()
+                                                            <br />
+                                                        </p>
+
+                                                        <div class="reservation-package_book-price">
+                                                            <a href="/user/validinfo?iValidID=@valid.fID" class="awe-btn awe-btn-default">详情</a>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            }
+                                        </div>
+
+                                    </div>
+                                }
+
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- END / CONTENT -->
+
+
+
+            </div>
+        </div>
+    </div>
+
+</section>

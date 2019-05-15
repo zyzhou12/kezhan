@@ -78,12 +78,28 @@ namespace TiKu.Dal
             return rst;
         }
 
+
+        public static List<tGroupUserInfoEntity> GetGroupUserList(string strGroupId)
+        {
+            List<DbParameter> lstParam = new List<DbParameter>();
+            string strSQL = @"SELECT fNickName,fHeadImg,gu.* FROM tGroupUserInfo gu
+                                left join tuser u on u.fUserName=gu.fUserId
+                                 WHERE fGroupID=@GroupId 
+                                order by frole desc,fisonline desc,fispush desc";
+
+            lstParam.Add(new DBParam("@GroupId", strGroupId));
+            DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
+            List<tGroupUserInfoEntity> lstRst = PubFun.DataTableToObjects<tGroupUserInfoEntity>(dt);
+            return lstRst;
+        }
+
         public static DataTable GetGroupUserListInfo(string strGroupId)
         {
             List<DbParameter> lstParam = new List<DbParameter>();
             string strSQL = @"SELECT fNickName,fHeadImg,gu.* FROM tGroupUserInfo gu
                                 left join tuser u on u.fUserName=gu.fUserId
-                                 WHERE fGroupID=@GroupId ";
+                                 WHERE fGroupID=@GroupId 
+                                order by frole desc,fisonline desc,fispush desc";
 
             lstParam.Add(new DBParam("@GroupId", strGroupId));
             DataTable dt = DBHelper.QueryToTable("TiKu", strSQL,lstParam);

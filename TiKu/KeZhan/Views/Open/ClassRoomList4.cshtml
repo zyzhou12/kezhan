@@ -12,42 +12,16 @@
 
             <div class="gallery-cat activiti-cat ">
 
-                <ul class="list-inline">
-                    <li onclick="CheckPharse(this,'1')"><a href="#">小学</a></li>
-                    <li onclick="CheckPharse(this,'2')"><a href="#">初中</a></li>
-                    <li onclick="CheckPharse(this,'3')"><a href="#">高中</a></li>
-                    @*<li onclick="CheckPharse(this,'4')"><a href="#">大学</a></li>*@
-                </ul>
-                <ul class="list-inline" id="gradeXX" style=" display:none;">
-                    <li><a href="#">一年级</a></li>
-                    <li><a href="#">二年级</a></li>
-                    <li><a href="#">三年级</a></li>
-                    <li><a href="#">四年级</a></li>
-                    <li><a href="#">五年级</a></li>
-                    <li><a href="#">六年级</a></li>
-                </ul>
-                <ul class="list-inline" id="gradeCZ" style=" display:none;">
-                    <li><a href="#">初一</a></li>
-                    <li><a href="#">初二</a></li>
-                    <li><a href="#">初三</a></li>
-                </ul>
-                <ul class="list-inline" id="gradeGZ" style=" display:none;">
-                    <li><a href="#">高一</a></li>
-                    <li><a href="#">高二</a></li>
-                    <li><a href="#">高三</a></li>
-                </ul>
-                <ul class="list-inline" id="subjectXX" style=" display:none;">
-                    <li onclick="CheckSubject(this,'语文')"><a href="#">语文</a></li>
-                    <li onclick="CheckSubject(this,'数学')"><a href="#">数学</a></li>
-                    <li onclick="CheckSubject(this,'英语')"><a href="#">英语</a></li>
-                </ul>
-                <ul class="list-inline" id="subjectZX" style=" display:none;">
-                    <li onclick="CheckSubject(this,'语文')"><a href="#">语文</a></li>
-                    <li onclick="CheckSubject(this,'数学')"><a href="#">数学</a></li>
-                    <li onclick="CheckSubject(this,'英语')"><a href="#">英语</a></li>
-                    <li onclick="CheckSubject(this,'物理')"><a href="#">物理</a></li>
-                    <li onclick="CheckSubject(this,'化学')"><a href="#">化学</a></li>
-                </ul>
+                @*<ul class="list-inline" id="subjectZX">
+                    <li onclick="CheckSubject(this, '市场营销')"><a href="#">市场营销</a></li>
+                    <li onclick="CheckSubject(this, '会计')"><a href="#">会计</a></li>
+                    <li onclick="CheckSubject(this, '法律')"><a href="#">法律</a></li>
+                    <li onclick="CheckSubject(this, '科学')"><a href="#">科学</a></li>
+                    <li onclick="CheckSubject(this, '烹调')"><a href="#">烹调</a></li>
+                    <li onclick="CheckSubject(this, '速记')"><a href="#">速记</a></li>
+                    <li onclick="CheckSubject(this, '其他')"><a href="#">其他</a></li>
+                </ul>*@
+               
             </div>
 
             <div class="activiti_content">
@@ -77,9 +51,9 @@
 
                                         </p>
                                         <br />
-                                        <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
-                                        <br />
-                                        <span>讲师：@classRoom.TeacherName</span>
+                                            <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
+                                            <br />
+                                            <span>讲师：@classRoom.TeacherName</span>
                                         <h2>￥ @classRoom.fPrice.ToString()</h2>
                                     </div>
                                 </div>
@@ -129,45 +103,11 @@
 
 
 <script type="text/javascript">
-    var strPharse = "";
+    var strPharse = "4";
     var strGrade = "";
     var strSubjet = "";
 
-    function CheckPharse(obj, pharse) {
-        strPharse = pharse;
-        strGrade = "";
-        strSubjet = "";
-
-        $(obj).parent().children("li").removeClass("active");
-        $(obj).addClass("active");
-
-        if (pharse == "1") {
-            $("#subjectXX").show();
-            $("#subjectZX").hide();
-            $("#subjectZX").children("li").removeClass("active");
-            $("#subjectXX").children("li").removeClass("active");
-        } else if (pharse == "2") {
-            $("#subjectZX").show();
-            $("#subjectXX").hide();
-            $("#subjectZX").children("li").removeClass("active");
-            $("#subjectXX").children("li").removeClass("active");
-        } else if (pharse == "3") {
-            $("#subjectZX").show();
-            $("#subjectXX").hide();
-            $("#subjectZX").children("li").removeClass("active");
-            $("#subjectXX").children("li").removeClass("active");
-        } else if (pharse == "4") {
-            $("#subjectZX").hide();
-            $("#subjectXX").hide();
-        }
-        QueryClassRoom();
-    }
-
-    function CheckGrade(grade) {
-        strGrade = grade;
-        strSubjet = "";
-        QueryClassRoom();
-    }
+   
 
     function CheckSubject(obj, subject) {
 
@@ -181,7 +121,7 @@
         $.ajax({
             url: "/Query/QueryClassRoom",
             type: this.method,
-            data: { "strPharse": strPharse, "strGrade": strGrade, "strSubjet": strSubjet },
+            data: {"strPharse": strPharse, "strGrade": strGrade, "strSubjet": strSubjet },
             success: function (msg) {
                 $('#divClassRoom').html(msg);
             }

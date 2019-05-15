@@ -14,6 +14,8 @@ namespace KeZhan.Models
     public StudentBaseModel studentInfo { get; set; }
     public ParentsBaseModel parentsInfo { get; set; }
 
-    public TeacherValidListModel validInfo { get; set; }
+    public ValidDetailListModel validInfo { get; set; }
+
+    public TeacherValidListModel validHistory { get; set; }
   }
 }

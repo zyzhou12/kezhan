@@ -13,14 +13,14 @@
                 <ul class="list-inline">
                     <li>状态：</li>
                     <li @if (Model.strType == "")
-                        { <text> class="active" </text>      }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=&strClassType=@Model.strClassType">全部</a></li>
+                        { <text> class="active" </text>      }><a href="/Start/MyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=&strClassType=@Model.strClassType">全部</a></li>
                     <li @if (Model.strType == "未开始")
-                        { <text> class="active" </text>             }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=未开始&strClassType=@Model.strClassType">未开始</a></li>
+                        { <text> class="active" </text>             }><a href="/Start/MyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=未开始&strClassType=@Model.strClassType">未开始</a></li>
 
                     <li @if (Model.strType == "正在上")
-                        { <text> class="active" </text>             }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=正在上&strClassType=@Model.strClassType">正在上</a></li>
+                        { <text> class="active" </text>             }><a href="/Start/MyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=正在上&strClassType=@Model.strClassType">正在上</a></li>
                     <li @if (Model.strType == "已结束")
-                        { <text> class="active" </text>              }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=已结束&strClassType=@Model.strClassType">已结束</a></li>
+                        { <text> class="active" </text>              }><a href="/Start/MyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=已结束&strClassType=@Model.strClassType">已结束</a></li>
 
                 </ul>
               
@@ -47,12 +47,12 @@
     <ul class="list-inline">
         <li>公开类型：</li>
         <li @if (Model.strClassType == "")
-            { <text> class="active" </text>     }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=">全部</a></li>
+            { <text> class="active" </text>     }><a href="/Start/MyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=">全部</a></li>
         <li @if (Model.strClassType == "Public")
-            { <text> class="active" </text>            }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Public">公开课</a></li>
+            { <text> class="active" </text>            }><a href="/Start/MyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Public">公开课</a></li>
 
         <li @if (Model.strClassType == "Private")
-            { <text> class="active" </text>            }><a href="/Start/MyClassRoomList?strRoleType=@Model.listType&strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Private">私课</a></li>
+            { <text> class="active" </text>            }><a href="/Start/MyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Private">私课</a></li>
 
     </ul>
 
@@ -70,18 +70,9 @@
                         var linkUrl = "";
                         foreach (var classRoom in Model.classRoomList)
                         {
-                            if (Model.listType == "teacher")
-                            {
+                            
                                 linkUrl = "/ClassRoom/ClassRoomTeacher?strClassRoomCode=" + @classRoom.fClassRoomCode;
-                            }
-                            else if (Model.listType == "create")
-                            {
-                                linkUrl = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + @classRoom.fClassRoomCode;
-                            }
-                            else
-                            {
-                                linkUrl = "/Open/ClassRoomDetail?strClassRoomCode=" + @classRoom.fClassRoomCode;
-                            }
+                           
 
                             <div class="col-md-4 col-xs-6">
                                 <div class="activiti_item">

@@ -30,20 +30,35 @@
                                                 {
                                                     if (detail.fCertType == "教师证")
                                                     {
-                                                        <span>学段：@detail.fPharse</span>
+                                                        string strPharse = "";
+                                                        if (detail.fPharse == "1")
+                                                        {
+                                                            strPharse = "小学";
+                                                        }
+                                                        else if (detail.fPharse == "2")
+                                                        {
+                                                            strPharse = "初中";
+                                                        }
+                                                        else if (detail.fPharse == "3")
+                                                        {
+                                                            strPharse = "高中";
+                                                        }
+                                                        else if (detail.fPharse == "4")
+                                                        {
+                                                            strPharse = "大学";
+                                                        }
+
+
+                                                        <span>学段：@strPharse</span>
                                                         <br />
                                                         <span>学科：@detail.fSubject</span>
                                                     }
-                                                    <br />
-                                                    <span>审核人：@detail.fValidDate.ToString()</span>
                                                     <br />
                                                     <span>审核时间：@detail.fValidUser</span>
                                                 }
                                                 else
                                                 {
                                                     <span>原因：@detail.fNote</span>
-                                                    <br />
-                                                    <span>审核人：@detail.fValidDate.ToString()</span>
                                                     <br />
                                                     <span>审核时间：@detail.fValidUser</span>
                                                 }

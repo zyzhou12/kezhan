@@ -58,7 +58,7 @@ namespace KeZhan.Controllers
         public ActionResult ValidInfo(int iValidID)
         {
 
-            ValidDetailListModel model = UserBll.GetTeachValidDetailListByID(iValidID);
+            ValidDetailListModel model = UserBll.GetTeachValidDetailListByID(iValidID, null);
             return View(model);
         }
 
@@ -86,7 +86,8 @@ namespace KeZhan.Controllers
             if (userInfo.fRole == "Teacher")
             {
                 model.teacherInfo = UserBll.GetUserTeacherBase(userInfo.fUserName);
-                model.validInfo = UserBll.GettTeachValidList(userInfo.fUserName);
+                model.validInfo = UserBll.GetTeachValidDetailList(userInfo.fUserName, "已审核");
+                model.validHistory = UserBll.GettTeachValidList(userInfo.fUserName);
             }
             else if (userInfo.fRole == "Student")
             {
@@ -100,7 +101,13 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
-     
+        public ActionResult ValidList()
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+            TeacherValidListModel model = UserBll.GettTeachValidList(userInfo.fUserName);
+            return View(model);
+        }
 
 
 
@@ -136,7 +143,7 @@ namespace KeZhan.Controllers
             model.UserName = userInfo.fUserName;
             model.OpenID = userInfo.fOpenID;
             model.BookingRefund = BookingBll.GetRefundByBookingNo(strBookingNo);
-            if(IsWechatBrowser)
+            if (IsWechatBrowser)
             {
                 if (string.IsNullOrEmpty(userInfo.fOpenID))
                 {
@@ -178,7 +185,7 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
-      
+
         public ActionResult MyFocusTeacher()
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);

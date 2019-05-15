@@ -118,7 +118,7 @@ namespace KeZhan.Controllers
             }
             ClassRoomListModel model = ClassRoomBll.GettClassRoomList(strCity, "", null, null);
             //K12
-            model.classRoomList = model.classRoomList.Where(m => "1;2;3;4".Contains(m.fPharse)).ToList();
+            model.classRoomList = model.classRoomList.Where(m => "1;2;3".Contains(m.fPharse)).ToList();
             return View(model);
         }
 
@@ -144,7 +144,17 @@ namespace KeZhan.Controllers
 
             return View(model);
         }
+        public ActionResult ClassRoomList4(string strCity = null)
+        {
+            if (string.IsNullOrEmpty(strCity))
+            {
+                strCity = "上海";
+            }
 
+            ClassRoomListModel model = ClassRoomBll.GettClassRoomList(strCity, "4", null, null);
+
+            return View(model);
+        }
 
 
         public ActionResult ClassRoomDetail(string strClassRoomCode)

@@ -73,7 +73,7 @@ namespace TiKu.Dal
             return rst;
         }
 
-        public static List<tTeacherValidDetailEntity> GettTeacherValidDetailList(string strUserName,string strStatus)
+        public static List<tTeacherValidDetailEntity> GettTeacherValidDetailList(string strUserName, string strStatus)
         {
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
@@ -100,7 +100,7 @@ namespace TiKu.Dal
             return lstRst;
         }
 
-        public static List<tTeacherValidDetailEntity> GettTeacherValidDetailList(int iValidID)
+        public static List<tTeacherValidDetailEntity> GettTeacherValidDetailList(int iValidID, string strStatus)
         {
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
@@ -108,11 +108,15 @@ namespace TiKu.Dal
             bufSQL.Append(@"select * from tTeacherValidDetail 
                             where (1=1) ");
 
-          
-                bufSQL.Append(" AND fTeacherValidID=@ValidID ");
-                lstParam.Add(new DBParam("@ValidID", iValidID));
-           
 
+            bufSQL.Append(" AND fTeacherValidID=@ValidID ");
+            lstParam.Add(new DBParam("@ValidID", iValidID));
+
+            if (!string.IsNullOrEmpty(strStatus))
+            {
+                bufSQL.Append(" AND fstatus=@Status ");
+                lstParam.Add(new DBParam("@Status", strStatus));
+            }
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");
             DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);

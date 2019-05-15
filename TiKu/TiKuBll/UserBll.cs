@@ -265,16 +265,17 @@ namespace TiKu.Bll
                 valid.fTeacherValidID = entity.fTeacherValidID;
                 valid.fUploadDate = entity.fUploadDate;
                 valid.fValidDate = entity.fValidDate;
-
+                valid.fValidUser = entity.fValidUser;
+                valid.fCertNo = entity.fCertNo;
                 validList.Add(valid);
             }
             model.detailList = validList;
             return model;
         }
 
-        public static ValidDetailListModel GetTeachValidDetailListByID(int iValidID)
+        public static ValidDetailListModel GetTeachValidDetailListByID(int iValidID, string strStatus)
         {
-            List<tTeacherValidDetailEntity> entityList = tTeacherValidDetailDal.GettTeacherValidDetailList(iValidID);
+            List<tTeacherValidDetailEntity> entityList = tTeacherValidDetailDal.GettTeacherValidDetailList(iValidID, strStatus);
             ValidDetailListModel model = new ValidDetailListModel();
             List<TeacherValidDetailModel> validList = new List<TeacherValidDetailModel>();
             foreach (var entity in entityList)

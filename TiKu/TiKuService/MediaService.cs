@@ -261,10 +261,10 @@ namespace TiKuService
                                 string groupID = dsSms.Tables[0].Rows[i]["fGroupID"].ToString();
                                 try
                                 {
-                                    SaveLog("The UpdateGroupUserStatus is Begin" + DateTime.Now.ToString() + "\t" + groupID);
+                                   // SaveLog("The UpdateGroupUserStatus is Begin" + DateTime.Now.ToString() + "\t" + groupID);
                                     UpdateGroupUserStatus(groupID);
 
-                                    SaveLog("The UpdateGroupUserStatus is end\t" + DateTime.Now.ToString() + "\t" + groupID);
+                                   // SaveLog("The UpdateGroupUserStatus is end\t" + DateTime.Now.ToString() + "\t" + groupID);
 
                                 }
                                 catch (Exception ex)

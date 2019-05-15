@@ -15,13 +15,13 @@
                         <li class="active" onclick="showPanel('user')"><a href="#" style=" width:100%;" data-toggle="tab">基本信息</a></li>
                         @if (Model.userRole == "Teacher")
                         {
-                            <li onclick="showPanel('teacher')"><a href="#" style=" width:100%;" data-toggle="tab">老师资料</a></li>
-                            <li onclick="showPanel('valid')"><a href="#" style=" width:100%;" data-toggle="tab">认证信息</a></li>
+                        <li onclick="showPanel('teacher')"><a href="#" style=" width:100%;" data-toggle="tab">老师资料</a></li>
+                        <li onclick="showPanel('valid')"><a href="#" style=" width:100%;" data-toggle="tab">认证信息</a></li>
                         }
                         else
                         {
-                            @*<li onclick="showPanel('student')"><a href="#"  style=" width:100%;" data-toggle="tab">学生资料</a></li>*@
-                            @* <li onclick="showPanel('valid')"><a href="#"  style=" width:100%;" data-toggle="tab">成为老师</a></li>*@
+                        @*<li onclick="showPanel('student')"><a href="#"  style=" width:100%;" data-toggle="tab">学生资料</a></li>*@
+                        @* <li onclick="showPanel('valid')"><a href="#"  style=" width:100%;" data-toggle="tab">成为老师</a></li>*@
                         }
                     </ul>
                 </div>
@@ -44,11 +44,11 @@
 
                             @if (string.IsNullOrEmpty(Model.userInfo.fHeadImg))
                             {
-                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgHead" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
+                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgHead" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
                             }
                             else
                             {
-                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.userInfo.fHeadImg?x-oss-process=style/fang" id="imgHead" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
+                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.userInfo.fHeadImg?x-oss-process=style/fang" id="imgHead" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','HeadImg','hidHead','btnHeadImg','imgHead')" alt="" />
                             }
                             <input type="hidden" id="hidHead" value="@Model.userInfo.fHeadImg" />
                             <a href="#" class="awe-btn awe-btn-13" id="btnHeadImg" style=" display:none;width:20%;" onclick="DoSaveHeadImg()">头像保存</a>
@@ -66,52 +66,52 @@
                             <br /><br />
                             <input type="text" style=" display:none" id="txtCode" placeholder="请输入验证码" value="" class="input-text">
                             <p style=" text-align:right; width:100%; font-size:12px;">
-                                <a href="#"  style=" display:none" id="btnCode" onclick="DoSendCode()">发送验证码</a>
-                                </p>
-                                <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnMobile" onclick="DoSaveMobile()">保存</a>
+                                <a href="#" style=" display:none" id="btnCode" onclick="DoSendCode()">发送验证码</a>
+                            </p>
+                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnMobile" onclick="DoSaveMobile()">保存</a>
 
 
 
 
-                                @*<label>邮箱</label>
-            <input type="text" id="txtEmail" value="@Model.userInfo.fEmail" class="input-text">*@
-                                <label>邮箱<sup>*</sup></label>
-                                <span id="spanEmail">@Model.userInfo.fEmail</span>
-                                <a href="#" style="padding-left:20px; color:#e1bd85;" id="aEmail" onclick="updateEmail()">修改</a>
-                                <input type="text" style=" display:none" id="txtEmail" placeholder="请输入新邮箱" class="input-text">
-                                <br /><br />
-                                <input type="text" style=" display:none" id="txtEmailCode" placeholder="请输入邮箱验证码" value="" class="input-text">
+                            @*<label>邮箱</label>
+                                <input type="text" id="txtEmail" value="@Model.userInfo.fEmail" class="input-text">*@
+                            <label>邮箱<sup>*</sup></label>
+                            <span id="spanEmail">@Model.userInfo.fEmail</span>
+                            <a href="#" style="padding-left:20px; color:#e1bd85;" id="aEmail" onclick="updateEmail()">修改</a>
+                            <input type="text" style=" display:none" id="txtEmail" placeholder="请输入新邮箱" class="input-text">
+                            <br /><br />
+                            <input type="text" style=" display:none" id="txtEmailCode" placeholder="请输入邮箱验证码" value="" class="input-text">
                             <p style=" text-align:right; width:100%; font-size:12px;">
-                                <a href="#"  style=" display:none" id="btnEmailCode" onclick="DoSendEmailCode()">发送验证码</a>
-                                </p>
-                                <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnEmail" onclick="DoSaveEmail()">保存</a>
+                                <a href="#" style=" display:none" id="btnEmailCode" onclick="DoSendEmailCode()">发送验证码</a>
+                            </p>
+                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnEmail" onclick="DoSaveEmail()">保存</a>
 
 
-                                <label>密码<sup>*</sup></label>
-                                <span id="spanPass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aPass" onclick="updatePass()">修改</a>
-                                <input type="text" style=" display:none" id="txtPass" value="" placeholder="请输入密码" class="input-text" />
-                                <br />
-                                <br />
-                                <input type="text" style=" display:none" id="txtPass2" value="" placeholder="请再次输入密码" class="input-text" />
-                                <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnPass" style="width:20%;" onclick="DoSavePass()">保存</a>
+                            <label>密码<sup>*</sup></label>
+                            <span id="spanPass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aPass" onclick="updatePass()">修改</a>
+                            <input type="text" style=" display:none" id="txtPass" value="" placeholder="请输入密码" class="input-text" />
+                            <br />
+                            <br />
+                            <input type="text" style=" display:none" id="txtPass2" value="" placeholder="请再次输入密码" class="input-text" />
+                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnPass" style="width:20%;" onclick="DoSavePass()">保存</a>
 
 
-                                @if (Model.teacherInfo != null && Model.teacherInfo.fStatus == "已认证")
-                                {
-                                    <label>交易密码<sup>*</sup></label>
-                                    <span id="spanTradePass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aTradePass" onclick="updateTradePass()">修改</a>
-                                    
-                                    <input type="text" style=" display:none" id="txtTradePass" value="" class="input-text" />
-                                    <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnTradePass" style="width:20%;" onclick="DoSaveTradePass()">保存</a>
-                                }
+                            @if (Model.teacherInfo != null && Model.teacherInfo.fStatus == "已认证")
+                            {
+                            <label>交易密码<sup>*</sup></label>
+                            <span id="spanTradePass">******</span><a href="#" style="padding-left:20px; color:#e1bd85;" id="aTradePass" onclick="updateTradePass()">修改</a>
 
-
-
+                            <input type="text" style=" display:none" id="txtTradePass" value="" class="input-text" />
+                            <a href="#" class="awe-btn awe-btn-13" style=" display:none" id="btnTradePass" style="width:20%;" onclick="DoSaveTradePass()">保存</a>
+                            }
 
 
 
 
-</div>
+
+
+
+                        </div>
                         @if (Model.userRole == "Teacher")
                         {
                             <div class="reservation-billing-detail" id="panelTeacher" style=" display:none">
@@ -120,10 +120,10 @@
                                 <span>@Model.teacherInfo.fStatus</span>
                                 @if (Model.teacherInfo.fStatus == "已认证")
                                 {
-                                    <label>真实姓名</label>
-                                    <span>@Model.userInfo.fName</span>
-                                    <label>证件号码</label>
-                                    <span>@Model.userInfo.fUID</span>
+                                <label>真实姓名</label>
+                                <span>@Model.userInfo.fName</span>
+                                <label>证件号码</label>
+                                <span>@Model.userInfo.fUID</span>
                                 }
 
                                 <label>简要介绍</label>
@@ -132,12 +132,12 @@
                                 <label>微信二维码</label>
                                 @if (string.IsNullOrEmpty(Model.teacherInfo.fQrCode))
                                 {
-                                    
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
+
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
                                 }
                                 else
                                 {
-                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.teacherInfo.fQrCode?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.teacherInfo.fQrCode?x-oss-process=style/fang" id="imgQrCode" data-reveal-id="myModal" onclick="UploadFile('@Model.userInfo.fUserName','QrCode','hidQrCode','','imgQrCode')" alt="">
                                 }
                                 <input type="hidden" id="hidQrCode" value="@Model.teacherInfo.fQrCode" />
 
@@ -217,41 +217,75 @@
 
                             <div class="reservation-billing-detail" id="panelValid" style=" display:none">
                                 <a href="/Teacher/ValidUploadFile" class="awe-btn awe-btn-default">新增认证</a>
-                                <br />
-                                <br />
-                                <br />
-                                @if (Model.validInfo.validList != null)
+
+                                @if (Model.validInfo.detailList != null)
                                 {
+                                    <a href="/User/ValidList" class="awe-btn awe-btn-default">认证记录</a>
+                                    <br />
+                                    <br />
+                                    <br />
                                     <div class="reservation-room_package">
 
                                         <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
 
                                             <!-- ITEM PACKAGE -->
-                                            @foreach (var valid in Model.validInfo.validList)
+                                            @foreach (var detail in Model.validInfo.detailList)
                                             {
                                                 <div class="reservation-package_item">
-                                                    @*
-                                                        <div class="reservation-package_img">
-                                                            <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
-                                                        </div>*@
+
+                                                    <div class="reservation-package_img">
+                                                        <a href="#"><img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@detail.fTeachCert1" alt=""></a>
+                                                    </div>
 
                                                     <div class="reservation-package_text">
 
-                                                        <h4><a href="#">@valid.fName </a></h4>
+                                                        <h4><a href="#">@detail.fCertType </a></h4>
                                                         <p>
-                                                            上传时间:@valid.fCreateDate.ToString()
-                                                            <br />
-                                                            @*<span>状态：@valid.fStatus</span>*@
-                                                            @*@if (valid.fValidDate > DateTime.MinValue)
+                                                            @if (detail.fStatus == "已审核")
+                                                            {
+                                                                if (detail.fCertType == "教师证")
                                                                 {
-                                                                <span>审核时间：@valid.fValidDate.ToString()</span>
-                                                                <span>@valid.fNote</span>
-                                                                }*@
+                                                                    string strPharse = "";
+                                                                    if (detail.fPharse == "1")
+                                                                    {
+                                                                        strPharse = "小学";
+                                                                    }
+                                                                    else if (detail.fPharse == "2")
+                                                                    {
+                                                                        strPharse = "初中";
+                                                                    }
+                                                                    else if (detail.fPharse == "3")
+                                                                    {
+                                                                        strPharse = "高中";
+                                                                    }
+                                                                    else if (detail.fPharse == "4")
+                                                                    {
+                                                                        strPharse = "大学";
+                                                                    }
+
+
+                                                                    <span>证书编号：@detail.fCertNo</span>
+                                                                    <br />
+                                                                    <span>学段：@strPharse</span>
+                                                                    <br />
+                                                                    <span>学科：@detail.fSubject</span>
+                                                                }
+                                                                <br />
+                                                                <span>审核时间：@detail.fValidDate.ToString()</span>
+                                                             
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>原因：@detail.fNote</span>
+                                                                <br />
+                                                                <span>审核时间：@detail.fValidDate.ToString()</span>
+                                                             
+                                                            }
                                                         </p>
 
-                                                        <div class="reservation-package_book-price">
-                                                            <a href="/user/validinfo?iValidID=@valid.fID" class="awe-btn awe-btn-default">详情</a>
-                                                        </div>
+                                                        @*<div class="reservation-package_book-price">
+                                                                <a href="/user/validinfo?iValidID=@valid.fID" class="awe-btn awe-btn-default">详情</a>
+                                                            </div>*@
 
                                                     </div>
 
@@ -261,7 +295,40 @@
                                         </div>
 
                                     </div>
+
+
                                 }
+
+                                @*@if (Model.validHistory.validList != null)
+                                    {
+                                        <div class="reservation-room_package">
+
+                                            <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+                                                @foreach (var valid in Model.validHistory.validList)
+                                                {
+                                                    <div class="reservation-package_item">
+
+
+                                                        <div class="reservation-package_text">
+
+                                                            <h4><a href="#">@valid.fName </a></h4>
+                                                            <p>
+                                                                上传时间:@valid.fCreateDate.ToString()
+                                                                <br />
+                                                            </p>
+
+                                                            <div class="reservation-package_book-price">
+                                                                <a href="/user/validinfo?iValidID=@valid.fID" class="awe-btn awe-btn-default">详情</a>
+                                                            </div>
+
+                                                        </div>
+
+                                                    </div>
+                                                }
+                                            </div>
+
+                                        </div>
+                                    }*@
 
 
                             </div>

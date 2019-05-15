@@ -15,6 +15,37 @@
     <script src="../../Scripts/ketang/vue.js"></script>
     <script src="../../Scripts/ketang/vue-toasted.js"></script>
     <script src="../../Scripts/ketang/axios.js"></script>
+    <style>
+        .test_ans {
+            width: 130px;
+            height: 104px;
+            cursor: move;
+            position: relative;
+            vertical-align: top;
+            display: inline-block;
+            
+        }
+
+        .videostyle {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: auto;
+        }
+
+        .controls {
+            width: 138px;
+            height: 40px;
+            background-color: #1C192C;
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            z-index: 100;
+            border-radius: 4px;
+        }
+    </style>
     <!--弹出层-->
     <link rel="stylesheet" href="../../Content/reveal.css?v=1.0">
 </head>
@@ -157,7 +188,7 @@
             <table>
                 <tr>
                     <td style="padding-right:20px;">
-                        <div class="u-btn"  onclick="hideDev()">确定</div>
+                        <div class="u-btn" onclick="hideDev()">确定</div>
                     </td>
                 </tr>
             </table>
@@ -165,6 +196,8 @@
 
             <a class="close-reveal-modal" onclick="hideDev()">&#215;</a>
         </div>
+
+
         <div class="reveal-modal-bg" id="divback"></div>
 
 
@@ -247,7 +280,7 @@
                     <span v-if="isTeacher===1"> 课堂号: {{roomID}}</span>
                 </div>
                 <div class="opt">
-                     @Model.NickName<div class="opt-inner" onclick="showQuit()">
+                    @Model.NickName<div class="opt-inner" onclick="showQuit()">
                         <a href="#" class="close"><span>关闭</span></a>
                     </div>
                 </div>
@@ -280,9 +313,9 @@
                                 请求互动
                             </button>
 
-    <button class="u-btn" style="height:24px; line-height:24px;" v-if="isPushing===1">
-        连线中
-    </button>
+                            <button class="u-btn" style="height:24px; line-height:24px;" v-if="isPushing===1">
+                                连线中
+                            </button>
                         }
                     }
 
@@ -301,11 +334,11 @@
                                     屏幕共享
                                 </div>
                                 <div class="u-tab-item u-tab-item-big" v-on:click="startRTC">
-                                    推摄像头
+                                    重获视频
                                 </div>
                                 @*<div class="u-tab-item u-tab-item-big" v-on:click="stopPush">
-                                    停止推
-                                </div>*@
+                                        停止推
+                                    </div>*@
 
                                 <div class="u-tab-item u-tab-item-big" style="float:right;margin-right:10px;" onclick="showDev()">
                                     设备管理
@@ -413,27 +446,27 @@
                                             <i class="u-icon iconfont icon-zititubiaoxiugai-"></i>
                                         </div>
                                         @*<div class="u-tooltip2" onclick="showDetail(this)">
-                                            <div class="m-kit m-kit-color" style="display: none;width:90px;">
-                                                <div class="u-grid-col flex-6">
-                                                    <div class="u-tooltip">
-                                                        <i class="u-icon iconfont icon-dian"
-                                                           v-on:click="setInputSize(12)"></i>
-                                                        <div class="u-tooltip-title">小字号</div>
-                                                    </div>
-                                                    <div class="u-tooltip">
-                                                        <i class="u-icon iconfont icon-dian" style=" font-size:22px;"
-                                                           v-on:click="setInputSize(20)"></i>
-                                                        <div class="u-tooltip-title">中字号</div>
-                                                    </div>
-                                                    <div class="u-tooltip">
-                                                        <i class="u-icon iconfont icon-dian" style=" font-size:28px;"
-                                                           v-on:click="setInputSize(40)"></i>
-                                                        <div class="u-tooltip-title">大字号</div>
+                                                <div class="m-kit m-kit-color" style="display: none;width:90px;">
+                                                    <div class="u-grid-col flex-6">
+                                                        <div class="u-tooltip">
+                                                            <i class="u-icon iconfont icon-dian"
+                                                               v-on:click="setInputSize(12)"></i>
+                                                            <div class="u-tooltip-title">小字号</div>
+                                                        </div>
+                                                        <div class="u-tooltip">
+                                                            <i class="u-icon iconfont icon-dian" style=" font-size:22px;"
+                                                               v-on:click="setInputSize(20)"></i>
+                                                            <div class="u-tooltip-title">中字号</div>
+                                                        </div>
+                                                        <div class="u-tooltip">
+                                                            <i class="u-icon iconfont icon-dian" style=" font-size:28px;"
+                                                               v-on:click="setInputSize(40)"></i>
+                                                            <div class="u-tooltip-title">大字号</div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <i class="u-icon iconfont icon-zititubiaoxiugai-"></i>
-                                        </div>*@
+                                                <i class="u-icon iconfont icon-zititubiaoxiugai-"></i>
+                                            </div>*@
                                         <div class="u-tooltip2" onclick="showDetail(this)">
                                             <div class="m-kit m-kit-color" style="display: none;width:60px;">
                                                 <div class="u-grid-col flex-6">
@@ -459,57 +492,57 @@
                                         </div>
                                         @if (Model.Role == "Teacher")
                                         {
-                                            <div class="u-tooltip2" onclick="showDetail(this)">
-                                                <div class="m-kit m-kit-color" style="display: none;width:120px;">
-                                                    <div class="u-grid-col flex-6">
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-chexiao2"
-                                                               v-on:click="revert"></i>
-                                                            <div class="u-tooltip-title">撤销</div>
-                                                        </div>
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-huifu"
-                                                               v-on:click="process"></i>
-                                                            <div class="u-tooltip-title">恢复</div>
-                                                        </div>
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-qingping"
-                                                               v-on:click="clearDraws"></i>
-                                                            <div class="u-tooltip-title">清空当前页涂鸦（保留背景）</div>
-                                                        </div>
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-qingping1"
-                                                               v-on:click="clear"></i>
-                                                            <div class="u-tooltip-title">清空当前页涂鸦+背景（全部清空）</div>
-                                                        </div>
+                                        <div class="u-tooltip2" onclick="showDetail(this)">
+                                            <div class="m-kit m-kit-color" style="display: none;width:120px;">
+                                                <div class="u-grid-col flex-6">
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-chexiao2"
+                                                           v-on:click="revert"></i>
+                                                        <div class="u-tooltip-title">撤销</div>
+                                                    </div>
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-huifu"
+                                                           v-on:click="process"></i>
+                                                        <div class="u-tooltip-title">恢复</div>
+                                                    </div>
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-qingping"
+                                                           v-on:click="clearDraws"></i>
+                                                        <div class="u-tooltip-title">清空当前页涂鸦（保留背景）</div>
+                                                    </div>
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-qingping1"
+                                                           v-on:click="clear"></i>
+                                                        <div class="u-tooltip-title">清空当前页涂鸦+背景（全部清空）</div>
                                                     </div>
                                                 </div>
-                                                <i class="u-icon iconfont icon-qingping1"></i>
                                             </div>
+                                            <i class="u-icon iconfont icon-qingping1"></i>
+                                        </div>
 
 
-                                            <div class="u-tooltip2" onclick="showDetail(this)">
-                                                <div class="m-kit m-kit-color" style="display: none;width:60px;">
-                                                    <div class="u-grid-col flex-6">
-                                                        <div class="u-tooltip">
-                                                            <i class="u-icon iconfont icon-baiban" onclick="document.getElementById('divPage').style.display='block';"
-                                                               v-on:click="addBoard"></i>
-                                                            <div class="u-tooltip-title">新增页</div>
-                                                        </div>
-                                                        <div class="u-tooltip">
+                                        <div class="u-tooltip2" onclick="showDetail(this)">
+                                            <div class="m-kit m-kit-color" style="display: none;width:60px;">
+                                                <div class="u-grid-col flex-6">
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-baiban" onclick="document.getElementById('divPage').style.display='block';"
+                                                           v-on:click="addBoard"></i>
+                                                        <div class="u-tooltip-title">新增页</div>
+                                                    </div>
+                                                    <div class="u-tooltip">
+                                                        <i class="u-icon iconfont icon-huishoushanchu"
+                                                           v-on:click="deleteBoard"></i>
+                                                        <div class="u-tooltip-title">删除当前页</div>
+                                                    </div>
+                                                    @*<div class="u-tooltip">
                                                             <i class="u-icon iconfont icon-huishoushanchu"
-                                                               v-on:click="deleteBoard"></i>
-                                                            <div class="u-tooltip-title">删除当前页</div>
-                                                        </div>
-                                                        @*<div class="u-tooltip">
-                                                                <i class="u-icon iconfont icon-huishoushanchu"
-                                                                   v-on:click="deleteBoard2"></i>
-                                                                <div class="u-tooltip-title">删除第二页</div>
-                                                            </div>*@
-                                                    </div>
+                                                               v-on:click="deleteBoard2"></i>
+                                                            <div class="u-tooltip-title">删除第二页</div>
+                                                        </div>*@
                                                 </div>
-                                                <i class="u-icon iconfont icon-baiban"></i>
                                             </div>
+                                            <i class="u-icon iconfont icon-baiban"></i>
+                                        </div>
                                         }
                                     </div>
                                     <div class="m-kit-wb-pagination" id="divPage">
@@ -529,58 +562,103 @@
                                     </div>
                                     @if (Model.Role == "Teacher")
                                     {
-                                        <div class="m-kit-wb-file">
-                                            <div class="u-tooltip m-kit-wb-file-item" id="divOpenFile">
-                                                <input id="file_input" style="position: absolute; opacity: 0; width:50px;" type="file" v-on:change="uploadFile"
-                                                       accept="image/*, application/pdf, application/msword, application/vnd.ms-powerpoint, application/vnd.ms-excel" />
-                                                <i class="u-icon iconfont u-file-icon">文档库</i><div class="u-tooltip-title">
-                                                    打开文档库
-                                                </div>
-                                            </div>
-                                            <div class="u-tooltip m-kit-wb-file-item" style="display: none" id="divCloseFile">
-                                                <i class="u-icon iconfont u-file-icon">关闭文档</i><div class="u-tooltip-title">
-                                                    停止使用文档
-                                                </div>
+                                    <div class="m-kit-wb-file">
+                                        <div class="u-tooltip m-kit-wb-file-item" id="divOpenFile" onclick="showFiles()">
+                                            @*<input id="file_input" style="position: absolute; opacity: 0; width:50px;" type="file" v-on:click="uploadFile()"
+                                                accept="image/*, application/pdf, application/msword, application/vnd.ms-powerpoint, application/vnd.ms-excel" />*@
+
+                                            <i class="u-icon iconfont u-file-icon">文档库</i><div class="u-tooltip-title">
+                                                打开文档库
                                             </div>
                                         </div>
+                                        <div class="u-tooltip m-kit-wb-file-item" style="display: none" id="divCloseFile" onclick="hideDev()">
+                                            <i class="u-icon iconfont u-file-icon">关闭文档</i>
+                                            <div class="u-tooltip-title">
+                                                停止使用文档
+                                            </div>
+                                        </div>
+                                    </div>
                                     }
                                 </div>
 
+                                <div class="u-grid-row m-kit m-kit-file" id="divFile" style="display:none;">
+                                    <div class="u-grid-col m-kit-file-header flex-2">
+                                        <span>文档库</span>
+                                        <i class="u-icon iconfont icon-close"></i>
+                                    </div>
+                                    <div class="u-grid-col m-kit-file-body  flex-2">
+                                        <div class="m-kit-file-item">
+                                            <div class="u-grid-row m-kit-file-content" v-for="file in boardFileGroup">
+                                                <div class="u-grid-col m-kit-file-item-preview pdf flex-1"></div>
+                                                <div class="u-grid-col m-kit-file-item-desc flex-3">{{file.title}}</div>
+                                                <div class="u-grid-col m-kit-file-item-option flex-2">
+                                                    <button class="u-btn u-btn-smaller" v-on:click="switchFile(file)" onclick="hideDev()">使用</button>
+                                                    <button class="u-btn u-btn-smaller" v-if="file.fid!='#DEFAULT'" v-on:click="deleteFile(file)">删除</button>
+                                                </div>
+                                            </div>
+                                            <div class="u-progress"><p class="u-progress-state"></p></div>
+                                        </div>
+                                    </div>
+                                    <div class="u-grid-col m-kit-file-footer flex-2">
+                                        <input type="file" id="file_input" class="u-input m-kit-file-select" on v-on:change="uploadFile()" accept="image/*, application/pdf, application/msword, application/vnd.ms-powerpoint, application/vnd.ms-excel" multiple="" />
+
+                                        上传文档
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="m-netcall">
-                   
-                    <div v-for="(value, key, index) in remoteVideos" v-bind:class="'m-netcall-video video-'+(index+1)">
-                        <div class="video-name">
-                            {{value.userId}}
-                        </div>
-                        <div class="m-video" v-bind:id="'video-'+(index+1)">
-                            <video onclick="maxVideo(this)" v-bind:id="key" style="position: absolute; left: 50%;
-                top: 50%; transform: translate(-50%, -50%); width: 100%; height: auto;" autoplay
-                                   playsinline></video>
-                        </div>
-                        @if (Model.Role == "Teacher")
-                        {
-                            <div class="video-toolbar">
-                                <span class="video video-open" v-on:click="permissionStudent(value.userId,'0')"></span>
-                                <span class="audio audio-open" v-on:click="permissionStudent(value.userId,'1')"></span>                                
-                                <span class="iconfont icon-baiban" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'4')"></span>
-                                <span class="iconfont icon-guanbibaiban" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'5')"></span>
-                                <span class="iconfont icon-xiangmuguanlixitong" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'2')"></span>
+                @*<div class="m-netcall">
+                        <div v-for="(value, key, index) in remoteVideos" v-bind:class="'m-netcall-video video-'+(index+1)">
+                            <div class="video-name">
+                                {{value.userId}}
                             </div>
-                        }
-                    </div>
-                    <div class="m-netcall-video video-4">
-                        <div class="video-name">
+                            <div class="m-video" v-bind:id="'video-'+(index+1)">
+                                <video onclick="maxVideo(this)" v-bind:id="key" style="position: absolute; left: 50%;
+                    top: 50%; transform: translate(-50%, -50%); width: 100%; height: auto;" autoplay
+                                       playsinline></video>
+                            </div>
+                            @if (Model.Role == "Teacher")
+                            {
+                                <div class="video-toolbar">
+                                    <span class="video video-open" v-on:click="permissionStudent(value.userId,'0')"></span>
+                                    <span class="audio audio-open" v-on:click="permissionStudent(value.userId,'1')"></span>
+                                    <span class="iconfont icon-baiban" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'4')"></span>
+                                    <span class="iconfont icon-guanbibaiban" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'5')"></span>
+                                    <span class="iconfont icon-xiangmuguanlixitong" style="color:#fff; font-size:20px;" v-on:click="permissionStudent(value.userId,'2')"></span>
+                                </div>
+                            }
                         </div>
-                        <div class="m-video room-hasuser" id="video-4">
-                            <div style="overflow: hidden; position: relative; width: 139px; height: 104px; display: inline-block;">
+
+                        <div class="m-netcall-video video-4">
+                            <div class="video-name">
+                            </div>
+                            <div class="m-video room-hasuser" id="video-4">
                                 <video onclick="maxVideo(this)" id="local_video" muted="true" style="position: absolute;
-                  left: 50%; top: 50%; transform: translate(-50%, -50%); width: 100%; height: auto;"
+                      left: 50%; top: 50%; transform: translate(-50%, -50%); width: 100%; height: auto;"
                                        autoplay playsinline></video>
                             </div>
+                            @if (Model.Role == "Teacher")
+                            {
+                                <div class="video-toolbar">
+                                    <span v-bind:class="['video', { 'video-open': enableCamera,'video-close': !enableCamera }]"
+                                          v-on:click="toggleCamera"></span>
+                                    <span v-bind:class="['audio', { 'audio-open': enableMic,'audio-close': !enableMic }]"
+                                          v-on:click="toggleMic"></span>
+                                </div>
+                            }
+                        </div>
+                    </div>*@
+
+                <div class="m-netcall" style=" overflow: auto" id="divVideo">
+                    <div class="m-netcall-video test_ans">
+                        <div class="video-name">
+                            @Model.NickName
+                        </div>
+                        <div class="m-video" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIsAAABoBAMAAAAz5x7gAAAAFVBMVEV+hY1qc31ye4RtdoB4gIlxeIJ2foaTZrHFAAABPUlEQVRYw+3XzU6DQBTF8Qrougeka5rovsS6L2/QSXwAjO//Di5MPLZICPNPM4vO7wFOmDsf97LJsizL7sXT65ua9xeY8qUfzUhS9vrVxad8Shb9PY/6q42N6XXhEJdS6lITFxN05Rx1YnRtFxPzoAmwJriqSlPP5NBYi0pj6CLYSG6ldTkmx+SYxDFB4s9fFfSvD7Qk60hzsR1pmNagh9gSxBSaU2/W0JztqphBM04RrZe33wJVxgayJCvJ2bOCr4nPNwYODR7apgayUVagChsqje1nHlA4i7Yp/mCsRDfBevIxVqDdtoEdPVfHlckxCyVOuOFVL9kxNiZM3r5kD0UV8OTHm69TaA4fIb3Ts46oRdlIlmQ1GtGtIx9jNaqMnWLa09SBrMlqNOjbitLQoxO06LyiwrDGWra9Vcw3whiEijedstUAAAAASUVORK5CYII=);">
+                            <video onclick="maxVideo(this)" id="local_video" class="videostyle"
+                                   autoplay playsinline></video>
                         </div>
                         @if (Model.Role == "Teacher")
                         {
@@ -593,8 +671,6 @@
                         }
                     </div>
                 </div>
-
-
 
 
                 <div class="m-chatroom">
@@ -681,7 +757,7 @@
                                             邀请互动
                                         </div>
 
-    <div v-if="user.role==='student' && user.isPush && user.isOnLine" style="float:right;padding-right:10px; color:red;">
+    <div v-if="user.role==='student' && user.isPush && user.isOnLine" v-on:click="permissionStudent(user.userId,'2')" style="float:right;padding-right:10px; color:red;">
         连线中
     </div>
                                     }
@@ -735,20 +811,19 @@
                     data: { "strCourseNo": classroomcode },
                     dataType: "json",
                     success: function (rst) {
-                        if (rst.iResult <0) {
-                            if(rst.iResult==-4)
-                            {
+                        if (rst.iResult < 0) {
+                            if (rst.iResult == -4) {
                                 setTimeout(function () {
                                     app.destroy();
-                                },1000*30)
+                                }, 1000 * 30)
                             }
                             showMessage(rst.strMsg);
-                        } 
+                        }
                     }
 
-                });   
-            
-            },1000*60);
+                });
+
+            }, 1000 * 60);
         }
     });
 
@@ -758,16 +833,19 @@
             data: { "strCourseNo": classroomcode },
             dataType: "json",
             success: function (rst) {
-                if (rst.iResult < 0) {
+                if (rst.iResult == -1) {
                     alert(rst.strMsg);
                 } else {
+                    if (rst.iResult < 0) {
+                        alert(rst.strMsg);
+                    }
                     app.initLogin2(username, usersig, role, classroomcode);
                 }
             }
 
         });
 
-        
+
     }
 
     function showColor(color) {
@@ -796,7 +874,7 @@
     }
 
     function maxVideo(obj) {
-
+        
         launchFullscreen(document.getElementById($(obj).attr("id")));
         window.setTimeout(function exit() {
             //檢查瀏覽器是否處於全屏
@@ -882,20 +960,32 @@
     function showDev() {
         app.getCameraDevices();
         app.getMicDevices();
+        $("#divFile").hide();
         $("#divDev").show();
         $("#divback").show();
     }
+
+    function showFiles() {
+
+        $("#divFile").show();
+        $("#divCloseFile").show();
+
+    }
+
     function hideDev() {
         $("#divDev").hide();
         $("#divquit").hide();
         $("#divclose").hide();
-        $("#divback").hide(); 
+        $("#divback").hide();
         $("#divMessge").hide();
+        $("#divFile").hide();
+        $("#divCloseFile").hide();
     }
 
     function showQuit() {
         $("#divquit").show();
         $("#divback").show();
+        $("#divFile").hide();
     }
 
 
@@ -905,17 +995,20 @@
         $("#divclose").hide();
         $("#divback").hide();
         $("#divMessge").hide();
+        $("#divFile").hide();
         //self.location = document.referrer;
     }
 
 
     function showClose() {
+        $("#divFile").hide();
         $("#divclose").show();
         $("#divback").show();
     }
 
 
     function showMessage(msg) {
+        $("#divFile").hide();
         $("#pMsg").text(msg);
         $("#divMessge").show();
         $("#divback").show();
@@ -929,6 +1022,6 @@
     });
 
     window.onbeforeunload = function (event) { return confirm("确定离开此页面吗？"); }
-   
+
 </script>
 </html>

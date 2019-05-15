@@ -12,7 +12,7 @@ userSig: '',
 nickName: sessionStorage.getItem('IIC_NICKNAME'),
 roomInfo: '',
    // roomID: Math.floor(Math.random() * 100000000),
-    roomID: "",
+roomID: "",
 isTeacher: 1,    
 enableHand: false,
 enableCamera: true,
@@ -145,32 +145,32 @@ methods: {
     });
 
     
-  },
+},
   techerStart(){
       axios.get(`/UserApi/CheckLoginUser?`,{
       params:{}
   })
-    .then(function (response) {
-        if(response.data.iResult==0){
-            app.isTeacher=1;
-            app.pushModel=1;
-            if (!app.roomID) {
-                app.showErrorTip('房间号不能为空');
-                return;
-            }
-            app.step = 'second';
-            app.init();
-        }else
-        {
-            alert(response.data.strMsg);
+.then(function (response) {
+    if(response.data.iResult==0){
+        app.isTeacher=1;
+        app.pushModel=1;
+        if (!app.roomID) {
+            app.showErrorTip('房间号不能为空');
+            return;
         }
-    })
-    .catch(function (error) {
-        alert(error);
-    });
+        app.step = 'second';
+        app.init();
+    }else
+    {
+        alert(response.data.strMsg);
+    }
+})
+.catch(function (error) {
+    alert(error);
+});
     
-  },
-  studentStart(){
+},
+studentStart(){
     axios.get(`/UserApi/CheckLoginUser?`,{
     params:{}
 })
@@ -195,65 +195,65 @@ methods: {
     alert(error);
 });
      
-  },
+},
 
-  initData() {
+initData() {
 
 
-      this.msgs = [];
+    this.msgs = [];
       
-      this.groupuser = [];
-      this.devices = {
-          camera: [],
-          mic: []
-      };
+    this.groupuser = [];
+    this.devices = {
+        camera: [],
+        mic: []
+    };
 
-      this.cameraIndex = 0;
-      this.micIndex = 0;
+    this.cameraIndex = 0;
+    this.micIndex = 0;
 
-      this.imMsg = {
-          common: {
-              data: '',
-              toUser: ''
-          },
-          custom: {
-              data: '',
-              desc: '',
-              ext: '',
-              toUser: ''
-          }
-      };
+    this.imMsg = {
+        common: {
+            data: '',
+            toUser: ''
+        },
+        custom: {
+            data: '',
+            desc: '',
+            ext: '',
+            toUser: ''
+        }
+    };
 
 
-      this.loginConfig = {
-          identifier: this.account,
-          identifierNick: '用户昵称' + this.account,
-          userSig: this.userSig,
-          sdkAppId: this.sdkAppId,
-          accountType: 1
-      };
-      localStorage.setItem('IIC_USERID', this.account);
+    this.loginConfig = {
+        identifier: this.account,
+        identifierNick: '用户昵称' + this.account,
+        userSig: this.userSig,
+        sdkAppId: this.sdkAppId,
+        accountType: 1
+    };
+    localStorage.setItem('IIC_USERID', this.account);
 
-      this.webrtcConfig = {
-          closeLocalMedia: true,
-          audio: true,
-          video: true,
-          role: 'user'
-      };
+    this.webrtcConfig = {
+        closeLocalMedia: true,
+        audio: true,
+        video: true,
+        role: 'user'
+    };
 
-      this.boardConfig = {
-          id: 'paint_box',
-          canDraw: this.isTeacher, // 老师能画，学生不能画
-          globalBackgroundColor: '#ffffff',
-          color: '#ff0000',
-          boardMode: 0, // 白板模式
-          textSize: 24,
-          textColor: '#ff0000'
-      }
+    this.boardConfig = {
+        id: 'paint_box',
+        canDraw: this.isTeacher, // 老师能画，学生不能画
+        globalBackgroundColor: '#ffffff',
+        color: '#ff0000',
+        boardMode: 0, // 白板模式
+        textSize: 24,
+        textColor: '#ff0000'
+    }
 
-      this.enableCamera = true;
-      this.enableMic = true;
-  },
+    this.enableCamera = true;
+    this.enableMic = true;
+},
 
   init() {
       this.initData();
@@ -289,20 +289,20 @@ this.ticSdk.on(TICSDK.CONSTANT.EVENT.IM.LOGIN_SUCC, res => {
     this.showTip('IM 登录成功');
 
 if (this.isTeacher) {
-    // 老师就创建课堂
+// 老师就创建课堂
     this.ticSdk.createClassroom({
-        roomID: this.roomID,
-        roomType: 'Public'
-    });
+roomID: this.roomID,
+roomType: 'Public'
+});
 } else { // 如果是学生
-    // 有了课堂后就直接加入
+// 有了课堂后就直接加入
     this.roomID && this.ticSdk.joinClassroom(this.roomID, this.webrtcConfig, this.boardConfig);
     axios.get(`/UserApi/JoinClass?`,{
-    params:{
-        strUserId:this.account,
-        strGroupId:this.roomID,
-        strRole:"student"
-    }
+params:{
+strUserId:this.account,
+strGroupId:this.roomID,
+strRole:"student"
+}
 })
 .then(function (response) {
     console.log(response.data);
@@ -380,25 +380,60 @@ this.showErrorTip('WebRTC初始化失败');
 this.ticSdk.on(TICSDK.CONSTANT.EVENT.WEBRTC.LOCAL_STREAM_ADD, data => {
     document.getElementById('local_video').srcObject = data.stream;
 this.isPushing = 1; // 正在推流
-this.showTip('WebRTC接收到本地流');
+//this.showTip('WebRTC接收到本地流');
+
 });
 this.ticSdk.on(TICSDK.CONSTANT.EVENT.WEBRTC.REMOTE_STREAM_UPDATE, data => {
     this.$set(this.remoteVideos, data.videoId, data);
-
+//alert(Object.keys(this.remoteVideos).length);
 //stream,videoId,type,ssrcState,openId,videoType,userId
-this.$nextTick(() => {
-    if (document.getElementById(data.videoId)) {
-    document.getElementById(data.videoId).srcObject = data.stream;
-document.getElementById(data.videoId).controls = true;
-document.getElementById(data.videoId).mounted = true;
+
+this.$nextTick(() => {   
+    //    Object.keys(this.remoteVideos).forEach(function(key,index){
+    //    });
+  
+    var oBox=document.getElementById("divVideo");
+var videoNick="";
+axios.get(`/UserApi/GetGroupUser?`,{
+params:{
+    strUserId:data.userId,
+    strGroupId:this.roomID
 }
+})
+    .then(function (response) {
+    
+        videoNick=response.data.fNickName;
+        if (document.getElementById(data.videoId)) {    
+            document.getElementById(data.videoId).srcObject = data.stream;
+            //document.getElementById(data.videoId).controls = true;
+            document.getElementById(data.videoId).mounted = true;
+        }else{
+            var div = document.createElement("div");
+            div.innerHTML = '<div class="video-name">'+videoNick+'</div><video onclick="maxVideo(this)" id="'+data.videoId+'" muted="true" class="videostyle" autoplay playsinline></video>';
+            div.classList.add("m-netcall-video");
+            div.classList.add("test_ans");
+            oBox.appendChild(div);      
+
+
+            document.getElementById(data.videoId).srcObject = data.stream;
+            document.getElementById(data.videoId).mounted = true;
+        }
+    })
+    .catch(function (error) {
+
+    });
+
+
+
 });
-this.showTip('WebRTC接收到远端流');
+//this.showTip('WebRTC接收到远端流');
 });
 
 this.ticSdk.on(TICSDK.CONSTANT.EVENT.WEBRTC.REMOTE_STREAM_REMOVE, data => {
-    this.$delete(this.remoteVideos, data.videoId);
-this.showTip('WebRTC 远端流断开');
+    var child=document.getElementById(data.videoId);
+child.parentNode.removeChild(child);
+this.$delete(this.remoteVideos, data.videoId);
+//this.showTip('WebRTC 远端流断开');
 });
 
 this.ticSdk.on(TICSDK.CONSTANT.EVENT.WEBRTC.PEER_CONNECTION_ADD, data => {
@@ -444,7 +479,7 @@ params:{
         
 })
 .catch(function (error) {
-   // app.showTip('获取个人信息失败');
+    // app.showTip('获取个人信息失败');
     //  console.log(error);
     //  this.showTip(error);
 });
@@ -460,97 +495,39 @@ params:{
 })
 .then(function (response) {
     
-            var profile_item = [
-         {
-             "Tag": "Tag_Profile_IM_Nick",
-             "Value": response.data.fNickName
-         }
-            ];
-            var options = {
-                'ProfileItem': profile_item
-            };
+    var profile_item = [
+ {
+     "Tag": "Tag_Profile_IM_Nick",
+     "Value": response.data.fNickName
+ }
+    ];
+    var options = {
+        'ProfileItem': profile_item
+    };
 
-            webim.setProfilePortrait(
-                    options,
-                    function (resp) {
-                       // this.showTip('设置个人资料成功');
-                    },
-                    function (err) {
-                      //  alert("设置个人资料出错"+err.ErrorInfo);
-                    }
-            );
-            
-            if(response.data.fIsPush){
-                app.startRTC();
+    webim.setProfilePortrait(
+            options,
+            function (resp) {
+                // this.showTip('设置个人资料成功');
+            },
+            function (err) {
+                //  alert("设置个人资料出错"+err.ErrorInfo);
             }
+    );
+            
+    if(response.data.fIsPush){
+        app.startRTC();
+    }
         
 })
 .catch(function (error) {
-   // app.showTip('获取个人信息失败');
+    // app.showTip('获取个人信息失败');
     //  console.log(error);
     //  this.showTip(error);
 });
 
+this.getGroupUserStatus();
 
-
-
-this.intervalid = setInterval(() => {
-    axios.get(`/UserApi/GetGroupUserList?`,{
-    params:{
-        strGroupId:this.roomID
-    }
-})
-.then(function (response) {
-    // app.showTip('获取群成功');
-    // console.log(response.data);
-    app.groupuser = [];
-    for (var i in response.data.infoList) {
-
-        app.groupuser.push({
-            userId: response.data.infoList[i].fUserId,
-            role: response.data.infoList[i].fRole,
-            nickName: response.data.infoList[i].fNickName,
-            headImg: response.data.infoList[i].fHeadImg,
-            isOnLine:response.data.infoList[i].fIsOnLine,
-            isPush:response.data.infoList[i].fIsPush
-        });
-
-    }       
-})
-.catch(function (error) {
-    //  console.log(error);
-    //  this.showTip(error);
-});
-}, 5000)
-
-////读取群组成员
-//var options = {
-//    'GroupId': this.roomID,
-//    'Offset': 0, //必须从0开始
-//    'Limit': 20,
-//    'MemberInfoFilter': [
-//        'Account',
-//        'Role',
-//        'JoinTime',
-//        'LastSendMsgTime',
-//        'ShutUpUntil'
-//    ]
-//};
-//webim.getGroupMemberInfo(
-//        options,
-//        function (resp) {               
-//            for (var i in resp.MemberList) {
-
-//                var account = resp.MemberList[i].Member_Account;
-//                app.groupuser.push({
-//                    content: account
-//                });
-//            }                
-//        },
-//        function (err) {
-//            alert(err.ErrorInfo);
-//        }
-//);
 
 window.board = app.ticSdk.getBoardInstance();
 window.WebRTC = this.ticSdk.getWebRTCInstance();
@@ -675,7 +652,8 @@ if (msgs.getFromAccount() === '@TIM#SYSTEM') { // 接收到系统消息
                 return;
             }else if (content.getData() == 1) {
                 this.showTip("老师已关闭互动");
-                this.ishand=false
+                this.ishand=false;
+                this.stopPush();
                 return;
             }
         }
@@ -939,6 +917,38 @@ this.step = 'first';
 });
 },
 
+
+getGroupUserStatus()
+{    
+    //定时5秒获取一次状态
+this.intervalid = setInterval(() => {
+    axios.get(`/UserApi/GetGroupUserList?`,{
+    params:{
+        strGroupId:this.roomID
+    }
+})
+.then(function (response) {
+    app.groupuser = [];
+    for (var i in response.data.infoList) {
+
+        app.groupuser.push({
+            userId: response.data.infoList[i].fUserId,
+            role: response.data.infoList[i].fRole,
+            nickName: response.data.infoList[i].fNickName,
+            headImg: response.data.infoList[i].fHeadImg,
+            isOnLine:response.data.infoList[i].fIsOnLine,
+            isPush:response.data.infoList[i].fIsPush
+        });
+
+    }       
+})
+.catch(function (error) {
+    //  console.log(error);
+    //  this.showTip(error);
+});
+}, 5000)
+},
+
 // 启动推流(推摄像头)
 startRTC() {
     // 获取webrtc实例
@@ -949,6 +959,7 @@ startRTC() {
         attributes: {
             width: 640,
             height: 480
+            //frameRate:20
         }
     }, (data) => {
         this.isPushCamera = true;
@@ -1132,24 +1143,24 @@ switchMic() {
             ext: this.imMsg.custom.ext
         }, this.imMsg.common.toUser);
     },
-    /**
-    群状态变动
-    */
+/**
+群状态变动
+*/
 setGroupPer(type){
     
     axios.get(`/UserApi/SetGroupPer?`,{
-        params:{
-            strGroupId:this.roomID,
-            strType:type
-        }
-    })
-    .then(function (response) {
-        console.log(response.data);
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
-    },
+    params:{
+        strGroupId:this.roomID,
+        strType:type
+    }
+})
+.then(function (response) {
+    console.log(response.data);
+})
+.catch(function (error) {
+    console.log(error);
+});
+},
 /**
 用户状态变动
 */
@@ -1174,7 +1185,7 @@ setUserPer(type){
 举手
 */
 sendHandMsg() {
-axios.get(`/UserApi/GetGroup?`,{
+    axios.get(`/UserApi/GetGroup?`,{
     params:{
         strGroupId:this.roomID
     }
@@ -1474,8 +1485,9 @@ prevBoard() {
 /**
  * 切换文件
  */
-    switchFile(file) {
+    switchFile(file) {        
         board.switchFile(file.fid);
+        board.getBoardByFile(file.fid);
     },
 
 /**

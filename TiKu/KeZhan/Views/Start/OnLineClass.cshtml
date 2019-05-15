@@ -174,7 +174,7 @@
                 dataType: "json",
                 success: function (rst) {
                     if (rst.iResult >= 0) {
-                        $("#imgQrCode").attr("src", "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + rst.strMsg);
+                        $("#imgQrCode").attr("src", "http://qr.topscan.com/api.php?text=" + rst.strMsg);
                         $("#myBGDiv").show();
                         $("#divPayCode").show();
 

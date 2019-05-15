@@ -494,7 +494,7 @@
                                 var httpurl = System.Configuration.ConfigurationManager.AppSettings["PayCallBack"].ToString();
                                 <label>链接</label>
                                 <p>@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode</p>
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode" />
+    <img src="http://qr.topscan.com/api.php?text=@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode" />
                             }
                         </div>
                         <div class="reservation-billing-detail" id="panelAccount" style="display:none;">
