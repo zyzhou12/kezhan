@@ -1,3 +1,12 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var userinfo = KeZhan.Code.Fun.GetSessionUserInfo(this);
+    if (userinfo!=null && userinfo.NowRole=="Teacher")
+    {
+        Layout = "~/Views/Shared/_LayoutTeacher.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 }

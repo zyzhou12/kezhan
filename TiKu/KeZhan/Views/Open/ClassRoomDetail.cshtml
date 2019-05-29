@@ -99,24 +99,36 @@
                                             <br />
 
                                         </p>
-                                        <ul>
-                                            <li>开课时间：@Model.fClassRoomDate.ToShortDateString()</li>
-                                            <li>授课老师：@Model.TeacherName</li>
-                                            @if (Model.fIsReturn)
-                                            {
-                                                if (Model.fReturnType == "随时")
+                                        @if (Model.fType == "Live")
+                                        {
+                                            <ul>
+                                                <li>开课时间：@Model.fClassRoomDate.ToShortDateString()</li>
+                                                <li>授课老师：@Model.TeacherName</li>
+                                                @if (Model.fIsReturn)
                                                 {
-                                                    <li>随时退（课时开课前1小时本课时不能退）</li>}
+                                                    if (Model.fReturnType == "随时")
+                                                    {
+                                                        <li>随时退（课时开课前1小时本课时不能退）</li>}
+                                                    else
+                                                    {
+                                                        <li>课前退（课程第一课时开始前1小时不能退）</li>
+                                                    }
+                                                }
                                                 else
                                                 {
-                                                    <li>课前退（课程第一课时开始前1小时不能退）</li>
+                                                    <li>不可退</li>
                                                 }
-                                            }
-                                            else
-                                            {
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <ul>
+                                                <li>录播</li>
+                                                <li>有效期：@Model.fEffectDay 天</li>
+                                                <li>有效期内无限次观看</li>
                                                 <li>不可退</li>
-                                            }
-                                        </ul>
+                                            </ul>
+                                        }
                                     </div>
 
                                     <a href="#" class="reservation-room_view-more"></a>
@@ -161,66 +173,116 @@
                                         <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
 
                                             <!-- ITEM PACKAGE -->
-                                            @foreach (var course in Model.courseList)
+                                            @if (Model.fType == "Live")
                                             {
-                                                <div class="reservation-package_item">
-                                                    @*
-                                                        <div class="reservation-package_img">
-                                                            <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
-                                                        </div>*@
+                                                foreach (var course in Model.courseList)
+                                                {
+                                                    <div class="reservation-package_item">
+                                                        @*
+                                                            <div class="reservation-package_img">
+                                                                <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
+                                                            </div>*@
 
-                                                    <div class="reservation-package_text">
+                                                        <div class="reservation-package_text">
 
-                                                        <h4><a href="#">@course.fDictTitle</a></h4>
-                                                        <p>
-                                                            @course.fCourseTitle
-                                                            <br />
-                                                            <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("yyyy-MM-dd HH:mm")</span>
-                                                        </p>
-                                                        @if (Model.IsBuy > 0)
-                                                        {
-                                                            <div class="reservation-package_book-price">
-                                                                @if (course.CourseStatus == 1)
+                                                            <h4><a href="#">@course.fDictTitle</a></h4>
+                                                            <p>
+                                                                @course.fCourseTitle
+                                                                @if (Model.fType == "Live")
                                                                 {
-                                                                    <a href="#" class="awe-btn awe-btn-default">未开始</a>
+                                                                    <br />
+                                                                    <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("yyyy-MM-dd HH:mm")</span>
                                                                 }
-                                                                else if (course.CourseStatus == 2)
-                                                                {
-                                                                    <a href="#" class="awe-btn awe-btn-default">已结束</a>
-                                                                }
-                                                                else if (course.CourseStatus == 3)
-                                                                {
-                                                                    if (Model.fStatus == "发布")
+                                                            </p>
+                                                            @if (Model.IsBuy > 0)
+                                                            {
+                                                                <div class="reservation-package_book-price">
+                                                                    @if (course.CourseStatus == 1)
                                                                     {
-                                                                        <a href="/Home/Index?iCourseID=@course.fID" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
+                                                                        <a href="#" class="awe-btn awe-btn-default">未开始</a>
                                                                     }
-                                                                }
-                                                                else if (course.CourseStatus == 4)
-                                                                {
-                                                                    if (Model.fStatus != "结算")
+                                                                    else if (course.CourseStatus == 2)
                                                                     {
-                                                                        if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                                                        <a href="#" class="awe-btn awe-btn-default">已结束</a>
+                                                                    }
+                                                                    else if (course.CourseStatus == 3)
+                                                                    {
+                                                                        if (Model.fStatus == "发布")
                                                                         {
-                                                                            <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                                            <a href="/Home/Index?iCourseID=@course.fID" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
                                                                         }
                                                                     }
-                                                                }
+                                                                    else if (course.CourseStatus == 4)
+                                                                    {
+                                                                        if (Model.fStatus != "结算")
+                                                                        {
+                                                                            if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                                                            {
+                                                                                <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                                            }
+                                                                        }
+                                                                    }
 
-                                                                @if (!string.IsNullOrEmpty(course.fDocoumentUrl) && Model.fStatus != "结算")
-                                                                {
-                                                                    <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
-                                                                }
-                                                            </div>
-                                                        }
+                                                                    @if (!string.IsNullOrEmpty(course.fDocoumentUrl) && Model.fStatus != "结算")
+                                                                    {
+                                                                        <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
+                                                                    }
+                                                                </div>
+                                                            }
+
+                                                        </div>
+                                                        <br />
 
                                                     </div>
-                                                    <br />
+                                                }
+                                            }
+                                            else
+                                            {
+                                                foreach (var course in Model.courseList)
+                                                {
+                                                    <div class="reservation-package_item">
+                                                        @*
+                                                            <div class="reservation-package_img">
+                                                                <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
+                                                            </div>*@
 
-                                                </div>
+                                                        <div class="reservation-package_text">
+                                                            <div class="reservation-package_img">
+                                                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" alt="">
+
+                                                            </div>
+                                                            <h4><a href="#">@course.fDictTitle</a></h4>
+                                                            <p>
+                                                                @course.fCourseTitle
+                                                            </p>
+                                                            @if (Model.IsBuy > 0)
+                                                            {
+                                                                <div class="reservation-package_book-price">
+                                                                    <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">开始上课</a>
+
+                                                                    @if (!string.IsNullOrEmpty(course.fDocoumentUrl) && Model.fStatus != "结算")
+                                                                    {
+                                                                        <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="reservation-package_book-price">
+                                                                    <a href="/ClassRoom/OpenFreeClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">免费试看</a>
+
+                                                                </div>
+                                                            }
+
+                                                        </div>
+                                                        <br />
+
+                                                    </div>
+                                                }
                                             }
                                             <!-- END / ITEM PACKAGE -->
                                             @Html.Raw(Html.Encode(@Model.fDesc).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))

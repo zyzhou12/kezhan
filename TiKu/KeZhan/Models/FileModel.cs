@@ -12,5 +12,7 @@ namespace KeZhan.Models
     public string Name { get; set; }
     public string ID { get; set; }
     public string FileUrl { get; set; }
+
+    public int FreeDateLength { get; set; }
   }
 }

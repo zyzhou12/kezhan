@@ -29,11 +29,11 @@
                                 <p style="word-wrap:break-word;">
                                     @if (Model.validList != null)
                                     {
-                                        <span>证书编号：</span>
-                                        foreach (var valid in Model.validList)
-                                        {
-                                            <label>@valid.fCertNo</label>
-                                        }
+                                    <span>证书编号：</span>
+                                    foreach (var valid in Model.validList)
+                                    {
+                                    <label>@valid.fCertNo</label>
+                                    }
                                     }
                                     <span>@Model.TeacherDesc</span>
                                 </p>
@@ -45,28 +45,28 @@
                         {
 
 
-                            <div class="widget widget_recent_entries has_thumbnail">
-                                <h4 class="widget-title">老师微信二维码</h4>
-                                <div class="guest-book_item guest-book_item-2">
-                                    <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherQrCode?x-oss-process=style/zheng" alt="" />
+                        <div class="widget widget_recent_entries has_thumbnail">
+                            <h4 class="widget-title">老师微信二维码</h4>
+                            <div class="guest-book_item guest-book_item-2">
+                                <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherQrCode?x-oss-process=style/zheng" alt="" />
 
-                                </div>
                             </div>
+                        </div>
                         }
 
                         @if (Model.IsBuy > 0)
                         {
-                            if (!string.IsNullOrEmpty(Model.fQrCode))
-                            {
+                        if (!string.IsNullOrEmpty(Model.fQrCode))
+                        {
 
-                                <div class="widget widget_recent_entries has_thumbnail">
-                                    <h4 class="widget-title">课程微信群</h4>
-                                    <div class="guest-book_item guest-book_item-2">
-                                        <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/zheng" alt="" />
+                        <div class="widget widget_recent_entries has_thumbnail">
+                            <h4 class="widget-title">课程微信群</h4>
+                            <div class="guest-book_item guest-book_item-2">
+                                <img style="width:120px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fQrCode?x-oss-process=style/zheng" alt="" />
 
-                                    </div>
-                                </div>
-                            }
+                            </div>
+                        </div>
+                        }
                         }
                     </div>
 
@@ -96,21 +96,38 @@
                                     <div class="reservation-room_desc">
                                         <p>
                                             @Html.Raw(Html.Encode(Model.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
-                                            <br />
-                                            @*<span>开课时间：@Model.fClassRoomDate.ToShortDateString()</span>
-                                                <br />*@
-                                            <span>讲师：@Model.TeacherName</span>
-                                            <br />
+
+                                        </p>
+                                        @if (Model.fType == "Live")
+                                        {
+                                        <ul>
+                                            <li>开课时间：@Model.fClassRoomDate.ToShortDateString()</li>
+                                            <li>授课老师：@Model.TeacherName</li>
                                             @if (Model.fIsReturn)
                                             {
-                                                <span>可退</span>
+                                            if (Model.fReturnType == "随时")
+                                            {
+                                            <li>随时退（课时开课前1小时本课时不能退）</li>}
+                                            else
+                                            {
+                                            <li>课前退（课程第一课时开始前1小时不能退）</li>
+                                            }
                                             }
                                             else
                                             {
-                                                <span>不可退</span>
+                                            <li>不可退</li>
                                             }
-                                        </p>
-
+                                        </ul>
+                                        }
+                                        else
+                                        {
+                                        <ul>
+                                            <li>录播</li>
+                                            <li>有效期：@Model.fEffectDay 天</li>
+                                            <li>有效期内无限次观看</li>
+                                            <li>不可退</li>
+                                        </ul>
+                                        }
                                     </div>
 
                                     <div class="clear"></div>
@@ -120,7 +137,7 @@
                                     </p>
                                     @if (Model.fStatus == "保存")
                                     {
-                                        <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('@Model.fClassRoomCode','发布')">发布</button>
+                                    <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('@Model.fClassRoomCode','发布')">发布</button>
                                     }
 
                                 </div>
@@ -128,90 +145,92 @@
                                 <br />
                                 @if (Model.courseList != null)
                                 {
-                                    <div class="reservation-room_package">
+                                <div class="reservation-room_package">
 
-                                        <a data-toggle="collapse" href="#reservation-room_package-1" class="reservation-room_package-more" aria-expanded="true">章节</a>
+                                    <a data-toggle="collapse" href="#reservation-room_package-1" class="reservation-room_package-more" aria-expanded="true">章节</a>
 
-                                        <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+                                    <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
 
-                                            <!-- ITEM PACKAGE -->
-                                            @foreach (var course in Model.courseList)
-                                            {
-                                                <div class="reservation-package_item">
-                                                    @*
-                                                        <div class="reservation-package_img">
-                                                            <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
-                                                        </div>*@
+                                        <!-- ITEM PACKAGE -->
+                                        @foreach (var course in Model.courseList)
+                                        {
+                                        <div class="reservation-package_item">
+                                            @*
+                                            <div class="reservation-package_img">
+                                            <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
+                                            </div>*@
 
-                                                    <div class="reservation-package_text">
+                                            <div class="reservation-package_text">
 
-                                                        <h4><a href="#">@course.fDictTitle</a></h4>
-                                                        <p>
-                                                            @course.fCourseTitle
-                                                            <br />
-                                                            <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("HH:mm")</span>
-                                                        </p>
-                                                        @if (Model.IsBuy > 0)
-                                                        {
-                                                            <div class="reservation-package_book-price">
-                                                                @if (course.CourseStatus == 1)
-                                                                {
-                                                                    <a href="#" class="awe-btn awe-btn-default">未开始</a>
-                                                                }
-                                                                else if (course.CourseStatus == 2)
-                                                                {
-                                                                    <a href="#" class="awe-btn awe-btn-default">已结束</a>
-                                                                }
-                                                                else if (course.CourseStatus == 4)
-                                                                {
-                                                                    if (!string.IsNullOrEmpty(course.fFileCoverUrl))
-                                                                    {
-                                                                        <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        <a href="#" class="awe-btn awe-btn-default">转码中</a>
-                                                                    }
-                                                                }
-
-                                                            
-                                                            </div>
-                                                        }
-
-                                                    </div>
+                                                <h4><a href="#">@course.fDictTitle</a></h4>
+                                                <p>
+                                                    @course.fCourseTitle
+                                                    @if (Model.fType == "Live") {
                                                     <br />
+                                                    <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("HH:mm")</span>
+                                                    }
+                                                </p>
+                                                @if (Model.IsBuy > 0)
+                                                {
+                                                <div class="reservation-package_book-price">
+                                                    @if (course.CourseStatus == 1)
+                                                    {
+                                                    <a href="#" class="awe-btn awe-btn-default">未开始</a>
+                                                    }
+                                                    else if (course.CourseStatus == 2)
+                                                    {
+                                                    <a href="#" class="awe-btn awe-btn-default">已结束</a>
+                                                    }
+                                                    else if (course.CourseStatus == 4)
+                                                    {
+                                                    if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                                    {
+                                                    <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
+                                                    }
+                                                    else
+                                                    {
+                                                    <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                    }
+                                                    }
+
 
                                                 </div>
-                                            }
-                                            <!-- END / ITEM PACKAGE -->
-                                            @Html.Raw(Html.Encode(@Model.fDesc).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
-                                            <br />
-                                            @if (Model.descList != null)
-                                            {
-                                                foreach (var desc in Model.descList)
-                                                {
-                                                    if (desc.fType == "text")
-                                                    {
-                                                        <span>@desc.fContent</span>
-                                                        <br />
-                                                    }
-                                                    else if (desc.fType == "img")
-                                                    {
-                                                        <div class="reservation-room_img">
-                                                            <a href="#">
-                                                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@desc.fContent?x-oss-process=style/chang" alt="" />
-                                                            </a>
-                                                        </div>
-
-                                                        <br />
-                                                    }
                                                 }
-                                            }
 
+                                            </div>
+                                            <br />
 
                                         </div>
+                                        }
+                                        <!-- END / ITEM PACKAGE -->
+                                        @Html.Raw(Html.Encode(@Model.fDesc).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+                                        <br />
+                                        @if (Model.descList != null)
+                                        {
+                                        foreach (var desc in Model.descList)
+                                        {
+                                        if (desc.fType == "text")
+                                        {
+                                        <span>@desc.fContent</span>
+                                        <br />
+                                        }
+                                        else if (desc.fType == "img")
+                                        {
+                                        <div class="reservation-room_img">
+                                            <a href="#">
+                                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@desc.fContent?x-oss-process=style/chang" alt="" />
+                                            </a>
+                                        </div>
+
+                                        <br />
+                                        }
+                                        }
+                                        }
+
 
                                     </div>
+
+                                </div>
                                 }
 
                             </div>

@@ -27,8 +27,14 @@ namespace KeZhan.Controllers
             courseModel.courseList = model.courseList;
             courseModel.isEdit = isEdit;
             courseModel.TeacherUserName = model.fTecharUserName;
-
-            return PartialView("CourseListControl", courseModel);
+            if (model.fType == "Live")
+            {
+                return PartialView("CourseListControl", courseModel);
+            }
+            else
+            {
+                return PartialView("RecordedCourseListControl", courseModel);
+            }
         }
         /// <summary>
         /// 查询介绍信息
@@ -61,8 +67,14 @@ namespace KeZhan.Controllers
             courseModel.courseList = model.courseList;
             courseModel.isEdit = isEdit;
             courseModel.TeacherUserName = model.fTecharUserName;
-
-            return PartialView("CourseListControl", courseModel);
+            if (model.fType == "Live")
+            {
+                return PartialView("CourseListControl", courseModel);
+            }
+            else
+            {
+                return PartialView("RecordedCourseListControl", courseModel);
+            }
         }
 
 
@@ -107,6 +119,20 @@ namespace KeZhan.Controllers
             return PartialView("UserAccountListControl", model);
         }
 
+        public ActionResult QueryFileList(string strType)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResourseListModel model = ResourceBll.GetResourseList(userInfo.fUserName, strType);
 
+            return PartialView("FileListControl", model);
+        }
+
+        public ActionResult QueryDelFileList()
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResourseListModel model = ResourceBll.GetDelResourseList(userInfo.fUserName);
+
+            return PartialView("FileListControl", model);
+        }
     }
 }

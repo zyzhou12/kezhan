@@ -36,6 +36,15 @@
                             @*<h4>基本信息</h4>*@
                             @Html.HiddenFor(m => m.fID)
 
+                            <label>课程分类<sup>*</sup></label>
+                            @Html.DropDownListFor(m => m.fType, new[] {new SelectListItem { Text = "直播", Value = "Live" },
+                                                                         new SelectListItem { Text = "录播", Value = "Recorded" }}, new { @class = "awe-select", id = "cmbType", onchange = "ChangeBoType(this)" })
+
+
+
+
+
+
                             <label>课程名称<sup>*</sup></label>
                             <input type="text" id="txtTitle" value="@Model.fClassRoomTitle" class="input-text">
 
@@ -107,72 +116,87 @@
 
 
 
+                            <div style="display:none" id="divRecorded">
 
-
-                            @*<div class="row">
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <label>截止报名时间<sup>*</sup></label>
 
                                         @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = "", datePlaceholder = "截止报名时间" })
                                     </div>
-                                </div>*@
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>有效天数<sup>*</sup></label>
+                                        @Html.DropDownListFor(m => m.fEffectDay, new[] {new SelectListItem { Text = "30", Value = "30" },
+                                                                         new SelectListItem { Text = "60", Value = "60" },
+                                                                         new SelectListItem { Text = "90", Value = "90" },
+                                                                         new SelectListItem { Text = "180", Value = "180" }}, new { @class = "awe-select", id = "txtEffectDay" })
 
 
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>免费时长<sup>*</sup></label>
+                                        @Html.DropDownListFor(m => m.fFeeLength, new[] {new SelectListItem { Text = "30", Value = "30" },
+                                                                         new SelectListItem { Text = "60", Value = "60" },
+                                                                         new SelectListItem { Text = "90", Value = "90" },
+                                                                         new SelectListItem { Text = "180", Value = "180" }}, new { @class = "awe-select", id = "txtFeeLength" })
 
-                            <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
-                            <input type="number" id="txtMaxNumber" value="@Model.fMaxNumber" class="input-text">
 
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div  id="divLive">
 
+                                <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
+                                <input type="number" id="txtMaxNumber" value="@Model.fMaxNumber" class="input-text">
 
-
-
-
-                            <label>支付类型<sup>*</sup></label>
-                            @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "" },
+                                <label>支付类型<sup>*</sup></label>
+                                @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "" },
                                                                                               new SelectListItem { Text = "线下支付", Value = "线下支付" },
                                                                                               new SelectListItem { Text = "在线支付", Value = "在线支付" }}, new { @class = "awe-select", id = "cmbPayType", onchange = "changePayType()" })
 
 
-                            <label id="labisrefund" style="display:none;">是否可退<sup>*</sup></label>
-                            <select style="width:100%; height:42px; display:none;" id="cmbIsReturn" onchange="changeIsRefund()">
-                                <option value="false">否</option>
-                                <option value="true">是</option>
-                            </select>
+                                <label id="labisrefund" style="display:none;">是否可退<sup>*</sup></label>
+                                <select style="width:100%; height:42px; display:none;" id="cmbIsReturn" onchange="changeIsRefund()">
+                                    <option value="false">否</option>
+                                    <option value="true">是</option>
+                                </select>
 
 
-                            <label id="labrefundtype" style="display:none;">退款类型</label>
-                            <select style="width:100%; height:42px; display:none;" id="cmbReturnType" onchange="ChangeReturnType()">
-                                <option value="">请选择</option>
-                                <option value="课前">开课前退</option>
-                                <option value="随时">随时退</option>
-                            </select>
+                                <label id="labrefundtype" style="display:none;">退款类型</label>
+                                <select style="width:100%; height:42px; display:none;" id="cmbReturnType" onchange="ChangeReturnType()">
+                                    <option value="">请选择</option>
+                                    <option value="课前">开课前退</option>
+                                    <option value="随时">随时退</option>
+                                </select>
 
 
-                            <label id="labrefundrule" style="display:none;">退款规则</label>
-                            <select style="width:100%; height:42px; display:none;" id="cmbReturnRule">
-                                <option value="">请选择</option>
-                                <option value="分钟">按分钟</option>
-                                <option value="课时">按课时</option>
-                            </select>
+                                <label id="labrefundrule" style="display:none;">退款规则</label>
+                                <select style="width:100%; height:42px; display:none;" id="cmbReturnRule">
+                                    <option value="">请选择</option>
+                                    <option value="分钟">按分钟</option>
+                                    <option value="课时">按课时</option>
+                                </select>
 
-
-
-
-
-                            @*<label>是否录屏回看</label>
-                            @Html.DropDownListFor(m => m.fIsRecord, new[] {
-                                                                                              new SelectListItem { Text = "是", Value = "true" },
-                                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })*@
+                                </div>
 
 
 
+                                @*<label>是否录屏回看</label>
+            @Html.DropDownListFor(m => m.fIsRecord, new[] {
+                                                                              new SelectListItem { Text = "是", Value = "true" },
+                                                                              new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })*@
 
 
-                            <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
 
 
-                        </div>
+
+                                <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
+
+
+                            </div>
                         <div class="reservation-billing-detail" id="panelQA" style="display:none;">
                             <span style="font-size:14px; font-weight:bold;">课程发布者</span>
                             <br />新建课程的老师就是课程发布者，课程发布者也是在线支付课程的收款人和所设课程上课费用的支付人
@@ -217,7 +241,16 @@
 
 
 <script type="text/javascript">
-
+    function ChangeBoType(obj)
+    {
+        if ($(obj).val() == "Live") {
+            $("#divLive").show();
+            $("#divRecorded").hide();
+        } else {
+            $("#divLive").hide();
+            $("#divRecorded").show();
+        }
+    }
 
     function changePayType() {
         if ($("#cmbPayType").val() == "在线支付") {
@@ -329,19 +362,44 @@
             $("#txtBasePrice").focus();
             return;
         }
-        if ($("#cmbPayType").val().trim() == "") {
-            $("#cmbPayType").after("<span class=\"errorMsg\">请选择支付类型</span>");
-            $("#cmbPayType").focus();
-            return;
-        }
-        if ($("#txtMaxNumber").val().trim() == "") {
-            $("#txtMaxNumber").after("<span class=\"errorMsg\">请输入最大人数</span>");
-            $("#txtMaxNumber").focus();
-            return;
-        }
 
+        if ($("#cmbType").val() == "Live") {
+            if ($("#cmbPayType").val().trim() == "") {
+                $("#cmbPayType").after("<span class=\"errorMsg\">请选择支付类型</span>");
+                $("#cmbPayType").focus();
+                return;
+            }
+            if ($("#txtMaxNumber").val().trim() == "") {
+                $("#txtMaxNumber").after("<span class=\"errorMsg\">请输入最大人数</span>");
+                $("#txtMaxNumber").focus();
+                return;
+            }
+        }
+        else
+        {
+            if ($("#txtDeadLineDate").val().trim() == "") {
+                $("#txtDeadLineDate").after("<span class=\"errorMsg\">请选择销售截止日期</span>");
+                $("#txtDeadLineDate").focus();
+                return;
+            }
+            if ($("#txtEffectDay").val().trim() == "") {
+                $("#txtEffectDay").after("<span class=\"errorMsg\">请输入有效天数</span>");
+                $("#txtEffectDay").focus();
+                return;
+            }
+            if ($("#txtFeeLength").val().trim() == "") {
+                $("#txtFeeLength").after("<span class=\"errorMsg\">请输入免费时长</span>");
+                $("#txtFeeLength").focus();
+                return;
+            }
+
+            $("#txtMaxNumber").val("99999");
+            $("#cmbPayType").val("在线支付");
+        }
+        
         var ClassRoomModel = {
             "fID": $("#fID").val(),
+            "fType": $("#cmbType").val(),
             "fClassType": $("#cmbClassType").val(),
             "fTecharUserName": $("#cmbTeacher").val(),
             "fPharse": $("#cmbPharse").val(),
@@ -355,7 +413,7 @@
             "fKnowLedge": $("#txtKnowLedge").val(),
             "fMaxNumber": $("#txtMaxNumber").val(),
             //"fClassRoomDate": $("#txtClassRoomDate").val(),
-            // "fDeadLineDate": $("#txtDeadLineDate").val(),
+            "fDeadLineDate": $("#txtDeadLineDate").val(),
             "fPrice": $("#txtPrice").val(),
             "fBasePrice": $("#txtBasePrice").val(),
             "fPayType": $("#cmbPayType").val(),
@@ -363,6 +421,8 @@
             "fReturnType": $("#cmbReturnType").val(),
             "fReturnRule": $("#cmbReturnRule").val(),
             //"fIsRecord": $("#cmbIsRecord").val(),
+            "fEffectDay": $("#txtEffectDay").val(),
+            "fFeeLength": $("#txtFeeLength").val(),
             "fStatus": "保存"
         };
 

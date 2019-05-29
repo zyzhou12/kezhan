@@ -657,7 +657,7 @@
                             @Model.NickName
                         </div>
                         <div class="m-video" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIsAAABoBAMAAAAz5x7gAAAAFVBMVEV+hY1qc31ye4RtdoB4gIlxeIJ2foaTZrHFAAABPUlEQVRYw+3XzU6DQBTF8Qrougeka5rovsS6L2/QSXwAjO//Di5MPLZICPNPM4vO7wFOmDsf97LJsizL7sXT65ua9xeY8qUfzUhS9vrVxad8Shb9PY/6q42N6XXhEJdS6lITFxN05Rx1YnRtFxPzoAmwJriqSlPP5NBYi0pj6CLYSG6ldTkmx+SYxDFB4s9fFfSvD7Qk60hzsR1pmNagh9gSxBSaU2/W0JztqphBM04RrZe33wJVxgayJCvJ2bOCr4nPNwYODR7apgayUVagChsqje1nHlA4i7Yp/mCsRDfBevIxVqDdtoEdPVfHlckxCyVOuOFVL9kxNiZM3r5kD0UV8OTHm69TaA4fIb3Ts46oRdlIlmQ1GtGtIx9jNaqMnWLa09SBrMlqNOjbitLQoxO06LyiwrDGWra9Vcw3whiEijedstUAAAAASUVORK5CYII=);">
-                            <video onclick="maxVideo(this)" id="local_video" class="videostyle"
+                            <video onclick="maxVideo(this)" id="local_video" muted="true" class="videostyle"
                                    autoplay playsinline></video>
                         </div>
                         @if (Model.Role == "Teacher")
@@ -758,7 +758,7 @@
                                         </div>
 
     <div v-if="user.role==='student' && user.isPush && user.isOnLine" v-on:click="permissionStudent(user.userId,'2')" style="float:right;padding-right:10px; color:red;">
-        连线中
+        终止互动
     </div>
                                     }
 

@@ -94,6 +94,29 @@ namespace TiKu.Dal
             return dtRst;
         }
 
+        public static List<tClassRoomApplyEntity> GetClassRoomApplyList(string strBeginDate, string strEndDate, string strClassRoomTitle, string strStatus)
+        {
+            StringBuilder bufSQL = new StringBuilder();
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+            bufSQL.Append(@"SELECT cra.*,cr.fClassRoomTitle FROM tclassRoomapply cra
+                      LEFT JOIN tClassRoom cr on cr.fClassRoomCode=cra.fClassRoomCode
+                     where (fClassRoomTitle like '%'+@ClassRoomTitle+'%' or cra.fClassRoomCode like '%'+@ClassRoomTitle+'%')
+                        and (cra.fSubmitDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')
+                        and cra.fStatus=@Status ");
+
+            lstParam.Add(new DBParam("@ClassRoomTitle", strClassRoomTitle));
+            lstParam.Add(new DBParam("@BeginDate", strBeginDate));
+            lstParam.Add(new DBParam("@EndDate", strEndDate));
+            lstParam.Add(new DBParam("@Status", strStatus));
+
+            //防止返回数据过多
+            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+            List<tClassRoomApplyEntity> lstRst = PubFun.DataTableToObjects<tClassRoomApplyEntity>(dtRst);
+            return lstRst;
+        }
+
         /// <summary>
         /// 同意申请
         /// </summary>

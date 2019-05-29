@@ -44,6 +44,9 @@ namespace TiKuBll
                 model.fTecharUserName = entity.fTecharUserName;
                 model.TeacherName = entity.TeacherName;
                 model.TeacherHead = entity.TeacherHead;
+                model.fType = entity.fType;
+                model.fFeeLength = entity.fFeeLength;
+                model.fEffectDay = entity.fEffectDay;
                 modelList.Add(model);
 
 
@@ -53,9 +56,9 @@ namespace TiKuBll
             return listModel;
         }
 
-        public static ClassRoomListModel GetClassRoomByCreateOpr(string strCreate, string strStatus, string strPayType, string strType, string strClassType)
+        public static ClassRoomListModel GetClassRoomByCreateOpr(string strCreate, string strStatus, string strPayType, string strClassType)
         {
-            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByCreateOpr(strCreate, strStatus, strPayType, strType, strClassType);
+            List<tClassRoomEntity> list = tClassRoomDal.GettClassRoomListByCreateOpr(strCreate, strStatus, strPayType,  strClassType);
 
             List<ClassRoomModel> modelList = new List<ClassRoomModel>();
             foreach (tClassRoomEntity entity in list)
@@ -83,6 +86,9 @@ namespace TiKuBll
                 model.fStatus = entity.fStatus;
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
+                model.fType = entity.fType;
+                model.fFeeLength = entity.fFeeLength;
+                model.fEffectDay = entity.fEffectDay;
 
                 model.TeacherName = entity.TeacherName;
                 model.TeacherHead = entity.TeacherHead;
@@ -125,6 +131,9 @@ namespace TiKuBll
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
                 model.fCreateOpr = entity.fCreateOpr;
+                model.fType = entity.fType;
+                model.fFeeLength = entity.fFeeLength;
+                model.fEffectDay = entity.fEffectDay;
 
                 List<tCourseEntity> courseList = tCourseDal.GetCourseListByClassRoomCode(entity.fClassRoomCode);
                 List<CourseModel> courseModelList = new List<CourseModel>();
@@ -183,6 +192,9 @@ namespace TiKuBll
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
                 model.fCreateOpr = entity.fCreateOpr;
+                model.fType = entity.fType;
+                model.fFeeLength = entity.fFeeLength;
+                model.fEffectDay = entity.fEffectDay;
 
                 List<tCourseEntity> courseList = tCourseDal.GetCourseListByClassRoomCode(strClassRoomCode);
                 List<CourseModel> courseModelList = new List<CourseModel>();
@@ -367,6 +379,9 @@ namespace TiKuBll
                 entity.fInfo = model.fInfo;
                 entity.fIsRecord = model.fIsRecord;
                 entity.fIsReturn = model.fIsReturn;
+                entity.fType = model.fType;
+                entity.fFeeLength = model.fFeeLength;
+                entity.fEffectDay = model.fEffectDay;
 
                 entity.fReturnType = model.fReturnType;
                 entity.fReturnRule = model.fReturnRule;
@@ -422,6 +437,9 @@ namespace TiKuBll
                 entity.fSubject = model.fSubject;
                 entity.fQrCode = model.fQrCode;
                 entity.fTecharUserName = model.fTecharUserName;
+                entity.fType = model.fType;
+                entity.fFeeLength = model.fFeeLength;
+                entity.fEffectDay = model.fEffectDay;
                 entity.fCreateDate = DateTime.Now;
                 entity.fCreateOpr = strUserName;
                 List<tClassRoomEntity> list = new List<tClassRoomEntity>();
@@ -496,6 +514,8 @@ namespace TiKuBll
             cm.fCourseTitle = model.fCourseTitle;
             cm.fDictTitle = model.fDictTitle;
             cm.fOrder = model.fOrder;
+            cm.fResourceUrl = model.fResourceUrl;
+            cm.fStatus = model.fStatus;
             int i = 0;
             if (model.fID > 0)
             {
@@ -577,9 +597,9 @@ namespace TiKuBll
             return i;
         }
 
-        public static ClassRoomListModel GetMyClassRoom(string strUserName, string strType)
+        public static ClassRoomListModel GetMyClassRoom(string strUserName, string strClassType, string strType)
         {
-            List<tClassRoomEntity> list = tClassRoomDal.GetMyClassRoomList(strUserName,strType);
+            List<tClassRoomEntity> list = tClassRoomDal.GetMyClassRoomList(strUserName, strClassType, strType);
 
             List<ClassRoomModel> modelList = new List<ClassRoomModel>();
             foreach (tClassRoomEntity entity in list)
@@ -606,6 +626,9 @@ namespace TiKuBll
                 model.fStatus = entity.fStatus;
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
+                model.fType = entity.fType;
+                model.fFeeLength = entity.fFeeLength;
+                model.fEffectDay = entity.fEffectDay;
                 model.TeacherName = entity.TeacherName;
                 model.TeacherHead = entity.TeacherHead;
                 modelList.Add(model);
@@ -644,6 +667,9 @@ namespace TiKuBll
                 model.fPrice = entity.fPrice;
                 model.fStatus = entity.fStatus;
                 model.fSubject = entity.fSubject;
+                model.fType = entity.fType;
+                model.fFeeLength = entity.fFeeLength;
+                model.fEffectDay = entity.fEffectDay;
                 model.fTecharUserName = entity.fTecharUserName;
                 modelList.Add(model);
             }
@@ -681,6 +707,9 @@ namespace TiKuBll
                 model.fStatus = entity.fStatus;
                 model.fSubject = entity.fSubject;
                 model.fTecharUserName = entity.fTecharUserName;
+                model.fType = entity.fType;
+                model.fFeeLength = entity.fFeeLength;
+                model.fEffectDay = entity.fEffectDay;
                 modelList.Add(model);
             }
             ClassRoomListModel listModel = new ClassRoomListModel();
@@ -726,9 +755,9 @@ namespace TiKuBll
             return i;
         }
 
-        public static MediaListModel GetCourseMediaList(int iCourseID)
+        public static MediaListModel GetCourseMediaList(string strResourceCode)
         {
-            List<tMediaEntity> list = tClassRoomDal.GetCourseMediaList(iCourseID);
+            List<tMediaEntity> list = tClassRoomDal.GetCourseMediaList(strResourceCode);
 
             List<MediaModel> modelList = new List<MediaModel>();
             foreach (tMediaEntity entity in list)

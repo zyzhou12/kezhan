@@ -55,7 +55,10 @@ namespace TiKuBll
             }
         }
 
-
+        public static int GetCourseIsBuy(int iCourseID, string strUserName)
+        {
+            return tBookingDal.GetCourseIsBuy(iCourseID, strUserName);
+        }
         public static BookingModel GettBooking(string strUserName, string strType, string strCode, string strStatus)
         {
             BookingModel model = null;

@@ -20,6 +20,8 @@ namespace TiKu.Entity
     public System.DateTime fModifyDate { get; set; }
     public System.String fModifyOpr { get; set; }
 
+
+    public System.String fMobile { get; set; }
   }
 
 }

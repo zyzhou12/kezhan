@@ -16,6 +16,7 @@ namespace TiKu.Entity
     public System.String fUrl { get; set; }
     public System.String fActivityName { get; set; }
 
+    public System.String fCourseTitle { get; set; }
   }
 
 }

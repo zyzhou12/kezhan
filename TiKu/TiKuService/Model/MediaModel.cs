@@ -20,9 +20,10 @@ namespace TiKuService.Model
   {
     public string CoverURL { get; set; }
     public string MediaId { get; set; }
-    public int Heigth { get; set; }
+    public int Height { get; set; }
     public int Width { get; set; }
     public int Size { get; set; }
+    public string Duration { get; set; }
     public PlayList PlayList { get; set; }
   }
 

@@ -117,6 +117,21 @@ namespace KeZhan.Controllers
                 response.iResult = -1;
                 response.strMsg = "请选择支付类型";
             }
+            else if (model.fType == "Recorded" && model.fDeadLineDate < DateTime.Now)
+            {
+                response.iResult = -1;
+                response.strMsg = "销售截止时间必须大于当天";
+            }
+            else if (model.fType == "Recorded" && model.fEffectDay < 0)
+            {
+                response.iResult = -1;
+                response.strMsg = "请输入有效天数";
+            }
+            else if (model.fType == "Recorded" && model.fFeeLength < 0)
+            {
+                response.iResult = -1;
+                response.strMsg = "请输入免费时长";
+            }
             else
             {
                 // model.fGrade = "";
@@ -257,14 +272,27 @@ namespace KeZhan.Controllers
                 }
                 else if (strStatus == "发布" && model.courseList.Count > 0)
                 {
-                    DateTime classDate = model.courseList[0].fClassDate.AddMinutes(model.courseList[0].fClassDateLength);
-                    int iCourseID = model.courseList[0].fID;
-                    foreach (CourseModel course in model.courseList)
+                    if (model.fType == "Live")
                     {
-                        if (iCourseID != course.fID && classDate > course.fClassDate)
+                        DateTime classDate = model.courseList[0].fClassDate.AddMinutes(model.courseList[0].fClassDateLength);
+                        int iCourseID = model.courseList[0].fID;
+                        foreach (CourseModel course in model.courseList)
+                        {
+                            if (iCourseID != course.fID && classDate > course.fClassDate)
+                            {
+                                response.iResult = -1;
+                                response.strMsg = "上课时间不能重叠，请检查每个课时上课时间";
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ConfigModel config = ManagerBll.GetSystemConfig("上海");
+                        int iDateLength = 1;
+                        if(model.fPrice<iDateLength*config.fSourceFee)
                         {
                             response.iResult = -1;
-                            response.strMsg = "上课时间不能重叠，请检查每个课时上课时间";
+                            response.strMsg = "价格小于平台费用，不能发布";
                         }
                     }
                 }
@@ -555,6 +583,9 @@ namespace KeZhan.Controllers
 
 
         #region User
+      
+
+
         public JsonResult DoSaveTeacherInfo(TeacherBaseModel model)
         {
             ResponseBaseModel response = new ResponseBaseModel();
@@ -815,6 +846,44 @@ namespace KeZhan.Controllers
         #endregion
 
         #region Teacher
+        public JsonResult DoDeleteFile(string strResourceCode)
+        {
+            ResponseBaseModel response = new ResponseBaseModel();
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+            response.iResult = ResourceBll.DeleteFile(strResourceCode);
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+        public JsonResult DoRestoreFile(string strResourceCode)
+        {
+            ResponseBaseModel response = new ResponseBaseModel();
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+            response.iResult = ResourceBll.RestoreFile(strResourceCode);
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+        public JsonResult DoChangeFileType(string strResourceCode,string strType)
+        {
+            ResponseBaseModel response = new ResponseBaseModel();
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+
+            response.iResult = ResourceBll.ChangeFileType(strResourceCode,strType);
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+
+
         public JsonResult DoSaveUserBank(UserBankAccountModel model)
         {
             ResponseBaseModel response = new ResponseBaseModel();

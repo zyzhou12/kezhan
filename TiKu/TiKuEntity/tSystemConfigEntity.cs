@@ -13,6 +13,7 @@ namespace TiKu.Entity
     public System.Decimal fClassFee { get; set; }
     public System.Decimal fVideoFee { get; set; }
     public System.Decimal fProblemFee { get; set; }
+    public System.Decimal fSettlementFee { get; set; }
     public System.Decimal fAccountMinAmount { get; set; }
     public System.Decimal fSourceFee { get; set; }
     public System.DateTime fCreateDate { get; set; }

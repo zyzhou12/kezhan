@@ -60,6 +60,38 @@
             width: 100%;
             height: 42px;
         }
+
+         .test_area {
+            width: 100%;
+            background-color: #FFFFFF;
+            min-height: 120px;
+            overflow: auto;
+        }
+
+        .test_ans {
+            background-color: #ebebeb;
+            margin-left: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            min-height: 100px;
+            width: 150px;
+            border: 1px solid #808080;
+            border-radius: 10px;
+            text-align: left;
+            cursor: move;
+            position: relative;
+            vertical-align: top;
+            display: inline-block;
+        }
+
+        .test_desc {
+            width: 150px;
+            margin-left: 10px;
+            margin-top: 10px;
+            float: left;
+            word-break: break-all;
+            line-height: 1.5;
+        }
     </style>
     <!--[if lt IE 9]>
           <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -109,10 +141,10 @@
                                 {
                                     <a href="../user/userInfo">@userinfo.fNickName</a>
                                 }
-                                if (userinfo.fRole == "Teacher")
-                                {
-                                    <a id="aLogin" href="/User/DoUpdateNowRole?strRole=Teacher">老师端</a>
-                                }
+
+
+                                <a id="aLogin" href="/User/DoUpdateNowRole?strRole=Student">学生端</a>
+
 
                                 <a href="../message/MessageList">系统消息<span id="spanNum"></span></a>
                                 <a href="@Url.Content("/Open/IndexAction?strAction=signout")">退出</a>
@@ -153,66 +185,60 @@
                     <nav class="header_menu">
                         <ul class="menu">
 
-                            <li @if ((controller.ToLower() == "open" && action.ToLower() == "classroomlist") || (controller.ToLower() == "open" && action.ToLower() == "classroomlist")) { <text> class="current-menu-item" </text>            }><a href="../Open/ClassRoomList">K12课程</a></li>
-                            <li @if (controller.ToLower() == "open" && action.ToLower() == "classroomlist4") { <text> class="current-menu-item" </text>              }><a href="../Open/ClassRoomList4">大学</a></li>
-                            <li @if (controller.ToLower() == "open" && action.ToLower() == "classroomlist2") { <text> class="current-menu-item" </text>             }>
-                                <a href="../Open/ClassRoomList2">素质与拓展</a>
-                            </li>
-                            <li @if (controller.ToLower() == "open" && action.ToLower() == "classroomlist3") { <text> class="current-menu-item" </text>             }><a href="../Open/ClassRoomList3">职业与技能</a></li>
 
 
-
-                            <li @if (controller.ToLower() == "start") { <text> class="current-menu-item" </text>             }>
+                            <li @if (controller.ToLower() == "start") { <text> class="current-menu-item" </text>              }>
                                 <a href="#">上课<span class="fa fa-caret-down"></span></a>
                                 <ul class="sub-menu">
-                                    <li @if (controller.ToLower() == "start" && action.ToLower() == "myclassroomlist") { <text> class="current-menu-item" </text>             }><a href="../Start/BuyClassRoomList?strType=正在上">我购买的</a></li>
-
-                                    <li @if (controller.ToLower() == "start" && action.ToLower() == "onlineclass") { <text> class="current-menu-item" </text>                  }><a href="../Start/OnLineClass" target="_blank">在线课堂</a></li>
+                                    <li @if (controller.ToLower() == "start" && action.ToLower() == "myclassroomlist") { <text> class="current-menu-item" </text>                 }><a href="../Start/MyClassRoomList?strType=正在上">我是老师</a></li>
+                                    <li @if (controller.ToLower() == "start" && action.ToLower() == "createonlineclass") { <text> class="current-menu-item" </text>                    }><a href="../Start/CreateOnLineClass" target="_blank">在线课堂</a></li>
 
                                 </ul>
                             </li>
                             @if (userinfo != null)
                             {
-                                <li @if (controller.ToLower() == "user") { <text> class="current-menu-item" </text>             }>
+                                <li @if (controller.ToLower() == "user") { <text> class="current-menu-item" </text>              }>
                                     <a href="#">我的 <span class="fa fa-caret-down"></span></a>
                                     <ul class="sub-menu">
-                                        <li @if (controller.ToLower() == "user" && action.ToLower() == "myfocusteacher") { <text> class="current-menu-item" </text>               }><a href="../User/MyFocusTeacher">我关注的</a></li>
-                                        <li @if (controller.ToLower() == "user" && action.ToLower() == "userinfo") { <text> class="current-menu-item" </text>             }><a href="../User/UserInfo">个人信息</a></li>
-                                        <li @if (controller.ToLower() == "user" && action.ToLower() == "bookinglist") { <text> class="current-menu-item" </text>             }><a href="../User/bookingList?strStatus=已支付">我的订单</a></li>
 
+                                        <li @if (controller.ToLower() == "user" && action.ToLower() == "userinfo") { <text> class="current-menu-item" </text>              }><a href="../User/UserInfo">个人信息</a></li>
+
+
+                                        <li @if (controller.ToLower() == "user" && action.ToLower() == "useraccount") { <text> class="current-menu-item" </text>               }><a href="../User/UserAccount">交易明细</a></li>
+                                        <li @if (controller.ToLower() == "user" && action.ToLower() == "resourcemanager")
+                                            { <text> class="current-menu-item" </text>                }><a href="../User/ResourceManager">素材管理</a></li>
+                                    </ul>
+                                </li>
+                                <li @if (controller.ToLower() == "classroom") { <text> class="current-menu-item" </text>             }>
+                                    <a href="#">课程管理 <span class="fa fa-caret-down"></span></a>
+                                    <ul class="sub-menu">
+                                        <li @if (controller.ToLower() == "classroom" && action.ToLower() == "classroomadd") { <text> class="current-menu-item" </text>               }><a href="../ClassRoom/ClassRoomAdd">新增课程</a></li>
+                                        <li @if (controller.ToLower() == "classroom" && action.ToLower() == "classroommanager") { <text> class="current-menu-item" </text>              }><a href="../ClassRoom/ClassRoomManager?strStatus=发布">课程列表</a></li>
 
                                     </ul>
                                 </li>
-                                if (userinfo.fRole == "Student")
-                                {
-                                    <li @if (controller.ToLower() == "html" && action.ToLower() == "updaterole") { <text> class="current-menu-item" </text>               }>
-                                        <a href="/html/UpdateRole">成为老师 <span class="fa fa-caret-down"></span></a>
-                                    </li>
-                                }
-                                else if (userinfo.fRole == "Manager")
-                                {
-                                    <li @if (controller.ToLower() == "manager") { <text> class="current-menu-item" </text>            }>
-                                        <a href="#">管理 <span class="fa fa-caret-down"></span></a>
-                                        <ul class="sub-menu">
-                                            <li @if (controller.ToLower() == "manager" && action.ToLower() == "validmanager") { <text> class="current-menu-item" </text>            }><a href="../Manager/ValidManager">认证管理</a></li>
-                                            <li @if (controller.ToLower() == "manager" && action.ToLower() == "classroomapplymanager") { <text> class="current-menu-item" </text>             }><a href="../Manager/ClassRoomApplyManager">课程管理</a></li>
-                                            <li @if (controller.ToLower() == "manager" && action.ToLower() == "teacherwithdrawalmanager") { <text> class="current-menu-item" </text>              }><a href="../Manager/TeacherWithdrawalManager">提现管理</a></li>
-                                            <li @if (controller.ToLower() == "manager" && action.ToLower() == "flowadjust") { <text> class="current-menu-item" </text>               }><a href="../Manager/FlowAdjust">赠送流量</a></li>
-                                            <li @if (controller.ToLower() == "manager" && action.ToLower() == "bookinglistmanager") { <text> class="current-menu-item" </text>           }><a href="../Manager/BookingListManager">报名记录</a></li>
-                                        </ul>
-                                    </li>
-                                }
+                                <li @if (controller.ToLower() == "teacher") { <text> class="current-menu-item" </text>              }>
+                                    <a href="#">老师 <span class="fa fa-caret-down"></span></a>
+                                    <ul class="sub-menu">
+                                        <li @if (controller.ToLower() == "teacher" && action.ToLower() == "userpay") { <text> class="current-menu-item" </text>              }><a href="../Teacher/UserPay">购买流量</a></li>
+
+                                        <li @if (controller.ToLower() == "teacher" && action.ToLower() == "userbankmanager") { <text> class="current-menu-item" </text>               }><a href="../Teacher/UserBankManager">银行账户</a></li>
+                                        <li @if (controller.ToLower() == "teacher" && action.ToLower() == "userrefundlist") { <text> class="current-menu-item" </text>                }><a href="../Teacher/UserRefundList">退款管理</a></li>
+                                        <li @if (controller.ToLower() == "teacher" && action.ToLower() == "usermemberlist") { <text> class="current-menu-item" </text>                }><a href="../Teacher/UserMemberList">合作邀请</a></li>
+
+                                    </ul>
+                                </li>
 
                             }
 
-                            <li @if (controller.ToLower() == "html" && action.ToLower() == "about") { <text> class="current-menu-item" </text>            }>
+                            <li @if (controller.ToLower() == "html" && action.ToLower() == "about") { <text> class="current-menu-item" </text>             }>
                                 <a href="/Html/About">关于 </a>
 
                             </li>
 
                             @if (userinfo == null && action.ToLower() != "regsiterlogin")
                             {
-                                <li @if (controller.ToLower() == "open" && action.ToLower() == "regsiterlogin") { <text> class="current-menu-item" </text>            }>
+                                <li @if (controller.ToLower() == "open" && action.ToLower() == "regsiterlogin") { <text> class="current-menu-item" </text>             }>
                                     <a href="/Open/RegsiterLogin?redirect_uri=@Request.Url.ToString()">登录 </a>
                                 </li>
                             }
@@ -245,6 +271,7 @@
                 </div>*@
         </section>
         @RenderBody()
+
         <section class="section-video bg-23 mt100" id="secCheckRTC" style="display:none;">
             <a class="btn-play" href="#modal-video-1"></a>
             <div id="modal-video-1" onclick="hideCheckRtc()" class="modal-video opened" data-video="" data-query-string="ecver=1&amp;autoplay=1&amp;showinfo=0&amp;controls=0&amp;modestbranding=1" src="">
@@ -253,8 +280,6 @@
         </section>
         <!-- FOOTER -->
         <footer id="footer">
-
-
             <!-- END / FOOTER TOP -->
             <!-- FOOTER CENTER -->
             <div class="footer_center">
@@ -280,11 +305,6 @@
                             <div class="widget">
                                 <h4 class="widget-title">网站导航</h4>
                                 <ul>
-                                    <li><a href="/open/ClassRoomList">K12课程</a></li>
-                                    <li><a href="/open/ClassRoomList4">大学</a></li>
-                                    <li><a href="/open/ClassRoomList3">职业与技能</a></li>
-                                    <li><a href="/open/ClassRoomList2">素质与拓展</a></li>
-                                    <li><a href="/html/UpdateRole">成为老师</a></li>
                                     <li><a href="/start/MyClassRoomList?strRoleType=buy">上课</a></li>
 
                                 </ul>
@@ -299,10 +319,11 @@
                                     <li><a href="/html/WebInfo">服务协议</a></li>
                                     <li><a href="/html/About">关于</a></li>
                                     <li><a href="#" onclick="showCheckRtc()">环境测试</a></li>
-
+                                    <li><a href="https://mp.weixin.qq.com/s/qOPXEi30Dh0tSQGCITp-GA">操作说明</a></li>
                                 </ul>
                             </div>
                         </div>
+
 
                         <div class="col-xs-4 col-lg-3">
                             <div class="widget widget_tripadvisor">
@@ -334,7 +355,7 @@
     </div>
     <!-- END / PAGE WRAP -->
     <!--上传文件 -->
-    <div id="myModal" class="reveal-modal">
+    <div id="myModal" class="reveal-modal" style="z-index:9999;">
         <h1>
             文件上传
         </h1>
@@ -363,6 +384,7 @@
         <h1>
             微信扫码支付
         </h1>
+
         <p>
             <img id="imgQrCode" src="" />
 
@@ -403,7 +425,8 @@
             }
         }
 
-        function hideCheckRtc() {
+        function hideCheckRtc()
+        {
             $("#secCheckRTC").hide();
         }
         function showCheckRtc() {
@@ -463,6 +486,10 @@
 
     </script>
     <script type="text/javascript">
+      
+
+
+
         var elementFileId = "";
         var elementSaveID = "";
         var elementImgID = "";

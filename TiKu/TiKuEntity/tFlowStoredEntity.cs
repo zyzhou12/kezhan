@@ -14,11 +14,12 @@ namespace TiKu.Entity
         public System.Int32 fLeftNum { get; set; }
         public System.Decimal fPrice { get; set; }
         public System.String fSource { get; set; }
-        public System.String fEffectDate { get; set; }
+        public System.DateTime fEffectDate { get; set; }
         public System.Int32 fStatus { get; set; }
         public System.DateTime fCreateDate { get; set; }
         public System.String fCreateOpr { get; set; }
 
+        public System.String fMobile { get; set; }
     }
 
 }

@@ -185,17 +185,17 @@ namespace TiKuService
                     {
                         for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
                         {
-                            int iCourseId = Convert.ToInt32(dsSms.Tables[0].Rows[i]["fID"]);
-                            string strUrl = dsSms.Tables[0].Rows[i]["fResourceUrl"].ToString();
+                            string strResourceCode =dsSms.Tables[0].Rows[i]["fResourceCode"].ToString();
+                            string strUrl = dsSms.Tables[0].Rows[i]["fUrl"].ToString();
                             // send mail
 
                             try
                             {
 
-                                SaveLog("The QueryMediaListByURL is Begin" + DateTime.Now.ToString() + "\t" + iCourseId.ToString() + "\t" + strUrl);
-                                QueryMediaListByURL(iCourseId, strUrl);
+                                SaveLog("The QueryMediaListByURL is Begin" + DateTime.Now.ToString() + "\t" + strResourceCode + "\t" + strUrl);
+                                QueryMediaListByURL(strResourceCode, strUrl);
 
-                                SaveLog("The QueryMediaListByURL is Send\t" + DateTime.Now.ToString() + "\t" + iCourseId.ToString() + "\t" + strUrl);
+                                SaveLog("The QueryMediaListByURL is Send\t" + DateTime.Now.ToString() + "\t" + strResourceCode + "\t" + strUrl);
 
                             }
                             catch (Exception ex)
@@ -554,7 +554,7 @@ namespace TiKuService
         }
 
 
-        public void QueryMediaListByURL(int iCourseId, string strUrl)
+        public void QueryMediaListByURL(string strResourceCode, string strUrl)
         {
             Dictionary<string, string> parameterMap = new Dictionary<string, string>();
             // 请求公共参数
@@ -593,36 +593,43 @@ namespace TiKuService
             {
                 if (response.MediaList.Media != null && response.MediaList.Media.Count > 0)
                 {
-                    string CoverURL = "";
                     // "MediaList":{"Media":[{"CoverURL":"http://kezhan.oss-cn-hangzhou.aliyuncs.com/Act-Snapshot/708e63a6c3084002b98f6a65a52dcdbf/1000.jpg","Format":"mov,mp4,m4a,3gp,3g2,mj2","PublishState":"UnPublish","File":{"State":"Normal","URL":"http://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/mp4MultibitrateIn40/v020040b0000bf42ffsd1dr4mvqfm01g.mp4"},"SnapshotList":{"Snapshot":[{"MediaWorkflowName":"新建工作流1544070748909","Count":1,"Type":"Single","File":{"State":"Normal","URL":"http://kezhan.oss-cn-hangzhou.aliyuncs.com/Act-Snapshot/708e63a6c3084002b98f6a65a52dcdbf/1000.jpg"},"MediaWorkflowId":"f70b62689cb9428ea22f0b35ec83483f","ActivityName":"Act-Snapshot"}]},"Height":"480","PlayList":{"Play":[{"MediaWorkflowName":"新建工作流1544070748909","Format":"mp4","File":{"State":"Normal","URL":"http://kezhan.oss-cn-hangzhou.aliyuncs.com/Act-ss-mp4-ld/708e63a6c3084002b98f6a65a52dcdbf/v020040b0000bf42ffsd1dr4mvqfm01g.mp4"},"Duration":"447","Encryption":"0","Height":"362","Width":"640","MediaWorkflowId":"f70b62689cb9428ea22f0b35ec83483f","Fps":"10","ActivityName":"Act-ss-mp4-ld","Bitrate":"147","Size":"8219377"},{"MediaWorkflowName":"新建工作流1544070748909","Format":"mp4","File":{"State":"Normal","URL":"http://kezhan.oss-cn-hangzhou.aliyuncs.com/Act-ss-mp4-sd/708e63a6c3084002b98f6a65a52dcdbf/v020040b0000bf42ffsd1dr4mvqfm01g.mp4"},"Duration":"447","Encryption":"0","Height":"478","Width":"848","MediaWorkflowId":"f70b62689cb9428ea22f0b35ec83483f","Fps":"10","ActivityName":"Act-ss-mp4-sd","Bitrate":"181","Size":"10130277"},{"MediaWorkflowName":"新建工作流1544070748909","Format":"mp4","File":{"State":"Normal","URL":"http://kezhan.oss-cn-hangzhou.aliyuncs.com/Act-ss-mp4-hd/708e63a6c3084002b98f6a65a52dcdbf/v020040b0000bf42ffsd1dr4mvqfm01g.mp4"},"Duration":"447","Encryption":"0","Height":"722","Width":"1280","MediaWorkflowId":"f70b62689cb9428ea22f0b35ec83483f","Fps":"10","ActivityName":"Act-ss-mp4-hd","Bitrate":"262","Size":"14666058"}]},"MediaId":"c10f1640d65a4e9b9adad7f9f60f7163","Title":"v020040b0000bf42ffsd1dr4mvqfm01g.mp4","CreationTime":"2018-12-10T05:26:36Z","RunIdList":{"RunId":["708e63a6c3084002b98f6a65a52dcdbf"]},"CateId":0,"MediaInfo":{"Format":{"FormatName":"mov,mp4,m4a,3gp,3g2,mj2","Duration":"446.960000","FormatLongName":"QuickTime / MOV","NumStreams":"2","StartTime":"-0.114694","Bitrate":"82.918","NumPrograms":"0","Size":"4632651"},"Streams":{"SubtitleStreamList":{"SubtitleStream":[]},"AudioStreamList":{"AudioStream":[{"Lang":"und","SampleFmt":"fltp","CodecName":"aac","CodecTimeBase":"1/44100","Timebase":"1/44100","CodecTag":"0x6134706d","Channels":"2","ChannelLayout":"stereo","Index":"1","CodecTagString":"mp4a","Samplerate":"44100","Duration":"446.959705","CodecLongName":"AAC (Advanced Audio Coding)","StartTime":"-0.114694","Bitrate":"64.003"}]},"VideoStreamList":{"VideoStream":[{"Lang":"und","PixFmt":"yuv420p","NetworkCost":{},"Dar":"0:1","Profile":"High","Height":"480","Sar":"0:1","CodecName":"h264","Timebase":"1/10240","CodecTimeBase":"1/20","CodecTag":"0x31637661","HasBFrames":"2","Index":"0","CodecTagString":"avc1","Duration":"446.900000","AvgFPS":"10.0","CodecLongName":"H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10","Level":"22","StartTime":"0.000000","Width":"850","Fps":"10.0","Bitrate":"16.315"}]}}},"CensorState":"Initiated","Duration":"446.960000","Width":"850","Fps":"10.0","Bitrate":"82.918","Size":"4632651"}]},"RequestId":"B3B4722E-1B87-4519-A432-CF5B6E3EC699","NonExistFileURLs":{"FileURL":[]}}
                     List<tMediaEntity> list = new List<tMediaEntity>();
+                    List<tResourceEntity> fileList = new List<tResourceEntity>();
                     foreach (var media in response.MediaList.Media)
                     {
-                        CoverURL = media.CoverURL;
+                        tResourceEntity resource= tResourceDal.GettResource(strResourceCode);
+                        resource.fMediaId = media.MediaId;
+                        resource.fCoverImg = media.CoverURL;
+                        resource.fDateLength = media.Duration;
+                        resource.fHeigth = media.Height;
+                        resource.fSize = media.Size;
+                        resource.fWidth = media.Width;
+                        resource.fStatus = "已转码";
+                        fileList.Add(resource);
+
                         foreach (var play in media.PlayList.Play)
                         {
                             tMediaEntity entity = new tMediaEntity();
                             entity.fActivityName = play.ActivityName;
-                            entity.fCourseId = iCourseId;
                             entity.fHeight = play.Height;
                             entity.fMediaID = media.MediaId;
                             entity.fSize = play.Size;
                             entity.fUrl = play.File.URL;
                             entity.fWidth = play.Width;
+                            
                             list.Add(entity);
                         }
+                        //课时封面
+                        tCourseDal.UpdateConver(strResourceCode, media.CoverURL);
                     }
 
                     if (list.Count > 0)
                     {
+                        tResourceDal.Modify(fileList, "update", "fID,fMediaId,fCoverImg,fDateLength,fHeigth,fSize,fWidth,fStatus", null);
+                        
                         int i = tMediaDal.Modify(list, "insert", null, null);
-                        tCourseEntity course = new tCourseEntity();
-                        course.fID = iCourseId;
-                        course.fStatus = "已转码";
-                        course.fFileCoverUrl = CoverURL;
-                        List<tCourseEntity> cList = new List<tCourseEntity>();
-                        cList.Add(course);
-                        tCourseDal.Modify(cList, "update", "fID,fStatus,fFileCoverUrl", null);
+                        
                     }
                 }
             }

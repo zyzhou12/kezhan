@@ -20,6 +20,25 @@ namespace KeZhan.Controllers
     {
         //
         // GET: /User/
+        public ActionResult DoUpdateNowRole(string strRole)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            userInfo.NowRole = strRole;
+            Code.Fun.SetSessionUserInfo(this, userInfo);
+            if (strRole == "Teacher")
+            {
+                return RedirectToAction("MyClassRoomList", "Start", new { strType = "正在上" });
+            }
+            else
+            {
+                return RedirectToAction("ClassRoomList", "Open");
+            }
+
+        }
+
+
+
+
         public ActionResult UserInfoEdit()
         {
 
@@ -193,6 +212,12 @@ namespace KeZhan.Controllers
             return View(model);
         }
 
-
+        public ActionResult ResourceManager()
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResourceInfoModel model = ResourceBll.GetResourceInfo(userInfo.fUserName);
+            model.fUserName = userInfo.fUserName;
+            return View(model);
+        }
     }
 }

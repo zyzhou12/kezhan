@@ -74,7 +74,7 @@
                             <span>@Model.fBuyDate.ToString()</span>
                             <label>价格<sup></sup></label>
                             <span>@Model.fAmount </span>
-                            @if (Model.fType == "ClassRoom")
+                            @if (Model.fType == "ClassRoom" && Model.ClassRoom.fType=="Live")
                             {
                                 <label>开课时间<sup> </sup></label>
                                 <span>@Model.ClassRoom.fClassRoomDate.ToString()</span>

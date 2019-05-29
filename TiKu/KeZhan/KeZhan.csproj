@@ -1275,6 +1275,11 @@
     <Content Include="Views\Start\BuyClassRoomList.cshtml" />
     <Content Include="Views\Open\ClassRoomList4.cshtml" />
     <Content Include="Views\User\ValidList.cshtml" />
+    <Content Include="Views\Shared\_LayoutTeacher.cshtml" />
+    <Content Include="Views\LoginQuery\RecordedCourseListControl.cshtml" />
+    <Content Include="Views\ClassRoom\OpenFreeClassRoom.cshtml" />
+    <Content Include="Views\LoginQuery\FileListControl.cshtml" />
+    <Content Include="Views\User\ResourceManager.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -42,7 +42,10 @@
                             if (Model.fStatus == "发布")
                             {
                                 <li onclick="showPanel('private')"><a href="#" style=" width:100%;" data-toggle="tab">推广链接</a></li>
-                                <li onclick="showPanel('update')"><a href="#" style=" width:100%;" data-toggle="tab">更换授课老师</a></li>
+                                if (Model.fType == "Live")
+                                {
+                                    <li onclick="showPanel('update')"><a href="#" style=" width:100%;" data-toggle="tab">更换授课老师</a></li>
+                                }
                             }
                             if (Model.fStatus == "结算")
                             {
@@ -105,8 +108,23 @@
                             <div class="reservation-billing-detail" id="panelData">
 
 
-                                @*<h5>基本信息</h5>*@
+                                @*<h4>基本信息</h4>*@
                                 @Html.HiddenFor(m => m.fID)
+                                @Html.HiddenFor(m => m.fType)
+
+                                <label>课程类型<sup>*</sup></label>
+                                @if (Model.fType == "Live")
+                                {
+                                    <span>直播</span>
+                                }
+                                else
+                                {
+                                    <span>录播</span>
+                                }
+
+
+
+
 
                                 <label>课程名称<sup>*</sup></label>
                                 <input type="text" id="txtTitle" value="@Model.fClassRoomTitle" class="input-text">
@@ -121,12 +139,14 @@
                                 else
                                 {
                                     <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ImageUpload.jpg?x-oss-process=style/fang" id="imgCover" data-reveal-id="myModal" onclick="UploadFile('@Model.UserName','ClassRoomCover','hidConver','','imgCover')" alt="">
-                                } <input type="hidden" id="hidConver" value="@Model.fCoverImg" />
+                                }
+                                <br />
+                                <input type="hidden" id="hidConver" value="@Model.fCoverImg" />
 
 
                                 <label>课程简介</label>
                                 <textarea class="input-textarea" id="txtInfo" maxlength="50" placeholder="课程简介是提要性的，限字数在50个汉字以内">@Model.fInfo</textarea>
-                                <span style="color:red">最多50个汉字</span>
+                                @*<span style="color:red">最多50个汉字</span>*@
                                 <label>图文详情</label>
                                 <span style="font-size:12px;">推荐使用第三方，比如135编辑器，制作长图文，支持JPG、JPEG格式，图片尺寸要求小于20M</span>
                                 <br /><br />
@@ -177,124 +197,85 @@
 
 
 
+                                <div @if (Model.fType == "Live") { <text> style="display:none" </text>  } id="divRecorded">
 
-
-                                @*<div class="row">
+                                    <div class="row">
                                         <div class="col-sm-6">
-                                            <label>截止报名时间<sup>*</sup></label>
+                                            <label>销售截止时间<sup>*</sup></label>
 
-                                            @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = Model.fDeadLineDate.ToString("yyyy-MM-dd"), datePlaceholder = "截止报名时间" })
+                                            @Html.Partial("../Control/Date", new WebEdu.Models.DateModel { isTime = "false", dateID = "txtDeadLineDate", date = @Model.fDeadLineDate.ToShortDateString(), datePlaceholder = "截止报名时间" })
                                         </div>
-                                    </div>*@
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>有效天数<sup>*</sup></label>
+                                            @Html.DropDownListFor(m => m.fEffectDay, new[] {new SelectListItem { Text = "30", Value = "30" },
+                                                                         new SelectListItem { Text = "60", Value = "60" },
+                                                                         new SelectListItem { Text = "90", Value = "90" },
+                                                                         new SelectListItem { Text = "180", Value = "180" }}, new { @class = "awe-select", id = "txtEffectDay" })
 
 
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>免费时长<sup>*</sup></label>
+                                            @Html.DropDownListFor(m => m.fFeeLength, new[] {new SelectListItem { Text = "30", Value = "30" },
+                                                                         new SelectListItem { Text = "60", Value = "60" },
+                                                                         new SelectListItem { Text = "90", Value = "90" },
+                                                                         new SelectListItem { Text = "180", Value = "180" }}, new { @class = "awe-select", id = "txtFeeLength" })
 
-                                <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
-                                <input type="number" id="txtMaxNumber" value="@Model.fMaxNumber" class="input-text">
 
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div @if (Model.fType == "Recorded") { <text> style="display:none" </text>   } id="divLive">
 
+                                    <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
+                                    <input type="number" id="txtMaxNumber" value="@Model.fMaxNumber" class="input-text">
 
-
-                                <label>支付类型<sup>*</sup></label>
-                                @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "" },
+                                    <label>支付类型<sup>*</sup></label>
+                                    @Html.DropDownListFor(m => m.fPayType, new[] { new SelectListItem { Text = "请选择", Value = "" },
                                                                                               new SelectListItem { Text = "线下支付", Value = "线下支付" },
                                                                                               new SelectListItem { Text = "在线支付", Value = "在线支付" }}, new { @class = "awe-select", id = "cmbPayType", onchange = "changePayType()" })
 
 
-
-                                <label id="labisrefund" @if (Model.fPayType == "线下支付") { <text> style="display:none;" </text>     }>是否可退<sup>*</sup></label>
-
-                                <select @if (Model.fPayType == "线下支付") { <text> style="display:none;" </text>      } class="select" id="cmbIsReturn" onchange="changeIsRefund()">
-                                    @if (Model.fIsReturn)
-                                    {
+                                    <label id="labisrefund" style="display:none;">是否可退<sup>*</sup></label>
+                                    <select style="width:100%; height:42px; display:none;" id="cmbIsReturn" onchange="changeIsRefund()">
                                         <option value="false">否</option>
-                                        <option value="true" selected>是</option>
-                                    }
-                                    else
-                                    {
-                                        <option value="false" selected>否</option>
                                         <option value="true">是</option>
-                                    }
-                                </select>
+                                    </select>
 
 
-
-                                <label id="labrefundtype" @if (Model.fIsReturn == false) { <text> style="display:none;" </text>     }>退款类型</label>
-
-                                <select @if (Model.fIsReturn == false) { <text> style="display:none;" </text>       } class="select" id="cmbReturnType" onchange="ChangeReturnType()">
-                                    <option value="">请选择</option>
-                                    @if (Model.fReturnType == "课前")
-                                    {
-                                        <option value="课前" selected>开课前退</option>
+                                    <label id="labrefundtype" style="display:none;">退款类型</label>
+                                    <select style="width:100%; height:42px; display:none;" id="cmbReturnType" onchange="ChangeReturnType()">
+                                        <option value="">请选择</option>
+                                        <option value="课前">开课前退</option>
                                         <option value="随时">随时退</option>
-                                    }
-                                    else
-                                    {
-                                        {
-                                            <option value="课前">开课前退</option>
-                                            <option value="随时" selected>随时退</option>
-                                        }
-                                    }
-                                </select>
+                                    </select>
 
 
-
-
-
-                                <label id="labrefundrule" @if (Model.fIsReturn == false || Model.fReturnType == "课前") { <text> style="display:none;" </text>      }>退款规则</label>
-
-                                <select @if (Model.fIsReturn == false || Model.fReturnType == "课前") { <text> style="display:none;" </text>        } class="select" id="cmbReturnRule">
-                                    <option value="">请选择</option>
-                                    @if (Model.fReturnRule == "分钟")
-                                    {
-                                        <option value="分钟" selected>按分钟</option>
-                                        <option value="课时">按课时</option>
-                                    }
-                                    else
-                                    {
+                                    <label id="labrefundrule" style="display:none;">退款规则</label>
+                                    <select style="width:100%; height:42px; display:none;" id="cmbReturnRule">
+                                        <option value="">请选择</option>
                                         <option value="分钟">按分钟</option>
-                                        <option value="课时" selected>按课时</option>
-                                    }
-                                </select>
+                                        <option value="课时">按课时</option>
+                                    </select>
 
-
-
-
-
-
+                                </div>
 
 
 
                                 @*<label>是否录屏回看</label>
                                     @Html.DropDownListFor(m => m.fIsRecord, new[] {
-                                                                                                  new SelectListItem { Text = "是", Value = "true" },
-                                                                                                  new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })*@
+                                                                                                      new SelectListItem { Text = "是", Value = "true" },
+                                                                                                      new SelectListItem { Text = "否", Value = "false" }}, new { @class = "awe-select", id = "cmbIsRecord" })*@
 
 
-                                <br />
 
-                                @if (isCreateOpr)
-                                {
-                                    if (Model.fStatus == "保存")
-                                    {
-                                        <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
-                                        @*if (Model.fID > 0) {
-                                            <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('发布')">发布</button>
-                                                    }*@
-                                    }
-                                    else if (Model.fStatus == "发布")
-                                    {
-                                        <label>下线原因<sup>*</sup></label>
-                                        <input type="text" id="txtDownLoadNote" value="" class="input-text">
 
-                                        <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('下线')">下线</button>
-                                    }
-                                    else if (Model.fStatus == "下线")
-                                    {
-                                        @*<button class="awe-btn awe-btn-13" onclick="DoClassRoomSettlement()">结算</button>*@
-                                    }
-                                }
+
+                                <button class="awe-btn awe-btn-13" onclick="SaveClassRoomInfo('保存')">保存</button>
+
 
                             </div>
                         }
@@ -305,6 +286,16 @@
 
                                 @*<h5>基本信息</h5>*@
                                 @Html.HiddenFor(m => m.fID)
+
+                                <label>课程类型<sup>*</sup></label>
+                                @if (Model.fType == "Live")
+                                {
+                                    <span>直播</span>
+                                }
+                                else
+                                {
+                                    <span>录播</span>
+                                }
 
                                 <label>课程名称<sup>*</sup></label>
                                 <span>@Model.fClassRoomTitle</span>
@@ -389,60 +380,74 @@
 
 
 
+                                <div @if (Model.fType == "Live") { <text> style="display:none" </text>   } id="divRecorded">
 
 
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <label>截止报名时间<sup>*</sup></label>
-                                        <span>@Model.fDeadLineDate.ToString()</span>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>开课时间<sup>*</sup></label>
-                                        <span>@Model.fClassRoomDate.ToString()</span>
+                                    <label>销售截止时间</label>
+                                    <span>@Model.fDeadLineDate.ToShortDateString()</span>
 
-                                    </div>
+                                    <label>有效天数</label>
+                                    <span>@Model.fEffectDay</span>
+
+                                    <label>免费时长</label>
+                                    <span>@Model.fFeeLength</span>
+
                                 </div>
 
+                                <div @if (Model.fType == "Recorded") { <text> style="display:none" </text>    } id="divLive">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label>截止报名时间<sup>*</sup></label>
+                                            <span>@Model.fDeadLineDate.ToString()</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label>开课时间<sup>*</sup></label>
+                                            <span>@Model.fClassRoomDate.ToString()</span>
+
+                                        </div>
+                                    </div>
 
 
-                                <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
-                                <span>@Model.fMaxNumber</span>
+
+                                    <label>最大人数（超过最大人数停止销售，如果不限制人数，可以设置个大数字）</label>
+                                    <span>@Model.fMaxNumber</span>
 
 
 
 
 
-                                <label>支付类型</label>
-                                <span>@Model.fPayType</span>
+                                    <label>支付类型</label>
+                                    <span>@Model.fPayType</span>
 
-                                <label>是否可退</label>
-                                @if (Model.fIsReturn)
-                                {
-                                    <span>可退</span>
-
-                                    <label>退款类型</label>
-                                    <span>@Model.fReturnType</span>
-
-                                    if (Model.fReturnType == "随时")
+                                    <label>是否可退</label>
+                                    @if (Model.fIsReturn)
                                     {
-                                        <label>退款规则</label>
-                                        <span>@Model.fReturnRule</span>
-                                    }
-                                }
-                                else
-                                {
-                                    <span>不可退</span>
-                                }
+                                        <span>可退</span>
 
-                                @*<label>是否录屏回看</label>
-                                    @if (Model.fIsRecord)
-                                    {
-                                        <span>是</span>
+                                        <label>退款类型</label>
+                                        <span>@Model.fReturnType</span>
+
+                                        if (Model.fReturnType == "随时")
+                                        {
+                                            <label>退款规则</label>
+                                            <span>@Model.fReturnRule</span>
+                                        }
                                     }
                                     else
                                     {
-                                        <span>否</span>
-                                    }*@
+                                        <span>不可退</span>
+                                    }
+
+                                    @*<label>是否录屏回看</label>
+                                        @if (Model.fIsRecord)
+                                        {
+                                            <span>是</span>
+                                        }
+                                        else
+                                        {
+                                            <span>否</span>
+                                        }*@
+                                </div>
                                 <br />
                                 @if (isCreateOpr)
                                 {
@@ -461,6 +466,7 @@
 
 
                             </div>
+
                         }
 
                         <div class="reservation-billing-detail" id="panelDesc" style="display:none;">
@@ -494,7 +500,7 @@
                                 var httpurl = System.Configuration.ConfigurationManager.AppSettings["PayCallBack"].ToString();
                                 <label>链接</label>
                                 <p>@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode</p>
-    <img src="http://qr.topscan.com/api.php?text=@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode" />
+                                <img src="http://qr.topscan.com/api.php?text=@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode" />
                             }
                         </div>
                         <div class="reservation-billing-detail" id="panelAccount" style="display:none;">
@@ -626,6 +632,36 @@
     <a class="close-reveal-modal" onclick="CloseCourse()">&#215;</a>
 </div>
 
+
+
+<div id="divCourse2" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
+    @*<h5>
+            课时信息
+        </h5>*@
+
+    <p>
+        <input type="hidden" id="hidCourseID2" />
+        <label>课时标题</label>
+        <input type="text" id="txtDictTitle2" maxlength="25" class="input-text form-control" style="border:0">
+
+        <label>课时简介</label>
+        <input type="text" id="txtCourseTitle2" maxlength="50" class="input-text form-control" style="border:0">
+        <label>排序</label>
+
+        <input type="number" id="txtOrder2" class="input-text form-control"><br />
+        <label>视频(请先将视频上传到课时视频目录下)</label>
+        <div id="fileWebCourse" style="width:100%; height:120px;overflow :auto"></div>
+        <div id="fileUploadCourse" class="fileUploadContent">
+        </div>
+        <input type="hidden" id="hidCourseFileUrl" />
+    </p>
+    <br />
+    <button class="awe-btn awe-btn-13" onclick="SaveCurse2()">保存</button>
+
+
+    <a class="close-reveal-modal" onclick="CloseCourse2()">&#215;</a>
+</div>
+
 <script type="text/javascript">
     var username = "@Model.fTecharUserName";
     var classRoomCode = '@Model.fClassRoomCode';
@@ -688,18 +724,42 @@
             $("#txtBasePrice").focus();
             return;
         }
-        if ($("#cmbPayType").val().trim() == "") {
-            $("#cmbPayType").after("<span class=\"errorMsg\">请选择支付类型</span>");
-            $("#cmbPayType").focus();
-            return;
+        if ($("#fType").val() == "Live") {
+            if ($("#cmbPayType").val().trim() == "") {
+                $("#cmbPayType").after("<span class=\"errorMsg\">请选择支付类型</span>");
+                $("#cmbPayType").focus();
+                return;
+            }
+            if ($("#txtMaxNumber").val().trim() == "") {
+                $("#txtMaxNumber").after("<span class=\"errorMsg\">请输入最大人数</span>");
+                $("#txtMaxNumber").focus();
+                return;
+            }
         }
-        if ($("#txtMaxNumber").val().trim() == "") {
-            $("#txtMaxNumber").after("<span class=\"errorMsg\">请输入最大人数</span>");
-            $("#txtMaxNumber").focus();
-            return;
+        else {
+            if ($("#txtDeadLineDate").val().trim() == "") {
+                $("#txtDeadLineDate").after("<span class=\"errorMsg\">请选择销售截止日期</span>");
+                $("#txtDeadLineDate").focus();
+                return;
+            }
+            if ($("#txtEffectDay").val().trim() == "") {
+                $("#txtEffectDay").after("<span class=\"errorMsg\">请输入有效天数</span>");
+                $("#txtEffectDay").focus();
+                return;
+            }
+            if ($("#txtFeeLength").val().trim() == "") {
+                $("#txtFeeLength").after("<span class=\"errorMsg\">请输入免费时长</span>");
+                $("#txtFeeLength").focus();
+                return;
+            }
+
+            $("#txtMaxNumber").val("99999");
+            $("#cmbPayType").val("在线支付");
         }
+
         var ClassRoomModel = {
             "fID": $("#fID").val(),
+            "fType": $("#fType").val(),
             "fClassType": $("#cmbClassType").val(),
             "fTecharUserName": $("#cmbTeacher").val(),
             "fPharse": $("#cmbPharse").val(),
@@ -713,15 +773,17 @@
             "fKnowLedge": $("#txtKnowLedge").val(),
             "fMaxNumber": $("#txtMaxNumber").val(),
             //"fClassRoomDate": $("#txtClassRoomDate").val(),
-            // "fDeadLineDate": $("#txtDeadLineDate").val(),
+            "fDeadLineDate": $("#txtDeadLineDate").val(),
             "fPrice": $("#txtPrice").val(),
             "fBasePrice": $("#txtBasePrice").val(),
             "fPayType": $("#cmbPayType").val(),
             "fIsReturn": $("#cmbIsReturn").val(),
             "fReturnType": $("#cmbReturnType").val(),
             "fReturnRule": $("#cmbReturnRule").val(),
-            // "fIsRecord": $("#cmbIsRecord").val(),
-            "fStatus": status
+            //"fIsRecord": $("#cmbIsRecord").val(),
+            "fEffectDay": $("#txtEffectDay").val(),
+            "fFeeLength": $("#txtFeeLength").val(),
+            "fStatus": "保存"
         };
 
         $.ajax({
@@ -1041,10 +1103,159 @@
 
     }
 </script>
+
+<script type="text/javascript">
+
+    function AddCurse2(courseID) {
+        $("#hidCourseID2").val(0);
+        $("#txtDictTitle2").val("");
+        $("#txtCourseTitle2").val("");
+        $("#txtOrder2").val("");
+        $("#hidCourseFileUrl").val();
+        $("#myBGDiv").show();
+        UploadWebFile();
+        // UploadCourseFile(username, "ClassRoom");
+        $("#divCourse2").show();
+    }
+
+    function UploadWebFile() {
+        $.ajax({
+            url: "/LoginQuery/QueryFileList",
+            type: this.method,
+            data: { "strType": "ClassRoom" },
+            success: function (msg) {
+                if (msg.iResult == "-9999") {
+                    alert("请重新登录");
+                } else {
+                    $('#fileWebCourse').html(msg);
+                }
+            }
+        });
+    }
+
+
+    function UploadCourseFile(username, filetype) {
+
+        $("#fileUploadCourse").initUpload({
+            "uploadUrl": "../../Handel/OssUpload.ashx?UserName=" + username + "&FileType=" + filetype, //上传文件信息地址
+            "progressUrl": "#", //获取进度信息地址，可选，注意需要返回的data格式如下（{bytesRead: 102516060, contentLength: 102516060, items: 1, percent: 100, startTime: 1489223136317, useTime: 2767}）
+            "selfUploadBtId": "selfUploadBt", //自定义文件上传按钮id
+            "isHiddenUploadBt": false, //是否隐藏上传按钮
+            "isHiddenCleanBt": false, //是否隐藏清除按钮
+            "isAutoClean": false, //是否上传完成后自动清除
+            "velocity": 10, //模拟进度上传数据
+            "maxFileNumber": 1, //文件个数限制，为整数
+            "onUpload": onUploadCourseFile, //在上传后执行的函数
+            "autoCommit": true,//文件是否自动上传
+            "fileType": ['mp4', 'wmv']//文件类型限制，默认不限制，注意写的是文件后缀
+
+        });
+    }
+
+    function onUploadCourseFile(opt, data) {
+        $("#hidCourseFileUrl").val(data);
+    }
+
+    function SaveCurse2() {
+        if ($("#hidCourseFileUrl").val() == "") {
+            alert("视频未上传");
+            return;
+        }
+
+        var CourseModel = {
+            "fID": $("#hidCourseID2").val(),
+            "fClassType": "ClassRoom",
+            "fClassRoomCode": classRoomCode,
+            "fDictTitle": $("#txtDictTitle2").val(),
+            "fCourseTitle": $("#txtCourseTitle2").val(),
+            "fClassDate": "2099-01-01",
+            "fClassDateLength": "99",
+            "fOrder": $("#txtOrder2").val(),
+            "fResourceUrl": $("#hidCourseFileUrl").val(),
+            "fStatus": "已上传"
+        }
+        $.ajax({
+            url: "/LoginRequest/DoSaveClassRoomCourse",
+            data: CourseModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("保存成功");
+                    $("#divCourse2").hide();
+                    $("#btnAdd").show();
+                    $("#myBGDiv").hide();
+                    $.ajax({
+                        url: "/LoginQuery/QueryCourseList",
+                        type: this.method,
+                        data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
+                        success: function (msg) {
+                            if (msg.iResult == "-9999") {
+                                alert("请重新登录");
+                            } else {
+                                $('#panelCourseEdit').html(msg);
+                            }
+                        }
+                    });
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+
+    }
+
+    function DeleteCurse2(courseID) {
+        if (confirm("确认删除该节课时吗")) {
+            $.ajax({
+                url: "/LoginQuery/DeleteCourse",
+                type: this.method,
+                data: { "iCourseID": courseID, "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
+                success: function (msg) {
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#panelCourseEdit').html(msg);
+                        $("#myBGDiv").hide();
+                    }
+                }
+            });
+        }
+    }
+
+    function UpdateCurse2(courseID, dictTitle, courseTitle, order) {
+        $("#hidCourseID2").val(courseID);
+        $("#txtDictTitle2").val(dictTitle);
+        $("#txtCourseTitle2").val(courseTitle);
+        $("#txtOrder2").val(order);
+        UploadWebFile();
+        // UploadCourseFile(username, "ClassRoom");
+        $("#myBGDiv").show();
+        $("#divCourse2").show();
+    }
+
+    function CloseCourse2() {
+        $("#myBGDiv").hide();
+        $("#divCourse2").hide();
+    }
+
+
+</script>
 <script type="text/javascript">
     var ClassRoomCode = "@Model.fClassRoomCode";
 
-
+    function ChangeBoType(obj) {
+        if ($("#obj").val() == "Live") {
+            $("#divLive").show();
+            $("#divRecorded").hide();
+        } else {
+            $("#divLive").hide();
+            $("#divRecorded").show();
+        }
+    }
     function changePayType() {
         if ($("#cmbPayType").val() == "在线支付") {
             $("#cmbIsReturn").show();

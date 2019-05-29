@@ -122,7 +122,7 @@ namespace TiKu.Dal
             List<DbParameter> lstParam = new List<DbParameter>();
 
             bufSQL.Append(@"select cr.*,fNickName TeacherName,fHeadImg TeacherHead from tClassRoom cr
-    left join tUser u on u.fUserName=cr.fTecharUserName WHERE cr.fClassType<>'OnLine' and cr.fTecharUserName=@UserName ");
+    left join tUser u on u.fUserName=cr.fTecharUserName WHERE cr.fClassType<>'OnLine' and cr.fType='Live' and cr.fTecharUserName=@UserName ");
             lstParam.Add(new DBParam("@UserName", strTeacher));
 
 
@@ -166,7 +166,7 @@ namespace TiKu.Dal
         }
 
 
-        public static List<tClassRoomEntity> GettClassRoomListByCreateOpr(string strCreate, string strStatus, string strPayType, string strType, string strClassType)
+        public static List<tClassRoomEntity> GettClassRoomListByCreateOpr(string strCreate, string strStatus, string strPayType, string strClassType)
         {
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
@@ -188,26 +188,13 @@ namespace TiKu.Dal
                 lstParam.Add(new DBParam("@Type", strClassType));
             }
 
-            if (strType == "未开始")
-            {
-                bufSQL.Append(" AND ((cr.fClassRoomDate>getdate() AND cr.fStatus='发布')  or cr.fStatus='保存' or cr.fStatus='发布中')");
-            }
-            else if (strType == "正在上")
-            {
-                bufSQL.Append(" AND cr.fClassRoomDate<getdate() AND cr.fStatus='发布' ");
-            }
-            else if (strType == "已结束")
-            {
-                bufSQL.Append(" AND (cr.fStatus='结算' or cr.fStatus='下线中' or cr.fStatus='下线') ");
-            }
-            else
-            {
+          
                 if (!string.IsNullOrEmpty(strStatus))
                 {
                     bufSQL.Append(" AND cr.fStatus=@Status ");
                     lstParam.Add(new DBParam("@Status", strStatus));
                 }
-            }
+            
 
             bufSQL.Append(" order by cr.fCreateDate desc ");
 
@@ -218,20 +205,26 @@ namespace TiKu.Dal
             return lstRst;
         }
 
-        public static List<tClassRoomEntity> GetMyClassRoomList(string strUserName, string strType)
+        public static List<tClassRoomEntity> GetMyClassRoomList(string strUserName,string strClassType, string strType)
         {
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
             bufSQL.Append(@"SELECT cr.*,fNickName TeacherName,fHeadImg TeacherHead FROM tClassRoom cr 
 left join tUser u on u.fUserName=cr.fTecharUserName
-                      LEFT JOIN tBooking b on cr.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' and b.fStatus in ('已支付','已驳回') WHERE 1=1 ");
+                      LEFT JOIN tBooking b on cr.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' and b.fStatus in ('已支付','已驳回') 
+WHERE 1=1  ");
 
 
             if (!string.IsNullOrEmpty(strUserName))
             {
                 bufSQL.Append(" AND b.fUserName=@UserName ");
                 lstParam.Add(new DBParam("@UserName", strUserName));
+            }
+            if (!string.IsNullOrEmpty(strClassType))
+            {
+                bufSQL.Append(" AND cr.fType=@Type ");
+                lstParam.Add(new DBParam("@Type", strClassType));
             }
             if (strType == "未开始")
             {
@@ -274,6 +267,30 @@ left join tUser u on u.fUserName=cr.fTecharUserName
             List<tClassRoomEntity> lstRst = PubFun.DataTableToObjects<tClassRoomEntity>(dtRst);
             return lstRst;
         }
+
+
+        public static List<tClassRoomEntity> ClassRoomListQuery(string strBeginDate,string strEndDate,string strClassRoomTitle)
+        {
+            StringBuilder bufSQL = new StringBuilder();
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+            bufSQL.Append(@"SELECT cr.*,u.fName TeacherName FROM tClassRoom cr 
+                      LEFT JOIN tUser u on cr.fTecharUserName=u.fUserName 
+                     where (fClassRoomTitle like '%'+@ClassRoomTitle+'%' or u.fMobile like '%'+@ClassRoomTitle+'%' or u.fName like '%'+@ClassRoomTitle+'%')
+                        and (cr.fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='') ");
+
+            lstParam.Add(new DBParam("@ClassRoomTitle", strClassRoomTitle));
+            lstParam.Add(new DBParam("@BeginDate", strBeginDate));
+            lstParam.Add(new DBParam("@EndDate", strEndDate));
+
+            //防止返回数据过多
+            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+            List<tClassRoomEntity> lstRst = PubFun.DataTableToObjects<tClassRoomEntity>(dtRst);
+            return lstRst;
+        }
+
+
 
         public static List<tClassRoomEntity> GettClassRoomListByTeacher(string strTeacherUser, string strStatus)
         {
@@ -348,13 +365,15 @@ left join tUser u on u.fUserName=cr.fTecharUserName
             return dtRst;
         }
 
-        public static List<tMediaEntity> GetCourseMediaList(int iCourseID)
+        public static List<tMediaEntity> GetCourseMediaList(string strResourceCode)
         {
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
-            bufSQL.Append(@"select * from tMedia where fCourseID=@CourseID ");
-            lstParam.Add(new DBParam("@CourseID", iCourseID));
+            bufSQL.Append(@"select m.* from tMedia m
+left join tResource r on r.fMediaId=m.fMediaId 
+where fResourceCode=@ResourceCode ");
+            lstParam.Add(new DBParam("@ResourceCode", strResourceCode));
 
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");

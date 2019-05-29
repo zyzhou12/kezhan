@@ -68,6 +68,7 @@
     <Compile Include="tAnswerDal.cs" />
     <Compile Include="tBookingDal.cs" />
     <Compile Include="tChapterDal.cs" />
+    <Compile Include="tClassRoomAccountDal.cs" />
     <Compile Include="tClassRoomApplyDal.cs" />
     <Compile Include="tClassRoomDal.cs" />
     <Compile Include="tClassRoomDetailDal.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="tTeachInfoDal.cs" />
     <Compile Include="tTeachValidDal.cs" />
     <Compile Include="tUserAccountDal.cs" />
+    <Compile Include="tUserAmountDal.cs" />
     <Compile Include="tUserBankAccountDal.cs" />
     <Compile Include="tUserDal.cs" />
     <Compile Include="tUserFocusDal.cs" />

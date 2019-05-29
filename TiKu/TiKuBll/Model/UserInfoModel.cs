@@ -25,7 +25,7 @@ namespace TiKuBll.Model
     public System.String fRegSystem { get; set; }
     public System.String fStatus { get; set; }
 
-
+    public System.String NowRole { get; set; }
   }
 
     public class UserListModel

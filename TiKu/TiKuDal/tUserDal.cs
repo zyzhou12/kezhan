@@ -124,7 +124,26 @@ namespace TiKu.Dal
       List<tUserEntity> lstRst = PubFun.DataTableToObjects<tUserEntity>(dtRst);
       return lstRst;
     }
+    public static List<tUserEntity> GetUserList(string strBeginDate,string strEndDate,string strUserName)
+    {
+        StringBuilder bufSQL = new StringBuilder();
+        List<DbParameter> lstParam = new List<DbParameter>();
 
+        bufSQL.Append(@" select * from tUser 
+                        where (fUserName like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%' or fEmail like '%'+@UserName+'%')
+                        and (fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='') ");
+
+        lstParam.Add(new DBParam("@UserName", strUserName));
+        lstParam.Add(new DBParam("@BeginDate", strBeginDate));
+        lstParam.Add(new DBParam("@EndDate", strEndDate));
+
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+        List<tUserEntity> lstRst = PubFun.DataTableToObjects<tUserEntity>(dtRst);
+        return lstRst;
+    }
 
 
     public static int UserSendCode(string strMobile,string strCode,ref string strMsg)

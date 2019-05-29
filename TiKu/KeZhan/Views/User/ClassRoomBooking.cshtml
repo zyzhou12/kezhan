@@ -87,14 +87,21 @@
                             <span>@Model.fClassRoomTitle</span>
                             <label>价格<sup></sup></label>
                             <span>@Model.fPrice </span>
-                            <label>开课时间<sup> </sup></label>
-                            <span>@Model.fClassRoomDate.ToShortDateString()</span>
-
+                            @if (Model.fType == "Live")
+                            {
+                                <label>开课时间<sup> </sup></label>
+                                <span>@Model.fClassRoomDate.ToShortDateString()</span>
+                            }
+                            else
+                            {
+                                <label>销售截止时间<sup> </sup></label>
+                                <span>@Model.fDeadLineDate.ToShortDateString()</span>
+                            }
 
                             @if (Model.fIsReturn)
                             {
                                 var strRefund = " 按" + Model.fReturnRule + "  " + Model.fReturnType + "退";
-                                
+
                                 <label>是否可退：<sup> </sup></label>
                                 <span>可退款</span>
                                 <span>@strRefund</span>
@@ -131,10 +138,13 @@
                                                     <h4><a href="#">@course.fDictTitle</a></h4>
                                                     <p>
                                                         @course.fCourseTitle
-                                                        <br />
-                                                        <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("HH:mm")</span>
+                                                        @if (Model.fType == "Live")
+                                                        {
+                                                            <br />
+                                                            <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("HH:mm")</span>
+                                                        }
                                                     </p>
-                                                   
+
 
                                                 </div>
                                                 <br />

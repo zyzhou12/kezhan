@@ -1,0 +1,33 @@
+﻿@model TiKuBll.Model.ResourseListModel
+@{
+    ViewBag.Title = "FileListControl";
+}
+
+@if (Model.resourseList != null)
+{
+    <div class="test_area" >
+        @foreach (var file in Model.resourseList)
+        {
+            <div class="test_ans">
+                <div class="test_desc">
+                    <img src="@file.fCoverImg" style="width:128px;" />
+                    <br />
+                    <input type="radio" name="radFile" id="@file.fID" value="@file.fResourceCode" onclick="CheckFile('@file.fResourceCode')" />
+                    <span>@file.fResourceTitle</span>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <span>没有素材</span>
+}
+
+<script type="text/javascript">
+    function CheckFile(fileUrl) {
+        $("#hidCourseFileUrl").val(fileUrl);
+    }
+
+   
+</script>

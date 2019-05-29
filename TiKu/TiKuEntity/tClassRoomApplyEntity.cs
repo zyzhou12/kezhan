@@ -13,10 +13,12 @@ namespace TiKu.Entity
         public System.String fNote { get; set; }
         public System.String fSubmitOpr { get; set; }
         public System.DateTime fSubmitDate { get; set; }
+        public System.Boolean fResult { get; set; }
         public System.String fApplyNote { get; set; }
         public System.String fApplyOpr { get; set; }
         public System.DateTime fApplyDate { get; set; }
 
+        public System.String fClassRoomTitle { get; set; }
     }
 
 }

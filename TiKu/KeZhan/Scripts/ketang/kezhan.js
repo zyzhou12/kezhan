@@ -403,13 +403,14 @@ params:{
     .then(function (response) {
     
         videoNick=response.data.fNickName;
-        if (document.getElementById(data.videoId)) {    
+        if (document.getElementById(data.videoId)) { 
             document.getElementById(data.videoId).srcObject = data.stream;
             //document.getElementById(data.videoId).controls = true;
             document.getElementById(data.videoId).mounted = true;
         }else{
             var div = document.createElement("div");
-            div.innerHTML = '<div class="video-name">'+videoNick+'</div><video onclick="maxVideo(this)" id="'+data.videoId+'" muted="true" class="videostyle" autoplay playsinline></video>';
+            div.id=data.userId;
+            div.innerHTML = '<div class="video-name">'+videoNick+'</div><video onclick="maxVideo(this)" id="'+data.videoId+'" class="videostyle" autoplay playsinline></video>';
             div.classList.add("m-netcall-video");
             div.classList.add("test_ans");
             oBox.appendChild(div);      
@@ -429,9 +430,11 @@ params:{
 //this.showTip('WebRTC接收到远端流');
 });
 
-this.ticSdk.on(TICSDK.CONSTANT.EVENT.WEBRTC.REMOTE_STREAM_REMOVE, data => {
-    var child=document.getElementById(data.videoId);
+    this.ticSdk.on(TICSDK.CONSTANT.EVENT.WEBRTC.REMOTE_STREAM_REMOVE, data => {
+        
+    var child=document.getElementById(data.userId);
 child.parentNode.removeChild(child);
+
 this.$delete(this.remoteVideos, data.videoId);
 //this.showTip('WebRTC 远端流断开');
 });
@@ -534,20 +537,7 @@ window.WebRTC = this.ticSdk.getWebRTCInstance();
 
 // 如果是主动推流
 if (this.pushModel === 1) {
-
-     
-    var WebRTC = this.ticSdk.getWebRTCInstance();
-    WebRTC.detectRTC({
-        screenshare : true // 是否进行屏幕分享检测，默认true
-    }, function(info){
-        
-        if(!info.support) {
-            app.showRTC=true;
-        }
-    });
-    if(!this.showRTC){
         this.startRTC();
-    }
 }
 
 //获取摄像头，麦克风
@@ -653,7 +643,20 @@ if (msgs.getFromAccount() === '@TIM#SYSTEM') { // 接收到系统消息
             }else if (content.getData() == 1) {
                 this.showTip("老师已关闭互动");
                 this.ishand=false;
-                this.stopPush();
+                if(this.isTeacher==0){
+                    this.ticSdk.getBoardInstance().setCanDraw(false);
+                    this.boardConfig = {
+                        id: 'paint_box',
+                        canDraw: 0, //
+                        globalBackgroundColor: '#ffffff',
+                        color: '#ff0000',
+                        boardMode: 0, // 白板模式
+                        textSize: 24,
+                        textColor: '#ff0000'
+                    }
+                    this.setUserPer("CloseBoard");
+                    this.stopPush();
+                }
                 return;
             }
         }
@@ -723,6 +726,17 @@ if (type === 'TIMTextElem') {
         }  else if (content.getData() == 2) {
             // self.$toastr.success('被老师关闭声音', '提示');
             this.showTip("被老师停止互动");
+            this.ticSdk.getBoardInstance().setCanDraw(false);
+            this.boardConfig = {
+                id: 'paint_box',
+                canDraw: 0, //
+                globalBackgroundColor: '#ffffff',
+                color: '#ff0000',
+                boardMode: 0, // 白板模式
+                textSize: 24,
+                textColor: '#ff0000'
+            }
+            this.setUserPer("CloseBoard");
             this.stopPush();
             return;
         }else if (content.getData() == 4) {
@@ -758,7 +772,17 @@ if (type === 'TIMTextElem') {
             return;
         }  else if (content.getData() == 6) {
             //self.$toastr.success('老师批准请求', '提示');
-
+            this.ticSdk.getBoardInstance().setCanDraw(true);
+            this.boardConfig = {
+                id: 'paint_box',
+                canDraw: 1, 
+                globalBackgroundColor: '#ffffff',
+                color: '#ff0000',
+                boardMode: 0, // 白板模式
+                textSize: 24,
+                textColor: '#ff0000'
+            }
+            this.setUserPer("OpenBoard");
             this.startRTC();
         }
     } 
@@ -951,41 +975,50 @@ this.intervalid = setInterval(() => {
 
 // 启动推流(推摄像头)
 startRTC() {
-    // 获取webrtc实例
     var WebRTC = this.ticSdk.getWebRTCInstance();
-    WebRTC.getLocalStream({
-        audio: true,
-        video: true,
-        attributes: {
-            width: 640,
-            height: 480
-            //frameRate:20
+    WebRTC.detectRTC({
+        screenshare : true // 是否进行屏幕分享检测，默认true
+    }, function(info){
+        
+        if(!info.support) {
+            app.showRTC=true;
         }
-    }, (data) => {
-        this.isPushCamera = true;
-    this.setUserPer("OpenPush");
-    if (WebRTC.global.localStream && WebRTC.global.localStream.active) {
-        WebRTC.updateStream({
-            role: 'screen',
-            stream: data.stream
-        }, () => {
-            // 成功
-        }, (error) => {
-            this.showErrorTip(`更新流失败，${error}`);
     });
-} else {
-          WebRTC.startRTC({
-              stream: data.stream,
-              role: 'user'
-          }, (data) => {
-              // 成功
-          }, (error) => {
-              this.showErrorTip(`推流失败, ${error}`);
-});
+    if(!this.showRTC){
+            WebRTC.getLocalStream({
+                audio: true,
+                video: true,
+                attributes: {
+                    width: 640,
+                    height: 480
+                    //frameRate:20
+                }
+            }, (data) => {
+                this.isPushCamera = true;
+            this.setUserPer("OpenPush");
+            if (WebRTC.global.localStream && WebRTC.global.localStream.active) {
+                WebRTC.updateStream({
+                    role: 'screen',
+                    stream: data.stream
+                }, () => {
+                    // 成功
+                }, (error) => {
+                    this.showErrorTip(`更新流失败，${error}`);
+            });
+        } else {
+                  WebRTC.startRTC({
+                      stream: data.stream,
+                      role: 'user'
+                  }, (data) => {
+                      // 成功
+                  }, (error) => {
+                      this.showErrorTip(`推流失败, ${error}`);
+        });
+        }
+        }, (error) => {
+            this.showErrorTip(`获取本地流失败, ${JSON.stringify(error)}`);
+        });
 }
-}, (error) => {
-    this.showErrorTip(`获取本地流失败, ${JSON.stringify(error)}`);
-});
 },
 
 stopPush() {

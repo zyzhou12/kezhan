@@ -60,6 +60,24 @@ namespace TiKu.Dal
       return rst.Result;
     }
 
+    public static int GetCourseIsBuy(int iCourseID,string strUserName)
+    {
+        string strSQL = @"select count(*) from tbooking b
+                            left join tCourse c on c.fClassRoomCode=b.fTypeCode
+                            left join tClassRoom r on r.fClassRoomCode=c.fClassRoomCode
+                            where b.fType='ClassRoom' and b.fStatus in ('已支付','退款中','已驳回')
+                            and (r.fType='Live' or (r.fType='Recorded' and dateadd(day,r.fEffectDay,b.fCreateDate)>=getdate()))
+                                and c.fID=@CourseID
+                                and fUserName=isnull(@UserName,'')";
+        List<DbParameter> lstParam = new List<DbParameter>();
+        lstParam.Add(new DBParam("@CourseID", iCourseID));
+        lstParam.Add(new DBParam("@UserName", strUserName));
+
+        object dt = DBHelper.ExecuteScalar("TiKu", strSQL, lstParam);
+
+        return Convert.ToInt32(dt);
+    }
+
     public static tBookingEntity GettBooking(string strBookingNo)
     {
       tBookingEntity rst = null;
@@ -125,6 +143,28 @@ namespace TiKu.Dal
       List<tBookingEntity> lstRst = PubFun.DataTableToObjects<tBookingEntity>(dtRst);
       return lstRst;
     }
+
+    public static List<tBookingEntity> GetBookingList(string strBeginDate, string strEndDate, string strUserName)
+    {
+        StringBuilder bufSQL = new StringBuilder();
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        bufSQL.Append(@"SELECT b.* FROM tBooking b
+                      LEFT JOIN tUser u on b.fUserName=u.fUserName
+                     where (fBookingNo like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%')
+                        and (b.fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')");
+
+        lstParam.Add(new DBParam("@UserName", strUserName));
+        lstParam.Add(new DBParam("@BeginDate", strBeginDate));
+        lstParam.Add(new DBParam("@EndDate", strEndDate));
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+        List<tBookingEntity> lstRst = PubFun.DataTableToObjects<tBookingEntity>(dtRst);
+        return lstRst;
+    }
+
 
     public static DataTable GetBookingList(string strUserName, string strStatus, DateTime beginDate, DateTime endDate)
     {

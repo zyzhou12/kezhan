@@ -15,14 +15,14 @@ namespace KeZhan.Controllers
         //
         // GET: /Start/
 
-        public ActionResult BuyClassRoomList(string strStatus = null, string strPayType = null, string strType = null, string strClassType = null)
+        public ActionResult BuyClassRoomList(string strStatus = null, string strPayType = null, string strType = null, string strClassType = "直播")
         {
 
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
 
             ClassRoomListModel model = null;
             
-                model = ClassRoomBll.GetMyClassRoom(userInfo.fUserName, strType);
+                model = ClassRoomBll.GetMyClassRoom(userInfo.fUserName,strClassType, strType);
           
             if (strStatus == null)
             {

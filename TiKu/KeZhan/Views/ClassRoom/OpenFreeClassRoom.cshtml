@@ -1,0 +1,139 @@
+﻿@model KeZhan.Models.FileModel
+@section otherHeadInfo {
+  <script type="text/javascript" src="../../Scripts/ckplayer/ckplayer.js"></script>
+}
+<section class="section-sub-banner" style="padding-bottom:80px; ">
+    <div class="awe-overlay" style="background-color: #fff"></div>
+    <div class="sub-banner">
+        <div class="container">
+            <div class="videosamplex" style=" width: 60rem;left: 50%;height: 40rem;margin-left: -30rem;background-color: rgb(0, 0, 0);overflow: hidden;position: relative;">
+                <video id="videoplayer" src="@Model.FileUrl"></video>
+            </div>
+            <script type="text/javascript">
+              var videoObject = {
+                container: '.videosamplex', //“#”代表容器的ID，“.”或“”代表容器的class
+                variable: 'player', //该属性必需设置，值等于下面的new chplayer()的对象
+                poster: 'pic/wdm.jpg',
+                mobileCkControls: true, //是否在移动端（包括ios）环境中显示控制栏
+                mobileAutoFull: false, //在移动端播放后是否按系统设置的全屏播放
+                h5container: '#videoplayer', //h5环境中使用自定义容器		
+                loaded: 'loadedHandler',
+                video: '@Model.FileUrl'//视频地址
+              };
+              var player = new ckplayer(videoObject);
+     
+
+    var elementLogin = null; //是否存在提示层
+    var loginOrNo = false; //是否已登录，默认是没有登录
+    var loginShow = false; //提示层是否是显示状态
+    function loadedHandler() { //播放器加载后会调用该函数
+        player.addListener('time', timeHandler); //监听播放时间,addListener是监听函数，需要传递二个参数，'time'是监听属性，这里是监听时间，timeHandler是监听接受的函数
+        player.addListener('play', playHandler); //监听播放状态
+        player.addListener('full', fullHandler); //监听全屏切换
+    }
+
+    function playHandler() { //监听播放状态
+        if (loginShow) {
+            player.videoPause();
+        }
+    }
+
+    function fullHandler(b) { //监听全屏切换
+        if (loginShow && elementLogin) {
+            player.deleteElement(elementLogin);
+            elementLogin = null;
+            window.setTimeout('showLogin()', 200);
+        }
+    }
+
+    function timeHandler(t) { //监听播放时间
+        if (t >= @Model.FreeDateLength && !loginOrNo) { //如果播放时间大于1，则又没有登录，则弹出登录/注册层
+            player.videoPause();
+            if (!loginShow && !elementLogin) {
+                showLogin();
+            }
+        }
+    }
+
+    function showLogin() { //显示登录/注册层
+        loginShow = true;
+        var meta = player.getMetaDate();
+        var x = (meta['width'] - 307) * 0.5;
+        var y = (meta['height'] - 39) * 0.5 - 80;
+        var attribute = {
+            list: [ //list=定义元素列表
+				{
+				    type: 'text', //定义元素类型：只有二种类型，image=使用图片，text=文本
+				    text: '试看已结束' //图片地址
+				}
+                //,
+				//{
+				//    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
+				//    file: 'pic/login/login_02.png', //图片地址
+				//    radius: 0, //图片圆角弧度
+				//    width: 69, //定义图片宽，必需要定义
+				//    height: 39, //定义图片高，必需要定义
+				//    alpha: 1, //图片透明度(0-1)
+				//    marginLeft: 0, //图片离左边的距离
+				//    marginRight: 0, //图片离右边的距离
+				//    marginTop: 0, //图片离上边的距离
+				//    marginBottom: 0, //图片离下边的距离
+				//    clickEvent: 'javaScript->userLogin()'
+				//},
+				//{
+				//    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
+				//    file: 'pic/login/login_03.png', //图片地址
+				//    radius: 0, //图片圆角弧度
+				//    width: 70, //定义图片宽，必需要定义
+				//    height: 39, //定义图片高，必需要定义
+				//    alpha: 1, //图片透明度(0-1)
+				//    marginLeft: 0, //图片离左边的距离
+				//    marginRight: 0, //图片离右边的距离
+				//    marginTop: 0, //图片离上边的距离
+				//    marginBottom: 0, //图片离下边的距离
+				//    clickEvent: 'javaScript->userReg()'
+				//},
+				//{
+				//    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
+				//    file: 'pic/login/login_04.png', //图片地址
+				//    radius: 0, //图片圆角弧度
+				//    width: 28, //定义图片宽，必需要定义
+				//    height: 39, //定义图片高，必需要定义
+				//    alpha: 1, //图片透明度(0-1)
+				//    marginLeft: 0, //图片离左边的距离
+				//    marginRight: 0, //图片离右边的距离
+				//    marginTop: 0, //图片离上边的距离
+				//    marginBottom: 0 //图片离下边的距离
+				//}
+            ],
+            x: x, //元件x轴坐标，注意，如果定义了position就没有必要定义x,y的值了，支持数字和百分比
+            y: y, //元件y轴坐标
+            alpha: 1, //元件的透明度
+            backgroundColor: '0x000000', //元件的背景色
+            backAlpha: 0.1, //元件的背景透明度(0-1)
+            backRadius: 0 //元件的背景圆角弧度
+        }
+        elementLogin = player.addElement(attribute);
+    }
+
+    function userLogin() {
+        alert('点击了登录按钮');
+    }
+
+    function userReg() {
+        alert('点击了注册按钮');
+    }
+
+    function loginTrue() { //附加的处理用户登录后执行的动作
+        loginOrNo = true;
+        if (loginShow && elementLogin) {
+            player.deleteElement(elementLogin);
+            elementLogin = null;
+            loginShow = false;
+            player.videoPlay();
+        }
+    }
+            </script>
+        </div>
+    </div>
+</section>

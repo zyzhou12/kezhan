@@ -57,6 +57,7 @@ namespace TiKu.Bll
                 model.fStatus = user.fStatus;
                 model.fUID = user.fUID;
                 model.fUserName = user.fUserName;
+                model.NowRole = user.fRole;
                 if (!string.IsNullOrEmpty(user.fPassWord))
                 {
                     model.IsPassWord = "true";
@@ -84,6 +85,7 @@ namespace TiKu.Bll
                 model.fStatus = user.fStatus;
                 model.fUID = user.fUID;
                 model.fUserName = user.fUserName;
+                model.NowRole = user.fRole;
             }
             return model;
         }
@@ -107,6 +109,7 @@ namespace TiKu.Bll
                 model.fStatus = user.fStatus;
                 model.fUID = user.fUID;
                 model.fUserName = user.fUserName;
+                model.NowRole = user.fRole;
                 if (!string.IsNullOrEmpty(user.fPassWord))
                 {
                     model.IsPassWord = "true";
@@ -134,8 +137,11 @@ namespace TiKu.Bll
             model.fStatus = user.fStatus;
             model.fUID = user.fUID;
             model.fUserName = user.fUserName;
+            model.NowRole = user.fRole;
             return model;
         }
+
+    
 
         public static UserInfoModel GetUserInfoByMobile(string strMobile)
         {
@@ -154,6 +160,7 @@ namespace TiKu.Bll
             model.fStatus = user.fStatus;
             model.fUID = user.fUID;
             model.fUserName = user.fUserName;
+            model.NowRole = user.fRole;
             return model;
         }
 
@@ -174,6 +181,7 @@ namespace TiKu.Bll
             model.fStatus = user.fStatus;
             model.fUID = user.fUID;
             model.fUserName = user.fUserName;
+            model.NowRole = user.fRole;
             return model;
         }
 
@@ -561,7 +569,7 @@ namespace TiKu.Bll
             entity.fSource = strSource;
             entity.fStoredNo = "F"+DateTime.Now.ToString("yyyyMMddHHmmssssss") + rd.Next(10, 100).ToString(); 
             entity.fStatus = 0;
-            entity.fEffectDate = effectDate.ToShortDateString();
+            entity.fEffectDate = effectDate;
             entity.fCreateDate = DateTime.Now;
             entity.fCreateOpr = strOpr;
             List<tFlowStoredEntity> list = new List<tFlowStoredEntity>();

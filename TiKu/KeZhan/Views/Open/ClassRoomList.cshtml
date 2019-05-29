@@ -70,6 +70,14 @@
                                     <div class="text">
                                         <h2 style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
                                             <a href="#">@classRoom.fClassRoomTitle</a>
+                                            @if (classRoom.fType == "Live")
+                                            {
+                                                <label>[直播]</label>
+                                            }
+                                            else
+                                            {
+                                                <label>[录播]</label>
+                                            }
                                         </h2>
                                         <p style="height:40px; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp:2;overflow: hidden;">
 
@@ -77,7 +85,14 @@
 
                                         </p>
                                         <br />
-                                        <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
+                                        @if (classRoom.fType == "Live")
+                                        {
+                                            <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
+                                        }
+                                        else
+                                        {
+                                            <span>有效天数：@classRoom.fEffectDay 天</span>
+                                        }
                                         <br />
                                         <span>讲师：@classRoom.TeacherName</span>
                                         <h2>￥ @classRoom.fPrice.ToString()</h2>

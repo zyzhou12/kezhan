@@ -1,0 +1,87 @@
+﻿@model TiKuBll.Model.CourseListModel
+@{
+    ViewBag.Title = "课站";
+}
+@if (Model.isEdit)
+{
+    <button class="awe-btn awe-btn-13" id="btnAdd" onclick="AddCurse2()">新增课时</button>
+}
+<div class="reservation-room_package">
+    @*<a data-toggle="collapse" href="#reservation-room_package-1" class="reservation-room_package-more" aria-expanded="true">章节</a>*@
+ 
+    <div class="reservation-room_package-content collapse in" id="reservation-room_package-1" aria-expanded="true" style="">
+
+        @if (Model.courseList != null)
+        {
+                                                <!-- ITEM PACKAGE -->
+            foreach (var course in Model.courseList)
+            {
+                <div class="reservation-package_item">
+                    @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                    {
+                        if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                        {
+                            <div class="reservation-package_img">
+                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl"   alt="">
+
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div class="reservation-package_img">
+                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl"  alt="">
+
+                            </div>
+                        }
+                    }
+                    else if (Model.isEdit)
+                    {
+                        <div class="reservation-package_img">
+                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" alt="" />
+                        </div>
+                    }
+
+                    <div class="reservation-package_text">
+
+                        <h4><a href="#">@course.fDictTitle</a></h4>
+                        <p>
+                            @course.fCourseTitle
+
+                        </p>
+
+                        <div class="reservation-package_book-price">
+                            @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                            {
+                                if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                {
+                                    <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
+
+                                }
+                                else
+                                {
+                                    <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                }
+                            }
+                            @if (Model.isEdit)
+                            {
+                                 <button class="awe-btn awe-btn-default" onclick="UpdateCurse2(@course.fID,'@course.fDictTitle','@course.fCourseTitle',@course.fOrder)">修改</button>
+
+                                 <button class="awe-btn awe-btn-default" onclick="DeleteCurse2(@course.fID)">删除</button>
+
+                            }
+                           
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+
+        }
+        <input type="hidden" id="hidCourseNum" value="@Model.courseList.Count" />
+
+
+      
+    </div>
+</div>

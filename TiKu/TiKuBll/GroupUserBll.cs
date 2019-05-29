@@ -14,7 +14,7 @@ namespace TiKuBll
     {
         public static GroupModel GetGroup(string strGroupId)
         {
-            tGroupEntity entity = tGroupDal.GettGroup( strGroupId);
+            tGroupEntity entity = tGroupDal.GettGroup(strGroupId);
             GroupModel model = null;
             if (entity != null)
             {
@@ -67,23 +67,24 @@ namespace TiKuBll
             return model;
         }
 
-        public static int InsertGroupUserInfo(string strUserId, string strGroupId,string strRole)
+        public static int InsertGroup(string strGroupId,string strGroupName,int iCourseId,string strUserName)
         {
-            if (strRole == "teacher")
-            {
-                tGroupEntity group = new tGroupEntity();
-                group.fGroupID = strGroupId;
-                group.fGroupName = strGroupId;
-                group.fIsOpenHand = false;
-                group.fIsValid = true;
-                group.fTeacherID = strUserId;
-                group.fCreateDate = DateTime.Now;
-                List<tGroupEntity> groupList = new List<tGroupEntity>();
-                groupList.Add(group);
-                tGroupDal.Modify(groupList, "insert", null, null);
-            }
+            tGroupEntity group = new tGroupEntity();
+            group.fGroupID = strGroupId;
+            group.fGroupName = strGroupName;
+            group.fCourseId=iCourseId;
+            group.fIsOpenHand = false;
+            group.fIsValid = true;
+            group.fTeacherID = strUserName;
+            group.fCreateDate = DateTime.Now;
+            List<tGroupEntity> groupList = new List<tGroupEntity>();
+            groupList.Add(group);
+            int i=tGroupDal.Modify(groupList, "insert", null, null);
+            return i;
+        }
 
-
+        public static int InsertGroupUserInfo(string strUserId, string strGroupId, string strRole)
+        {
             tGroupUserInfoEntity entity = new tGroupUserInfoEntity();
             entity.fUserId = strUserId;
             entity.fUserName = strUserId;
@@ -107,7 +108,7 @@ namespace TiKuBll
             return i;
         }
 
-        public static int DeleteGroupUserInfo(string strUserId,string strGroupId)
+        public static int DeleteGroupUserInfo(string strUserId, string strGroupId)
         {
             tGroupUserInfoEntity entity = tGroupUserInfoDal.GettGroupUserInfo(strUserId, strGroupId);
             int i = tGroupUserInfoDal.Delete(entity.fID.ToString());
@@ -135,13 +136,46 @@ namespace TiKuBll
                 strUpdateFiels = "fIsValid";
                 entity.fIsValid = true;
             }
-            else if (strType == "closegroup")
+            else if (strType == "closegroup")//销毁课堂
             {
                 strUpdateFiels = "fIsValid,fDestoryDate";
                 entity.fIsValid = false;
                 entity.fDestoryDate = DateTime.Now;
 
-               
+                List<tGroupUserInfoEntity> userList = tGroupUserInfoDal.GetGroupUserList(strGroupId);
+
+                string strUserUpdateFiels = "";
+                foreach (tGroupUserInfoEntity user in userList)
+                {
+                    if (user.fIsOnLine)
+                    {
+                        strUserUpdateFiels = "fIsOnLine,fIsPush,fIsVideo,fIsAudio,fIsBorad,fLastQuitTime";
+                        user.fIsOnLine = false;
+                        user.fIsPush = false;
+                        user.fIsVideo = false;
+                        user.fIsAudio = false;
+                        user.fIsBorad = false;
+                        user.fLastQuitTime = DateTime.Now;
+
+                        tGroupUserJoinHistoryEntity histoty = tGroupUserJoinHistoryDal.GettGroupUserJoinHistory(user.fUserId, strGroupId);
+                        histoty.fQuitTime = DateTime.Now;
+                        List<tGroupUserJoinHistoryEntity> hisList = new List<tGroupUserJoinHistoryEntity>();
+                        hisList.Add(histoty);
+                        tGroupUserJoinHistoryDal.Modify(hisList, "update", "fID,fQuitTime", null);
+                    }
+                    else
+                    {
+                        strUserUpdateFiels = "fIsPush,fIsVideo,fIsAudio,fIsBorad";
+                        user.fIsPush = false;
+                        user.fIsVideo = false;
+                        user.fIsAudio = false;
+                        user.fIsBorad = false;
+                    }
+                    tGroupUserInfoDal.Modify(userList, "update", "fID," + strUserUpdateFiels, "fUserId,fGroupId");
+                }
+
+
+
             }
 
             List<tGroupEntity> list = new List<tGroupEntity>();
@@ -150,7 +184,7 @@ namespace TiKuBll
             return i;
         }
 
-        public static int UpdateGroupUserInfo(string strUserId,string strGroupId,string strType)
+        public static int UpdateGroupUserInfo(string strUserId, string strGroupId, string strType)
         {
             tGroupEntity group = tGroupDal.GettGroup(strGroupId);
             if (group == null)
@@ -169,7 +203,7 @@ namespace TiKuBll
 
 
             tGroupUserInfoEntity entity = tGroupUserInfoDal.GettGroupUserInfo(strUserId, strGroupId);
-            string strUpdateFiels="";
+            string strUpdateFiels = "";
             if (strType == "online")
             {
                 strUpdateFiels = "fIsOnLine,fLastJoinTime";
@@ -178,21 +212,21 @@ namespace TiKuBll
 
                 List<tGroupUserJoinHistoryEntity> hisList = new List<tGroupUserJoinHistoryEntity>();
                 tGroupUserJoinHistoryEntity his = tGroupUserJoinHistoryDal.GettGroupUserJoinHistory(strUserId, strGroupId);
-                if(his.fQuitTime==DateTime.MinValue)
+                if (his.fQuitTime == DateTime.MinValue)
                 {
                     his.fQuitTime = DateTime.Now;
                     hisList.Add(his);
                     tGroupUserJoinHistoryDal.Modify(hisList, "update", "fID,fQuitTime", null);
                 }
-                    
-                tGroupUserJoinHistoryEntity histoty=new tGroupUserJoinHistoryEntity();
-                histoty.fGroupID=strGroupId;
-                histoty.fJoinTime=DateTime.Now;
-                histoty.fUserId=strUserId;
-                histoty.fUserName=strUserId;
-                hisList=new List<tGroupUserJoinHistoryEntity>();
+
+                tGroupUserJoinHistoryEntity histoty = new tGroupUserJoinHistoryEntity();
+                histoty.fGroupID = strGroupId;
+                histoty.fJoinTime = DateTime.Now;
+                histoty.fUserId = strUserId;
+                histoty.fUserName = strUserId;
+                hisList = new List<tGroupUserJoinHistoryEntity>();
                 hisList.Add(histoty);
-                tGroupUserJoinHistoryDal.Modify(hisList,"insert",null,null);
+                tGroupUserJoinHistoryDal.Modify(hisList, "insert", null, null);
             }
             else if (strType == "offline")
             {
@@ -266,10 +300,10 @@ namespace TiKuBll
                 strUpdateFiels = "fIsBorad";
                 entity.fIsBorad = false;
             }
-            
+
             List<tGroupUserInfoEntity> list = new List<tGroupUserInfoEntity>();
             list.Add(entity);
-            int i = tGroupUserInfoDal.Modify(list, "update", "fID,"+strUpdateFiels, "fUserId,fGroupId");
+            int i = tGroupUserInfoDal.Modify(list, "update", "fID," + strUpdateFiels, "fUserId,fGroupId");
             return i;
         }
     }

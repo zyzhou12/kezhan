@@ -10,6 +10,7 @@ namespace TiKuBll.Model
   {
     public int fID { get; set; }
     public System.String fClassRoomCode { get; set; }
+    public System.String fType { get; set; }
     public System.String fClassType { get; set; }
     public System.String fTecharUserName { get; set; }
     public System.String fClassRoomTitle { get; set; }
@@ -21,6 +22,8 @@ namespace TiKuBll.Model
     public System.DateTime fClassRoomDate { get; set; }
     public System.Int32 fClassDateLength { get; set; }
     public System.DateTime fDeadLineDate { get; set; }
+    public System.Int32 fEffectDay { get; set; }
+    public System.Int32 fFeeLength { get; set; }
     public System.Decimal fPrice { get; set; }
     public System.Decimal fBasePrice { get; set; }
     public System.Int32 fTeacherValidID { get; set; }

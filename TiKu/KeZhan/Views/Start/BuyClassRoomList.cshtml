@@ -10,6 +10,15 @@
 
         <div class="activiti">
             <div class="gallery-cat activiti-cat ">
+
+                <ul class="list-inline">
+                  <li @if (Model.strClassType == "直播") { <text> class="active" </text>              }><a href="/Start/BuyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Live">直播</a></li>
+
+                    <li @if (Model.strClassType == "录播")
+                        { <text> class="active" </text>              }><a href="/Start/BuyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Recorded">录播</a></li>
+                   
+                </ul>
+
                 <ul class="list-inline">
                     <li>状态：</li>
                     <li @if (Model.strType == "")
@@ -51,7 +60,15 @@
                                     </div>
                                     <div class="text">
                                         <h2 style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
-                                            <a href="#">@classRoom.fClassRoomTitle</a>
+                                            @if (classRoom.fType == "Live")
+                                            {
+                                                <label>[直播]</label>
+                                            }
+                                            else
+                                            {
+                                                <label>[录播]</label>
+                                            }
+                                        <a href="#">@classRoom.fClassRoomTitle</a>
                                         </h2>
                                         <p style="height:40px; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;">
                                             @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))

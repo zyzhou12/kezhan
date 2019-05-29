@@ -107,6 +107,27 @@ namespace TiKu.Dal
             return lstRst;
         }
 
+        public static List<tFlowStoredEntity> GettFlowStoredList(string strBeginDate, string strEndDate, string strUserName)
+        {
+            StringBuilder bufSQL = new StringBuilder();
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+            bufSQL.Append(@"SELECT a.*,fMobile FROM tFlowStored a
+                      LEFT JOIN tUser u on a.fUserName=u.fUserName
+                     where (fEmail like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%')
+                        and (a.fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')");
+
+            lstParam.Add(new DBParam("@UserName", strUserName));
+            lstParam.Add(new DBParam("@BeginDate", strBeginDate));
+            lstParam.Add(new DBParam("@EndDate", strEndDate));
+
+            //防止返回数据过多
+            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+            List<tFlowStoredEntity> lstRst = PubFun.DataTableToObjects<tFlowStoredEntity>(dtRst);
+            return lstRst;
+        }
+
         public static int FlowAdjust(string strMobile, int iFlow, DateTime effectDate, string strUserName, string strNote, ref string strMsg)
         {
             List<DbParameter> lstParam = new List<DbParameter>();

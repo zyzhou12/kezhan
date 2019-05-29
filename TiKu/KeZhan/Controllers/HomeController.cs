@@ -58,6 +58,13 @@ namespace KeZhan.Controllers
                         }
                         else
                         {
+                            //添加课堂记录
+                            GroupModel group = GroupUserBll.GetGroup(model.ClassRoomCode);
+                            if (group == null)
+                            {
+                                int i = GroupUserBll.InsertGroup(model.ClassRoomCode, model.ClassRoomName, iCourseID, model.TeacherUserName);
+                            }
+
                             return View(model);
                         }
                     }

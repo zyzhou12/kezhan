@@ -72,6 +72,7 @@
 
                 </div>
                 <!-- END / SIDEBAR -->
+              
                 <!-- CONTENT -->
                 <div class="col-md-8 col-lg-9">
 
@@ -96,21 +97,38 @@
                                     <div class="reservation-room_desc">
                                         <p>
                                             @Html.Raw(Html.Encode(Model.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
-                                            <br />
-                                            <span>开课时间：@Model.fClassRoomDate.ToShortDateString()</span>
-                                            <br />
-                                            <span>讲师：@Model.TeacherName</span>
-                                            <br />
-                                            @if (Model.fIsReturn)
-                                            {
-                                                <span>可退</span>
-                                            }
-                                            else
-                                            {
-                                                <span>不可退</span>
-                                            }
-                                        </p>
 
+                                        </p>
+                                        @if (Model.fType == "Live")
+                                        {
+                                            <ul>
+                                                <li>开课时间：@Model.fClassRoomDate.ToShortDateString()</li>
+                                                <li>授课老师：@Model.TeacherName</li>
+                                                @if (Model.fIsReturn)
+                                                {
+                                                    if (Model.fReturnType == "随时")
+                                                    {
+                                                        <li>随时退（课时开课前1小时本课时不能退）</li>}
+                                                    else
+                                                    {
+                                                        <li>课前退（课程第一课时开始前1小时不能退）</li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>不可退</li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <ul>
+                                                <li>录播</li>
+                                                <li>有效期：@Model.fEffectDay 天</li>
+                                                <li>有效期内无限次观看</li>
+                                                <li>不可退</li>
+                                            </ul>
+                                        }
                                     </div>
 
                                     <div class="clear"></div>
@@ -118,8 +136,10 @@
                                     <p class="reservation-room_price">
                                         <span class="reservation-room_amout">￥ @Model.fPrice</span>
                                     </p>
-
-                                  
+                                    @if (Model.fStatus == "保存")
+                                    {
+                                        <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('@Model.fClassRoomCode','发布')">发布</button>
+                                    }
 
                                 </div>
                                 <br />
@@ -137,19 +157,47 @@
                                             {
                                                 <div class="reservation-package_item">
                                                     @*
-                                                        <div class="reservation-package_img">
-                                                            <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
-                                                        </div>*@
+                                            <div class="reservation-package_img">
+                                            <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
+                                            </div>*@
 
                                                     <div class="reservation-package_text">
 
                                                         <h4><a href="#">@course.fDictTitle</a></h4>
                                                         <p>
                                                             @course.fCourseTitle
-                                                            <br />
-                                                            <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("yyyy-MM-dd HH:mm")</span>
+                                                            @if (Model.fType == "Live")
+                                                            {
+                                                                <br />
+                                                                <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("HH:mm")</span>
+                                                            }
                                                         </p>
-                                                     
+                                                        @if (Model.IsBuy > 0)
+                                                        {
+                                                            <div class="reservation-package_book-price">
+                                                                @if (course.CourseStatus == 1)
+                                                                {
+                                                                    <a href="#" class="awe-btn awe-btn-default">未开始</a>
+                                                                }
+                                                                else if (course.CourseStatus == 2)
+                                                                {
+                                                                    <a href="#" class="awe-btn awe-btn-default">已结束</a>
+                                                                }
+                                                                else if (course.CourseStatus == 4)
+                                                                {
+                                                                    if (!string.IsNullOrEmpty(course.fFileCoverUrl))
+                                                                    {
+                                                                        <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                                    }
+                                                                }
+
+
+                                                            </div>
+                                                        }
 
                                                     </div>
                                                     <br />
@@ -189,13 +237,13 @@
 
                             </div>
                             <!-- END / ITEM -->
-
                             <label>申请原因</label>
                             <span>@Model.fKnowLedge</span>
-                            
+
                             <input type="text" id="txtApplyNote" placeholder="请输入备注" />
                             <button class="awe-btn awe-btn-13" onclick="AgreeApply(@Model.fID)">同意 @Model.fStatus</button>
                             <button class="awe-btn awe-btn-13" onclick="RefuseApply(@Model.fID)">拒绝 @Model.fStatus</button>
+
 
 
                         </div>
@@ -205,7 +253,6 @@
 
                 </div>
                 <!-- END / CONTENT -->
-
             </div>
         </div>
     </div>

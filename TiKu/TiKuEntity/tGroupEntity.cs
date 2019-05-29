@@ -10,6 +10,8 @@ namespace TiKu.Entity
         public System.Int32 fID { get; set; }
         public System.String fGroupID { get; set; }
         public System.String fGroupName { get; set; }
+
+        public System.Int32 fCourseId { get; set; }
         public System.String fTeacherID { get; set; }
         public System.DateTime fCreateDate { get; set; }
         public System.DateTime fDestoryDate { get; set; }

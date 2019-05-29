@@ -1,0 +1,232 @@
+﻿@model TiKuBll.Model.ResourceInfoModel
+@{
+    ViewBag.Title = "ResourceManager";
+}
+
+
+
+<section class="section-reservation-page bg-white">
+
+    <div class="container">
+        <div class="reservation-page">
+
+
+            <div class="row">
+                <div class="col-md-3">
+                    <ul class="room-detail_tab-header">
+                        <li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">素材库信息</a></li>
+
+                        <li onclick="showPanel('')"><a href="#" style=" width:100%;" data-toggle="tab">全部</a></li>
+                        <li onclick="showPanel('ClassRoom')"><a href="#" style=" width:100%;" data-toggle="tab">课时视频</a></li>
+                        <li onclick="showPanel('CourseDocument')"><a href="#" style=" width:100%;" data-toggle="tab">课时文档</a></li>
+                        <li onclick="showPanel('QiTa')"><a href="#" style=" width:100%;" data-toggle="tab">课时文档</a></li>
+                        <li onclick="showPanel('DelFile')"><a href="#" style=" width:100%;" data-toggle="tab">已删除文件</a></li>
+                    </ul>
+
+                </div>
+
+
+                <!-- CONTENT -->
+                <div class="col-md-8 col-lg-9">
+
+                    <div class="reservation_content">
+                        <p class="alert alert-danger" id="pMsg" style=" display:none">
+
+                        </p>
+
+
+                        <div class="reservation-billing-detail" id="panelData">
+                            <label>文件总大小</label>
+                            <span>@Model.fSize</span>
+                            <br />
+
+                            <label>文件总数</label>
+                            <span>@Model.fCount</span>
+                        </div>
+                        <div class="reservation-billing-detail" id="panelFile" style="display:none;">
+
+                            <button class="awe-btn awe-btn-13" data-reveal-id="myModal" onclick="UploadResourceFile()">上传</button>
+                            <button class="awe-btn awe-btn-13" onclick="FileOperate('change')">移动</button>
+                            <button class="awe-btn awe-btn-13" onclick="FileOperate('delete')">删除</button>
+
+                            <div id="divFile"></div>
+                        </div>
+                        <div class="reservation-billing-detail" id="panelDelFile" style="display:none;">
+
+                            <button class="awe-btn awe-btn-13" onclick="FileOperate('restore')">恢复</button>
+
+                            <div id="divDelFile"></div>
+                        </div>
+                    </div>
+                    <!-- END / CONTENT -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script type="text/javascript">
+    var userName = '@Model.fUserName';
+    var fileType = "QiTa";
+    function UploadResourceFile() {
+        var fileList = ['png', 'jpg', 'mp4', 'wmv', 'rar', 'zip', '7z'];
+        if (fileType == "ClassRoom") {
+            fileList = ['mp4', 'wmv'];
+        } else if (fileType == "CourseDocument") {
+            fileList = ['rar', 'zip', '7z'];
+        }
+
+        $("#fileUploadContent").initUpload({
+            "uploadUrl": "../../Handel/OssUpload.ashx?UserName=" + userName + "&FileType=" + fileType, //上传文件信息地址
+            "progressUrl": "#", //获取进度信息地址，可选，注意需要返回的data格式如下（{bytesRead: 102516060, contentLength: 102516060, items: 1, percent: 100, startTime: 1489223136317, useTime: 2767}）
+            "selfUploadBtId": "selfUploadBt", //自定义文件上传按钮id
+            "isHiddenUploadBt": false, //是否隐藏上传按钮
+            "isHiddenCleanBt": false, //是否隐藏清除按钮
+            "isAutoClean": false, //是否上传完成后自动清除
+            "velocity": 10, //模拟进度上传数据
+            //"rememberUpload":true,//记住文件上传
+            // "showFileItemProgress":false,
+            //"showSummerProgress":false,//总进度条，默认限制
+            "scheduleStandard": true, //模拟进度的方式，设置为true是按总进度，用于控制上传时间，如果设置为false,按照文件数据的总量,默认为false
+            //"size":350,//文件大小限制，单位kb,默认不限制
+            "maxFileNumber": 5, //文件个数限制，为整数
+            //"filelSavePath":"",//文件上传地址，后台设置的根目录
+            //"beforeUpload":beforeUploadFun,//在上传前执行的函数
+            "onUpload": onUploadResource, //在上传后执行的函数
+            //autoCommit:true,//文件是否自动上传
+            "fileType": fileList//文件类型限制，默认不限制，注意写的是文件后缀
+
+        });
+    }
+
+    function onUploadResource(opt, data) {
+
+        $("#btnSuccessClose").click();
+        window.location.reload();
+    }
+
+    function showPanel(div) {
+        if (div == "info") {
+            $(".reservation-billing-detail").hide();
+            $("#panelData").show();
+        } else if (div == "DelFile") {
+            $(".reservation-billing-detail").hide();
+            $("#panelDelFile").show();
+            $.ajax({
+                url: "/LoginQuery/QueryDelFileList",
+                type: this.method,
+                success: function (msg) {
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#divDelFile').html(msg);
+                    }
+                }
+            });
+        } else {
+            $(".reservation-billing-detail").hide();
+            $("#panelFile").show();
+            if (div == "") {
+                fileType = "QiTa";
+            } else {
+                fileType = div;
+            }
+            $.ajax({
+                url: "/LoginQuery/QueryFileList",
+                type: this.method,
+                data: { "strType": div },
+                success: function (msg) {
+                    if (msg.iResult == "-9999") {
+                        alert("请重新登录");
+                    } else {
+                        $('#divFile').html(msg);
+                    }
+                }
+            });
+        }
+    }
+
+    function FileOperate(optType) {
+        var resourceCode = $("input[type='radio']:checked").val();
+        
+        if (resourceCode == undefined) {
+            alert("请选择要操作的文件");
+        } else {
+            if (optType == "delete") {
+                if (confirm("确认要删除吗？")) {
+                    DoDeleteFile(resourceCode);
+                }
+            } else if (optType == "restore") {
+                if (confirm("确认要恢复吗？")) {
+                    DoRestoreFile(resourceCode);
+                }
+            } else if (optType == "change") {
+                if (confirm("确认要移动吗？")) {
+                    DoChangeFileType(resourceCode, "QiTa");
+                }
+            }
+        }
+    }
+
+    function DoDeleteFile(resourceCode) {
+        $.ajax({
+            url: "/LoginRequest/DoDeleteFile",
+            data: { "strResourceCode": resourceCode },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("删除成功");
+                    window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+    function DoRestoreFile(resourceCode) {
+        $.ajax({
+            url: "/LoginRequest/DoRestoreFile",
+            data: { "strResourceCode": resourceCode },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("恢复成功");
+                    window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+    function DoChangeFileType(resourceCode, type) {
+        $.ajax({
+            url: "/LoginRequest/DoChangeFileType",
+            data: { "strResourceCode": resourceCode, "strType": type },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("移动完成");
+                    window.location.reload();
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

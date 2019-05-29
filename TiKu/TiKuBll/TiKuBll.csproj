@@ -80,6 +80,8 @@
     <Compile Include="Model\GroupUserInfoModel.cs" />
     <Compile Include="Model\MediaModel.cs" />
     <Compile Include="Model\MessageModel.cs" />
+    <Compile Include="Model\ResourceInfoModel.cs" />
+    <Compile Include="Model\ResourseModel.cs" />
     <Compile Include="Model\StudentBaseModel.cs" />
     <Compile Include="Model\TeacherBaseModel.cs" />
     <Compile Include="Model\TeacherValidModel.cs" />

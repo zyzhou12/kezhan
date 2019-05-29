@@ -77,24 +77,25 @@ namespace TiKu.Dal
     }
 
 
-    public static List<tUserPayEntity> GettUserPayList(int id)
+    public static List<tUserPayEntity> GettUserPayList(string strBeginDate, string strEndDate, string strUserName)
     {
-      StringBuilder bufSQL = new StringBuilder();
-      List<DbParameter> lstParam = new List<DbParameter>();
+        StringBuilder bufSQL = new StringBuilder();
+        List<DbParameter> lstParam = new List<DbParameter>();
 
-      bufSQL.Append("SELECT * FROM tUserPay WHERE (1=1) ");
+        bufSQL.Append(@"SELECT a.* FROM tUserPay a
+                      LEFT JOIN tUser u on a.fUserName=u.fUserName
+                     where (fRemark like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%')
+                        and (a.fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')");
 
-      if (id > 0)
-      {
-        bufSQL.Append(" AND tUserPayID=@id ");
-        lstParam.Add(new DBParam("@id", id));
-      }
+        lstParam.Add(new DBParam("@UserName", strUserName));
+        lstParam.Add(new DBParam("@BeginDate", strBeginDate));
+        lstParam.Add(new DBParam("@EndDate", strEndDate));
 
-      //防止返回数据过多
-      if (lstParam.Count <= 0) throw new Exception("没有查询条件");
-      DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
-      List<tUserPayEntity> lstRst = PubFun.DataTableToObjects<tUserPayEntity>(dtRst);
-      return lstRst;
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+        List<tUserPayEntity> lstRst = PubFun.DataTableToObjects<tUserPayEntity>(dtRst);
+        return lstRst;
     }
 
     public static int UserPaySuccess(string strPayType, string strPayNo, string strTradeNo)

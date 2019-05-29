@@ -73,24 +73,25 @@ namespace TiKu.Dal
       return rst;
     }
 
-    public static List<tMediaEntity> GettMediaList(int id)
+    public static List<tMediaEntity> GettMediaList(string strBeginDate, string strEndDate, string strName)
     {
-      StringBuilder bufSQL = new StringBuilder();
-      List<DbParameter> lstParam = new List<DbParameter>();
+        StringBuilder bufSQL = new StringBuilder();
+        List<DbParameter> lstParam = new List<DbParameter>();
 
-      bufSQL.Append("SELECT * FROM tMedia WHERE (1=1) ");
+        bufSQL.Append(@"select fCourseTitle,m.* from tmedia m
+                        left join tCourse c on c.fID=m.fCourseId
+                     where fCourseTitle like '%'+@Name+'%' 
+                        and (c.fUploadDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')");
 
-      if (id > 0)
-      {
-        bufSQL.Append(" AND tMediaID=@id ");
-        lstParam.Add(new DBParam("@id", id));
-      }
+        lstParam.Add(new DBParam("@Name", strName));
+        lstParam.Add(new DBParam("@BeginDate", strBeginDate));
+        lstParam.Add(new DBParam("@EndDate", strEndDate));
 
-      //防止返回数据过多
-      if (lstParam.Count <= 0) throw new Exception("没有查询条件");
-      DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
-      List<tMediaEntity> lstRst = PubFun.DataTableToObjects<tMediaEntity>(dtRst);
-      return lstRst;
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+        List<tMediaEntity> lstRst = PubFun.DataTableToObjects<tMediaEntity>(dtRst);
+        return lstRst;
     }
 
   }
