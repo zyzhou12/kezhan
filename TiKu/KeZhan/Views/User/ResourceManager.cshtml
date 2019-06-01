@@ -3,7 +3,9 @@
     ViewBag.Title = "ResourceManager";
 }
 
-
+@section otherHeadInfo {
+    <link rel="stylesheet" type="text/css" href="~/Scripts/AliUpload/style.css" />
+}
 
 <section class="section-reservation-page bg-white">
 
@@ -14,13 +16,13 @@
             <div class="row">
                 <div class="col-md-3">
                     <ul class="room-detail_tab-header">
-                        <li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">素材库信息</a></li>
+                        @*<li class="active" onclick="showPanel('info')"><a href="#" style=" width:100%;" data-toggle="tab">素材库信息</a></li>
 
-                        <li onclick="showPanel('')"><a href="#" style=" width:100%;" data-toggle="tab">全部</a></li>
+                            <li onclick="showPanel('')"><a href="#" style=" width:100%;" data-toggle="tab">全部</a></li>*@
                         <li onclick="showPanel('ClassRoom')"><a href="#" style=" width:100%;" data-toggle="tab">课时视频</a></li>
-                        <li onclick="showPanel('CourseDocument')"><a href="#" style=" width:100%;" data-toggle="tab">课时文档</a></li>
-                        <li onclick="showPanel('QiTa')"><a href="#" style=" width:100%;" data-toggle="tab">课时文档</a></li>
-                        <li onclick="showPanel('DelFile')"><a href="#" style=" width:100%;" data-toggle="tab">已删除文件</a></li>
+                        @*<li onclick="showPanel('CourseDocument')"><a href="#" style=" width:100%;" data-toggle="tab">课时文档</a></li>
+                            <li onclick="showPanel('QiTa')"><a href="#" style=" width:100%;" data-toggle="tab">其他</a></li>*@
+                        <li onclick="showPanel('DelFile')"><a href="#" style=" width:100%;" data-toggle="tab">回收站</a></li>
                     </ul>
 
                 </div>
@@ -29,7 +31,7 @@
                 <!-- CONTENT -->
                 <div class="col-md-8 col-lg-9">
 
-                    <div class="reservation_content">
+                    <div>
                         <p class="alert alert-danger" id="pMsg" style=" display:none">
 
                         </p>
@@ -39,16 +41,23 @@
                             <label>文件总大小</label>
                             <span>@Model.fSize</span>
                             <br />
-
                             <label>文件总数</label>
                             <span>@Model.fCount</span>
+                            <br />
+                            <label>视频总时长</label>
+                            <span>@Model.fDateLength</span>
                         </div>
                         <div class="reservation-billing-detail" id="panelFile" style="display:none;">
-
-                            <button class="awe-btn awe-btn-13" data-reveal-id="myModal" onclick="UploadResourceFile()">上传</button>
-                            <button class="awe-btn awe-btn-13" onclick="FileOperate('change')">移动</button>
+                            
+                            <button class="awe-btn awe-btn-13" onclick="AliFileUpload()">上传</button>
+                            @*<button class="awe-btn awe-btn-13" onclick="FileOperate('change')">移动</button>*@
                             <button class="awe-btn awe-btn-13" onclick="FileOperate('delete')">删除</button>
-
+                            <br /><br />
+                            <span>可用空间:@Model.strSize /20G</span>
+                            <br />
+                            <span>注：这里上传限定只能上传视频，相同名称的视频不能重复上传， 一次最多同时上传 5个文件。推荐MP4格式，还支持avi\flv\wmv格式，单个视频小于2G。</span>
+                            <input type="hidden" id="hidSumSize" value="@Model.fSize" />
+                            <br />
                             <div id="divFile"></div>
                         </div>
                         <div class="reservation-billing-detail" id="panelDelFile" style="display:none;">
@@ -66,11 +75,85 @@
     </div>
 </section>
 
+<div id="divFileUrl" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
+    <p>
+        <label>选择目标文件夹</label>
+        <br />
+        <select style="width:100%;height:42px;border:0" id="cmbFileUrl">
+            <option value="">--请选择--</option>
+            <option value="ClassRoom">课时视频</option>
+            <option value="CourseDocument">课时文档</option>
+            <option value="QiTa">其他</option>
+        </select>
+    </p>
+    <br />
+    <button class="awe-btn awe-btn-13" onclick="SaveFile()">保存</button>
 
 
+    <a class="close-reveal-modal" onclick="CloseFile()">&#215;</a>
+</div>
+
+
+<div id="divFileUpload" class="reveal-modal" style="top: 440px;opacity: 1; visibility: visible; display:none;">
+    <p>
+
+        <form name=theform style="display:none">
+            <input type="radio" name="myradio" value="local_name" /> 上传文件名字保持本地文件名字
+            <input type="radio" name="myradio" value="random_name" checked="checked" /> 上传文件名字是随机文件名
+            <br />
+            上传到指定目录:<input type="text" id='dirname' placeholder="如果不填，默认是上传到根目录" size=100>
+            <input type="text" id='dirtype' size=50>
+        </form>
+        <h4>您所选择的文件列表：</h4>
+        <br />
+        <div id="container">
+            <a id="selectfiles" href="javascript:void(0);" class='btn'>选择文件</a>
+            <a id="postfiles" href="javascript:void(0);" class='btn'>开始上传</a>
+        </div>
+        <br />
+        <div id="ossfile">你的浏览器不支持flash,Silverlight或者HTML5！</div>
+        <br />
+        <pre id="console"></pre>
+    </p>
+    <br />
+    <button class="awe-btn awe-btn-13" onclick="CloseFile()">完成</button>
+    <a class="close-reveal-modal" onclick="CloseFile()">&#215;</a>
+</div>
+
+
+@section otherFooterInfo {
+    <script type="text/javascript" src="~/Scripts/AliUpload/lib/crypto1/crypto/crypto.js"></script>
+    <script type="text/javascript" src="~/Scripts/AliUpload/lib/crypto1/hmac/hmac.js"></script>
+    <script type="text/javascript" src="~/Scripts/AliUpload/lib/crypto1/sha1/sha1.js"></script>
+    <script type="text/javascript" src="~/Scripts/AliUpload/lib/base64.js"></script>
+    <script type="text/javascript" src="~/Scripts/AliUpload/lib/plupload-2.1.2/js/plupload.full.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/AliUpload/upload.js"></script>
+}
 <script type="text/javascript">
     var userName = '@Model.fUserName';
     var fileType = "QiTa";
+
+    $(document).ready(function () {
+        fileType = "ClassRoom";
+        $(".reservation-billing-detail").hide();
+        $("#panelFile").show();
+        GetFileList();
+    });
+
+    function AliFileUpload() {
+        $("#dirname").val(userName + "/" + fileType);
+        if (fileType == "ClassRoom") {
+            $("#dirname").val("ClassRoomMedia" + "/" + userName);
+        } else if (fileType == "CourseDocument") {
+            $("#dirname").val("CourseDocument" + "/" + userName);
+        }
+
+        $("#dirtype").val(fileType);
+        $("#myBGDiv").show();
+        $("#divFileUpload").show();
+
+    }
+
     function UploadResourceFile() {
         var fileList = ['png', 'jpg', 'mp4', 'wmv', 'rar', 'zip', '7z'];
         if (fileType == "ClassRoom") {
@@ -88,9 +171,9 @@
             "isAutoClean": false, //是否上传完成后自动清除
             "velocity": 10, //模拟进度上传数据
             //"rememberUpload":true,//记住文件上传
-            // "showFileItemProgress":false,
+            "showFileItemProgress": false,
             //"showSummerProgress":false,//总进度条，默认限制
-            "scheduleStandard": true, //模拟进度的方式，设置为true是按总进度，用于控制上传时间，如果设置为false,按照文件数据的总量,默认为false
+            "scheduleStandard": false, //模拟进度的方式，设置为true是按总进度，用于控制上传时间，如果设置为false,按照文件数据的总量,默认为false
             //"size":350,//文件大小限制，单位kb,默认不限制
             "maxFileNumber": 5, //文件个数限制，为整数
             //"filelSavePath":"",//文件上传地址，后台设置的根目录
@@ -120,7 +203,7 @@
                 type: this.method,
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");
+                        alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#divDelFile').html(msg);
                     }
@@ -134,29 +217,34 @@
             } else {
                 fileType = div;
             }
-            $.ajax({
-                url: "/LoginQuery/QueryFileList",
-                type: this.method,
-                data: { "strType": div },
-                success: function (msg) {
-                    if (msg.iResult == "-9999") {
-                        alert("请重新登录");
-                    } else {
-                        $('#divFile').html(msg);
-                    }
-                }
-            });
+            GetFileList();
         }
+    }
+
+    function GetFileList() {
+
+        $.ajax({
+            url: "/LoginQuery/QueryFileList",
+            type: this.method,
+            data: { "strType": fileType },
+            success: function (msg) {
+                if (msg.iResult == "-9999") {
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                } else {
+                    $('#divFile').html(msg);
+                }
+            }
+        });
     }
 
     function FileOperate(optType) {
         var resourceCode = $("input[type='radio']:checked").val();
-        
+
         if (resourceCode == undefined) {
             alert("请选择要操作的文件");
         } else {
             if (optType == "delete") {
-                if (confirm("确认要删除吗？")) {
+                if (confirm("删除的文件将进入回收站，删除三天后将清除不可恢复，确认要删除吗？")) {
                     DoDeleteFile(resourceCode);
                 }
             } else if (optType == "restore") {
@@ -165,9 +253,31 @@
                 }
             } else if (optType == "change") {
                 if (confirm("确认要移动吗？")) {
-                    DoChangeFileType(resourceCode, "QiTa");
+
+                    $("#myBGDiv").show();
+                    $("#divFileUrl").show();
                 }
             }
+        }
+    }
+
+    function CloseFile() {
+        document.getElementById('ossfile').innerHTML = '';
+        $("#myBGDiv").hide();
+        $("#divFileUrl").hide();
+        $("#divFileUpload").hide();
+    }
+
+    function SaveFile() {
+        var resourceCode = $("input[type='radio']:checked").val();
+        var fileurl = $("#cmbFileUrl").val();
+
+
+        if (fileurl == "") {
+            alert("请选择目标文件夹");
+        } else {
+            DoChangeFileType(resourceCode, fileurl);
+            CloseFile();
         }
     }
 
@@ -182,7 +292,7 @@
                     alert("删除成功");
                     window.location.reload();
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }
@@ -201,7 +311,7 @@
                     alert("恢复成功");
                     window.location.reload();
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }
@@ -210,10 +320,11 @@
         });
     }
 
-    function DoChangeFileType(resourceCode, type) {
+    function DoChangeFileType(resourceCode, fileurl) {
+
         $.ajax({
             url: "/LoginRequest/DoChangeFileType",
-            data: { "strResourceCode": resourceCode, "strType": type },
+            data: { "strResourceCode": resourceCode, "strType": fileurl },
             type: "POST",
             dataType: "json",
             success: function (rst) {
@@ -221,7 +332,7 @@
                     alert("移动完成");
                     window.location.reload();
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }

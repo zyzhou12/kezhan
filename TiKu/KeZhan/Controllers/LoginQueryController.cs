@@ -134,5 +134,13 @@ namespace KeZhan.Controllers
 
             return PartialView("FileListControl", model);
         }
+
+        public ActionResult QueryUploadFileList(string strType)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResourseListModel model = ResourceBll.GetResourseList(userInfo.fUserName, strType);
+
+            return PartialView("FileUploadListControl", model);
+        }
     }
 }

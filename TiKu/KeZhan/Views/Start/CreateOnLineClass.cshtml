@@ -169,7 +169,7 @@
                                 window.location.href = "/home/index?iCourseID=" + rst.iResult + "&strRole=Teacher";
 
                             } else if (result.iResult == -9999) {
-                                alert("请重新登录");
+                                alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                             } else {
                                 alert(result.strMsg);
                             }
@@ -181,7 +181,7 @@
                     
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }

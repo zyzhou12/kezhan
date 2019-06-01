@@ -1,4 +1,5 @@
-﻿using KeZhan.Filters;
+﻿using Aliyun.OSS;
+using KeZhan.Filters;
 using KeZhan.Models;
 using System;
 using System.Collections.Generic;
@@ -288,11 +289,11 @@ namespace KeZhan.Controllers
                     else
                     {
                         ConfigModel config = ManagerBll.GetSystemConfig("上海");
-                        int iDateLength = 1;
+                        decimal iDateLength = ResourceBll.GetResourceInfoByClassRoomCode(strClassRoomCode).fDateLength;
                         if(model.fPrice<iDateLength*config.fSourceFee)
                         {
                             response.iResult = -1;
-                            response.strMsg = "价格小于平台费用，不能发布";
+                            response.strMsg = "价格小于平台费用(￥" + (iDateLength * config.fSourceFee).ToString() + ")，不能发布";
                         }
                     }
                 }
@@ -862,8 +863,17 @@ namespace KeZhan.Controllers
         {
             ResponseBaseModel response = new ResponseBaseModel();
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-
-            response.iResult = ResourceBll.RestoreFile(strResourceCode);
+            ResourseModel resource= ResourceBll.GetResource(strResourceCode);
+            ResourceInfoModel info= ResourceBll.GetResourceInfo(userInfo.fUserName);
+            if ((resource.fSize + info.fSize) > 20971520)
+            {
+                response.iResult = -1;
+                response.strMsg = "您已超过允许的容量，请删除不再使用的文件后再恢复";
+            }
+            else
+            {
+                response.iResult = ResourceBll.RestoreFile(strResourceCode);
+            }
 
             JsonResult jr = new JsonResult();
             jr.Data = response;
@@ -1326,6 +1336,57 @@ namespace KeZhan.Controllers
 
 
         #endregion
+
+        #region File
+        public JsonResult UploadFileSuccess(string strkey, string strFileType,string strFileName)
+        {
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseCourseModel response = new ResponseCourseModel();
+
+            var endpoint = "oss-cn-hangzhou.aliyuncs.com";
+            var accessKeyId = "LTAI0W5pqyqDXHhs"; //LTAIlLsb3W0Idk6a
+            var accessKeySecret = "c2sUv3Lf3hNr1DSsQdb3KqYcMQiGlD "; //EGCWeEQlwLqLaIGZRYrfEmcpPInQCV 
+            var bucketName = "aizhu-ducation";
+
+            OssClient ossClient = new OssClient(endpoint, accessKeyId, accessKeySecret);
+            // 获取文件元信息。
+            var oldMeta = ossClient.GetObjectMetadata(bucketName, strkey);
+            ResourseModel model = new ResourseModel();
+            model.fCreateDate = DateTime.Now;
+            model.fCreateOpr = userInfo.fUserName;
+            model.fFileType = oldMeta.ContentType;
+            model.fIsDownLoad = false;
+            model.fIsTrySee = false;
+            model.fPayIsDown = false;
+            model.fResourceCode = Guid.NewGuid().ToString();
+            model.fResourceTitle = strFileName;
+            model.fSize = Convert.ToInt32(oldMeta.ContentLength);
+            if (oldMeta.ContentType.Split('/')[0] == "image")
+            {
+                model.fCoverImg = string.Format("http://{0}.oss.aliyuncs.com/{1}?x-oss-process=style/fang", bucketName, strkey);
+            }
+            else if (oldMeta.ContentType.Split('/')[0] == "video")
+            {
+                model.fCoverImg = "https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20181221120133.png?x-oss-process=style/fang";
+            }
+            else if (oldMeta.ContentType.Split('/')[0] == "application")
+            {
+                model.fCoverImg = "https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20181221120133.png?x-oss-process=style/fang";
+            }
+
+            model.fStatus = "已上传";
+            model.fType = strFileType;
+            model.fUrl = strkey;
+            model.fUserName = userInfo.fUserName;
+            ResourceBll.InsertResource(model);
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+
+#endregion
 
         public static object Deserialize(Type type, string xml)
         {

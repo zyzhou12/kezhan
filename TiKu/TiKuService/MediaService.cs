@@ -418,6 +418,8 @@ namespace TiKuService
                     {
                         //检查流量是否过期
                         UserBll.CheckFlowEffect();
+                        //销毁删除文件
+                        ResourceBll.DeleteResource();
                     }
                     catch (Exception ex)
                     {

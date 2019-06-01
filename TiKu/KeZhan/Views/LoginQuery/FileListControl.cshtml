@@ -10,10 +10,12 @@
         {
             <div class="test_ans">
                 <div class="test_desc">
-                    <img src="@file.fCoverImg" style="width:128px;" />
+                    <img src="@file.fCoverImg" style="width:128px;height:96px;" />
                     <br />
+                    
+                    <p style="width:120px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
                     <input type="radio" name="radFile" id="@file.fID" value="@file.fResourceCode" onclick="CheckFile('@file.fResourceCode')" />
-                    <span>@file.fResourceTitle</span>
+                        <span>@file.fResourceTitle</span></p>
                 </div>
             </div>
         }

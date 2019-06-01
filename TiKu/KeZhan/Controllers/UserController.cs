@@ -217,6 +217,14 @@ namespace KeZhan.Controllers
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResourceInfoModel model = ResourceBll.GetResourceInfo(userInfo.fUserName);
             model.fUserName = userInfo.fUserName;
+            if (model.fSize / 1024 / 1024 > 11)
+            {
+                model.strSize =Math.Round((Convert.ToDecimal(model.fSize / 1024 / 1024)/Convert.ToDecimal(1024)),2).ToString()+"G";
+            }
+            else
+            {
+                model.strSize = Math.Round( (Convert.ToDecimal(model.fSize / 1024) / Convert.ToDecimal(1024)),2).ToString() + "M";
+            }
             return View(model);
         }
     }

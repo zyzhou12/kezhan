@@ -191,7 +191,7 @@
                 data: { "strClassRoomCode": ClassRoomCode },
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#panelBooking').html(msg);
                     }
@@ -230,7 +230,7 @@
                     alert("修改成功");
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 }
             }
 
@@ -252,14 +252,14 @@
                         data: { "strClassRoomCode": ClassRoomCode },
                         success: function (msg) {
                             if (msg.iResult == "-9999") {
-                                alert("请重新登录");
+                                alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                             } else {
                                 $('#panelBooking').html(msg);
                             }
                         }
                     });
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 }
             }
 
@@ -286,7 +286,7 @@
                         alert("删除成功");
                         window.location.reload();
                     } else if (rst.iResult == -9999) {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     }
                 }
 
@@ -308,7 +308,7 @@
                         alert("删除成功");
                         window.location.reload();
                     } else if (rst.iResult == -9999) {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     }
                 }
 
@@ -330,7 +330,7 @@
                     newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     newWindow.close();
                     alert(rst.strMsg);

@@ -796,7 +796,7 @@
                     alert("保存成功");
                     window.location.href = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + rst.strMsg;
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     $("#pMsg").text(rst.strMsg);
                     $("#pMsg").show();
@@ -825,7 +825,7 @@
                         //alert("保存成功");
 
                     } else if (rst.iResult == -9999) {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         alert(rst.strMsg);
                     }
@@ -869,7 +869,7 @@
                         alert("申请提交成功");
                         location.reload();
                     } else if (rst.iResult == -9999) {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         alert(rst.strMsg)
                     }
@@ -918,7 +918,7 @@
                     alert("保存成功");
                     window.location.reload();
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }
@@ -981,14 +981,14 @@
                         data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                         success: function (msg) {
                             if (msg.iResult == "-9999") {
-                                alert("请重新登录");
+                                alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                             } else {
                                 $('#panelDesc').html(msg);
                             }
                         }
                     });
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }
@@ -1019,7 +1019,7 @@
                 data: { "iCourseID": courseID, "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#panelCourseEdit').html(msg);
                         $("#myBGDiv").hide();
@@ -1086,14 +1086,14 @@
                         data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                         success: function (msg) {
                             if (msg.iResult == "-9999") {
-                                alert("请重新登录");
+                                alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                             } else {
                                 $('#panelCourseEdit').html(msg);
                             }
                         }
                     });
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }
@@ -1125,7 +1125,7 @@
             data: { "strType": "ClassRoom" },
             success: function (msg) {
                 if (msg.iResult == "-9999") {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     $('#fileWebCourse').html(msg);
                 }
@@ -1144,7 +1144,14 @@
             "isHiddenCleanBt": false, //是否隐藏清除按钮
             "isAutoClean": false, //是否上传完成后自动清除
             "velocity": 10, //模拟进度上传数据
+            //"rememberUpload":true,//记住文件上传
+            // "showFileItemProgress":false,
+            //"showSummerProgress":false,//总进度条，默认限制
+            "scheduleStandard": false, //模拟进度的方式，设置为true是按总进度，用于控制上传时间，如果设置为false,按照文件数据的总量,默认为false
+            //"size":350,//文件大小限制，单位kb,默认不限制
             "maxFileNumber": 1, //文件个数限制，为整数
+            //"filelSavePath":"",//文件上传地址，后台设置的根目录
+            //"beforeUpload":beforeUploadFun,//在上传前执行的函数
             "onUpload": onUploadCourseFile, //在上传后执行的函数
             "autoCommit": true,//文件是否自动上传
             "fileType": ['mp4', 'wmv']//文件类型限制，默认不限制，注意写的是文件后缀
@@ -1191,14 +1198,14 @@
                         data: { "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                         success: function (msg) {
                             if (msg.iResult == "-9999") {
-                                alert("请重新登录");
+                                alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                             } else {
                                 $('#panelCourseEdit').html(msg);
                             }
                         }
                     });
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }
@@ -1216,7 +1223,7 @@
                 data: { "iCourseID": courseID, "strClassRoomCode": classRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#panelCourseEdit').html(msg);
                         $("#myBGDiv").hide();
@@ -1309,7 +1316,7 @@
                 data: { "strClassRoomCode": ClassRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#panelDesc').html(msg);
                     }
@@ -1329,7 +1336,7 @@
                 data: { "strClassRoomCode": ClassRoomCode, "isEdit": "@isEdit" },
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#panelCourseEdit').html(msg);
                     }
@@ -1376,7 +1383,7 @@
             data: { "strClassRoomCode": ClassRoomCode, "strMobile": mobile, "strStatus": status, "beginDate": begindate, "endDate": enddate },
             success: function (msg) {
                 if (msg.iResult == "-9999") {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     $('#panelBooking').html(msg);
                 }
@@ -1435,7 +1442,7 @@
                     alert("修改成功");
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 }
             }
 
@@ -1458,7 +1465,7 @@
                     alert("修改成功");
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 }
             }
 
@@ -1480,14 +1487,14 @@
                         data: { "strClassRoomCode": ClassRoomCode },
                         success: function (msg) {
                             if (msg.iResult == "-9999") {
-                                alert("请重新登录");
+                                alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                             } else {
                                 $('#panelBooking').html(msg);
                             }
                         }
                     });
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 }
             }
 
@@ -1524,7 +1531,7 @@
                     newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     newWindow.close();
                     alert(rst.strMsg);

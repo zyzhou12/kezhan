@@ -113,7 +113,7 @@
             data: { "iValidFid": iValidFid, "iDetailID": iDetailID },
             success: function (msg) {
                 if (msg.iResult == "-9999") {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     $('#panelValid').html(msg);
                 }

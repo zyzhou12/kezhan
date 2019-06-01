@@ -79,8 +79,9 @@ namespace TiKu.Dal
         public static DataTable GetResourceInfo(string strUserName)
         {
             StringBuilder bufSQL = new StringBuilder();
-            bufSQL.Append(@"select fUserName,sum(fSize) fSize,count(*) fCount from tResource where 1=1");
-                               
+            bufSQL.Append(@"select fUserName,sum(Convert(decimal(18,2),fDateLength)) fDateLength,sum(fSize) fSize,count(*) fCount from tResource 
+                            where 1=1 and fStatus not in ('已删除','已销毁') and fType='ClassRoom' ");
+
 
             List<DbParameter> lstParam = new List<DbParameter>();
             bufSQL.Append(" and fUserName=@UserName");
@@ -90,12 +91,25 @@ namespace TiKu.Dal
             return dt;
         }
 
+        public static DataTable GetResourceInfoByClassRoomCode(string strClassRoomCode)
+        {
+            StringBuilder bufSQL = new StringBuilder();
+            bufSQL.Append(@"select sum(Convert(decimal(18,2),fDateLength)) fDateLength,sum(fSize) fSize,count(*) fCount from tResource where 1=1
+                            and fResourceCode in (select fResourceUrl from tCourse where fClassRoomCode=@ClassRoomCode)");
+
+
+            List<DbParameter> lstParam = new List<DbParameter>();
+            lstParam.Add(new DBParam("@ClassRoomCode", strClassRoomCode));
+            DataTable dt = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+            return dt;
+        }
+
         public static List<tResourceEntity> GettResourceList(string strUserName, string strType)
         {
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
-            bufSQL.Append("SELECT * FROM tResource WHERE (1=1) and fStatus<>'已删除' ");
+            bufSQL.Append("SELECT * FROM tResource WHERE (1=1) and fStatus not in ('已删除','已销毁') ");
 
             bufSQL.Append(" AND fUserName=@UserName ");
             lstParam.Add(new DBParam("@UserName", strUserName));
@@ -121,7 +135,7 @@ namespace TiKu.Dal
 
             bufSQL.Append(" AND fUserName=@UserName ");
             lstParam.Add(new DBParam("@UserName", strUserName));
-           
+
 
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");
@@ -130,5 +144,13 @@ namespace TiKu.Dal
             return lstRst;
         }
 
+        public static int DeleteResource()
+        {
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+            DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "DeleteResource",
+        lstParam, DBHelper.ProcRstTypes.All);
+            return rst.Result;
+        }
     }
 }

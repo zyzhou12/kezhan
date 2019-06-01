@@ -155,7 +155,7 @@
                 data: { "strClassRoomCode": classRoomCode },
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#panelBooking').html(msg);
                     }
@@ -178,7 +178,7 @@
                 data: { "strClassRoomCode": classRoomCode, "strMobile": mobile, "strStatus": status, "beginDate": begindate, "endDate": enddate },
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#panelBooking').html(msg);
                     }
@@ -202,14 +202,14 @@
                             data: { "strClassRoomCode": classRoomCode },
                             success: function (msg) {
                                 if (msg.iResult == "-9999") {
-                                    alert("请重新登录");
+                                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                                 } else {
                                     $('#panelBooking').html(msg);
                                 }
                             }
                         });
                     } else if (rst.iResult == -9999) {
-                        alert("请重新登录");
+                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     }
                 }
 

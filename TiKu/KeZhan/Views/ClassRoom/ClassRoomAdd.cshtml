@@ -451,7 +451,7 @@
                                 if (rst.iResult >= 0) {
                                     //alert("保存成功");
                                 } else if (rst.iResult == -9999) {
-                                    alert("请重新登录");
+                                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                                 } else {
                                     alert(rst.strMsg);
                                 }
@@ -464,7 +464,7 @@
                     alert("保存成功");
                     window.location.href = "/ClassRoom/ClassRoomEdit?strClassRoomCode=" + rst.strMsg + "&strType=Add";
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
 
                     $("#pMsg").text(rst.strMsg);

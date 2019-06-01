@@ -63,7 +63,6 @@
                                         </div>
                                         <div class="text">
                                             <h2 style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
-                                                <a href="#">@classRoom.fClassRoomTitle</a>
                                                 @if(classRoom.fType=="Live")
                                                 {
                                                     <label>[直播]</label>
@@ -72,6 +71,7 @@
                                                 {
                                                     <label>[录播]</label>
                                                 }
+                                            <a href="#">@classRoom.fClassRoomTitle</a>
                                             </h2>
                                             <p style="height:80px; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 4;overflow: hidden;">
                                                 @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))

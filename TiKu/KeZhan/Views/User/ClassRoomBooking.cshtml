@@ -193,7 +193,7 @@
                         window.location.href = "/User/UserBooking?strBookingNo=" + rst.strMsg;
                     }
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }

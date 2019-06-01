@@ -85,7 +85,7 @@
       <publishTime>01/02/2019 09:38:50</publishTime>
     </File>
     <File Include="bin/KeZhan.dll">
-      <publishTime>05/29/2019 16:38:32</publishTime>
+      <publishTime>06/01/2019 12:36:47</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.Data.Edm.resources.dll">
       <publishTime>01/02/2019 09:38:53</publishTime>
@@ -175,10 +175,10 @@
       <publishTime>01/02/2019 09:38:30</publishTime>
     </File>
     <File Include="bin/TiKuBll.dll">
-      <publishTime>05/29/2019 16:38:31</publishTime>
+      <publishTime>06/01/2019 12:36:46</publishTime>
     </File>
     <File Include="bin/TiKuDal.dll">
-      <publishTime>05/29/2019 16:38:30</publishTime>
+      <publishTime>06/01/2019 12:36:45</publishTime>
     </File>
     <File Include="bin/TiKuEntity.dll">
       <publishTime>05/28/2019 16:56:23</publishTime>
@@ -1899,8 +1899,134 @@
     <File Include="packages.config">
       <publishTime>01/02/2019 09:39:15</publishTime>
     </File>
+    <File Include="Scripts/AliUpload/lib/base64.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/aes/aes-min.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/aes/aes.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/cbc/cbc-min.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/cbc/cbc.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto-1.0.zip">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto-md5/crypto-md5.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto-sha1-hmac-pbkdf2-marc4/crypto-sha1-hmac-pbkdf2-marc4.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto-sha1-hmac-pbkdf2-ofb-aes/crypto-sha1-hmac-pbkdf2-ofb-aes.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto-sha1-hmac-pbkdf2-rabbit/crypto-sha1-hmac-pbkdf2-rabbit.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto-sha1-hmac-pbkdf2/crypto-sha1-hmac-pbkdf2.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto-sha1/crypto-sha1.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto-sha256/crypto-sha256.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto/crypto-min.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/crypto/crypto.js">
+      <publishTime>05/31/2019 10:31:42</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/hmac/hmac-min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/hmac/hmac.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/marc4/marc4-min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/marc4/marc4.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/md5/md5-min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/md5/md5.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/ofb/ofb-min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/ofb/ofb.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/pbkdf2/pbkdf2-min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/pbkdf2/pbkdf2.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/rabbit/rabbit-min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/rabbit/rabbit.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/sha1/sha1-min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/sha1/sha1.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/sha256/sha256-min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/crypto1/sha256/sha256.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/js/moxie.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/js/moxie.min.js">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/js/Moxie.swf">
+      <publishTime>05/31/2019 10:31:43</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/js/Moxie.xap">
+      <publishTime>05/31/2019 10:31:44</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/js/plupload.dev.js">
+      <publishTime>05/31/2019 10:31:44</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/js/plupload.full.min.js">
+      <publishTime>05/31/2019 10:31:44</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/js/plupload.min.js">
+      <publishTime>05/31/2019 10:31:44</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/license.txt">
+      <publishTime>05/31/2019 10:31:44</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/lib/plupload-2.1.2/readme.md">
+      <publishTime>05/31/2019 10:31:44</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/style.css">
+      <publishTime>05/31/2019 10:31:44</publishTime>
+    </File>
+    <File Include="Scripts/AliUpload/upload.js">
+      <publishTime>06/01/2019 12:12:14</publishTime>
+    </File>
     <File Include="Scripts/ckplayer/ckplayer.js">
-      <publishTime>01/02/2019 09:42:27</publishTime>
+      <publishTime>05/31/2019 09:39:02</publishTime>
     </File>
     <File Include="Scripts/ckplayer/ckplayer.min.js">
       <publishTime>01/02/2019 09:42:27</publishTime>
@@ -3082,7 +3208,7 @@
       <publishTime>04/21/2019 17:25:46</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomAdd.cshtml">
-      <publishTime>05/27/2019 09:36:53</publishTime>
+      <publishTime>05/30/2019 11:16:09</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomBooking.cshtml">
       <publishTime>04/23/2019 09:29:24</publishTime>
@@ -3094,16 +3220,16 @@
       <publishTime>03/26/2019 13:30:05</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomEdit.cshtml">
-      <publishTime>05/29/2019 10:58:59</publishTime>
+      <publishTime>05/30/2019 16:45:39</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomManager.cshtml">
-      <publishTime>05/23/2019 16:01:03</publishTime>
+      <publishTime>05/30/2019 14:06:51</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomShow.cshtml">
-      <publishTime>05/29/2019 16:19:25</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomTeacher.cshtml">
-      <publishTime>05/12/2019 15:40:39</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/ClassRoom/CourseListControl.cshtml">
       <publishTime>04/22/2019 11:10:44</publishTime>
@@ -3136,7 +3262,7 @@
       <publishTime>02/26/2019 16:32:35</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>05/22/2019 13:23:37</publishTime>
+      <publishTime>05/30/2019 16:06:48</publishTime>
     </File>
     <File Include="Views/Home/LineClassRoom.cshtml">
       <publishTime>04/22/2019 15:57:15</publishTime>
@@ -3175,7 +3301,10 @@
       <publishTime>05/12/2019 16:51:51</publishTime>
     </File>
     <File Include="Views/LoginQuery/FileListControl.cshtml">
-      <publishTime>05/29/2019 15:28:52</publishTime>
+      <publishTime>05/31/2019 15:38:31</publishTime>
+    </File>
+    <File Include="Views/LoginQuery/FileUploadListControl.cshtml">
+      <publishTime>05/31/2019 09:32:59</publishTime>
     </File>
     <File Include="Views/LoginQuery/RecordedCourseListControl.cshtml">
       <publishTime>05/27/2019 10:16:36</publishTime>
@@ -3193,7 +3322,7 @@
       <publishTime>04/23/2019 15:36:26</publishTime>
     </File>
     <File Include="Views/Manager/BookingListManager.cshtml">
-      <publishTime>04/24/2019 10:20:22</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Manager/ClassRoomApplyDetail.cshtml">
       <publishTime>05/29/2019 16:27:20</publishTime>
@@ -3211,13 +3340,13 @@
       <publishTime>05/12/2019 16:50:45</publishTime>
     </File>
     <File Include="Views/Manager/ValidManager.cshtml">
-      <publishTime>04/24/2019 10:21:09</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Manager/WithDrawal.cshtml">
       <publishTime>05/12/2019 16:50:51</publishTime>
     </File>
     <File Include="Views/Message/MessageList.cshtml">
-      <publishTime>05/12/2019 16:50:56</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Open/About.cshtml">
       <publishTime>04/18/2019 13:33:41</publishTime>
@@ -3226,28 +3355,31 @@
       <publishTime>04/23/2019 13:13:16</publishTime>
     </File>
     <File Include="Views/Open/ClassRoomDetail.cshtml">
-      <publishTime>05/29/2019 11:36:49</publishTime>
+      <publishTime>05/30/2019 11:24:45</publishTime>
     </File>
     <File Include="Views/Open/ClassRoomK12List.cshtml">
       <publishTime>04/19/2019 17:39:18</publishTime>
     </File>
     <File Include="Views/Open/ClassRoomList.cshtml">
-      <publishTime>05/23/2019 16:50:05</publishTime>
+      <publishTime>05/30/2019 14:07:05</publishTime>
     </File>
     <File Include="Views/Open/ClassRoomList2.cshtml">
-      <publishTime>05/23/2019 16:50:18</publishTime>
+      <publishTime>05/30/2019 14:07:13</publishTime>
     </File>
     <File Include="Views/Open/ClassRoomList3.cshtml">
-      <publishTime>05/23/2019 16:50:25</publishTime>
+      <publishTime>05/30/2019 14:07:20</publishTime>
     </File>
     <File Include="Views/Open/ClassRoomList4.cshtml">
-      <publishTime>05/23/2019 16:50:32</publishTime>
+      <publishTime>05/30/2019 14:07:27</publishTime>
     </File>
     <File Include="Views/Open/KeZhanDesc.cshtml">
       <publishTime>04/17/2019 16:58:18</publishTime>
     </File>
     <File Include="Views/Open/KeZhanTeachDesc.cshtml">
       <publishTime>04/17/2019 16:53:44</publishTime>
+    </File>
+    <File Include="Views/Open/OpenFreeClassRoom.cshtml">
+      <publishTime>05/23/2019 17:27:17</publishTime>
     </File>
     <File Include="Views/Open/QAInfo.cshtml">
       <publishTime>04/17/2019 17:00:24</publishTime>
@@ -3289,10 +3421,10 @@
       <publishTime>05/09/2019 12:34:22</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>05/23/2019 15:18:53</publishTime>
+      <publishTime>05/31/2019 14:03:34</publishTime>
     </File>
     <File Include="Views/Shared/_LayoutTeacher.cshtml">
-      <publishTime>05/29/2019 09:46:31</publishTime>
+      <publishTime>06/01/2019 09:40:25</publishTime>
     </File>
     <File Include="Views/Shared/_LogOnPartial.cshtml">
       <publishTime>01/02/2019 09:42:52</publishTime>
@@ -3301,67 +3433,67 @@
       <publishTime>05/29/2019 16:37:22</publishTime>
     </File>
     <File Include="Views/Start/CreateOnLineClass.cshtml">
-      <publishTime>05/10/2019 17:15:13</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Start/MyClassRoomList.cshtml">
       <publishTime>05/28/2019 15:35:52</publishTime>
     </File>
     <File Include="Views/Start/OnLineClass.cshtml">
-      <publishTime>05/12/2019 15:40:30</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Teacher/TeacherWithdrawalApply.cshtml">
-      <publishTime>04/23/2019 16:39:27</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Teacher/UserBankEdit.cshtml">
-      <publishTime>05/12/2019 16:51:04</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Teacher/UserBankManager.cshtml">
       <publishTime>05/12/2019 16:51:09</publishTime>
     </File>
     <File Include="Views/Teacher/UserMemberList.cshtml">
-      <publishTime>05/09/2019 13:57:46</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Teacher/UserMemberListControl.cshtml">
       <publishTime>03/28/2019 14:54:26</publishTime>
     </File>
     <File Include="Views/Teacher/UserPay.cshtml">
-      <publishTime>05/09/2019 16:17:04</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Teacher/UserRefund.cshtml">
-      <publishTime>05/12/2019 16:51:17</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/Teacher/UserRefundList.cshtml">
       <publishTime>05/12/2019 16:51:22</publishTime>
     </File>
     <File Include="Views/Teacher/ValidUploadFile.cshtml">
-      <publishTime>04/23/2019 16:41:15</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/User/BookingList.cshtml">
       <publishTime>05/09/2019 16:25:00</publishTime>
     </File>
     <File Include="Views/User/BookingRefund.cshtml">
-      <publishTime>05/12/2019 16:51:28</publishTime>
+      <publishTime>05/30/2019 11:16:10</publishTime>
     </File>
     <File Include="Views/User/ClassRoomBooking.cshtml">
-      <publishTime>05/23/2019 17:31:20</publishTime>
+      <publishTime>05/30/2019 11:16:11</publishTime>
     </File>
     <File Include="Views/User/MyFocusTeacher.cshtml">
       <publishTime>05/12/2019 16:51:34</publishTime>
     </File>
     <File Include="Views/User/ResourceManager.cshtml">
-      <publishTime>05/29/2019 15:42:29</publishTime>
+      <publishTime>06/01/2019 12:01:18</publishTime>
     </File>
     <File Include="Views/User/TeacherWithdrawalApply.cshtml">
       <publishTime>04/12/2019 13:59:30</publishTime>
     </File>
     <File Include="Views/User/UpdatePassWord.cshtml">
-      <publishTime>04/23/2019 16:41:40</publishTime>
+      <publishTime>05/30/2019 11:16:11</publishTime>
     </File>
     <File Include="Views/User/UpdateRole.cshtml">
       <publishTime>04/23/2019 16:13:44</publishTime>
     </File>
     <File Include="Views/User/UserAccount.cshtml">
-      <publishTime>04/24/2019 15:50:43</publishTime>
+      <publishTime>05/30/2019 11:16:11</publishTime>
     </File>
     <File Include="Views/User/UserAccountListControl.cshtml">
       <publishTime>04/23/2019 13:29:04</publishTime>
@@ -3376,10 +3508,10 @@
       <publishTime>05/23/2019 17:32:35</publishTime>
     </File>
     <File Include="Views/User/UserInfo.cshtml">
-      <publishTime>05/14/2019 09:39:08</publishTime>
+      <publishTime>05/30/2019 11:16:15</publishTime>
     </File>
     <File Include="Views/User/UserInfoEdit.cshtml">
-      <publishTime>05/10/2019 16:03:00</publishTime>
+      <publishTime>05/30/2019 11:16:11</publishTime>
     </File>
     <File Include="Views/User/UserMemberList.cshtml">
       <publishTime>03/28/2019 16:21:06</publishTime>

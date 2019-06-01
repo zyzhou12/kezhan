@@ -142,33 +142,55 @@ namespace TiKuBll
             }
             return rst;
         }
+        public static ResourceInfoModel GetResourceInfoByClassRoomCode(string strClassRoomCode)
+        {
+            ResourceInfoModel rst = new ResourceInfoModel();
+            DataTable dt = tResourceDal.GetResourceInfoByClassRoomCode(strClassRoomCode);
+            if (dt.Rows.Count > 0)
+            {
+                Trip8H.Common.PubFun.DataRowToObject(dt.Rows[0], rst);
+            }
+            return rst;
+        }
+        
 
         public static int DeleteFile(string strResourceCode)
         {
             tResourceEntity entity = tResourceDal.GettResource(strResourceCode);
             entity.fStatus = "已删除";
+            entity.fModifyDate = DateTime.Now;
+            entity.fModifyOpr = "";
             List<tResourceEntity> list = new List<tResourceEntity>();
             list.Add(entity);
-            int i = tResourceDal.Modify(list,"update","fID,fStatus",null);
+            int i = tResourceDal.Modify(list, "update", "fID,fStatus,fModifyDate,fModifyOpr", null);
             return i;
         }
         public static int RestoreFile(string strResourceCode)
         {
             tResourceEntity entity = tResourceDal.GettResource(strResourceCode);
             entity.fStatus = "已恢复";
+            entity.fModifyDate = DateTime.Now;
+            entity.fModifyOpr = "";
             List<tResourceEntity> list = new List<tResourceEntity>();
             list.Add(entity);
-            int i = tResourceDal.Modify(list, "update", "fID,fStatus", null);
+            int i = tResourceDal.Modify(list, "update", "fID,fStatus,fModifyDate,fModifyOpr", null);
             return i;
         }
         public static int ChangeFileType(string strResourceCode,string strType)
         {
             tResourceEntity entity = tResourceDal.GettResource(strResourceCode);
             entity.fType = strType;
+            entity.fModifyDate = DateTime.Now;
+            entity.fModifyOpr = "";
             List<tResourceEntity> list = new List<tResourceEntity>();
             list.Add(entity);
-            int i = tResourceDal.Modify(list, "update", "fID,fType", null);
+            int i = tResourceDal.Modify(list, "update", "fID,fType,fModifyDate,fModifyOpr", null);
             return i;
+        }
+
+        public static int DeleteResource()
+        {
+            return tResourceDal.DeleteResource();
         }
     }
 }

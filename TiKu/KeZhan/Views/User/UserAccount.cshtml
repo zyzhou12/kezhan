@@ -97,7 +97,7 @@
             data: { "strTradingType": TradingType, "strSystem": "Web", "strType": Type, "beginDate": beginDate, "endDate": endDate },
             success: function (msg) {
                 if (msg.iResult == "-9999") {
-                    alert("请重新登录");
+                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     $('#accountList').html(msg);
                 }
