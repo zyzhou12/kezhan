@@ -1,6 +1,6 @@
 ﻿
-accessid= 'LTAI0W5pqyqDXHhs';
-accesskey= 'c2sUv3Lf3hNr1DSsQdb3KqYcMQiGlD';
+accessid= '';
+accesskey= '';
 host = 'https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com';
 
 g_dirname = ''
