@@ -1,0 +1,38 @@
+﻿@model KeZhanManager.Models.SettlementListModel
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="80">ID</th>
+            <th width="100">课程Code</th>
+            <th width="150">课程名称</th>
+            <th width="40">订单数</th>
+            <th width="">总收入</th>
+            <th width="90">总退款</th>
+            <th width="130">平台费用</th>
+            <th width="70">结算收入</th>
+            <th width="100">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model.accountList)
+        {
+            <tr class="text-c">
+                <td><input type="checkbox" value="@account.fID" name=""></td>
+                <td>@account.fID</td>
+                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('张三', 'member-show.html', '10001', '360', '400')">@account.fClassRoomCode</u></td>
+                <td>
+                    @account.fClassRoomTitle
+                </td>
+                <td>@account.fPayCount</td>
+                <td class="text-l"><span class="label label-success radius">@account.fIncome</span></td>
+                <td>@account.fRefund</td>
+                <td>@account.fFee</td>
+                <td class="td-status">@account.fAmount</td>
+                <td class="td-manage">
+                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

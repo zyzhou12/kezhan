@@ -1,0 +1,205 @@
+﻿@model TiKu.Entity.tSystemConfigEntity
+@{
+    ViewBag.Title = "ConfigSet";
+}
+
+<nav class="breadcrumb">
+    <i class="Hui-iconfont">&#xe67f;</i> 首页
+    <span class="c-gray en">&gt;</span>
+    系统管理
+    <span class="c-gray en">&gt;</span>
+    基本设置
+    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+    <form class="form form-horizontal" id="form-article-add">
+        <div id="tab-system" class="HuiTab">
+            <div class="tabBar cl">
+                <span>系统设置</span>
+                @*<span>安全设置</span>
+                <span>邮件设置</span>
+                <span>其他设置</span>*@
+            </div>
+            <div class="tabCon">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">
+                        <span class="c-red">*</span>
+                        城市：
+                    </label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="hidden" id="txtFid" value="@Model.fID">
+                        <input type="text" id="txtCity" placeholder="" value="@Model.fCity" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">
+                        <span class="c-red">*</span>
+                        认证费用：
+                    </label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="txtValidFee" placeholder="" value="@Model.fValidFee" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">
+                        <span class="c-red">*</span>
+                        流量价格：
+                    </label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="txtClassFee" placeholder="" value="@Model.fClassFee" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">
+                        <span class="c-red">*</span>
+                        一对一费用：
+                    </label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="txtVideoFee" placeholder="" value="@Model.fVideoFee" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">
+                        <span class="c-red">*</span>
+                        提问费用：
+                    </label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="txtProblemFee" placeholder="" value="@Model.fProblemFee" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">
+                        <span class="c-red">*</span>
+                        平台费用：
+                    </label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="txtSettlementFee" placeholder="" value="@Model.fSettlementFee" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">
+                        <span class="c-red">*</span>
+                        最小金额：
+                    </label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="txtAccountMinAmount" placeholder="" value="@Model.fAccountMinAmount" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">资源费：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="txtSourceFee" placeholder="" value="@Model.fSourceFee" class="input-text">
+                    </div>
+                </div>
+            </div>
+            <div class="tabCon">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">允许访问后台的IP列表：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <textarea class="textarea" name="" id=""></textarea>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">后台登录失败最大次数：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="5" id="" name="">
+                    </div>
+                </div>
+            </div>
+            <div class="tabCon">
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">邮件发送模式：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="" id="" name="">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">SMTP服务器：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="" value="" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">SMTP 端口：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="25" id="" name="">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">邮箱帐号：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" class="input-text" value="5" id="emailName" name="emailName">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">邮箱密码：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="password" id="email-password" value="" class="input-text">
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-4 col-sm-2">收件邮箱地址：</label>
+                    <div class="formControls col-xs-8 col-sm-9">
+                        <input type="text" id="email-address" value="" class="input-text">
+                    </div>
+                </div>
+            </div>
+            <div class="tabCon">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button onclick="SaveConfig();" class="btn btn-primary radius" type="button"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
+                <button onclick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Script{
+    <script type="text/javascript" src="~/Content/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="~/Content/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="~/Content/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="~/Content/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+        $("#tab-system").Huitab({
+            index: 0
+        });
+    });
+
+    function SaveConfig()
+    {
+        var configModel = {
+            "fID": $("#txtFid").val(),
+            "fCity": $("#txtCity").val(),
+            "fValidFee": $("#txtValidFee").val(),
+            "fClassFee": $("#txtClassFee").val(),
+            "fVideoFee": $("#txtVideoFee").val(),
+            "fProblemFee": $("#txtProblemFee").val(),
+            "fSettlementFee": $("#txtSettlementFee").val(),
+            "fAccountMinAmount": $("#txtAccountMinAmount").val(),
+            "fSourceFee": $("#txtSourceFee").val()
+        };
+        $.ajax({
+            url: "/Request/DoSaveSystemConfig",
+            data: configModel,
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("保存成功");
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录");
+                }
+            }
+
+        });
+    }
+</script>
+}

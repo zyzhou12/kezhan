@@ -1,0 +1,38 @@
+﻿@model KeZhanManager.Models.MediaListModel
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="80">ID</th>
+            <th width="100">课时名称</th>
+            <th width="150">文件ID</th>
+            <th width="40">大小</th>
+            <th width="">分辨率高</th>
+            <th width="90">分辨率宽</th>
+            <th width="130">文件地址</th>
+            <th width="70">类型</th>
+            <th width="100">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var media in Model.mediaList)
+        {
+            <tr class="text-c">
+                <td><input type="checkbox" value="@media.fID" name=""></td>
+                <td>@media.fID</td>
+                <td>@media.fCourseTitle</td>
+                <td>
+                    @media.fMediaID
+                </td>
+                <td>@media.fSize</td>
+                <td class="text-l"><span class="label label-success radius">@media.fHeight</span></td>
+                <td>@media.fWidth</td>
+                <td>@media.fUrl</td>
+                <td class="td-status">@media.fActivityName</td>
+                <td class="td-manage">
+                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,68 @@
+﻿@model KeZhanManager.Models.UserValidModel
+@{
+    ViewBag.Title = "UserValidDetail";
+}
+@section HeadContent{
+    <link href="~/Content/lib/lightbox2/2.8.1/css/lightbox.css" rel="stylesheet" type="text/css">
+}
+
+<div class="page-container">
+    @*<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+    <span class="l">
+         <a href="javascript:;" onclick="edit()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+        <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+    </span> 
+    <span class="r">共有数据：<strong>54</strong> 条</span> 
+    </div>*@
+    <div class="portfolio-content">
+        <ul class="cl portfolio-area">
+            <li class="item">
+                <div class="portfoliobox">                    
+                    <div class="picbox">
+                        <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.valid.fIDCard1" data-lightbox="gallery" data-title="@Model.valid.fName">
+                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.valid.fIDCard1?x-oss-process=style/fang">
+                        </a>
+                    </div>
+                    <div class="textbox">@Model.valid.fName</div>
+                    <div class="textbox">@Model.valid.fIDType</div>
+                    <div class="textbox">@Model.valid.fUID</div>
+                    <div class="textbox">@Model.valid.fMobile</div>
+                </div>
+            </li>
+
+            @foreach (var detail in Model.validDetail)
+            {
+                <li class="item">
+                    <div class="portfoliobox">
+                        
+                        <div class="picbox">
+                            <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@detail.fTeachCert1" data-lightbox="gallery" data-title="@detail.fStatus">
+                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@detail.fTeachCert1?x-oss-process=style/fang">
+                            </a>
+                        </div>
+                        <div class="textbox">@detail.fStatus</div>
+                        @if (detail.fStatus == "已审核") { 
+                            <div class="textbox">证书类型：@detail.fCertType</div>
+                            <div class="textbox">证书编号：@detail.fCertNo</div>
+                            <div class="textbox">有效期：@detail.fEffectDate</div>
+                            <div class="textbox">备注：@detail.fNote</div>
+                            <div class="textbox">@detail.fPharse</div>
+                            <div class="textbox">@detail.fSubject</div>
+                            <div class="textbox">认证时间：@detail.fValidDate</div>
+                        }
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+@section Script{
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="~/Content/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(".portfolio-area li").Huihover();
+        });
+    </script>
+}

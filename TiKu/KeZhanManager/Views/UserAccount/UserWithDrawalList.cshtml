@@ -1,0 +1,39 @@
+﻿@model KeZhanManager.Models.WithDrawalListModel
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="80">手机</th>
+            <th width="100">提现金额</th>
+            <th width="150">申请时间</th>
+            <th width="40">审批时间</th>
+            <th width="">审批结果</th>
+            <th width="90">审批备注</th>
+            <th width="130">凭证</th>
+            <th width="70">状态</th>
+            <th width="100">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var withDrawal in Model.withDrawalList)
+        {
+            <tr class="text-c">
+                <td><input type="checkbox" value="@withDrawal.fID" name=""></td>
+                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('张三', 'member-show.html', '10001', '360', '400')">@withDrawal.fMobile</u></td>
+
+                <td>@withDrawal.fAmount</td>
+                <td>
+                    @withDrawal.fSubmitDate
+                </td>
+                <td>@withDrawal.fApproveDate</td>
+                <td class="text-l"><span class="label label-success radius">@withDrawal.fApproveResult</span></td>
+                <td>@withDrawal.fApproveNote</td>
+                <td>@withDrawal.fTransCerd</td>
+                <td class="td-status">@withDrawal.fStatus</td>
+                <td class="td-manage">
+                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

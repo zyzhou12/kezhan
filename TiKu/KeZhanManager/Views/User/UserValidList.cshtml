@@ -1,0 +1,35 @@
+﻿@model KeZhanManager.Models.UserValidListModel
+
+    <table class="table table-border table-bordered table-hover table-bg table-sort table-responsive">
+        <thead>
+            <tr class="text-c">
+                <th width="25"><input type="checkbox" name="" value=""></th>
+                <th width="80">ID</th>
+                <th width="100">用户名</th>
+                <th width="90">手机</th>
+                <th width="150">身份证</th>
+                <th width="130">提交时间</th>
+                <th width="70">状态</th>
+                <th width="100">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var valid in Model.validList)
+            {
+                <tr class="text-c">
+                    <td><input type="checkbox" value="@valid.fID" name=""></td>
+                    <td>@valid.fID</td>
+                    <td><u style="cursor:pointer" class="text-primary" onclick="item_show('@valid.fMobile','UserDetail?strUserName=@valid.fUserName','10001','360','400')">@valid.fUserName</u></td>
+                    <td>
+                        @valid.fMobile
+                    </td>
+                    <td><img class="picture-thumb" width="210" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@valid.fIDCard1?x-oss-process=style/fang"></td>
+                    <td>@valid.fCreateDate</td>
+                    <td class="td-status"><span class="label label-success radius">@valid.fStatus</span></td>
+                    <td class="td-manage">
+                        <a style="text-decoration:none" onclick="item_maxShow('@valid.fMobile','/user/uservaliddetail?iValidID=@valid.fID','10001')" href="javascript:;" title="详情">详情</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

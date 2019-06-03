@@ -1,0 +1,39 @@
+﻿@model KeZhanManager.Models.UserPayListModel
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="80">单号</th>
+            <th width="100">订单号</th>
+            <th width="150">金额</th>
+            <th width="40">订单类型</th>
+            <th width="">支付方式</th>
+            <th width="90">支付单号</th>
+            <th width="130">支付时间</th>
+            <th width="70">备注</th>
+            <th width="100">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var pay in Model.payList)
+        {
+            <tr class="text-c">
+                <td><input type="checkbox" value="@pay.fID" name=""></td>
+                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('张三', 'member-show.html', '10001', '360', '400')">@pay.fOrderNo</u></td>
+
+                <td>@pay.fRemark</td>
+                <td>
+                    @pay.fAmount
+                </td>
+                <td>@pay.fType</td>
+                <td class="text-l"><span class="label label-success radius">@pay.fPayType</span></td>
+                <td>@pay.fPayNo</td>
+                <td>@pay.fPayDate</td>
+                <td class="td-status">@pay.fNote</td>
+                <td class="td-manage">
+                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,46 @@
+﻿@model TiKu.Entity.tUserEntity
+@{
+    ViewBag.Title = "UserDetail";
+}
+
+
+<div class="cl pd-20" style=" background-color:#5bacb6">
+    <img class="avatar size-XL l" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.fHeadImg?x-oss-process=style/zheng">
+    <dl style="margin-left:80px; color:#fff">
+        <dt>
+            <span class="f-18">@Model.fNickName</span>
+            <span class="pl-10 f-12">@Model.fRole</span>
+        </dt>
+        <dd class="pt-10 f-12" style="margin-left:0"></dd>
+    </dl>
+</div>
+<div class="pd-20">
+    <table class="table">
+        <tbody>
+            <tr>
+                <th class="text-r">手机：</th>
+                <td>@Model.fMobile</td>
+            </tr>
+            <tr>
+                <th class="text-r">邮箱：</th>
+                <td>@Model.fEmail</td>
+            </tr>
+            <tr>
+                <th class="text-r">姓名：</th>
+                <td>@Model.fName</td>
+            </tr>
+            <tr>
+                <th class="text-r">身份证号：</th>
+                <td>@Model.fUID</td>
+            </tr>
+            <tr>
+                <th class="text-r">状态：</th>
+                <td>@Model.fStatus</td>
+            </tr>
+            <tr>
+                <th class="text-r">注册时间：</th>
+                <td>@Model.fCreateDate</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
