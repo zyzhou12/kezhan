@@ -650,7 +650,7 @@
 
         <input type="number" id="txtOrder2" class="input-text form-control"><br />
         <label>视频(请先将视频上传到课时视频目录下)</label>
-        <div id="fileWebCourse" style="width:100%; height:120px;overflow :auto"></div>
+        <div id="fileCourse" style="width:100%; height:120px;overflow :auto"></div>
         <div id="fileUploadCourse" class="fileUploadContent">
         </div>
         <input type="hidden" id="hidCourseFileUrl" />
@@ -1127,7 +1127,7 @@
                 if (msg.iResult == "-9999") {
                     alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
-                    $('#fileWebCourse').html(msg);
+                    $('#fileCourse').html(msg);
                 }
             }
         });
@@ -1517,27 +1517,5 @@
         $("#imgUploadDocument-" + id).click();
     }
 
-    function OpenClassRoom(iCourdeID) {
-        //打开一个不被拦截的新窗口
-        var newWindow = window.open();
-        $.ajax({
-            url: "/LoginRequest/OpenClassRoom",
-            data: { "iCourseID": iCourdeID },
-            type: "Post",
-            success: function (rst) {
-
-                if (rst.iResult >= 0) {
-                    //window.open("/Home/Index?iCourseID=" + iCourdeID+"&strRole=Teacher", '_blank').location;
-                    newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
-
-                } else if (rst.iResult == -9999) {
-                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
-                } else {
-                    newWindow.close();
-                    alert(rst.strMsg);
-                }
-            }
-
-        });
-    }
+   
 </script>

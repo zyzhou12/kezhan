@@ -313,6 +313,35 @@
             $("#txtCourseNo").focus();
             return;
         }
+
+        $.ajax({
+            url: "/LoginRequest/GetBrowserVersions",
+            type: "Post",
+            success: function (rst) {
+
+                if (rst.iResult >= 0) {
+                    ConfigJoin();
+
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                } else {
+                    if (confirm(rst.strMsg)) {
+                        ConfigJoin();
+                    } else {
+                        newWindow.close();
+                    }
+                }
+            }
+
+        });
+
+
+       
+
+    }
+
+    function ConfigJoin()
+    {
         $.ajax({
             url: "/LoginRequest/CheckOnlineClass",
             data: { "strCourseNo": $("#txtCourseNo").val() },
@@ -325,7 +354,7 @@
                     $("#spanPrice").text(rst.Price);
                     $("#btnPay").attr("onclick", "SubmitOrder(" + rst.CourseID + "," + rst.Price + ")");
 
-                    
+
                     $("#btnJoin").hide();
                     $("#divCourse").show();
                 }
@@ -333,16 +362,14 @@
                     window.location.href = "/home/index?iCourseID=" + rst.iResult;
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }
             }
 
         });
-
     }
-
 
     function GetBookingNo(bookingno) {
         $.ajax({

@@ -38,5 +38,15 @@ namespace KeZhan.Controllers
             return PartialView("ClassRoomControl", model);
         }
 
+        public ActionResult QueryLikeClassRoom(string strlike, string strCity = null)
+        {
+            if (string.IsNullOrEmpty(strCity))
+            {
+                strCity = "上海";
+            }
+            ClassRoomListModel model = ClassRoomBll.QueryClassRoomList(strlike);
+            return PartialView("ClassRoomControl", model);
+        }
+
     }
 }

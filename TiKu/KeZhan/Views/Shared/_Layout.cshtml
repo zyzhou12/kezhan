@@ -112,6 +112,7 @@
                                 if (userinfo.fRole == "Teacher")
                                 {
                                     <a id="aLogin" href="/User/DoUpdateNowRole?strRole=Teacher">老师端</a>
+    
                                 }
 
                                 <a href="../message/MessageList">系统消息<span id="spanNum"></span></a>
@@ -152,13 +153,13 @@
                     <!-- HEADER MENU -->
                     <nav class="header_menu">
                         <ul class="menu">
-
-                            <li @if ((controller.ToLower() == "open" && action.ToLower() == "classroomlist") || (controller.ToLower() == "open" && action.ToLower() == "classroomlist")) { <text> class="current-menu-item" </text>            }><a href="../Open/ClassRoomList">K12课程</a></li>
+                            <li @if (controller.ToLower() == "open" && action.ToLower() == "query") { <text> class="current-menu-item" </text>              }><a href="../Open/Query">课程搜索</a></li>
+                            @*<li @if ((controller.ToLower() == "open" && action.ToLower() == "classroomlist") || (controller.ToLower() == "open" && action.ToLower() == "classroomlist")) { <text> class="current-menu-item" </text>            }><a href="../Open/ClassRoomList">K12课程</a></li>
                             <li @if (controller.ToLower() == "open" && action.ToLower() == "classroomlist4") { <text> class="current-menu-item" </text>              }><a href="../Open/ClassRoomList4">大学</a></li>
                             <li @if (controller.ToLower() == "open" && action.ToLower() == "classroomlist2") { <text> class="current-menu-item" </text>             }>
                                 <a href="../Open/ClassRoomList2">素质与拓展</a>
                             </li>
-                            <li @if (controller.ToLower() == "open" && action.ToLower() == "classroomlist3") { <text> class="current-menu-item" </text>             }><a href="../Open/ClassRoomList3">职业与技能</a></li>
+                            <li @if (controller.ToLower() == "open" && action.ToLower() == "classroomlist3") { <text> class="current-menu-item" </text>             }><a href="../Open/ClassRoomList3">职业与技能</a></li>*@
 
 
 
@@ -248,7 +249,7 @@
         <section class="section-video bg-23 mt100" id="secCheckRTC" style="display:none;">
             <a class="btn-play" href="#modal-video-1"></a>
             <div id="modal-video-1" onclick="hideCheckRtc()" class="modal-video opened" data-video="" data-query-string="ecver=1&amp;autoplay=1&amp;showinfo=0&amp;controls=0&amp;modestbranding=1" src="">
-                <iframe src="https://www.qcloudtrtc.com/webrtc-samples/abilitytest/index.html?ecver=1&amp;autoplay=1&amp;showinfo=0&amp;controls=0&amp;modestbranding=1" allowfullscreen="" width="100%" height="400" frameborder="0"></iframe>
+                
             </div>
         </section>
         <!-- FOOTER -->
@@ -298,7 +299,8 @@
                                     <li><a href="/html/QAInfo">常见问题</a></li>
                                     <li><a href="/html/WebInfo">服务协议</a></li>
                                     <li><a href="/html/About">关于</a></li>
-                                    <li><a href="#" onclick="showCheckRtc()">环境测试</a></li>
+                                    <li><a href="https://www.qcloudtrtc.com/webrtc-samples/abilitytest/index.html" target="_blank">环境测试</a></li>
+                                    @*<li><a href="#" onclick="showCheckRtc()">环境测试</a></li>*@
 
                                 </ul>
                             </div>
@@ -404,9 +406,13 @@
         }
 
         function hideCheckRtc() {
+            $("#iframeWindow").remove();
             $("#secCheckRTC").hide();
         }
-        function showCheckRtc() {
+        function showCheckRtc(srcurl) {
+            
+            $("#modal-video-1").html("<iframe id=\"iframeWindow\" src=\"" + srcurl + "\" allowfullscreen=\"\" width=\"100%\" height=\"400\" frameborder=\"0\"></iframe>");
+
             $("#secCheckRTC").show();
         }
 
@@ -424,6 +430,30 @@
                 }
             }
             return flag;
+        }
+
+        function CheckBrowser(iCourseId)
+        {
+            $.ajax({
+                url: "/LoginRequest/GetBrowserVersions",
+                type: "Post",
+                success: function (rst) {
+
+                    if (rst.iResult >= 0) {
+                        window.location.href = "/home/index?iCourseID=" + iCourseId;
+
+                    } else if (rst.iResult == -9999) {
+                        alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                    } else {
+                        if (confirm(rst.strMsg)) {
+                            window.location.href = "/home/index?iCourseID=" + iCourseId;
+                        } else {
+                            newWindow.close();
+                        }
+                    }
+                }
+
+            });
         }
 
         $(document).ready(function () {

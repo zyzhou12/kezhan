@@ -1,6 +1,6 @@
 ﻿@model TiKuBll.Model.ResourseListModel
 @{
-    ViewBag.Title = "FileListControl";
+    ViewBag.Title = "课站";
 }
 
 @if (Model.resourseList != null)
@@ -10,7 +10,7 @@
         {
             <div class="test_ans">
                 <div class="test_desc">
-                    <img src="@file.fCoverImg" style="width:128px;" />
+                    <img src="@file.fCoverImg" style="width:128px;height:96px;" />
                     <br />
                     <input type="radio" name="radFile" id="@file.fID" value="@file.fUrl"  />
                     <p style="width:120px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">@file.fResourceTitle</p>

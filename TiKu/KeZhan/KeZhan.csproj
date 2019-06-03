@@ -57,6 +57,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -1239,7 +1240,7 @@
     <Content Include="Views\Teacher\ValidUploadFile.cshtml" />
     <Content Include="Views\Home\ClassRoom.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Message.cshtml" />
+    <Content Include="Views\Open\Message.cshtml" />
     <Content Include="Views\LoginQuery\TeacherValid.cshtml" />
     <Content Include="Views\Manager\ValidManager.cshtml" />
     <Content Include="Views\Html\About.cshtml" />
@@ -1323,6 +1324,8 @@
     <Content Include="Views\LoginQuery\FileUploadListControl.cshtml" />
     <Content Include="Scripts\AliUpload\lib\crypto1\crypto-1.0.zip" />
     <Content Include="Scripts\AliUpload\lib\plupload-2.1.2\readme.md" />
+    <Content Include="Views\Open\Query.cshtml" />
+    <Content Include="Views\Open\QueryClassRoomList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

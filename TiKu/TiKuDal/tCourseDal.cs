@@ -117,8 +117,8 @@ namespace TiKu.Dal
             List<DbParameter> lstParam = new List<DbParameter>();
 
             bufSQL.Append(@"update tCourse
-set fFileCoverUrl=@ResourceCode
-where fResourceUrl=@CoverUrl");
+set fFileCoverUrl=@CoverUrl
+where fResourceUrl=@ResourceCode");
             lstParam.Add(new DBParam("@ResourceCode", strResourceCode));
             lstParam.Add(new DBParam("@CoverUrl", strCoverUrl));
 

@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiKuService", "TiKuService\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeZhan", "KeZhan\KeZhan.csproj", "{DFA9A69B-A619-490E-B673-0FE8A2A13F62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeZhanManager", "KeZhanManager\KeZhanManager.csproj", "{4DD50EB1-2298-426A-BDA6-E13E27565640}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,18 @@ Global
 		{DFA9A69B-A619-490E-B673-0FE8A2A13F62}.Release|x64.ActiveCfg = Release|x64
 		{DFA9A69B-A619-490E-B673-0FE8A2A13F62}.Release|x64.Build.0 = Release|x64
 		{DFA9A69B-A619-490E-B673-0FE8A2A13F62}.Release|x86.ActiveCfg = Release|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Release|x64.ActiveCfg = Release|Any CPU
+		{4DD50EB1-2298-426A-BDA6-E13E27565640}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

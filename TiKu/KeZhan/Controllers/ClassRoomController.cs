@@ -153,7 +153,7 @@ namespace KeZhan.Controllers
                 MediaListModel model = ClassRoomBll.GetCourseMediaList(course.fResourceUrl);
                 if (model.MediaList == null || model.MediaList.Count <= 0)
                 {
-                    return RedirectToAction("Message", "Home", new { strMessage = "视频加载失败" });
+                    return RedirectToAction("Message", "Open", new { strMessage = "视频加载失败" });
                 }
                 else
                 {
@@ -190,7 +190,7 @@ namespace KeZhan.Controllers
             }
             else
             {
-                return RedirectToAction("Message", "Home", new { strMessage = "观看时效到期或未购买" });
+                return RedirectToAction("Message", "Open", new { strMessage = "观看时效到期或未购买" });
             }
         }
 

@@ -313,6 +313,25 @@ WHERE 1=1  ");
             List<tClassRoomEntity> lstRst = PubFun.DataTableToObjects<tClassRoomEntity>(dtRst);
             return lstRst;
         }
+        public static List<tClassRoomEntity> QueryClassRoomList(string strLike)
+        {
+            StringBuilder bufSQL = new StringBuilder();
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+            bufSQL.Append(@"select r.*,fName TeacherName from tclassRoom r
+                            left join tuser u on u.fUserName=r.fTecharUserName
+                            where fClassType<>'OnLine' and r.fStatus='发布' and (r.fClassRoomTitle like '%'+@like+'%' or fMobile like '%'+@like+'%' or fNickName like '%'+@like+'%' or fName like '%'+@like+'%')
+                            ");
+            lstParam.Add(new DBParam("@like", strLike));
+
+           
+            //防止返回数据过多
+            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+            List<tClassRoomEntity> lstRst = PubFun.DataTableToObjects<tClassRoomEntity>(dtRst);
+            return lstRst;
+        }
+
 
         public static DataTable GettClassRoomList(string strCity, string strPharse, string strGrade, string strSubject)
         {

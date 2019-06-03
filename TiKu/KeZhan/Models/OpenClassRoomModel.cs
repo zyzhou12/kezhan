@@ -7,6 +7,7 @@ namespace KeZhan.Models
 {
   public class OpenClassRoomModel
   {
+      public int PCWidth { get; set; }
       public string TeacherUserName { get; set; }
     public string UserName { get; set; }
     public string NickName { get; set; }

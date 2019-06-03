@@ -145,9 +145,9 @@ var uploader = new plupload.Uploader({
 
 		FilesAdded: function(up, files) {
 		    plupload.each(files, function (file) {
-		        //alert(file.size);
-		        //alert($("#hidSumSize").val())
-		        if (parseInt(file.size) + parseInt($("#hidSumSize").val()) < 20971520) {
+		      //  alert(file.size);
+		      // alert($("#hidSumSize").val())
+		        if ((parseInt(file.size) + parseInt($("#hidSumSize").val()))/1024 < 20971520) {
 		            document.getElementById('ossfile').innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ')<b></b>'
                     + '<div class="progress"><div class="progress-bar" style="width: 0%"></div></div>'
                     + '</div>';

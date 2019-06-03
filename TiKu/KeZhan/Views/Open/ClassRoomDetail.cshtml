@@ -208,7 +208,7 @@
                                                                     {
                                                                         if (Model.fStatus == "发布")
                                                                         {
-                                                                            <a href="/Home/Index?iCourseID=@course.fID" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
+                                                                            <a href="#" onclick="CheckBrowser(@course.fID)" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
                                                                         }
                                                                     }
                                                                     else if (course.CourseStatus == 4)
@@ -273,7 +273,7 @@
                                                             else
                                                             {
                                                                 <div class="reservation-package_book-price">
-                                                                    <a href="/Open/OpenFreeClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">免费试看</a>
+                                                                    <a href="#" onclick="showCheckRtc('/Open/OpenFreeClassRoom?iCourseID=@course.fID')" class="awe-btn awe-btn-default">免费试看</a>
 
                                                                 </div>
                                                             }

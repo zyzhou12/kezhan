@@ -16,7 +16,7 @@ namespace KeZhan
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "open", action = "classroomlist", id = UrlParameter.Optional }
+                defaults: new { controller = "open", action = "query", id = UrlParameter.Optional }
             );
         }
     }

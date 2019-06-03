@@ -135,6 +135,7 @@ methods: {
             }
             app.step = 'second';
             app.init();
+            
         }else
         {
             alert(response.data.strMsg);
@@ -208,6 +209,8 @@ initData() {
         mic: []
     };
 
+    
+
     this.cameraIndex = 0;
     this.micIndex = 0;
 
@@ -246,7 +249,7 @@ initData() {
         canDraw: this.isTeacher, // 老师能画，学生不能画
         globalBackgroundColor: '#ffffff',
         color: '#ff0000',
-        boardMode: 0, // 白板模式
+        boardMode: 1, // 0 白板模式 1 文件模式
         textSize: 24,
         textColor: '#ff0000'
     }
@@ -265,6 +268,8 @@ initData() {
       this.ticSdk.init();
       this.initEvent();
       this.ticSdk.login(this.loginConfig);
+
+      
   },
 
   initEvent() {
@@ -370,6 +375,9 @@ this.ticSdk.on(TICSDK.CONSTANT.EVENT.WEBRTC.INIT_SUCC, res => {
     this.showTip('WebRTC初始化成功');
 console.log('TICSDK.CONSTANT.EVENT.WEBRTC.INIT_SUCC');
 
+//获取摄像头，麦克风
+this.getCameraDevices()
+this.getMicDevices()
 });
 
 this.ticSdk.on(TICSDK.CONSTANT.EVENT.WEBRTC.INIT_ERROR, err => {
@@ -410,7 +418,7 @@ params:{
         }else{
             var div = document.createElement("div");
             div.id=data.userId;
-            div.innerHTML = '<div class="video-name">'+videoNick+'</div><video onclick="maxVideo(this)" id="'+data.videoId+'" class="videostyle" autoplay playsinline></video>';
+            div.innerHTML = '<div class="video-name">'+videoNick+'</div><div class="m-video"><video onclick="maxVideo(this)" id="'+data.videoId+'" class="videostyle" autoplay playsinline></video></div>';
             div.classList.add("m-netcall-video");
             div.classList.add("test_ans");
             oBox.appendChild(div);      
@@ -540,9 +548,6 @@ if (this.pushModel === 1) {
         this.startRTC();
 }
 
-//获取摄像头，麦克风
-this.getCameraDevices()
-this.getMicDevices()
 
 });
 
@@ -650,7 +655,7 @@ if (msgs.getFromAccount() === '@TIM#SYSTEM') { // 接收到系统消息
                         canDraw: 0, //
                         globalBackgroundColor: '#ffffff',
                         color: '#ff0000',
-                        boardMode: 0, // 白板模式
+                        boardMode: 1, // 0 白板模式 1 文件模式
                         textSize: 24,
                         textColor: '#ff0000'
                     }
@@ -732,7 +737,7 @@ if (type === 'TIMTextElem') {
                 canDraw: 0, //
                 globalBackgroundColor: '#ffffff',
                 color: '#ff0000',
-                boardMode: 0, // 白板模式
+                boardMode: 1, // 0 白板模式 1 文件模式
                 textSize: 24,
                 textColor: '#ff0000'
             }
@@ -748,7 +753,7 @@ if (type === 'TIMTextElem') {
                 canDraw: 1, 
                 globalBackgroundColor: '#ffffff',
                 color: '#ff0000',
-                boardMode: 0, // 白板模式
+                boardMode: 1, // 0 白板模式 1 文件模式
                 textSize: 24,
                 textColor: '#ff0000'
             }
@@ -764,7 +769,7 @@ if (type === 'TIMTextElem') {
                 canDraw: 0, //
                 globalBackgroundColor: '#ffffff',
                 color: '#ff0000',
-                boardMode: 0, // 白板模式
+                boardMode: 1, // 0 白板模式 1 文件模式
                 textSize: 24,
                 textColor: '#ff0000'
             }
@@ -778,7 +783,7 @@ if (type === 'TIMTextElem') {
                 canDraw: 1, 
                 globalBackgroundColor: '#ffffff',
                 color: '#ff0000',
-                boardMode: 0, // 白板模式
+                boardMode: 1, // 0 白板模式 1 文件模式
                 textSize: 24,
                 textColor: '#ff0000'
             }
@@ -984,10 +989,18 @@ startRTC() {
             app.showRTC=true;
         }
     });
+   // alert(this.devices.camera.length);
+    var isVideo=false;
+    if(this.devices.camera.length>0){
+        isVideo=true;
+    }
+    if(this.devices.mic.length<=0){
+        this.showRTC=true;
+    }
     if(!this.showRTC){
             WebRTC.getLocalStream({
                 audio: true,
-                video: true,
+                video: isVideo,
                 attributes: {
                     width: 640,
                     height: 480
@@ -1016,7 +1029,7 @@ startRTC() {
         });
         }
         }, (error) => {
-            this.showErrorTip(`获取本地流失败, ${JSON.stringify(error)}`);
+           // this.showErrorTip(`获取本地流失败, ${JSON.stringify(error)}`);
         });
 }
 },
@@ -1082,7 +1095,7 @@ pushScreen() {
     });
 }
 }, (error) => {
-    this.showErrorTip(`获取本地流失败, ${error}`);
+   // this.showErrorTip(`获取本地流失败, ${error}`);
 });
 
 }
@@ -1258,6 +1271,17 @@ triggerDialog: function (opt) {
     },
 acceptTeacher: function () {
     this.startRTC();
+    this.ticSdk.getBoardInstance().setCanDraw(true);
+    this.boardConfig = {
+        id: 'paint_box',
+        canDraw: 1, 
+        globalBackgroundColor: '#ffffff',
+        color: '#ff0000',
+        boardMode: 1, // 0 白板模式 1 文件模式
+        textSize: 24,
+        textColor: '#ff0000'
+    }
+    this.setUserPer("OpenBoard");
 },
 acceptStudent: function () { 
     this.ticSdk.sendCustomTextMessage({
@@ -1469,11 +1493,10 @@ prevBoard() {
         var boardId = board.getBoardList()[1];
         this.ticSdk.getBoardInstance().deleteBoard(boardId);
     },
-
-/**
- * 白板事件回调处理
- * @param {*} data 
- */
+    /**
+     * 白板事件回调处理
+     * @param {*} data 
+     */
     proBoardData(data) {
         this.boardData.data.current = data.current;
         this.boardData.data.list = data.list;
@@ -1486,6 +1509,7 @@ prevBoard() {
             total: this.boardData.data.list.length
         }
     },
+
 
     showErrorTip(title, time) {
         this.$toasted.error(title, {
@@ -1518,9 +1542,9 @@ prevBoard() {
 /**
  * 切换文件
  */
-    switchFile(file) {        
-        board.switchFile(file.fid);
-        board.getBoardByFile(file.fid);
+    switchFile(file) {    
+        board.switchFile(file.fid); 
+        //board.getBoardByFile(file.fid);
     },
 
 /**

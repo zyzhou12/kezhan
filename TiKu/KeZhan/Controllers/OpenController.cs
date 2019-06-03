@@ -22,6 +22,13 @@ namespace KeZhan.Controllers
 {
     public class OpenController : Controller
     {
+        public ActionResult Query()
+        {
+            ClassRoomListModel model = ClassRoomBll.QueryClassRoomList("");
+            return View(model);
+        }
+
+
 
 
         public ActionResult RegsiterLogin(string redirect_uri = null)
@@ -112,6 +119,16 @@ namespace KeZhan.Controllers
         }
 
 
+        public ActionResult QueryClassRoomList(string strlike,string strCity = null)
+        {
+            if (string.IsNullOrEmpty(strCity))
+            {
+                strCity = "上海";
+            }
+            ClassRoomListModel model = ClassRoomBll.QueryClassRoomList(strlike);
+             return View(model);
+        }
+
 
         public ActionResult ClassRoomList(string strCity = null)
         {
@@ -195,7 +212,7 @@ namespace KeZhan.Controllers
 
             if (model.MediaList == null || model.MediaList.Count <= 0)
             {
-                return RedirectToAction("Message", "Home", new { strMessage = "视频加载失败" });
+                return RedirectToAction("Message", "Open", new { strMessage = "视频加载失败" });
             }
             else
             {
@@ -395,6 +412,11 @@ namespace KeZhan.Controllers
             }
         }
 
-
+        public ActionResult Message(string strMessage)
+        {
+            ResponseBaseModel model = new ResponseBaseModel();
+            model.strMsg = strMessage;
+            return View(model);
+        }
     }
 }

@@ -317,6 +317,32 @@
     }
 
     function OpenClassRoom(iCourdeID) {
+
+        $.ajax({
+            url: "/LoginRequest/GetBrowserVersions",
+            type: "Post",
+            success: function (rst) {
+
+                if (rst.iResult >= 0) {
+                    ConfirmOpenClassRoom(iCourdeID)
+
+                } else if (rst.iResult == -9999) {
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                } else {
+                    if (confirm(rst.strMsg)) {
+                        ConfirmOpenClassRoom(iCourdeID)
+                    } else {
+                        newWindow.close();
+                    }
+                }
+            }
+
+        });
+       
+    }
+
+    function ConfirmOpenClassRoom(iCourdeID)
+    {
         //打开一个不被拦截的新窗口
         var newWindow = window.open();
         $.ajax({
@@ -330,7 +356,7 @@
                     newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     newWindow.close();
                     alert(rst.strMsg);

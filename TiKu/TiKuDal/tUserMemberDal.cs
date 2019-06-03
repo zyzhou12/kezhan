@@ -157,12 +157,12 @@ namespace TiKu.Dal
                             left join tUser u on u.fUserName=um.fMemberUserName
                             left join tTeachValid v on v.fUserName=u.fUserName
                             inner join tTeacherValidDetail vd on v.fid=vd.fTeacherValidID WHERE (1=1)  
-                            AND um.fUserName=@UserName  AND um.fStatus=2 and vd.fStatus='已审核'  AND (vd.fPharse>=@Pharse or @Pharse='')  AND (vd.fSubject=@Subject or @Subject='')
+                            AND um.fUserName=@UserName  AND um.fStatus=2 and vd.fStatus='已审核'  AND (vd.fPharse>=@Pharse or @Pharse='')  AND (vd.fSubject=@Subject or @Subject='' or vd.fPharse=4)
                             union all
                             select u.fNickName+'-'+u.fMobile as MemberName,u.fHeadImg as MemberHead,u.fUserName from tUser u 
                             left join tTeachValid v on v.fUserName=u.fUserName
                             inner join tTeacherValidDetail vd on v.fid=vd.fTeacherValidID WHERE (1=1)  
-                            AND u.fUserName=@UserName   and vd.fStatus='已审核'  AND (vd.fPharse>=@Pharse or @Pharse='')  AND (vd.fSubject=@Subject or @Subject='')  
+                            AND u.fUserName=@UserName   and vd.fStatus='已审核'  AND (vd.fPharse>=@Pharse or @Pharse='')  AND (vd.fSubject=@Subject or @Subject='' or vd.fPharse=4)  
                             )A");
 
             lstParam.Add(new DBParam("@UserName", strUserName));

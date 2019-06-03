@@ -1,0 +1,127 @@
+﻿@model TiKuBll.Model.ClassRoomListModel
+
+@{
+    ViewBag.Title = "课站";
+}
+
+<footer id="footer" class="footer-style-3 text-center">
+    <div class="bgr-footer pt60"  >
+        <div class="container">
+            <div class="footer_top">
+                <div class="ot-heading row-20 mb40 text-center" >
+                    <img class="img-responsive img-center mb20" src="~/Content/images/home-3/footer/mail-footer-1.png" alt="">
+                    @*<h2>名师的私课与公开课尽在其中</h2>*@
+                    <p class="sub">名师的私课与公开课尽在其中</p>
+                </div>
+                <div class="mailchimp mb30">
+                    <div class="mailchimp-form">
+                            <input type="text" name="email" id="txtQueryLike" placeholder="输入老师手机号或老师名称或课程名称" class="input-text">
+                            <button class="awe-btn" onclick="QueryClassRoom()">搜索</button>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- ACTIVITI -->
+<section class="section-activiti bg-white">
+    <div class="container">
+        <div class="activiti">
+            <div class="activiti_content">
+                <div class="row" id="divClassRoom">
+                    @if (Model.classRoomList != null && Model.classRoomList.Count > 0)
+                    {
+                        foreach (var classRoom in Model.classRoomList)
+                        {
+                            <div class="col-md-4 col-xs-6">
+                                <div class="activiti_item">
+                                    <div class="img">
+                                        <a href="/Open/ClassRoomDetail?strClassRoomCode=@classRoom.fClassRoomCode" class="view-more">
+                                            <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@classRoom.fCoverImg?x-oss-process=style/width" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="text">
+                                        <h2 style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">
+                                            @if (classRoom.fType == "Live")
+                                            {
+                                                <label>[直播]</label>
+                                            }
+                                            else
+                                            {
+                                                <label>[录播]</label>
+                                            }
+                                            <a href="#">@classRoom.fClassRoomTitle</a>
+                                        </h2>
+                                        <p style="height:40px; display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp:2;overflow: hidden;">
+
+                                            @Html.Raw(Html.Encode(classRoom.fInfo).Replace("\n", "<br/>").Replace(" ", "&nbsp;&nbsp;"))
+
+                                        </p>
+                                        <br />
+                                        @if (classRoom.fType == "Live")
+                                        {
+                                            <span>开课时间：@classRoom.fClassRoomDate.ToShortDateString()</span>
+                                        }
+                                        else
+                                        {
+                                            <span>有效天数：@classRoom.fEffectDay 天</span>
+                                        }
+                                        <br />
+                                        <span>讲师：@classRoom.TeacherName</span>
+                                        <h2>￥ @classRoom.fPrice.ToString()</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+
+                        <div class="col-md-4 col-xs-6">
+                            <div class="activiti_item">
+                                <div class="img">
+                                    <a href="#" class="view-more">
+                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/ClassRoom-bg.jpg?x-oss-process=style/title" alt="" />
+                                    </a>
+                                </div>
+                                <div class="text">
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END / ACTIVITI -->
+
+
+<script type="text/javascript">
+    function DoQuery()
+    {
+        if($("#txtQueryLike").val()=="")
+        {
+            alert("请输入搜索条件");
+        } else {
+            window.location.href = "/open/QueryClassRoomList?strlike=" + $("#txtQueryLike").val();
+        }
+    }
+
+
+    function QueryClassRoom() {
+        $.ajax({
+            url: "/Query/QueryLikeClassRoom",
+            type: this.method,
+            data: { "strlike": $("#txtQueryLike").val() },
+            success: function (msg) {
+                $('#divClassRoom').html(msg);
+            }
+        });
+
+    }
+</script>

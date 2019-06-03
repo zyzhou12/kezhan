@@ -11,6 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>=====课站===</title>
     <link rel="stylesheet" href="../../Content/main.css?v=2.2" />
+
     <link rel="stylesheet" href="../../Content/iconfont.css?v=1.4" />
     <script src="../../Scripts/ketang/vue.js"></script>
     <script src="../../Scripts/ketang/vue-toasted.js"></script>
@@ -649,13 +650,13 @@
                             }
                         </div>
                     </div>*@
-
-                <div class="m-netcall" style=" overflow: auto" id="divVideo">
+                
+                <div class="m-netcall" style="overflow: auto; overflow-y:scroll;" id="divVideo">
                     <div class="m-netcall-video test_ans">
                         <div class="video-name">
                             @Model.NickName
                         </div>
-                        <div class="m-video" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIsAAABoBAMAAAAz5x7gAAAAFVBMVEV+hY1qc31ye4RtdoB4gIlxeIJ2foaTZrHFAAABPUlEQVRYw+3XzU6DQBTF8Qrougeka5rovsS6L2/QSXwAjO//Di5MPLZICPNPM4vO7wFOmDsf97LJsizL7sXT65ua9xeY8qUfzUhS9vrVxad8Shb9PY/6q42N6XXhEJdS6lITFxN05Rx1YnRtFxPzoAmwJriqSlPP5NBYi0pj6CLYSG6ldTkmx+SYxDFB4s9fFfSvD7Qk60hzsR1pmNagh9gSxBSaU2/W0JztqphBM04RrZe33wJVxgayJCvJ2bOCr4nPNwYODR7apgayUVagChsqje1nHlA4i7Yp/mCsRDfBevIxVqDdtoEdPVfHlckxCyVOuOFVL9kxNiZM3r5kD0UV8OTHm69TaA4fIb3Ts46oRdlIlmQ1GtGtIx9jNaqMnWLa09SBrMlqNOjbitLQoxO06LyiwrDGWra9Vcw3whiEijedstUAAAAASUVORK5CYII=);">
+                        <div class="m-video" >
                             <video onclick="maxVideo(this)" id="local_video" muted="true" class="videostyle"
                                    autoplay playsinline></video>
                         </div>
@@ -773,23 +774,22 @@
         </div>
     </div>
 
-
-
-
     <!-- WebRTC SDK -->
-    <script src="https://sqimg.qq.com/expert_qq/webrtc/2.6.2/WebRTCAPI.min.js"></script>
+    <script src="https://sqimg.qq.com/expert_qq/webrtc/2.6.8/WebRTCAPI.min.js"></script>
     <!-- WebIM SDK -->
     <script src="https://sqimg.qq.com/expert_qq/webim/1.7.1/webim.min.js"></script>
+    <!-- 白板SDK -->
+    <script src="https://sqimg.qq.com/expert_qq/edu/2.4.0/board_sdk.mini.js"></script>
+
     <!-- COS SDK -->
     <script src="https://sqimg.qq.com/expert_qq/cos/5.0.5/cos.mini.js"></script>
-    <!-- 白板SDK -->
-    <script src="https://sqimg.qq.com/expert_qq/edu/2.5.0/board_sdk.mini.js"></script>
-    <script src="https://sqimg.qq.com/expert_qq/cos/5.0.0/cos.mini.js"></script>
-    <script src="https://sqimg.qq.com/expert_qq/cos/5.0.0/cos.mini.js"></script>
     <!-- TIC SDK -->
     <script src="https://sqimg.qq.com/expert_qq/TICSDK/1.4.0/TICSDK.mini.js"></script>
 
-    <script src="../../Scripts/ketang/kezhan.js?v=1.2"></script>
+
+   
+
+    <script src="../../Scripts/ketang/kezhan.js?v=1.3"></script>
 </body>
 <script type="text/javascript" src="../../Scripts/js/lib/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">

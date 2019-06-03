@@ -27,13 +27,14 @@ namespace KeZhan.Controllers
             Code.Fun.SetSessionUserInfo(this, userInfo);
             if (strRole == "Teacher")
             {
-                return RedirectToAction("MyClassRoomList", "Start", new { strType = "正在上" });
+               // return RedirectToAction("MyClassRoomList", "Start", new { strType = "正在上" });
+                return RedirectToAction("classroommanager", "classroom");
             }
             else
             {
-                return RedirectToAction("ClassRoomList", "Open");
+              //  return RedirectToAction("ClassRoomList", "Open");
+                return RedirectToAction("query", "Open");
             }
-
         }
 
 

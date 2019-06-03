@@ -144,6 +144,7 @@
 
 
                             <a id="aLogin" href="/User/DoUpdateNowRole?strRole=Student">学生端</a>
+    
 
 
                             <a href="../message/MessageList">系统消息<span id="spanNum"></span></a>
@@ -185,7 +186,7 @@
                     <nav class="header_menu">
                         <ul class="menu">
 
-
+                            <li @if (controller.ToLower() == "open" && action.ToLower() == "query") { <text> class="current-menu-item" </text>               }><a href="../Open/Query">课程搜索</a></li>
 
                             <li @if (controller.ToLower() == "start") { <text> class="current-menu-item" </text>               }>
                                 <a href="#">上课<span class="fa fa-caret-down"></span></a>
@@ -274,7 +275,7 @@
         <section class="section-video bg-23 mt100" id="secCheckRTC" style="display:none;">
             <a class="btn-play" href="#modal-video-1"></a>
             <div id="modal-video-1" onclick="hideCheckRtc()" class="modal-video opened" data-video="" data-query-string="ecver=1&amp;autoplay=1&amp;showinfo=0&amp;controls=0&amp;modestbranding=1" src="">
-                <iframe src="https://www.qcloudtrtc.com/webrtc-samples/abilitytest/index.html?ecver=1&amp;autoplay=1&amp;showinfo=0&amp;controls=0&amp;modestbranding=1" allowfullscreen="" width="100%" height="400" frameborder="0"></iframe>
+                <iframe id="iframeWindow" src="https://www.qcloudtrtc.com/webrtc-samples/abilitytest/index.html?ecver=1&amp;autoplay=1&amp;showinfo=0&amp;controls=0&amp;modestbranding=1" allowfullscreen="" width="100%" height="400" frameborder="0"></iframe>
             </div>
         </section>
         <!-- FOOTER -->
@@ -317,7 +318,8 @@
                                     <li><a href="/html/QAInfo">常见问题</a></li>
                                     <li><a href="/html/WebInfo">服务协议</a></li>
                                     <li><a href="/html/About">关于</a></li>
-                                    <li><a href="#" onclick="showCheckRtc()">环境测试</a></li>
+                                    @*<li><a href="#" onclick="showCheckRtc()">环境测试</a></li>*@
+                                    <li><a href="https://www.qcloudtrtc.com/webrtc-samples/abilitytest/index.html" target="_blank">环境测试</a></li>
                                     <li><a href="https://mp.weixin.qq.com/s/qOPXEi30Dh0tSQGCITp-GA">操作说明</a></li>
                                 </ul>
                             </div>
@@ -434,9 +436,13 @@
         }
 
         function hideCheckRtc() {
+            $("#iframeWindow").remove();
             $("#secCheckRTC").hide();
         }
-        function showCheckRtc() {
+        function showCheckRtc(srcurl) {
+
+            $("#modal-video-1").html("<iframe id=\"iframeWindow\" src=\"" + srcurl + "\" allowfullscreen=\"\" width=\"100%\" height=\"400\" frameborder=\"0\"></iframe>");
+
             $("#secCheckRTC").show();
         }
 
@@ -493,7 +499,31 @@
 
     </script>
     <script type="text/javascript">
+      
+
+
+        var elementFileId = "";
+        var elementSaveID = "";
+        var elementImgID = "";
+
+        var uploadType = "";
+
+
+
+
+
+
         function ChooseFileType(fileType) {
+            var chooseResourcetype = "";
+            if (uploadType == "file") {
+                chooseResourcetype = "ClassRoomCover";
+            } else if (uploadType == "media") {
+                chooseResourcetype = "ClassRoom";
+            } else if (uploadType == "document") {
+                chooseResourcetype = "CourseDocument";
+            }
+
+
             if (fileType == "Web") {
                 $("#fileWebCourse").show();
                 $("#fileUploadContent").hide();
@@ -501,11 +531,12 @@
                 $.ajax({
                     url: "/LoginQuery/QueryUploadFileList",
                     type: this.method,
-                    data: { "strType": "" },
+                    data: { "strType": chooseResourcetype },
                     success: function (msg) {
                         if (msg.iResult == "-9999") {
                             alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                         } else {
+
                             $('#divFileList').html(msg);
                         }
                     }
@@ -518,11 +549,7 @@
 
 
 
-        var elementFileId = "";
-        var elementSaveID = "";
-        var elementImgID = "";
 
-        var uploadType = "";
         function UploadFile(username, filetype, elementid, saveid, obj) {
             uploadType = "file";
             elementFileId = elementid;
@@ -568,7 +595,7 @@
 
         function ConfirmFile() {
             var resourceCode = $("input[type='radio']:checked").val();
-            
+            alert(resourceCode)
             if (uploadType == "file") {
                 if (elementFileId != "") {
                     $("#" + elementFileId).val(resourceCode);

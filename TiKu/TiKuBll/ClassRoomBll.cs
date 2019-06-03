@@ -716,6 +716,46 @@ namespace TiKuBll
             listModel.classRoomList = modelList;
             return listModel;
         }
+
+        public static ClassRoomListModel QueryClassRoomList(string strLike)
+        {
+            List<tClassRoomEntity> list = tClassRoomDal.QueryClassRoomList(strLike);
+
+            List<ClassRoomModel> modelList = new List<ClassRoomModel>();
+            foreach (tClassRoomEntity entity in list)
+            {
+                ClassRoomModel model = new ClassRoomModel();
+                model.fBasePrice = entity.fBasePrice;
+                model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassRoomDate = entity.fClassRoomDate;
+                model.fClassRoomTitle = entity.fClassRoomTitle;
+                model.fCoverImg = entity.fCoverImg;
+                model.fDeadLineDate = entity.fDeadLineDate;
+                model.fDesc = entity.fDesc;
+                model.fGrade = entity.fGrade;
+                model.fInfo = entity.fInfo;
+                model.fIsRecord = entity.fIsRecord;
+                model.fIsReturn = entity.fIsReturn;
+                model.fReturnType = entity.fReturnType;
+                model.fReturnRule = entity.fReturnRule;
+                model.fKnowLedge = entity.fKnowLedge;
+                model.fMaxNumber = entity.fMaxNumber;
+                model.fPayType = entity.fPayType;
+                model.fPharse = entity.fPharse;
+                model.fPrice = entity.fPrice;
+                model.fStatus = entity.fStatus;
+                model.fSubject = entity.fSubject;
+                model.fTecharUserName = entity.fTecharUserName;
+                model.fType = entity.fType;
+                model.fFeeLength = entity.fFeeLength;
+                model.fEffectDay = entity.fEffectDay;
+                model.TeacherName = entity.TeacherName;
+                modelList.Add(model);
+            }
+            ClassRoomListModel listModel = new ClassRoomListModel();
+            listModel.classRoomList = modelList;
+            return listModel;
+        }
         
         public static ClassRoomListModel GettClassRoomList(string strCity, string strPharse, string strGrade, string strSubject)
         {

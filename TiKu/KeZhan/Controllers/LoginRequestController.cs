@@ -289,7 +289,7 @@ namespace KeZhan.Controllers
                     else
                     {
                         ConfigModel config = ManagerBll.GetSystemConfig("上海");
-                        decimal iDateLength = ResourceBll.GetResourceInfoByClassRoomCode(strClassRoomCode).fDateLength;
+                        decimal iDateLength = ResourceBll.GetResourceInfoByClassRoomCode(strClassRoomCode).fDateLength/60;
                         if(model.fPrice<iDateLength*config.fSourceFee)
                         {
                             response.iResult = -1;
@@ -1174,6 +1174,30 @@ namespace KeZhan.Controllers
 
         #region Home
 
+        public JsonResult GetBrowserVersions()
+        {
+            string browserVersions = string.Empty;
+            HttpBrowserCapabilitiesBase hbc = HttpContext.Request.Browser;
+            string browserType = hbc.Browser.ToString();     //获取浏览器类型
+            string browserVersion = hbc.Version.ToString();    //获取版本号
+         
+            ResponseBaseModel response = new ResponseBaseModel();
+            if (browserType == "Chrome" || browserType == "Saifer" || browserType == "QQ")
+            {
+                response.iResult = 0;
+            }
+            else
+            {
+                response.iResult = -1;
+                response.strMsg ="您当前使用的浏览器版本为："+ browserType + browserVersion+",在线课堂可能会出现音视频问题，推荐使用Chrome、Saifer、QQ浏览器，确认要继续吗？";
+            }
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
+
         public JsonResult OpenClassRoom(int iCourseID)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
@@ -1338,6 +1362,9 @@ namespace KeZhan.Controllers
         #endregion
 
         #region File
+
+      
+
         public JsonResult UploadFileSuccess(string strkey, string strFileType,string strFileName)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);

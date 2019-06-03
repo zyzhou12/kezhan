@@ -76,8 +76,8 @@ namespace TiKuService
 
                     // xyk meet hz sy sxgg
                     string connstr, connbasestr, strSql;
-                    connstr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan2;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
-                    connbasestr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan2;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
+                    connstr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
+                    connbasestr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
 
 
                     SqlConnection conn;
