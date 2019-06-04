@@ -118,10 +118,10 @@ namespace KeZhan.Controllers
                 response.iResult = -1;
                 response.strMsg = "请选择支付类型";
             }
-            else if (model.fType == "Recorded" && model.fDeadLineDate < DateTime.Now)
+            else if (model.fType == "Recorded" && model.fDeadLineDate < DateTime.Now.AddDays(7))
             {
                 response.iResult = -1;
-                response.strMsg = "销售截止时间必须大于当天";
+                response.strMsg = "销售截止时间必须大于7天";
             }
             else if (model.fType == "Recorded" && model.fEffectDay < 0)
             {
