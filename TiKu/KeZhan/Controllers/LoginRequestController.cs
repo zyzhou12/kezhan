@@ -293,7 +293,8 @@ namespace KeZhan.Controllers
                         if(model.fPrice<iDateLength*config.fSourceFee)
                         {
                             response.iResult = -1;
-                            response.strMsg = "价格小于平台费用(￥" + (iDateLength * config.fSourceFee).ToString() + ")，不能发布";
+                            
+                            response.strMsg = "根据本课程所有课时的视频时长，平台收费是（￥" + Math.Round(iDateLength * config.fSourceFee, 2).ToString() + "），因您当前设置的录播销售价小于平台收费，不能发布本课程，请修改销售价格后再发布。";
                         }
                     }
                 }
@@ -1301,12 +1302,19 @@ namespace KeZhan.Controllers
                     {
                         decimal userAccount = UserBll.GetUserAccountAmount(userInfo.fUserName);
                         decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(Convert.ToInt32(strCourseID));
-
+                        decimal leftFlow = UserBll.GetUserLeftFlow(userInfo.fUserName);
 
                         if (userAccount < classRoomFlow && strRole == "Teacher")
                         {
                             response.iResult = -1;
-                            response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString() + "分钟。请先去购买流量";
+                            if (leftFlow > 0)
+                            {
+                                response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量欠费" + leftFlow.ToString() + "分钟。请先去购买流量";
+                            }
+                            else
+                            {
+                                response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString() + "分钟。请先去购买流量";
+                            }
                         }
                         else
                         {

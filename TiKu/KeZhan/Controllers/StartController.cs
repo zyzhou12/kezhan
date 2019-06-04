@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TiKu.Bll;
 using TiKuBll;
 using TiKuBll.Model;
 
@@ -109,6 +110,7 @@ namespace KeZhan.Controllers
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ClassRoomModel model= ClassRoomBll.GettClassRoomByOnLine(userInfo.fUserName);
+            model.LeftFlow = UserBll.GetUserAccountAmount(userInfo.fUserName) - UserBll.GetUserLeftFlow(userInfo.fUserName); ;
             return View(model);
         }
 

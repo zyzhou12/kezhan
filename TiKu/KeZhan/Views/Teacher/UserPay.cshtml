@@ -26,6 +26,7 @@
                         <!-- WIDGET RECENT POST HAS THUMBNAIL -->
                         <div class="widget widget_recent_entries has_thumbnail">
                             <h4 class="widget-title">流量购买</h4>
+                            
                             <div class="guest-book_item guest-book_item-2">
                                 @*<span class="icon lotus-icon-quote-left"></span>
                                     <div class="avatar">
@@ -55,6 +56,8 @@
 
 
                             <div class="text-center">
+                                <span>当前流量：@Model.LeftFlow</span>
+                                <br />
                                 @*<h4>流量购买 </h4>
 
                                     <p>
@@ -201,7 +204,7 @@
                         $("#myBGDiv").show();
                         $("#divPayCode").show();
 
-                        setTimeout("GetFlowStoredStatus('" + bookingno + "')", 2000);
+                        setTimeout("GetFlowStoredStatus('" + bookingNo + "')", 2000);
                     } else {
                         alert(rst.strMsg);
                     }
@@ -215,7 +218,6 @@
                 type: "POST",
                 dataType: "json",
                 success: function (rst) {
-
                     if (rst.iResult >= 0) {
                         $("#divQrCode").html(rst.strMsg);
                         $("#divQrCode").show();

@@ -55,6 +55,7 @@ namespace TiKuBll.Model
     public List<TeacherValidDetailModel> validList { get; set; }
 
     public ClassRoomAccountModel account { get; set; }
+    public decimal LeftFlow { get; set; }
   }
 
   public class ClassRoomListModel

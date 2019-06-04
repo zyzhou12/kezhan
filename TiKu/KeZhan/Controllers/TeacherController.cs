@@ -34,6 +34,8 @@ namespace KeZhan.Controllers
             model.UserName = userInfo.fUserName;
             model.OpenID = userInfo.fOpenID;
             model.ClassFee = config.fClassFee;
+
+            model.LeftFlow = UserBll.GetUserAccountAmount(userInfo.fUserName) - UserBll.GetUserLeftFlow(userInfo.fUserName); 
             return View(model);
         }
 

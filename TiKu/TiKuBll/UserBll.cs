@@ -591,6 +591,8 @@ namespace TiKu.Bll
             return entity.fStatus;
         }
 
+     
+
 
         public static string UserPay(string strUserName, string strPayType,string strType, string strBookingNo, decimal iAmount, string strSystem)
         {
@@ -687,12 +689,25 @@ namespace TiKu.Bll
             return i;
         }
 
+        /// <summary>
+        /// 流量账户剩余
+        /// </summary>
+        /// <param name="strUserName"></param>
+        /// <returns></returns>
         public static Decimal GetUserAccountAmount(string strUserName)
         {
             Decimal AccountAmount = tFlowStoredDal.GetUserFlowAccount(strUserName);
             return AccountAmount;
         }
-
+        /// <summary>
+        /// 流量欠费
+        /// </summary>
+        /// <param name="strUserName"></param>
+        /// <returns></returns>
+        public static decimal GetUserLeftFlow(string strUserName)
+        {
+            return tFlowStoredDal.GetUserFlowOwe(strUserName);
+        }
 
 
         public static UserAccountListModel GetUserAccountData(string strUserName, string strTradingType, string strSystem, string strType, DateTime beginDate, DateTime endDate)

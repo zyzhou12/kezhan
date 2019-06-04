@@ -34,16 +34,17 @@
                         <div class="reservation-billing-detail" id="panelData">
                             <p style=" font-size:12px;">
                                 在线课堂可以随时建立，适用于在线辅导、讨论和会议等，从您进入课堂开始，按参与者停留课堂的时长计费。您可以告知学员课堂号加入在线课堂，请保证足够的流量余额，以免影响您的课堂使用。
-
+                             
 
                             </p>
-
+                            <br />
+                            <h5>当前流量：@Model.LeftFlow </h5>
 
                             <label>课程名称<sup>*</sup></label>
                             <input type="text" id="txtDictTitle" value="@Model.fClassRoomTitle" class="input-text">
 
 
-                            <label>最大时长</label>
+                            <label>最大时长<span style="font-size:12px;">(分钟)</span></label>
                             <select style="width:100%; height:42px; " id="txtDateLength">
                                 <option value="10">10</option>
                                 <option value="30">30</option>
@@ -53,7 +54,7 @@
                                 <option value="120">120</option>
                                 <option value="180">180</option>
                             </select>
-                            <label>价格<sup>*</sup>(您向学员收取的费用)</label>
+                            <label>价格<sup>*</sup><span style="font-size:12px;">(您向学员收取的费用)</span></label>
                             <input type="number" id="txtPrice" value="0" class="input-text">
 
 

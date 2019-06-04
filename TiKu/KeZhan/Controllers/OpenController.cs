@@ -68,7 +68,7 @@ namespace KeZhan.Controllers
                     Session.Abandon();
                     break;
             }
-            return RedirectToAction("ClassRoomList", "Open");
+            return RedirectToAction("query", "Open");
         }
 
 

@@ -72,6 +72,16 @@ namespace TiKu.Dal
             return Convert.ToDecimal(obj);
         }
 
+        public static Decimal GetUserFlowOwe(string strUserName)
+        {
+            string strSql = @"select isnull(sum(fLeftOwe),0) from tuserowe where fUserName=@UserName";
+            List<DbParameter> lstParam = new List<DbParameter>();
+            lstParam.Add(new DBParam("@UserName", strUserName));
+
+            object obj = DBHelper.ExecuteScalar("TiKu", strSql, lstParam);
+            return Convert.ToDecimal(obj);
+        }
+
         public static tFlowStoredEntity GettFlowStored(string strStoredNo)
         {
             tFlowStoredEntity rst = null;
