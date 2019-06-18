@@ -162,7 +162,7 @@
                                     <button class="awe-btn awe-btn-13" id="btnPay" data-reveal-id="divPayCode" onclick="UserPay('@Model.fBookingNo',@Model.fAmount)">支付订单</button>
                                     //}
                                 }
-                                else if (Model.fIsReturn && Model.fIsPay && Model.fStatus == "已支付" && Model.ClassRoom.fStatus != "结算")
+                                else if (Model.fIsReturn && Model.fIsPay && Model.fStatus == "已支付" && Model.ClassRoom.fType == "Live" && Model.ClassRoom.fStatus != "结算")
                                 {
                                     if ((Model.ClassRoom.fReturnType == "课前" && Model.ClassRoom.fClassRoomDate > DateTime.Now) || Model.ClassRoom.fReturnType == "随时")
                                     {

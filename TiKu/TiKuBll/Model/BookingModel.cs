@@ -42,6 +42,7 @@ namespace TiKuBll.Model
     public class BookingListModel
     {
         public System.String fClassRoomCode { get; set; }
+        public System.String fType { get; set; }
         public System.String fClassType { get; set; }
         public System.String fPayType { get; set; }
 

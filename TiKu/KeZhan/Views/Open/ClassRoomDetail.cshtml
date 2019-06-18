@@ -162,11 +162,18 @@
                                     }
 
                                 </div>
+                                <br />
+                                <br />
+                                <br />
 
+                                <a href="#" onclick="ShowPanel('course')" class="awe-btn awe-btn-2">课程信息</a>
+                                <a href="#" onclick="ShowPanel('buy')" class="awe-btn awe-btn-3">购买须知</a>
+                                <a href="#" onclick="ShowPanel('desc')" class="awe-btn awe-btn-4">上课须知</a>
+                                @*<a href="#" onclick="ShowPanel('')" class="awe-btn awe-btn-5">相关课程</a>*@
 
                                 @if (Model.courseList != null)
                                 {
-                                    <div class="reservation-room_package" style=" margin-top:30px;">
+                                    <div class="reservation-room_package" id="panelCourse" style=" margin-top:30px;">
 
                                         <a data-toggle="collapse" href="#reservation-room_package-1" class="reservation-room_package-more" aria-expanded="true">章节</a>
 
@@ -177,111 +184,111 @@
                                             {
                                                 foreach (var course in Model.courseList)
                                                 {
-                                                    <div class="reservation-package_item">
-                                                        @*
-                                                            <div class="reservation-package_img">
-                                                                <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
-                                                            </div>*@
+                                            <div class="reservation-package_item">
+                                                @*
+                                                    <div class="reservation-package_img">
+                                                        <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
+                                                    </div>*@
 
-                                                        <div class="reservation-package_text">
+                                                <div class="reservation-package_text">
 
-                                                            <h4><a href="#">@course.fDictTitle</a></h4>
-                                                            <p>
-                                                                @course.fCourseTitle
-                                                               
-                                                                    <br />
-                                                                    <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("yyyy-MM-dd HH:mm")</span>
-                                                                
-                                                            </p>
-                                                            @if (Model.IsBuy > 0)
+                                                    <h4><a href="#">@course.fDictTitle</a></h4>
+                                                    <p>
+                                                        @course.fCourseTitle
+
+                                                        <br />
+                                                        <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("yyyy-MM-dd HH:mm")</span>
+
+                                                    </p>
+                                                    @if (Model.IsBuy > 0)
                                                             {
-                                                                <div class="reservation-package_book-price">
-                                                                    @if (course.CourseStatus == 1)
+                                                            <div class="reservation-package_book-price">
+                                                                @if (course.CourseStatus == 1)
                                                                     {
-                                                                        <a href="#" class="awe-btn awe-btn-default">未开始</a>
+                                                                    <a href="#" class="awe-btn awe-btn-default">未开始</a>
                                                                     }
                                                                     else if (course.CourseStatus == 2)
                                                                     {
-                                                                        <a href="#" class="awe-btn awe-btn-default">已结束</a>
+                                                                    <a href="#" class="awe-btn awe-btn-default">已结束</a>
                                                                     }
                                                                     else if (course.CourseStatus == 3)
                                                                     {
                                                                         if (Model.fStatus == "发布")
                                                                         {
-                                                                            <a href="#" onclick="CheckBrowser(@course.fID)" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
+                                                                    <a href="#" onclick="CheckBrowser(@course.fID)" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
                                                                         }
                                                                     }
-                                                                    else if (course.CourseStatus == 4)
+                                                                else if (course.CourseStatus == 4)
+                                                                {
+                                                                    if (Model.fStatus != "结算")
                                                                     {
-                                                                        if (Model.fStatus != "结算")
+                                                                        if (!string.IsNullOrEmpty(course.fFileCoverUrl))
                                                                         {
-                                                                            if (!string.IsNullOrEmpty(course.fFileCoverUrl))
-                                                                            {
-                                                                                <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">回看</a>
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                                            <a href="#" onclick="showCheckRtc('/ClassRoom/OpenClassRoom?iCourseID=@course.fID')" class="awe-btn awe-btn-default">回看</a>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                    <a href="#" class="awe-btn awe-btn-default">转码中</a>
                                                                             }
                                                                         }
                                                                     }
 
-                                                                    @if (!string.IsNullOrEmpty(course.fDocoumentUrl) && Model.fStatus != "结算")
+                                                                @if (!string.IsNullOrEmpty(course.fDocoumentUrl) && Model.fStatus != "结算")
                                                                     {
-                                                                        <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
+                                                                    <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
                                                                     }
-                                                                </div>
+                                                            </div>
                                                             }
 
-                                                        </div>
-                                                        <br />
+                                                </div>
+                                                <br />
 
-                                                    </div>
+                                            </div>
                                                 }
                                             }
                                             else
                                             {
                                                 foreach (var course in Model.courseList)
                                                 {
-                                                    <div class="reservation-package_item">
-                                                        @*
-                                                            <div class="reservation-package_img">
-                                                                <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
-                                                            </div>*@
+                                            <div class="reservation-package_item">
+                                                @*
+                                                    <div class="reservation-package_img">
+                                                        <a href="#"><img src="../../Content/images/reservation/package/img-1.jpg" alt=""></a>
+                                                    </div>*@
 
-                                                        <div class="reservation-package_text">
-                                                            <div class="reservation-package_img">
-                                                                <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" alt="">
+                                                <div class="reservation-package_text">
+                                                    <div class="reservation-package_img">
+                                                        <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" alt="">
 
-                                                            </div>
-                                                            <h4><a href="#">@course.fDictTitle</a></h4>
-                                                            <p>
-                                                                @course.fCourseTitle
-                                                                
-                                                            </p>
-                                                            @if (Model.IsBuy > 0)
+                                                    </div>
+                                                    <h4><a href="#">@course.fDictTitle</a></h4>
+                                                    <p>
+                                                        @course.fCourseTitle
+
+                                                    </p>
+                                                    @if (Model.IsBuy > 0)
                                                             {
-                                                                <div class="reservation-package_book-price">
-                                                                    <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">开始上课</a>
+                                                            <div class="reservation-package_book-price">
+                                                                <a href="#" onclick="showCheckRtc('/ClassRoom/OpenClassRoom?iCourseID=@course.fID')" class="awe-btn awe-btn-default">开始上课</a>
 
-                                                                    @if (!string.IsNullOrEmpty(course.fDocoumentUrl) && Model.fStatus != "结算")
+                                                                @if (!string.IsNullOrEmpty(course.fDocoumentUrl) && Model.fStatus != "结算")
                                                                     {
-                                                                        <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
+                                                                    <a href="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@course.fDocoumentUrl" target="_blank" class="awe-btn awe-btn-default">下载资料</a>
                                                                     }
-                                                                </div>
+                                                            </div>
                                                             }
                                                             else
                                                             {
-                                                                <div class="reservation-package_book-price">
-                                                                    <a href="#" onclick="showCheckRtc('/Open/OpenFreeClassRoom?iCourseID=@course.fID')" class="awe-btn awe-btn-default">免费试看</a>
+                                                            <div class="reservation-package_book-price">
+                                                                <a href="#" onclick="showCheckRtc('/Open/OpenFreeClassRoom?iCourseID=@course.fID')" class="awe-btn awe-btn-default">免费试看</a>
 
-                                                                </div>
+                                                            </div>
                                                             }
 
-                                                        </div>
-                                                        <br />
+                                                </div>
+                                                <br />
 
-                                                    </div>
+                                            </div>
                                                 }
                                             }
                                             <!-- END / ITEM PACKAGE -->
@@ -293,18 +300,18 @@
                                                 {
                                                     if (desc.fType == "text")
                                                     {
-                                                        <span>@desc.fContent</span>
-                                                        <br />
+                                            <span>@desc.fContent</span>
+                                            <br />
                                                     }
                                                     else if (desc.fType == "img")
                                                     {
-                                                        <div class="reservation-room_img">
-                                                            <a href="#">
-                                                                <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@desc.fContent?x-oss-process=style/chang" alt="" />
-                                                            </a>
-                                                        </div>
+                                            <div class="reservation-room_img">
+                                                <a href="#">
+                                                    <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@desc.fContent?x-oss-process=style/chang" alt="" />
+                                                </a>
+                                            </div>
 
-                                                        <br />
+                                            <br />
                                                     }
                                                 }
                                             }
@@ -315,7 +322,46 @@
                                     </div>
                                 }
 
-                            </div>
+                                <div class="reservation-room_package" id="panelBuy" style=" margin-top:30px; display:none">
+                                    <h5>购买须知：</h5>
+                                    <p>
+                                        直播课程：<br />
+                                        直播课程随时退是指最后一个课时开始前1小时可以退未上课的课程；<br />
+                                        课前退是指在第一个课时开始前1小时可以退全部课程；<br />
+                                        不可退是指购买后就不可退；<br />
+                                        退课后，所退课程将在“我的课程”中删除；<br />
+
+                                        录播课程：<br />
+                                        购买后均不可退；<br />
+                                        播放：在购买后的有效期内无限次播放；<br />
+
+                                        课程费用开票：<br />
+                                        学员针对购买平台课程的发票要求，由老师和学员协商解决，课站平台作为教学平台，不提供学员任何课程发票。如果老师和协商不一致，可以在课程结束7天前发邮件到：zhaobing@aizhusoft.com；
+                                    </p>
+                                </div>
+                                <div class="reservation-room_package" id="panelDesc" style=" margin-top:30px; display:none">
+                                    <h5>设备要求：</h5>
+                                    <p>
+                                        PC环境：CPUi3及i3以上，内存4G及4G以上<br />
+                                        带宽：4M<br />
+                                        操作系统：Win7或以上、MacOS 10+<br />
+                                        推荐浏览器：Win : 谷歌（chrome）52+ 、QQ 10.2+；Mac: 谷歌47+、Safari 11+<br />
+                                        如果直播课要参与课堂连麦互动，请配置摄像头和麦克风（内置或外接）<br />
+
+                                        直播课程：<br />
+                                        如果有电子讲义，请在上课前下载电子讲义并预先阅读；<br />
+                                        按时在每个课时开始前进入课堂，老师一般会提前10分钟进入课堂，老师进入课堂后，学员即可进入课堂；<br />
+                                        如课程提供录播回看，在课程结束后7天内，无限次回看；<br />
+                                        课堂纪律和禁止事项：禁止在课堂发表《服务协议》不允许的内容，否则老师有权禁止发言直至取消听课资格。如果对老师讲课有异议，可以通过课堂的投诉功能投诉；<br />
+                                        录播课程：<br />
+                                        播放：在购买后的有效期内无限次播放；<br />
+                                        如果对录播课程有异议，请通过投诉给课站平台；<br />
+                                        版权声明：<br />
+                                        未经课站平台许可，对拷贝、录屏、反向工程、技术下载等手段获取课程视频等侵权行为，一经发现，课站平台有权进行封号处理，并保留进一步追究注册学员的法律责任，包括但不限于民事责任、刑事责任和行政责任。
+                                    </p>
+                                </div>
+
+                                </div>
                             <!-- END / ITEM -->
 
 
@@ -334,6 +380,18 @@
 
 </section>
 <script type="text/javascript">
+    function ShowPanel(panelDiv)
+    {
+        $(".reservation-room_package").hide();
+        if (panelDiv == "course") {
+            $("#panelCourse").show();
+        } else if (panelDiv == "buy") {
+            $("#panelBuy").show();
+        } else if (panelDiv == "desc") {
+            $("#panelDesc").show();
+        }
+    }
+
     function BuyOrder(classRoomCode) {
 
         $.ajax({

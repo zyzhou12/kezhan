@@ -1,7 +1,8 @@
 ﻿@model KeZhan.Models.FileModel
-           @{
-               Layout=null;
-           }
+@{
+    Layout = null;
+}
+
 @*@section otherHeadInfo {
       <script type="text/javascript" src="../../Scripts/ckplayer/ckplayer.js"></script>
     }
@@ -15,33 +16,39 @@
             </div>
         </div>
     </section>*@
-<html>
+
+@*<!DOCTYPE html>
+<html lang="en">
 <head>
-    <script type="text/javascript" src="../../Scripts/ckplayer/ckplayer.js?v=1.1"></script>
-    <script type="text/javascript" src="../../Scripts/js/lib/jquery-1.11.0.min.js"></script>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="../../Scripts/ckplayer/ckplayer.js?v=1.4"></script>
+    <title>免费试看</title>
 </head>
 <body>
 
-    <div class="videosamplex" style=" width: 100%;background-color: rgb(0, 0, 0);overflow: hidden;position: relative;">
-        <video id="videoplayer" src="#"></video>
+    <div class="videosamplex" style=" width: 100%;height: 380px;background-color: rgb(0, 0, 0);overflow: hidden;position: relative;">
+        <video id="videoplayer"  src="@Model.FileUrl"></video>
     </div>
 </body>
 </html>
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    var videoUrl="@Model.FileUrl";
+
         var videoObject = {
             container: '.videosamplex', //“#”代表容器的ID，“.”或“”代表容器的class
+            video:videoUrl,//视频地址
             variable: 'player', //该属性必需设置，值等于下面的new chplayer()的对象
-            poster: 'pic/wdm.jpg',
+            poster: '@Model.Name',
             mobileCkControls: true, //是否在移动端（包括ios）环境中显示控制栏
-            mobileAutoFull: false, //在移动端播放后是否按系统设置的全屏播放
+            mobileAutoFull: true, //在移动端播放后是否按系统设置的全屏播放
             h5container: '#videoplayer', //h5环境中使用自定义容器
-            loaded: 'loadedHandler',
-            video: '@Model.FileUrl'//视频地址
+            debug:true,
+            loaded: 'loadedHandler'
         };
         var player = new ckplayer(videoObject);
-   
+
+
         var elementLogin = null; //是否存在提示层
         var loginOrNo = false; //是否已登录，默认是没有登录
         var loginShow = false; //提示层是否是显示状态
@@ -153,5 +160,142 @@
             }
         }
 
+
+</script>*@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <title>Aliplayer功能展示</title>
+    <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css" />
+    <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js"></script>
+    <style type="text/css">
+        .vip-join {
+            color: #00c1de;
+        }
+
+        .vip_limit_content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .vip_limit_content .title {
+                font-size: 18px;
+                line-height: 36px;
+                color: #fff;
+                text-align: center;
+                width: 100%;
+            }
+
+        .vip_limit_button_box {
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .vip_limit_btn {
+            display: inline-block;
+            min-width: 100px;
+            position: relative;
+            background: #f60;
+            padding: 0 35px;
+            margin: 0px 5px 20px 5px;
+            border-radius: 38px;
+            font-size: 18px;
+            line-height: 38px;
+            color: #623A0C;
+            text-align: center;
+            background-image: linear-gradient(-135deg, #FBE8A8 0%, #F8E7AC 15%, #E2C078 100%);
+            cursor: pointer;
+        }
+
+        .vip_limit_close {
+            text-align: center;
+        }
+
+            .vip_limit_close span {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 36px;
+                background: rgba(165, 165, 165, 0.54);
+                border-radius: 50%;
+                font-size: 24px;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+    <div id="player-con" style="overflow:hidden"></div>
+    <script type="text/template" id="endPreviewTemplate">
+        <div class="vip_limit_content">
+            <div class="vip_limit_wrap">
+                <p class="title">购买后观看完整版</p>
+                <div class="vip_limit_button_box">
+                    <a class="vip_limit_btn">去购买</a>
+                </div>
+                <div class="vip_limit_close"><span class="vip_limit_close_btn">x</span></div>
+            </div>
+        </div>
+    </script>
+    <script>
+
+    var  source = "@Html.Raw(Model.FileUrl)";
+    var classRoomCode="@Model.ID";
+
+    var player = new Aliplayer({
+        id: "player-con",
+        source: source,
+        width: "100%",
+        height: "380px",
+        autoplay: true,
+        isLive: false,
+        components: [{
+            name: 'PreviewVodComponent',
+            type: AliPlayerComponent.PreviewVodComponent,
+            /**
+             * 试看组件共有三个参数: previewDuration, previewEndHtml, previewBarHtml
+             * previewDuration: 试看时长, 单位为秒, 如果不需要开启试看的话, 设置为0, 当开启会员或购买之后设置为0!
+             * previewEndHtml: 试看结束之后, 现在在播放器中间的 Dom 字符串或者父节点的 '#' + id, 默认为 null
+             * previewBarHtml: 播放器左下角, 提示试看时长之后的 Dom 字符串或者父节点的 '#' + id, 同样可自定义样式, 默认为 null
+             * tips: previewEndHtml, previewBarHtml 可以像例子中的那样, <script type="text/template" id="endPreviewTemplate"> 在 script 标签中插入html
+             * tips: previewEndHtml, previewBarHtml 也可以直接使用Dom字符串, 推荐使用 es6 的模板字符串可以很方便地插入Dom字符串
+             */
+            args: [@Model.FreeDateLength, '#endPreviewTemplate', '<a href="#" onclick="VideoBuy()" class="vip-join">购买后</a> 观看完整视频']
+        }]
+    }, function (player) {
+        console.log("播放器创建成功");
+
+        /* 可以在自定义的 Dom 字符串上注册点击事件, 包括可以弹出开启会员的弹窗之类的 */
+        var vip_limit_btn = document.querySelector('.vip_limit_btn')
+        vip_limit_btn.addEventListener('click', function () {
+            if(confirm('确认去购买吗?')){
+                VideoBuy();
+            }
+        })
+
+        var close_btn = document.querySelector('.vip_limit_close_btn')
+        close_btn.addEventListener('click', function () {
+            /* 可以调用试看组件的 closePreviewLayer 方法来关闭提示 */
+            player.getComponent('PreviewVodComponent').closePreviewLayer()
+        })
     });
-</script>
+
+    function VideoBuy()
+    {
+        window.close();
+        parent.window.BuyOrder(classRoomCode);
+    }
+    </script>
+</body>
+</html>

@@ -12,9 +12,9 @@
             <div class="gallery-cat activiti-cat ">
 
                 <ul class="list-inline">
-                  <li @if (Model.strClassType == "直播") { <text> class="active" </text>              }><a href="/Start/BuyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Live">直播</a></li>
+                  <li @if (Model.strClassType == "Live") { <text> class="active" </text>              }><a href="/Start/BuyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Live">直播</a></li>
 
-                    <li @if (Model.strClassType == "录播")
+                    <li @if (Model.strClassType == "Recorded")
                         { <text> class="active" </text>              }><a href="/Start/BuyClassRoomList?strStatus=@Model.strStatus&strPayType=@Model.strPayType&strType=@Model.strType&strClassType=Recorded">录播</a></li>
                    
                 </ul>

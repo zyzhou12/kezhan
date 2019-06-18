@@ -16,7 +16,7 @@ namespace KeZhan.Controllers
         //
         // GET: /Start/
 
-        public ActionResult BuyClassRoomList(string strStatus = null, string strPayType = null, string strType = null, string strClassType = "直播")
+        public ActionResult BuyClassRoomList(string strStatus = null, string strPayType = null, string strType = null, string strClassType = "Live")
         {
 
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);

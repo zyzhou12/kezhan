@@ -18,28 +18,21 @@
             <div class="row">
 
                 <!-- SIDEBAR -->
-                <div class="col-md-4 col-lg-3">
+                @*<div class="col-md-4 col-lg-3">
 
                     <div class="sidebar">
-
-
-                        <!-- WIDGET RECENT POST HAS THUMBNAIL -->
                         <div class="widget widget_recent_entries has_thumbnail">
                             <h4 class="widget-title">流量购买</h4>
                             
                             <div class="guest-book_item guest-book_item-2">
-                                @*<span class="icon lotus-icon-quote-left"></span>
-                                    <div class="avatar">
-                                        <img src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/@Model.TeacherHead?x-oss-process=style/head" alt="">
-                                    </div>
-                                    <h2>@Model.TeacherName</h2>*@
+                               
                                 <p>提示：购买的流量不可退，请注意有效期和购买合适的流量，每个课程的课时所需要的流量是（线下报名人数+在线支付人数+老师）*课时长短，购买的流量不可退，有效期自购买之日起12个月</p>
                                 <span></span>
                             </div>
                         </div>
                     </div>
 
-                </div>
+                </div>*@
                 <!-- END / SIDEBAR -->
                 <!-- CONTENT -->
                 <div class="col-md-8 col-lg-9">
@@ -56,13 +49,13 @@
 
 
                             <div class="text-center">
-                                <span>当前流量余额（分钟）：@Model.LeftFlow</span>
+                                <span style="font-size:24px; font-weight:bold;">当前流量余额（分钟）：@Model.LeftFlow</span>
                                 <br />
-                                @*<h4>流量购买 </h4>
+                                @*<h4>流量购买 </h4>*@
 
                                     <p>
-                                        提示：购买的流量不可退，请注意有效期和购买合适的流量，每个课程的课时所需要的流量是（线下报名人数+在线支付人数+老师）*课时长短，购买的流量不可退，有效期自购买之日起12个月?
-                                    </p>*@
+                                        购买须知：所购买的流量不可退，有效期自购买之日起12个月内有效。流量是老师和学员在课堂的合计时长（分钟），请购买合适数量的流量。
+                                    </p>
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10)">10分钟<br />￥ @Convert.ToString(Model.ClassFee * 10)</button>
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,30)">30分钟<br />￥ @Convert.ToString(Model.ClassFee * 30)</button>
                                 <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,45)">45分钟<br />￥ @Convert.ToString(Model.ClassFee * 45)</button>

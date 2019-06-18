@@ -3,7 +3,7 @@
 	<!--基本配置-->
 	<config>
 		<fullInteractive>true</fullInteractive><!--是否开启交互功能-->
-		<delay>1200</delay><!--延迟加载视频，单位：毫秒-->
+		<delay>30</delay><!--延迟加载视频，单位：毫秒-->
 		<timeFrequency>100</timeFrequency><!--计算当前播放时间和加载量的时间频率，单位：毫秒-->
 		<autoLoad>true</autoLoad><!--视频是否自动加载-->
 		<loadNext>0</loadNext><!--多段视频预加载的段数，设置成0则全部加载-->

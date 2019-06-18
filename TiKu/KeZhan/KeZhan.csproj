@@ -650,12 +650,17 @@
     <Content Include="Content\images\room\room4\img-thumbs-2.jpg" />
     <Content Include="Content\images\room\room4\img-thumbs-3.jpg" />
     <Content Include="Content\images\room\room4\img-thumbs-4.jpg" />
+    <Content Include="Content\images\side_bg_arrow.png" />
+    <Content Include="Content\images\side_con_icon02.png" />
+    <Content Include="Content\images\side_con_icon03.png" />
+    <Content Include="Content\images\side_icon.png" />
     <Content Include="Content\images\slider\hom1-slide1.png" />
     <Content Include="Content\images\slider\img-1.jpg" />
     <Content Include="Content\images\slider\img-2.jpg" />
     <Content Include="Content\images\slider\img-3.jpg" />
     <Content Include="Content\images\slider\img-4.jpg" />
     <Content Include="Content\images\slider\img-5.jpg" />
+    <Content Include="Content\images\suspension-bg.png" />
     <Content Include="Content\images\team\img-1.jpg" />
     <Content Include="Content\images\team\img-2.jpg" />
     <Content Include="Content\images\team\img-3.jpg" />
@@ -693,9 +698,11 @@
     <Content Include="Content\image\jhk-1555459671592.jpg" />
     <Content Include="Content\image\jhk-1555459676926.jpg" />
     <Content Include="Content\image\WeiXinPublic.jpg" />
+    <Content Include="Content\image\zhapian.jpg" />
     <Content Include="Content\less\style.css" />
     <Content Include="Content\main - 复制.css" />
     <Content Include="Content\main.css" />
+    <Content Include="Content\css\qqstyle.css" />
     <Content Include="Content\reveal.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -833,8 +840,6 @@
     <Content Include="Scripts\ckplayer\ckplayer.min.js" />
     <Content Include="Scripts\ckplayer\ckplayer.swf" />
     <Content Include="Scripts\ckplayer\ckplayer.xml" />
-    <Content Include="Scripts\ckplayer\hls\hls.js" />
-    <Content Include="Scripts\ckplayer\hls\hls.min.js" />
     <Content Include="Scripts\ckplayer\language.xml" />
     <Content Include="Scripts\ckplayer\style.xml" />
     <Content Include="Scripts\jquery.reveal.js" />
@@ -1224,9 +1229,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\ckplayer\hls\LICENSE" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\User\BookingList.cshtml" />

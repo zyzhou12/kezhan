@@ -76,8 +76,8 @@ namespace TiKuService
 
                     // xyk meet hz sy sxgg
                     string connstr, connbasestr, strSql;
-                    connstr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
-                    connbasestr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
+                    connstr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan2;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
+                    connbasestr = "server=rm-bp1335dr8hlt581150o.sqlserver.rds.aliyuncs.com,3433;database=kezhan2;uid=aizhu;pwd=Aizhu@777;Max Pool Size = 512";
 
 
                     SqlConnection conn;
@@ -400,7 +400,6 @@ namespace TiKuService
                                 SaveLog("The ClassRoomSettlement is Begin" + DateTime.Now.ToString() + "\t" + strClassRoomCode);
                                 ClassRoomSettlement(strClassRoomCode);
 
-
                                 SaveLog("The ClassRoomSettlement is end\t" + DateTime.Now.ToString() + "\t" + strClassRoomCode);
 
                             }
@@ -644,6 +643,7 @@ namespace TiKuService
         /// <param name="strGroupId"></param>
         public void UpdateGroupStatus(string strGroupId)
         {
+            GroupUserBll.UpdateGroup(strGroupId, "closegroup");
             Random rand = new Random();
             StringBuilder sb = new StringBuilder();
             for (int i = 1; i <= 32; i++)
@@ -668,10 +668,10 @@ namespace TiKuService
             JavaScriptSerializer jss = new JavaScriptSerializer();
 
             GroupDestoryResponseModel response = jss.Deserialize<GroupDestoryResponseModel>(strJson);
-            if (response.ActionStatus == "OK")
-            {
-                GroupUserBll.UpdateGroup(strGroupId, "closegroup");
-            }
+            //if (response.ActionStatus == "OK")
+            //{
+            //    GroupUserBll.UpdateGroup(strGroupId, "closegroup");
+           // }
 
         }
 

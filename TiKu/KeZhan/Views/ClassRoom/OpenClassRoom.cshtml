@@ -1,6 +1,9 @@
 ﻿@model KeZhan.Models.FileModel
-@section otherHeadInfo {
-  <script type="text/javascript" src="../../Scripts/ckplayer/ckplayer.js?v=1.1"></script>
+@{
+    Layout = null;
+}
+@*@section otherHeadInfo {
+  <script type="text/javascript" src="../../Scripts/ckplayer/ckplayer.js?v=1.4"></script>
 }
 <section class="section-sub-banner" style="padding-bottom:80px; ">
     <div class="awe-overlay" style="background-color: #fff"></div>
@@ -24,4 +27,113 @@
             </script>
         </div>
     </div>
-</section>
+</section>*@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    <title>Aliplayer功能展示</title>
+    <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css" />
+    <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js"></script>
+    <style type="text/css">
+        .vip-join {
+            color: #00c1de;
+        }
+
+        .vip_limit_content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .vip_limit_content .title {
+                font-size: 18px;
+                line-height: 36px;
+                color: #fff;
+                text-align: center;
+                width: 100%;
+            }
+
+        .vip_limit_button_box {
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .vip_limit_btn {
+            display: inline-block;
+            min-width: 100px;
+            position: relative;
+            background: #f60;
+            padding: 0 35px;
+            margin: 0px 5px 20px 5px;
+            border-radius: 38px;
+            font-size: 18px;
+            line-height: 38px;
+            color: #623A0C;
+            text-align: center;
+            background-image: linear-gradient(-135deg, #FBE8A8 0%, #F8E7AC 15%, #E2C078 100%);
+            cursor: pointer;
+        }
+
+        .vip_limit_close {
+            text-align: center;
+        }
+
+            .vip_limit_close span {
+                display: inline-block;
+                width: 40px;
+                height: 40px;
+                line-height: 36px;
+                background: rgba(165, 165, 165, 0.54);
+                border-radius: 50%;
+                font-size: 24px;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body>
+    <div id="player-con" style="overflow:hidden"></div>
+    <script type="text/template" id="endPreviewTemplate">
+        <div class="vip_limit_content">
+            <div class="vip_limit_wrap">
+                <p class="title">购买后观看完整版</p>
+                <div class="vip_limit_button_box">
+                    <a class="vip_limit_btn">去购买</a>
+                </div>
+                <div class="vip_limit_close"><span class="vip_limit_close_btn">x</span></div>
+            </div>
+        </div>
+    </script>
+    <script>
+
+        var source = "@Html.Raw(Model.FileUrl)";
+        var classRoomCode = "@Model.ID";
+
+        var player = new Aliplayer({
+            id: "player-con",
+            source: source,
+            width: "100%",
+            height: "380px",
+            autoplay: true,
+            isLive: false,
+            components: [{
+                name: 'MemoryPlayComponent',
+                type: AliPlayerComponent.MemoryPlayComponent,
+            }]
+        });
+
+      
+    </script>
+</body>
+</html>

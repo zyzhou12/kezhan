@@ -228,6 +228,8 @@ namespace KeZhan.Controllers
                     {
                         if (m.fActivityName == "Act-ss-mp4-ld")
                         {
+                            file.ID = classRoom.fClassRoomCode;
+                            file.Name = course.fFileCoverUrl;
                             file.FileType = m.fActivityName;
                             file.FileUrl = getUrl(m.fUrl.Remove(0, 43));
                         }
@@ -240,6 +242,8 @@ namespace KeZhan.Controllers
                     {
                         if (m.fActivityName == "Act-ss-mp4-hd")
                         {
+                            file.ID = classRoom.fClassRoomCode;
+                            file.Name = course.fFileCoverUrl;
                             file.FileType = m.fActivityName;
                             file.FileUrl = getUrl(m.fUrl.Remove(0, 43));
                         }
@@ -267,10 +271,10 @@ namespace KeZhan.Controllers
                 var generatePresignedUriRequest = new GeneratePresignedUriRequest(bucketName, key);
                 generatePresignedUriRequest.Expiration = DateTime.Now.AddHours(1);
 
-
                 signedUrl = client.GeneratePresignedUri(generatePresignedUriRequest).ToString();
+                //signedUrl = HttpUtility.UrlEncode(client.GeneratePresignedUri(generatePresignedUriRequest).ToString());
 
-
+                
             }
             catch (OssException ex)
             {

@@ -86,6 +86,7 @@ namespace KeZhan.Controllers
             BookingListModel model = BookingBll.GetBookingList(userInfo.fUserName, strClassRoomCode, strMobile, strStatus, beginDate, endDate);
             ClassRoomModel classRoom = ClassRoomBll.GetClassRoomByCode(strClassRoomCode, "");
             model.fClassRoomCode = strClassRoomCode;
+            model.fType = classRoom.fType;
             model.fClassType = classRoom.fClassType;
             model.fPayType = classRoom.fPayType;
             model.fStatus = classRoom.fStatus;

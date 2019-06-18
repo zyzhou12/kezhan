@@ -320,7 +320,7 @@ WHERE 1=1  ");
 
             bufSQL.Append(@"select r.*,fName TeacherName from tclassRoom r
                             left join tuser u on u.fUserName=r.fTecharUserName
-                            where fClassType<>'OnLine' and r.fStatus='发布' and (r.fClassRoomTitle like '%'+@like+'%' or fMobile like '%'+@like+'%' or fNickName like '%'+@like+'%' or fName like '%'+@like+'%')
+                            where fClassType='Public' and fDeadLineDate>getdate() and r.fStatus='发布' and (r.fClassRoomTitle like '%'+@like+'%' or fMobile like '%'+@like+'%' or fNickName like '%'+@like+'%' or fName like '%'+@like+'%')
                             ");
             lstParam.Add(new DBParam("@like", strLike));
 
