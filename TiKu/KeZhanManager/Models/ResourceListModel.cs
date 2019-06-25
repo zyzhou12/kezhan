@@ -6,9 +6,9 @@ using TiKu.Entity;
 
 namespace KeZhanManager.Models
 {
-    public class UserValidListModel
+    public class ResourceListModel
     {
         public int iCount { get; set; }
-        public List<TeachValidModel> validList { get; set; }
+        public List<tResourceEntity> fileList { get; set; }
     }
 }

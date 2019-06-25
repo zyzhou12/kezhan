@@ -124,12 +124,15 @@ namespace TiKu.Dal
       List<tUserEntity> lstRst = PubFun.DataTableToObjects<tUserEntity>(dtRst);
       return lstRst;
     }
-    public static List<tUserEntity> GetUserList(string strBeginDate,string strEndDate,string strUserName)
+    public static DataTable GetUserList(string strBeginDate,string strEndDate,string strUserName)
     {
         StringBuilder bufSQL = new StringBuilder();
         List<DbParameter> lstParam = new List<DbParameter>();
 
-        bufSQL.Append(@" select * from tUser 
+        bufSQL.Append(@" select *,
+(select sum(famount) from tUserAmount where fusername=tuser.fUserName) fAmount,
+(select sum(fLeftNum) from tFlowStored where fusername=tuser.fUserName and fStatus=1 and fEffectDate>getdate()) fFlow
+ from tUser 
                         where (fUserName like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%' or fEmail like '%'+@UserName+'%')
                         and (fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='') ");
 
@@ -141,8 +144,8 @@ namespace TiKu.Dal
         //防止返回数据过多
         if (lstParam.Count <= 0) throw new Exception("没有查询条件");
         DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
-        List<tUserEntity> lstRst = PubFun.DataTableToObjects<tUserEntity>(dtRst);
-        return lstRst;
+       
+        return dtRst;
     }
 
 

@@ -471,6 +471,19 @@ where fResourceCode=@ResourceCode ");
             return ds.Result;
         }
 
+        public static int ClassRoomRecordedSettlement(string strClassRoomCode, string strOprUser, ref string strMsg)
+        {
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+            lstParam.Add(new DBParam("@ClassRoomCode", strClassRoomCode));
+            lstParam.Add(new DBParam("@Opr", strOprUser));
+
+            //防止返回数据过多
+            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            DBHelper.ProcRstInfo ds = DBHelper.ExecuteProc("TiKu", "ClassRoom_RecordedSettlement", lstParam, DBHelper.ProcRstTypes.All);
+            strMsg = ds.Message;
+            return ds.Result;
+        }
 
 
         //    public static decimal GetClassRoomFlootPrice(string strClassRoomCode)

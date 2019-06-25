@@ -3,12 +3,12 @@
     <thead>
         <tr class="text-c">
             <th width="25"><input type="checkbox" name="" value=""></th>
-            <th width="80">流量单号</th>
-            <th width="100">手机</th>
-            <th width="150">数量</th>
+            <th width="130">流量单号</th>
+            <th width="80">手机</th>
+            <th width="40">数量</th>
             <th width="40">剩余数量</th>
-            <th width="">价格</th>
-            <th width="90">来源</th>
+            <th width="40">价格</th>
+            <th width="80">来源</th>
             <th width="130">有效期</th>
             <th width="70">状态</th>
             <th width="100">操作</th>
@@ -19,8 +19,7 @@
         {
             <tr class="text-c">
                 <td><input type="checkbox" value="@flow.fID" name=""></td>
-                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('张三', 'member-show.html', '10001', '360', '400')">@flow.fStoredNo</u></td>
-
+                <td>@flow.fStoredNo</td>
                 <td>@flow.fMobile</td>
                 <td>
                     @flow.fNum
@@ -29,11 +28,20 @@
                 <td class="text-l"><span class="label label-success radius">@flow.fPrice</span></td>
                 <td>@flow.fSource</td>
                 <td>@flow.fEffectDate</td>
-                <td class="td-status">@flow.fStatus</td>
-                <td class="td-manage">
-                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
-                </td>
-            </tr>
+                <td class="td-status">
+                    @if (flow.fStatus == 0)
+                    {
+                        <span>提交</span>
+                    }
+                    else if (flow.fStatus == 1)
+                    {
+                        <span>已支付</span>
+                    }
+            </td>
+            <td class="td-manage">
+                <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

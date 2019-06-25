@@ -38,5 +38,17 @@ namespace KeZhanManager.Controllers
         {
             return View();
         }
+        public ActionResult GetFileList(string strBeginDate, string strEndDate, string strName)
+        {
+
+            List<tResourceEntity> fileList = tResourceDal.GetResourceList(strBeginDate, strEndDate, strName);
+            ResourceListModel model = new ResourceListModel();
+            if (fileList != null)
+            {
+                model.iCount = fileList.Count;
+                model.fileList = fileList;
+            }
+            return PartialView("FileList", model);
+        }
     }
 }

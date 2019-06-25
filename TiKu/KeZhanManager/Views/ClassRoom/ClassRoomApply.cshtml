@@ -1,0 +1,80 @@
+﻿@model TiKu.Entity.tClassRoomApplyEntity
+@{
+    ViewBag.Title = "ClassRoomApply";
+}
+
+
+
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-member-add" novalidate="novalidate">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">申请原因：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span>@Model.fNote</span>
+            </div>
+        </div>
+     
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" id="txtApplyNote" placeholder="请输入备注" value="">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button onclick="AgreeApply(@Model.fID)" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont"></i> 同意 @Model.fStatus</button>
+                <button onclick="RefuseApply(@Model.fID)" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont"></i> 拒绝 @Model.fStatus</button>
+                
+            </div>
+        </div>
+    </form>
+</article>
+
+
+<script type="text/javascript">
+    function AgreeApply(id)
+    {
+        if($("#txtApplyNote").val()==""){
+            alert("请输入备注");
+            return;
+        }
+
+        $.ajax({
+            url: "/ClassRoom/DoApplyAgree",
+            data: { "iApplyID": id, "strApplyNote": $("#txtApplyNote").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    window.close();
+                    window.parent.location.reload();
+                }
+            }
+
+        });
+    }
+
+    function RefuseApply(id)
+    {
+        if($("#txtApplyNote").val()==""){
+            alert("请输入备注");
+            return;
+        }
+
+        $.ajax({
+            url: "/ClassRoom/DoApplyRefuse",
+            data: { "iApplyID": id, "strApplyNote": $("#txtApplyNote").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    window.close();
+                    window.parent.location.reload();
+                }
+            }
+
+        });
+    }
+</script>

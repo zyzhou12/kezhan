@@ -10,8 +10,8 @@
             <div class="row">
                 <div class="col-md-3">
                     <ul class="room-detail_tab-header">
-                        <li onclick="showPanel('StudentQA')"><a href="#" style="width:100%;" data-toggle="tab">学员常见问题</a></li>
-                        <li onclick="showPanel('TeacherQA')"><a href="#" style="width:100%;" data-toggle="tab">课站老师须知</a></li>
+                        <li ><a href="#" style="width:100%;" data-toggle="tab">课站老师须知</a></li>
+                        <li ><a href="https://mp.weixin.qq.com/s/qOPXEi30Dh0tSQGCITp-GA" style="width:100%;">操作说明</a></li>
                     </ul>
                 </div>
 
@@ -20,51 +20,7 @@
                 <div class="col-md-8 col-lg-9">
 
                     <div class="reservation_content">
-                        <div class="reservation-billing-detail" id="panelStudentQA">
-                            <h3 class="text-uppercase">
-                                学员常见问题：
-                            </h3>
-                            <br />
-                            <br />
-                            <h6>Q1：注册平台用户的要求？</h6>
-                            A1：平台用户注册是免费，只需要绑定本人的手机号码，注册完成可以购买报名课程，但不能发布课程，发布课程需要注册成为平台的老师；
-
-                            <br />
-                            <br /><h6>
-                                Q2：线下支付的课程如何购买？
-                            </h6>
-                            A2：如果课程是线下支付，您在课程销售页面报名，然后联系课程发布老师（以下简称老师）约定支付方式和完成支付。完成支付后，老师会在平台确认，确认后您才可以进入课堂上课；
-
-                            <br />
-                            <br /><h6>
-                                Q3：如何开票？
-                            </h6>
-                            A3：如果您需要开票，请与老师联系，由老师提供发票，平台不负责开票；
-
-                            <br />
-                            <br /> <h6>
-                                Q4：课程如何退课和退款？
-                            </h6>
-                            A4：如果是线上支付到平台的课程是可退款，且您符合退款条件，您可以在课程详情或订单中发起退款，老师将在3日内确认你的退款，退款将5-7个工作日内到达您的支付账户，如有疑问，请联系老师；如果是线下支付的课程，请联系老师退课和退款；
-
-                            <br />
-                            <br /><h6>
-                                Q5：我上课可以使用那类终端设备？
-                            </h6>
-                            A5：只要使用符合要求的PC浏览器，目前只支持在PC上上课，操作系统支持Windows7及以上和Mac 60+，学员推荐使用谷歌浏览器；
-                            <h6>
-                                Q6：我听不清授课老师的讲课或授课老师看不见我的头像，如何解决？
-                            </h6>
-                            A6：调节PC或耳机音量，检查下您的摄像头（PC自带或外接），启动检测：https://www.qcloudtrtc.com/webrtc-samples/abilitytest/index.html
-
-                            <br />
-                            <br /><h6>
-                                Q7: 我在使用课站平台的相关服务期间，如果有疑问如何联系平台?
-                            </h6>
-                            A7: 通过平台网页右侧的QQ或联系电话联系平台客服；
-
-                        </div>
-                        <div class="reservation-billing-detail" id="panelTeacherQA" style="display:none;">
+                        <div class="reservation-billing-detail" id="panelTeacherQA" >
                             <h3 class="text-uppercase">
                                 课站老师须知：
                             </h3>
@@ -171,18 +127,3 @@
     </div>
 </section>
 
-
-<script type="text/javascript">
-
-    function showPanel(div) {
-        if (div == "TeacherQA") {
-            $(".reservation-billing-detail").hide();
-            $("#panelTeacherQA").show();
-        } else if (div == "StudentQA") {
-            $(".reservation-billing-detail").hide();
-            $("#panelStudentQA").show();
-        }
-    }
-
-
-</script>

@@ -1,0 +1,241 @@
+﻿@model KeZhanManager.Models.ValidModel
+@{
+    ViewBag.Title = "UserValid";
+}
+
+
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-member-add" novalidate="novalidate">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>真实姓名：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="@Model.fName" placeholder="" id="txtName">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">证件类型：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" id="cmbIDType">
+                        @if (Model.fIDType == "1")
+                        {
+                            <option value="">请选择</option>
+                            <option value="1" selected>身份证</option>
+                            <option value="2">护照</option>
+                        }
+                        else
+                        {
+
+                            <option value="">请选择</option>
+                            <option value="1">身份证</option>
+                            <option value="2" selected>护照</option>
+                        }
+                    </select>
+
+                </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>证件号码：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" id="txtID" placeholder="证件号码" value="@Model.fUID">
+            </div>
+        </div>
+
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">证书类型：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" id="cmbCertType" onchange="SetPharse(this)">
+                        <option value="">请选择</option>
+                        <option value="教师证">教师证</option>
+                        <option value="学历证书">学历证书</option>
+                        <option value="职业资格证">职业资格证</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>证书编号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" id="txtTeacherNo" placeholder="证书编号">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>证书有效期：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" onfocus="WdatePicker({ maxDate:'#F{\'2099-%M-%d\'}' })" id="txtEffect" class="input-text Wdate" style="width:120px;">
+            </div>
+        </div>
+        <div id="divPharse" style="display:none">
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">学段：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select class="select" size="1" id="cmbPharse" onchange="SetSubject(this)">
+                            <option value="0">请选择</option>
+                            <option value="1">小学</option>
+                            <option value="2">初中</option>
+                            <option value="3">高中</option>
+                            <option value="4">大学</option>
+                        </select>
+                    </span>
+                </div>
+            </div>
+            <div class="row cl">
+                <label class="form-label col-xs-4 col-sm-3">学科：</label>
+                <div class="formControls col-xs-8 col-sm-9">
+                    <span class="select-box">
+                        <select class="select" size="1" id="cmbSubject">
+                            <option value="">请选择</option>
+
+                        </select>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">审核结果：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" id="cmbResult" onchange="SetResult(this)">
+                        <option value="1">通过</option>
+                        <option value="0">未通过</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+
+        <div class="row cl" id="divMessage" style="display:none">
+            <label class="form-label col-xs-4 col-sm-3">审核备注：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select class="select" size="1" id="cmbMessage">
+                        <option value="证件照片不清">证件照片不清</option>
+                        <option value="证件过期">证件过期</option>
+                        <option value="证件与手机号不符">证件与手机号不符</option>
+                        <option value="无法查证证件有效">无法查证证件有效</option>
+                        <option value="学历要求大专以上">学历要求大专以上</option>
+                        <option value="不认识这个证书">不认识这个证书</option>
+                    </select>
+                </span>
+            </div>
+        </div>
+
+            <div class="row cl">
+                <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                    <input class="btn btn-primary radius" type="button" onclick="ValidTeacher(@Model.fTeacherValidID,@Model.fID)"value="&nbsp;&nbsp;完成&nbsp;&nbsp;">
+                </div>
+            </div>
+</form>
+</article>
+
+@section Script{
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="~/Content/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+    }
+
+<script type="text/javascript">
+
+    function SetPharse(obj) {
+
+        if ($(obj).val() == "教师证") {
+            $("#divPharse").show()
+        } else {
+            $("#divPharse").hide();
+            $("#cmbSubject").empty();
+
+        }
+    }
+
+    function SetResult(obj) {
+
+        if ($(obj).val() == "0") {
+            $("#divMessage").show()
+        } else {
+            $("#divMessage").hide()
+        }
+    }
+
+    function SetSubject(obj) {
+        $("#cmbSubject").empty();
+        if ($(obj).val() == "1") {
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+        } else if ($(obj).val() == "2") {
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+            $("#cmbSubject").append("<option value='物理'>物理</option>");
+            $("#cmbSubject").append("<option value='化学'>化学</option>");
+            $("#cmbSubject").append("<option value='地理'>地理</option>");
+        } else if ($(obj).val() == "3") {
+            $("#cmbSubject").append("<option value='语文'>语文</option>");
+            $("#cmbSubject").append("<option value='数学'>数学</option>");
+            $("#cmbSubject").append("<option value='英语'>英语</option>");
+            $("#cmbSubject").append("<option value='物理'>物理</option>");
+            $("#cmbSubject").append("<option value='化学'>化学</option>");
+            $("#cmbSubject").append("<option value='地理'>地理</option>");
+        } else if ($(obj).val() == "4") {
+            $("#cmbSubject").append("<option value='全部'>全部</option>");
+        }
+    }
+
+
+
+
+    function ValidTeacher(iValidFid, iValidDetailID) {
+        if ($("#cmbResult").val() == "1") {
+
+            if ($("#txtName").val() == "") {
+                alert("请填写真实姓名");
+                return;
+            } else if ($("#txtID").val() == "") {
+                alert("请填写身份证号");
+                return;
+            } else if ($("#txtTeacherNo").val() == "") {
+                alert("请填写证书编号");
+                return;
+            } else if ($("#txtEffect").val() == "") {
+                alert("请填写证书有效期");
+                return;
+            }
+
+            $.ajax({
+                url: "/User/DoTeacherValid",
+                type: "POST",
+                data: { "iValidFid": iValidFid, "iValidDetailID": iValidDetailID, "ValidResult": true, "strName": $("#txtName").val(), "strIDType": $("#cmbIDType").val(), "strUID": $("#txtID").val(), "strCertType": $("#cmbCertType").val(), "strCertNo": $("#txtTeacherNo").val(), "strEffect": $("#txtEffect").val(), "strPharse": $("#cmbPharse").val(), "strSubject": $("#cmbSubject").val(), "ValidMessage": "认证通过" },
+                success: function (msg) {
+                    alert("认证成功");
+                    window.close();
+                    window.parent.location.reload();
+                }
+            });
+        } else {
+            var ValidMessage = $("#cmbMessage").val();
+            if (ValidMessage == "") {
+                alert("请输入未通过原因");
+                return;
+            }
+            $.ajax({
+                url: "/User/DoTeacherValid",
+                type: "POST",
+                data: { "iValidFid": iValidFid, "iValidDetailID": iValidDetailID, "ValidResult": false, "strName": "", "strIDType": "", "strUID": "", "strCertType": "", "strCertNo": "", "strEffect": "", "strPharse": "", "strSubject": "", "ValidMessage": ValidMessage },
+                success: function (msg) {
+                    alert("认证未通过");
+                    window.close();
+                    window.parent.location.reload();
+                },
+                fail: function (msg) {
+                    alert(msg);
+                    window.location.reload();
+                }
+            });
+        }
+    }
+
+</script>

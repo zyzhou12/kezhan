@@ -1,0 +1,100 @@
+﻿@model KeZhanManager.Models.WithdrawalModel
+@{
+    ViewBag.Title = "WithDrawalApply";
+}
+
+
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-member-add" novalidate="novalidate">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">申请人：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="hidden" id="hidFid" value="@Model.withDrawal.fID" />
+                <span>@Model.withDrawal.fUserName</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">申请提现金额：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span>@Model.withDrawal.fAmount</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">提现账号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+
+                <span>@Model.account.fAccountName</span>
+                <br />
+                <span>@Model.account.fOpenBank</span>
+                <br />
+                <span>@Model.account.fAccountNo</span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>处理意见：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" id="txtApproveNote" value="@Model.withDrawal.fApproveNote" placeholder="处理意见">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>汇款凭证：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" id="txtTransCerd" value="@Model.withDrawal.fTransCerd">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button onclick="DoAgree()" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont"></i> 汇款完成</button>
+                <button onclick="DoRefund()" class="btn btn-secondary radius" type="button"><i class="Hui-iconfont"></i> 拒绝提现</button>
+
+            </div>
+        </div>
+    </form>
+</article>
+
+
+
+
+
+<script type="text/javascript">
+    function DoAgree() {
+
+        $.ajax({
+            url: "/Manager/DoAgreeWithDrawal",
+            data: { "iWithID": $("#hidFid").val(), "strNote": $("#txtApproveNote").val(), "TransCerd": $("#txtTransCerd").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    window.close();
+                    window.parent.location.reload();
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+
+    function DoRefund() {
+
+        $.ajax({
+            url: "/Manager/DoRefuseWithDrawal",
+            data: { "iWithID": $("#hidFid").val(), "strNote": $("#txtApproveNote").val(), "TransCerd": $("#txtTransCerd").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    window.close();
+                    window.parent.location.reload();
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

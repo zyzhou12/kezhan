@@ -126,6 +126,27 @@ namespace TiKu.Dal
             return lstRst;
         }
 
+        public static List<tResourceEntity> GetResourceList(string strBeginDate, string strEndDate, string strName)
+        {
+            StringBuilder bufSQL = new StringBuilder();
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+            bufSQL.Append(@"select fCourseTitle,r.* from  tResource r 
+                        left join tCourse c on c.fResourceUrl=r.fResourceCode
+                     where fCourseTitle like '%'+@Name+'%' 
+                        and (c.fUploadDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')");
+
+            lstParam.Add(new DBParam("@Name", strName));
+            lstParam.Add(new DBParam("@BeginDate", strBeginDate));
+            lstParam.Add(new DBParam("@EndDate", strEndDate));
+
+            //防止返回数据过多
+            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+            List<tResourceEntity> lstRst = PubFun.DataTableToObjects<tResourceEntity>(dtRst);
+            return lstRst;
+        }
+
         public static List<tResourceEntity> GetDelResourceList(string strUserName)
         {
             StringBuilder bufSQL = new StringBuilder();

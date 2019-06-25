@@ -5,12 +5,13 @@
             <th width="25"><input type="checkbox" name="" value=""></th>
             <th width="80">ID</th>
             <th width="100">课程Code</th>
-            <th width="40">课程名称</th>
-            <th width="90">发布时间</th>
-            <th width="150">提交备注</th>
-            <th width="">状态</th>
-            <th width="130">审核备注</th>
-            <th width="70">审核时间</th>
+            <th>课程名称</th>
+            <th width="120">发布时间</th>
+            <th>提交备注</th>
+            <th width="40">状态</th>
+            <th>审核备注</th>
+            <th width="120">审核时间</th>
+            <th width="90">提交人</th>
             <th width="100">操作</th>
         </tr>
     </thead>
@@ -20,17 +21,31 @@
             <tr class="text-c">
                 <td><input type="checkbox" value="@apply.fID" name=""></td>
                 <td>@apply.fID</td>
-                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('张三', 'member-show.html', '10001', '360', '400')">@apply.fClassRoomCode</u></td>
+                <td>@apply.fClassRoomCode</td>
                 <td>
-                   @apply.fClassRoomTitle
+                    @apply.fClassRoomTitle
                 </td>
                 <td>@apply.fSubmitDate</td>
                 <td>@apply.fNote</td>
-                <td class="text-l"><span class="label label-success radius">@apply.fResult</span></td>
+                <td class="text-l">
+                    @if (apply.fResult)
+                    {<span class="label label-success radius">通过</span>}
+                    else
+                    {
+                        <span class="label label-warning radius">拒绝</span>
+                    }
+                </td>
                 <td>@apply.fApplyNote</td>
                 <td class="td-status">@apply.fApplyDate</td>
+                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('@apply.fSubmitOpr','/User/UserDetail?strUserName=@apply.fSubmitOpr','10001','360','400')">@apply.fSubmitOpr</u></td>
                 <td class="td-manage">
-                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+                    <a style="text-decoration:none" onclick="item_maxShow('@apply.fClassRoomTitle', 'https://test.2kezhan.com/Open/ClassRoomDetail?strClassRoomCode=@apply.fClassRoomCode', '10001')">
+                        预览
+                    </a>
+                    @if (string.IsNullOrEmpty(apply.fApplyOpr))
+                    {
+                        <a style="text-decoration:none" onclick="item_show('@apply.fClassRoomTitle','ClassRoomApply?iApplyID=@apply.fID', '10001','400','300')" href="javascript:;" title="审核">审核</a>
+                    }
                 </td>
             </tr>
         }

@@ -3,14 +3,15 @@
     <thead>
         <tr class="text-c">
             <th width="25"><input type="checkbox" name="" value=""></th>
-            <th width="80">订单号</th>
-            <th width="100">订单类型</th>
-            <th width="150">金额</th>
-            <th width="40">购买时间</th>
+            <th width="130">订单号</th>
+            <th width="50">订单类型</th>
+            <th width="50">产品Code</th>
+            <th width="50">金额</th>
+            <th width="120">购买时间</th>
             <th width="">用户名</th>
-            <th width="90">在线支付</th>
-            <th width="130">是否可退</th>
-            <th width="70">状态</th>
+            <th width="50">在线支付</th>
+            <th width="50">是否可退</th>
+            <th width="50">状态</th>
             <th width="100">操作</th>
         </tr>
     </thead>
@@ -19,21 +20,61 @@
         {
             <tr class="text-c">
                 <td><input type="checkbox" value="@booking.fID" name=""></td>
-                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('张三', 'member-show.html', '10001', '360', '400')">@booking.fBookingNo</u></td>
+                <td>@booking.fBookingNo</td>
 
-                <td>@booking.fType</td>
+                <td>
+                    @if (booking.fType == "ClassRoom")
+                    {
+                        <span>课程</span>
+                    }
+                    else if (booking.fType == "OnLineClass")
+                    {
+                        <span>在线课堂</span>
+                    }
+                </td>
+                <td>
+                    @if (booking.fType == "ClassRoom")
+                    {
+                        <u style="cursor:pointer" class="text-primary" onclick="item_maxShow('@booking.fTypeCode', 'https://test.2kezhan.com/Open/ClassRoomDetail?strClassRoomCode=@booking.fTypeCode', '10001')">@booking.fTypeCode</u>
+                        
+                    }
+                    else if (booking.fType == "OnLineClass")
+                    {
+                        <span>@booking.fTypeCode</span>
+                    }
+                    
+                </td>
                 <td>
                     @booking.fAmount
                 </td>
                 <td>@booking.fBuyDate</td>
-                <td class="text-l"><span class="label label-success radius">@booking.fUserName</span></td>
-                <td>@booking.fIsPay</td>
-                <td>@booking.fIsReturn</td>
-                <td class="td-status">@booking.fStatus</td>
-                <td class="td-manage">
-                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+                
+                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('@booking.fUserName','/User/UserDetail?strUserName=@booking.fUserName','10001','360','400')">@booking.fUserName</u></td>
+                <td>
+                    @if (booking.fIsPay)
+                    {
+                        <span>是</span>
+                    }
+                    else
+                    {
+                        <span>否</span>
+                    }
                 </td>
-            </tr>
+                <td>
+                    @if (booking.fIsReturn)
+                    {
+                        <span>可退</span>
+                    }
+                    else
+                    {
+                        <span>不可退</span>
+                    }
+            </td>
+            <td class="td-status"><span class="label label-success radius">@booking.fStatus</span></td>
+            <td class="td-manage">
+                <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

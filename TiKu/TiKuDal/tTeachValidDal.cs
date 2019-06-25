@@ -115,12 +115,12 @@ namespace TiKu.Dal
       return lstRst;
     }
 
-    public static List<tTeachValidEntity> GettTeachValidList(string strBeginDate, string strEndDate, string strMobile,string strStatus)
+    public static DataTable GettTeachValidList(string strBeginDate, string strEndDate, string strMobile,string strStatus)
     {
       StringBuilder bufSQL = new StringBuilder();
       List<DbParameter> lstParam = new List<DbParameter>();
 
-      bufSQL.Append(@" select t.*,u.fMobile from tTeachValid t
+      bufSQL.Append(@" select t.*,u.fMobile,fNickName from tTeachValid t
                         left join tUser u on u.fUserName=t.fUserName
                         where (fMobile like '%'+@Mobile+'%' or fEmail like '%'+@Mobile+'%')
                         and (t.fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='') 
@@ -134,8 +134,8 @@ namespace TiKu.Dal
       //防止返回数据过多
       if (lstParam.Count <= 0) throw new Exception("没有查询条件");
       DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
-      List<tTeachValidEntity> lstRst = PubFun.DataTableToObjects<tTeachValidEntity>(dtRst);
-      return lstRst;
+     
+      return dtRst;
     }
 
     public static DataTable TeacherValidQuery(string strUserName)

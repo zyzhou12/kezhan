@@ -4,12 +4,12 @@
         <tr class="text-c">
             <th width="25"><input type="checkbox" name="" value=""></th>
             <th width="80">手机</th>
-            <th width="100">提现金额</th>
-            <th width="150">申请时间</th>
-            <th width="40">审批时间</th>
-            <th width="">审批结果</th>
-            <th width="90">审批备注</th>
-            <th width="130">凭证</th>
+            <th width="80">提现金额</th>
+            <th width="130">申请时间</th>
+            <th width="130">审批时间</th>
+            <th width="90">审批结果</th>
+            <th>审批备注</th>
+            <th>凭证</th>
             <th width="70">状态</th>
             <th width="100">操作</th>
         </tr>
@@ -19,21 +19,42 @@
         {
             <tr class="text-c">
                 <td><input type="checkbox" value="@withDrawal.fID" name=""></td>
-                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('张三', 'member-show.html', '10001', '360', '400')">@withDrawal.fMobile</u></td>
 
+                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('@withDrawal.fUserName','/User/UserDetail?strUserName=@withDrawal.fUserName','10001','360','400')">@withDrawal.fMobile</u></td>
                 <td>@withDrawal.fAmount</td>
                 <td>
                     @withDrawal.fSubmitDate
                 </td>
                 <td>@withDrawal.fApproveDate</td>
-                <td class="text-l"><span class="label label-success radius">@withDrawal.fApproveResult</span></td>
+                <td class="text-l">
+                    @if (withDrawal.fApproveResult)
+                    {
+                        <span>通过</span>
+                    }
+                    else
+                    {
+                        <span>拒绝</span>
+                    }
+                </td>
                 <td>@withDrawal.fApproveNote</td>
                 <td>@withDrawal.fTransCerd</td>
-                <td class="td-status">@withDrawal.fStatus</td>
-                <td class="td-manage">
-                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
-                </td>
-            </tr>
+                <td class="td-status">
+                    @if (withDrawal.fStatus == "0")
+                    {
+                        <span>提交</span>
+                    }
+                    else if (withDrawal.fStatus == "1")
+                    {
+                        <span>已处理</span>
+                    }
+            </td>
+            <td class="td-manage">
+                @if (withDrawal.fStatus == "0")
+                {
+                    <a style="text-decoration:none" onclick="item_show('@withDrawal.fUserName','WithDrawalApply?iWithDrawalId=@withDrawal.fID', '10001','400','420')" href="javascript:;" title="审核">审核</a>
+                }
+            </td>
+        </tr>
         }
     </tbody>
 </table>

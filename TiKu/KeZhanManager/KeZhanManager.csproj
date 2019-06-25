@@ -114,6 +114,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="Trip8H.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\TiKu\DLL\Trip8H.Common.dll</HintPath>
+    </Reference>
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.Data.2.0.30506.0\lib\net40\WebMatrix.Data.dll</HintPath>
@@ -206,19 +210,26 @@
     <Compile Include="Models\BookingListModel.cs" />
     <Compile Include="Models\ClassRoomApplyListModel.cs" />
     <Compile Include="Models\ClassRoomListModel.cs" />
+    <Compile Include="Models\GroupDestoryResponseModel.cs" />
     <Compile Include="Models\GroupListModel.cs" />
+    <Compile Include="Models\GroupModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ResourceListModel.cs" />
     <Compile Include="Models\MediaListModel.cs" />
     <Compile Include="Models\ResponseBaseModel.cs" />
     <Compile Include="Models\SettlementListModel.cs" />
+    <Compile Include="Models\TeachValidModel.cs" />
     <Compile Include="Models\UserAmountListModel.cs" />
     <Compile Include="Models\UserFlowListModel.cs" />
     <Compile Include="Models\UserListModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UserPayListModel.cs" />
     <Compile Include="Models\UserRefundListModel.cs" />
     <Compile Include="Models\UserValidListModel.cs" />
     <Compile Include="Models\UserValidModel.cs" />
+    <Compile Include="Models\ValidModel.cs" />
     <Compile Include="Models\WithDrawalListModel.cs" />
+    <Compile Include="Models\WithdrawalModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1404,6 +1415,11 @@
     <Content Include="Views\User\UserValidDetail.cshtml" />
     <Content Include="Views\UserAccount\UserAmountList.cshtml" />
     <Content Include="Views\File\MediaList.cshtml" />
+    <Content Include="Views\User\UserValid.cshtml" />
+    <Content Include="Views\UserAccount\UserFlowAdjust.cshtml" />
+    <Content Include="Views\ClassRoom\ClassRoomApply.cshtml" />
+    <Content Include="Views\UserAccount\WithDrawalApply.cshtml" />
+    <Content Include="Views\File\FileList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TiKuDal\TiKuDal.csproj">

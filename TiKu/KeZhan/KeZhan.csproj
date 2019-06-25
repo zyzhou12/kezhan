@@ -1226,6 +1226,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\plugin\js\" />
+    <Folder Include="Scripts\AliPlayer\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -1328,6 +1329,7 @@
     <Content Include="Scripts\AliUpload\lib\plupload-2.1.2\readme.md" />
     <Content Include="Views\Open\Query.cshtml" />
     <Content Include="Views\Open\QueryClassRoomList.cshtml" />
+    <Content Include="Views\Html\TeacherQAInfo.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

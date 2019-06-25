@@ -5,12 +5,14 @@
             <th width="25"><input type="checkbox" name="" value=""></th>
             <th width="80">ID</th>
             <th width="100">课堂号</th>
-            <th width="40">课堂名称</th>
-            <th width="150">课时</th>
-            <th width="">老师</th>
-            <th width="90">开课时间</th>
-            <th width="130">结束时间</th>
-            <th width="70">状态</th>
+            <th>课堂名称</th>
+            <th width="30">课时</th>
+            <th width="90">老师</th>
+            <th width="120">开课时间</th>
+            <th width="120">结束时间</th>
+            <th width="40">总人数</th>
+            <th width="70">总时长(秒)</th>
+            <th width="50">状态</th>
             <th width="100">操作</th>
         </tr>
     </thead>
@@ -20,17 +22,31 @@
             <tr class="text-c">
                 <td><input type="checkbox" value="@group.fID" name=""></td>
                 <td>@group.fID</td>
-                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('张三', 'member-show.html', '10001', '360', '400')">@group.fGroupID</u></td>
+                <td><u style="cursor:pointer" class="text-primary">@group.fGroupID</u></td>
                 <td>
                     @group.fGroupName
                 </td>
                 <td>@group.fCourseId</td>
-                <td class="text-l"><span class="label label-success radius">@group.fTeacherID</span></td>
+
+                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('@group.fTeacherID','/User/UserDetail?strUserName=@group.fTeacherID','10001','360','400')">@group.fTeacherID</u></td>
                 <td>@group.fCreateDate</td>
                 <td>@group.fDestoryDate</td>
-                <td class="td-status">@group.fIsValid</td>
+                <td>@group.fUserCount</td>
+                <td>@group.fSumLength</td>
+                <td class="td-status">
+                    @if (group.fIsValid)
+                    {
+                        <span class="label label-success radius">正在上</span>                    }
+                    else
+                    {
+                        <span class="label label-warning radius">已结束</span>
+                    }
+                </td>
                 <td class="td-manage">
-                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+                    @if (group.fIsValid)
+                    {
+                        <a style="text-decoration:none" href="javascript:;" onclick="DestroyClass('@group.fGroupID')" title="强制注销">强制注销</a>
+                    }
                 </td>
             </tr>
         }

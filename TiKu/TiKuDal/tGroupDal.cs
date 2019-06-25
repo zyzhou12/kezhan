@@ -73,12 +73,15 @@ namespace TiKu.Dal
             return rst;
         }
 
-        public static List<tGroupEntity> GettGroupList(string strBeginDate, string strEndDate,string strUserName)
+        public static DataTable GettGroupList(string strBeginDate, string strEndDate,string strUserName)
         {
             StringBuilder bufSQL = new StringBuilder();
             List<DbParameter> lstParam = new List<DbParameter>();
 
-            bufSQL.Append(@" select g.* from tGroup g
+            bufSQL.Append(@" select g.*,
+(select count(*) from tgroupuserinfo where fgroupid=g.fgroupid) fUserCount,
+(select sum(datediff(ss,fLastJoinTime,fLastQuitTime)) from tgroupuserinfo where fgroupid=g.fgroupid) fSumLength
+ from tGroup g
                             left join tuser u on u.fUserName=g.fTeacherId
                         where (fTeacherId like '%'+@UserName+'%' or fGroupName like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%' or fEmail like '%'+@UserName+'%')
                         and (g.fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='') ");
@@ -91,8 +94,8 @@ namespace TiKu.Dal
             //防止返回数据过多
             if (lstParam.Count <= 0) throw new Exception("没有查询条件");
             DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
-            List<tGroupEntity> lstRst = PubFun.DataTableToObjects<tGroupEntity>(dtRst);
-            return lstRst;
+            
+            return dtRst;
         }
 
     }

@@ -9,6 +9,6 @@ namespace KeZhanManager.Models
     public class GroupListModel
     {
         public int iCount { get; set; }
-        public List<tGroupEntity> groupList { get; set; }
+        public List<GroupModel> groupList { get; set; }
     }
 }

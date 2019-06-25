@@ -5,12 +5,12 @@
             <th width="25"><input type="checkbox" name="" value=""></th>
             <th width="80">ID</th>
             <th width="100">用户名</th>
-            <th width="150">金额</th>
-            <th width="40">交易类型</th>
+            <th width="50">金额</th>
+            <th width="70">交易类型</th>
             <th width="">交易ID</th>
-            <th width="90">备注</th>
-            <th width="130">备注</th>
-            <th width="70">日期</th>
+            <th>备注</th>
+            <th>审核意见</th>
+            <th width="120">日期</th>
             <th width="100">操作</th>
         </tr>
     </thead>
@@ -20,19 +20,44 @@
             <tr class="text-c">
                 <td><input type="checkbox" value="@amount.fID" name=""></td>
                 <td>@amount.fID</td>
-                <td>@amount.fUserName</td>
+                <td><u style="cursor:pointer" class="text-primary" onclick="item_show('@amount.fUserName','/User/UserDetail?strUserName=@amount.fUserName','10001','360','400')">@amount.fUserName</u></td>
                 <td>
                     @amount.fAmount
                 </td>
-                <td>@amount.fType</td>
-                <td class="text-l"><span class="label label-success radius">@amount.fTypeID</span></td>
-                <td>@amount.fRemark</td>
-                <td>@amount.fNote</td>
-                <td class="td-status">@amount.fCreateDate</td>
-                <td class="td-manage">
-                    <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
-                </td>
-            </tr>
+                <td>
+                    @if (amount.fType == "Booking")
+                    {
+                        <span>购买课程</span>
+                    }
+                    else if (amount.fType == "ClassAmount")
+                    {
+                        <span>课程结算</span>
+                    }
+                    else if (amount.fType == "Flow")
+                    {
+                        <span>购买流量</span>
+                    }
+                    else if (amount.fType == "OnLineAmount")
+                    {
+                        <span>在线课堂</span>
+                    }
+                    else if (amount.fType == "RecordedAmount")
+                    {
+                        <span>录播订单</span>
+                    }
+                    else if (amount.fType == "WithDrawal")
+                    {
+                        <span>提现</span>
+                    }
+            </td>
+            <td class="text-l">@amount.fTypeID</td>
+            <td>@amount.fRemark</td>
+            <td>@amount.fNote</td>
+            <td class="td-status">@amount.fCreateDate</td>
+            <td class="td-manage">
+                <a style="text-decoration:none" onclick="article_shenhe(this,'10001')" href="javascript:;" title="审核">审核</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

@@ -85,5 +85,57 @@ namespace KeZhanManager.Controllers
             }
             return PartialView("UserFlowList", model);
         }
+
+        public ActionResult UserFlowAdjust()
+        {
+            return View();
+        }
+
+        public JsonResult DoFlowAdjust(string strMobile, int iFlow, DateTime effectDate, string strNote)
+        {
+            tUserEntity userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            string strMsg = "";
+
+            response.iResult = tFlowStoredDal.FlowAdjust(strMobile, iFlow, effectDate, userInfo.fUserName, strNote, ref strMsg);
+            response.strMsg = strMsg;
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
+        public ActionResult WithDrawalApply(int iWithDrawalId)
+        {
+            WithdrawalModel model = new WithdrawalModel();
+            model.withDrawal = tTeacherWithdrawalDal.GettTeacherWithdrawal(iWithDrawalId);
+            model.account= tUserBankAccountDal.GettUserBankAccount(model.withDrawal.fBankAccountId);
+            return View(model);
+        }
+
+        public JsonResult DoAgreeWithDrawal(int iWithID, string strNote, string TransCerd)
+        {
+            tUserEntity userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            string strMsg = "";
+            response.iResult = tTeacherWithdrawalDal.TeacherWithdrawalAgree(iWithID, strNote, userInfo.fUserName, DateTime.Now,TransCerd, ref strMsg);
+            response.strMsg = strMsg;
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
+        public JsonResult DoRefuseWithDrawal(int iWithID, string strNote)
+        {
+            tUserEntity userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            string strMsg = null;
+
+
+            response.iResult = tTeacherWithdrawalDal.TeacherWithdrawalRefuse(iWithID, strNote, userInfo.fUserName, DateTime.Now, ref strMsg);
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
     }
 }

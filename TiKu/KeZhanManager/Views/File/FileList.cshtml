@@ -1,0 +1,36 @@
+﻿@model KeZhanManager.Models.ResourceListModel
+<table class="table table-border table-bordered table-hover table-bg table-sort">
+    <thead>
+        <tr class="text-c">
+            <th width="25"><input type="checkbox" name="" value=""></th>
+            <th width="100">文件名</th>
+            <th width="80">文件类型</th>
+            <th width="40">大小</th>
+            <th width="80">时长</th>
+            <th width="50">分辨率高</th>
+            <th width="50">分辨率宽</th>
+            <th>文件地址</th>
+            <th width="70">状态</th>
+            <th width="100">媒体ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var file in Model.fileList)
+        {
+            <tr class="text-c">
+                <td><input type="checkbox" value="@file.fID" name=""></td>
+                <td>@file.fResourceTitle</td>
+                <td>@file.fFileType</td>
+                <td>
+                    @file.fSize
+                </td>
+                <td>@file.fDateLength</td>
+                <td>@file.fHeigth</td>
+                <td>@file.fWidth</td>
+                <td>@file.fUrl</td>
+                <td class="td-status">@file.fStatus</td>
+                <td>@file.fMediaId</td>
+            </tr>
+        }
+    </tbody>
+</table>

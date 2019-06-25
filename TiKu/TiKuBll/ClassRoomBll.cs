@@ -338,6 +338,11 @@ namespace TiKuBll
             return tClassRoomDal.ClassRoomSettlement(strClassRoomCode, strOprUser,ref strMsg);
         }
 
+        public static int ClassRoomRecordedSettlement(string strClassRoomCode, string strOprUser, ref string strMsg)
+        {
+            return tClassRoomDal.ClassRoomRecordedSettlement(strClassRoomCode, strOprUser, ref strMsg);
+        }
+
         public static int SaveClassRoomInfo(string strClassRoomCode, string InfoType, string strValue,string strUserName)
         {
             tClassRoomEntity classRoom = tClassRoomDal.GettClassRoomByCode(strClassRoomCode, "");

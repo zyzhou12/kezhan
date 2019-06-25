@@ -9,6 +9,6 @@ namespace KeZhanManager.Models
     public class UserListModel
     {
         public int iCount { get; set; }
-        public List<tUserEntity> userList { get; set; }
+        public List<UserModel> userList { get; set; }
     }
 }

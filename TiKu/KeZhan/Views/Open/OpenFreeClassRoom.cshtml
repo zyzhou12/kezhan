@@ -18,150 +18,150 @@
     </section>*@
 
 @*<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <script type="text/javascript" src="../../Scripts/ckplayer/ckplayer.js?v=1.4"></script>
-    <title>免费试看</title>
-</head>
-<body>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script type="text/javascript" src="../../Scripts/ckplayer/ckplayer.js?v=1.4"></script>
+        <title>免费试看</title>
+    </head>
+    <body>
 
-    <div class="videosamplex" style=" width: 100%;height: 380px;background-color: rgb(0, 0, 0);overflow: hidden;position: relative;">
-        <video id="videoplayer"  src="@Model.FileUrl"></video>
-    </div>
-</body>
-</html>
+        <div class="videosamplex" style=" width: 100%;height: 380px;background-color: rgb(0, 0, 0);overflow: hidden;position: relative;">
+            <video id="videoplayer"  src="@Model.FileUrl"></video>
+        </div>
+    </body>
+    </html>
 
-<script type="text/javascript">
-    var videoUrl="@Model.FileUrl";
+    <script type="text/javascript">
+        var videoUrl="@Model.FileUrl";
 
-        var videoObject = {
-            container: '.videosamplex', //“#”代表容器的ID，“.”或“”代表容器的class
-            video:videoUrl,//视频地址
-            variable: 'player', //该属性必需设置，值等于下面的new chplayer()的对象
-            poster: '@Model.Name',
-            mobileCkControls: true, //是否在移动端（包括ios）环境中显示控制栏
-            mobileAutoFull: true, //在移动端播放后是否按系统设置的全屏播放
-            h5container: '#videoplayer', //h5环境中使用自定义容器
-            debug:true,
-            loaded: 'loadedHandler'
-        };
-        var player = new ckplayer(videoObject);
+            var videoObject = {
+                container: '.videosamplex', //“#”代表容器的ID，“.”或“”代表容器的class
+                video:videoUrl,//视频地址
+                variable: 'player', //该属性必需设置，值等于下面的new chplayer()的对象
+                poster: '@Model.Name',
+                mobileCkControls: true, //是否在移动端（包括ios）环境中显示控制栏
+                mobileAutoFull: true, //在移动端播放后是否按系统设置的全屏播放
+                h5container: '#videoplayer', //h5环境中使用自定义容器
+                debug:true,
+                loaded: 'loadedHandler'
+            };
+            var player = new ckplayer(videoObject);
 
 
-        var elementLogin = null; //是否存在提示层
-        var loginOrNo = false; //是否已登录，默认是没有登录
-        var loginShow = false; //提示层是否是显示状态
-        function loadedHandler() { //播放器加载后会调用该函数
-            player.addListener('time', timeHandler); //监听播放时间,addListener是监听函数，需要传递二个参数，'time'是监听属性，这里是监听时间，timeHandler是监听接受的函数
-            player.addListener('play', playHandler); //监听播放状态
-            player.addListener('full', fullHandler); //监听全屏切换
-        }
-
-        function playHandler() { //监听播放状态
-            if (loginShow) {
-                player.videoPause();
+            var elementLogin = null; //是否存在提示层
+            var loginOrNo = false; //是否已登录，默认是没有登录
+            var loginShow = false; //提示层是否是显示状态
+            function loadedHandler() { //播放器加载后会调用该函数
+                player.addListener('time', timeHandler); //监听播放时间,addListener是监听函数，需要传递二个参数，'time'是监听属性，这里是监听时间，timeHandler是监听接受的函数
+                player.addListener('play', playHandler); //监听播放状态
+                player.addListener('full', fullHandler); //监听全屏切换
             }
-        }
 
-        function fullHandler(b) { //监听全屏切换
-            if (loginShow && elementLogin) {
-                player.deleteElement(elementLogin);
-                elementLogin = null;
-                window.setTimeout('showLogin()', 200);
-            }
-        }
-
-        function timeHandler(t) { //监听播放时间
-            if (t >= @Model.FreeDateLength && !loginOrNo) { //如果播放时间大于1，则又没有登录，则弹出登录/注册层
-                player.videoPause();
-                if (!loginShow && !elementLogin) {
-                    showLogin();
+            function playHandler() { //监听播放状态
+                if (loginShow) {
+                    player.videoPause();
                 }
             }
-        }
 
-        function showLogin() { //显示登录/注册层
-            loginShow = true;
-            var meta = player.getMetaDate();
-            var x = (meta['width'] - 307) * 0.5;
-            var y = (meta['height'] - 39) * 0.5 - 80;
-            var attribute = {
-                list: [ //list=定义元素列表
-                    {
-                        type: 'text', //定义元素类型：只有二种类型，image=使用图片，text=文本
-                        text: '试看已结束' //图片地址
+            function fullHandler(b) { //监听全屏切换
+                if (loginShow && elementLogin) {
+                    player.deleteElement(elementLogin);
+                    elementLogin = null;
+                    window.setTimeout('showLogin()', 200);
+                }
+            }
+
+            function timeHandler(t) { //监听播放时间
+                if (t >= @Model.FreeDateLength && !loginOrNo) { //如果播放时间大于1，则又没有登录，则弹出登录/注册层
+                    player.videoPause();
+                    if (!loginShow && !elementLogin) {
+                        showLogin();
                     }
-                    //,
-                    //{
-                    //    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
-                    //    file: 'pic/login/login_02.png', //图片地址
-                    //    radius: 0, //图片圆角弧度
-                    //    width: 69, //定义图片宽，必需要定义
-                    //    height: 39, //定义图片高，必需要定义
-                    //    alpha: 1, //图片透明度(0-1)
-                    //    marginLeft: 0, //图片离左边的距离
-                    //    marginRight: 0, //图片离右边的距离
-                    //    marginTop: 0, //图片离上边的距离
-                    //    marginBottom: 0, //图片离下边的距离
-                    //    clickEvent: 'javaScript->userLogin()'
-                    //},
-                    //{
-                    //    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
-                    //    file: 'pic/login/login_03.png', //图片地址
-                    //    radius: 0, //图片圆角弧度
-                    //    width: 70, //定义图片宽，必需要定义
-                    //    height: 39, //定义图片高，必需要定义
-                    //    alpha: 1, //图片透明度(0-1)
-                    //    marginLeft: 0, //图片离左边的距离
-                    //    marginRight: 0, //图片离右边的距离
-                    //    marginTop: 0, //图片离上边的距离
-                    //    marginBottom: 0, //图片离下边的距离
-                    //    clickEvent: 'javaScript->userReg()'
-                    //},
-                    //{
-                    //    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
-                    //    file: 'pic/login/login_04.png', //图片地址
-                    //    radius: 0, //图片圆角弧度
-                    //    width: 28, //定义图片宽，必需要定义
-                    //    height: 39, //定义图片高，必需要定义
-                    //    alpha: 1, //图片透明度(0-1)
-                    //    marginLeft: 0, //图片离左边的距离
-                    //    marginRight: 0, //图片离右边的距离
-                    //    marginTop: 0, //图片离上边的距离
-                    //    marginBottom: 0 //图片离下边的距离
-                    //}
-                ],
-                x: x, //元件x轴坐标，注意，如果定义了position就没有必要定义x,y的值了，支持数字和百分比
-                y: y, //元件y轴坐标
-                alpha: 1, //元件的透明度
-                backgroundColor: '0x000000', //元件的背景色
-                backAlpha: 0.1, //元件的背景透明度(0-1)
-                backRadius: 0 //元件的背景圆角弧度
+                }
             }
-            elementLogin = player.addElement(attribute);
-        }
 
-        function userLogin() {
-            alert('点击了登录按钮');
-        }
-
-        function userReg() {
-            alert('点击了注册按钮');
-        }
-
-        function loginTrue() { //附加的处理用户登录后执行的动作
-            loginOrNo = true;
-            if (loginShow && elementLogin) {
-                player.deleteElement(elementLogin);
-                elementLogin = null;
-                loginShow = false;
-                player.videoPlay();
+            function showLogin() { //显示登录/注册层
+                loginShow = true;
+                var meta = player.getMetaDate();
+                var x = (meta['width'] - 307) * 0.5;
+                var y = (meta['height'] - 39) * 0.5 - 80;
+                var attribute = {
+                    list: [ //list=定义元素列表
+                        {
+                            type: 'text', //定义元素类型：只有二种类型，image=使用图片，text=文本
+                            text: '试看已结束' //图片地址
+                        }
+                        //,
+                        //{
+                        //    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
+                        //    file: 'pic/login/login_02.png', //图片地址
+                        //    radius: 0, //图片圆角弧度
+                        //    width: 69, //定义图片宽，必需要定义
+                        //    height: 39, //定义图片高，必需要定义
+                        //    alpha: 1, //图片透明度(0-1)
+                        //    marginLeft: 0, //图片离左边的距离
+                        //    marginRight: 0, //图片离右边的距离
+                        //    marginTop: 0, //图片离上边的距离
+                        //    marginBottom: 0, //图片离下边的距离
+                        //    clickEvent: 'javaScript->userLogin()'
+                        //},
+                        //{
+                        //    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
+                        //    file: 'pic/login/login_03.png', //图片地址
+                        //    radius: 0, //图片圆角弧度
+                        //    width: 70, //定义图片宽，必需要定义
+                        //    height: 39, //定义图片高，必需要定义
+                        //    alpha: 1, //图片透明度(0-1)
+                        //    marginLeft: 0, //图片离左边的距离
+                        //    marginRight: 0, //图片离右边的距离
+                        //    marginTop: 0, //图片离上边的距离
+                        //    marginBottom: 0, //图片离下边的距离
+                        //    clickEvent: 'javaScript->userReg()'
+                        //},
+                        //{
+                        //    type: 'image', //定义元素类型：只有二种类型，image=使用图片，text=文本
+                        //    file: 'pic/login/login_04.png', //图片地址
+                        //    radius: 0, //图片圆角弧度
+                        //    width: 28, //定义图片宽，必需要定义
+                        //    height: 39, //定义图片高，必需要定义
+                        //    alpha: 1, //图片透明度(0-1)
+                        //    marginLeft: 0, //图片离左边的距离
+                        //    marginRight: 0, //图片离右边的距离
+                        //    marginTop: 0, //图片离上边的距离
+                        //    marginBottom: 0 //图片离下边的距离
+                        //}
+                    ],
+                    x: x, //元件x轴坐标，注意，如果定义了position就没有必要定义x,y的值了，支持数字和百分比
+                    y: y, //元件y轴坐标
+                    alpha: 1, //元件的透明度
+                    backgroundColor: '0x000000', //元件的背景色
+                    backAlpha: 0.1, //元件的背景透明度(0-1)
+                    backRadius: 0 //元件的背景圆角弧度
+                }
+                elementLogin = player.addElement(attribute);
             }
-        }
+
+            function userLogin() {
+                alert('点击了登录按钮');
+            }
+
+            function userReg() {
+                alert('点击了注册按钮');
+            }
+
+            function loginTrue() { //附加的处理用户登录后执行的动作
+                loginOrNo = true;
+                if (loginShow && elementLogin) {
+                    player.deleteElement(elementLogin);
+                    elementLogin = null;
+                    loginShow = false;
+                    player.videoPlay();
+                }
+            }
 
 
-</script>*@
+    </script>*@
 
 
 <!DOCTYPE html>
@@ -172,8 +172,8 @@
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
     <title>Aliplayer功能展示</title>
     <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.8.2/skins/default/aliplayer-min.css" />
-    <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.8.2/aliplayer-min.js?v=1.1"></script>
+    <script type="text/javascript" charset="utf-8" src="https://player.alicdn.com/aliplayer/presentation/js/aliplayercomponents.min.js?v=1.1"></script>
     <style type="text/css">
         .vip-join {
             color: #00c1de;
@@ -248,10 +248,14 @@
             </div>
         </div>
     </script>
+
+    <script type="text/template" id="barPreviewTemplate">
+        <a href="#" onclick="VideoBuy()" class="vip-join">购买后</a> 观看完整视频
+    </script>
     <script>
 
-    var  source = "@Html.Raw(Model.FileUrl)";
-    var classRoomCode="@Model.ID";
+    var source = "@Html.Raw(Model.FileUrl)";
+    var classRoomCode = "@Model.ID";
 
     var player = new Aliplayer({
         id: "player-con",
@@ -263,39 +267,30 @@
         components: [{
             name: 'PreviewVodComponent',
             type: AliPlayerComponent.PreviewVodComponent,
-            /**
-             * 试看组件共有三个参数: previewDuration, previewEndHtml, previewBarHtml
-             * previewDuration: 试看时长, 单位为秒, 如果不需要开启试看的话, 设置为0, 当开启会员或购买之后设置为0!
-             * previewEndHtml: 试看结束之后, 现在在播放器中间的 Dom 字符串或者父节点的 '#' + id, 默认为 null
-             * previewBarHtml: 播放器左下角, 提示试看时长之后的 Dom 字符串或者父节点的 '#' + id, 同样可自定义样式, 默认为 null
-             * tips: previewEndHtml, previewBarHtml 可以像例子中的那样, <script type="text/template" id="endPreviewTemplate"> 在 script 标签中插入html
-             * tips: previewEndHtml, previewBarHtml 也可以直接使用Dom字符串, 推荐使用 es6 的模板字符串可以很方便地插入Dom字符串
-             */
-            args: [@Model.FreeDateLength, '#endPreviewTemplate', '<a href="#" onclick="VideoBuy()" class="vip-join">购买后</a> 观看完整视频']
-        }]
-    }, function (player) {
-        console.log("播放器创建成功");
+            //args: [@Model.FreeDateLength, "#endPreviewTemplate", "#barPreviewTemplate"]
+            args: [@Model.FreeDateLength, null, "#barPreviewTemplate"]
+            }]
+        }, function (player) {
 
-        /* 可以在自定义的 Dom 字符串上注册点击事件, 包括可以弹出开启会员的弹窗之类的 */
-        var vip_limit_btn = document.querySelector('.vip_limit_btn')
-        vip_limit_btn.addEventListener('click', function () {
-            if(confirm('确认去购买吗?')){
-                VideoBuy();
-            }
-        })
+            /* 可以在自定义的 Dom 字符串上注册点击事件, 包括可以弹出开启会员的弹窗之类的 */
+            //var vip_limit_btn = document.querySelector('.vip_limit_btn')
+            //vip_limit_btn.addEventListener('click', function () {
+            //    if (confirm('确认去购买吗?')) {
+            //        VideoBuy();
+            //    }
+            //})
 
-        var close_btn = document.querySelector('.vip_limit_close_btn')
-        close_btn.addEventListener('click', function () {
-            /* 可以调用试看组件的 closePreviewLayer 方法来关闭提示 */
-            player.getComponent('PreviewVodComponent').closePreviewLayer()
-        })
-    });
+            //var close_btn = document.querySelector('.vip_limit_close_btn')
+            //close_btn.addEventListener('click', function () {
+            //    /* 可以调用试看组件的 closePreviewLayer 方法来关闭提示 */
+            //    player.getComponent('PreviewVodComponent').closePreviewLayer();
+            //})
+        });
 
-    function VideoBuy()
-    {
-        window.close();
-        parent.window.BuyOrder(classRoomCode);
-    }
+        function VideoBuy() {
+            window.close();
+            parent.window.BuyOrder(classRoomCode);
+        }
     </script>
 </body>
 </html>

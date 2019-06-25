@@ -79,7 +79,8 @@ namespace TiKu.Dal
         List<DbParameter> lstParam = new List<DbParameter>();
 
         bufSQL.Append(@"select fCourseTitle,m.* from tmedia m
-                        left join tCourse c on c.fID=m.fCourseId
+left join tResource r on r.fMediaID=m.fMediaID
+                        left join tCourse c on c.fResourceUrl=r.fResourceCode
                      where fCourseTitle like '%'+@Name+'%' 
                         and (c.fUploadDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')");
 

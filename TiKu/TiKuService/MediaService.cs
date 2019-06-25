@@ -380,9 +380,11 @@ namespace TiKuService
 
                     //课程结算
                     strSql = @" select * from tClassRoom where fClassRoomCode in 
-                                (select distinct fClassRoomCode from tCourse where dateadd(minute,fClassDateLength,fClassDate)<dateadd(day,-7,getdate()))
+                                (select distinct fClassRoomCode from (select fclassroomcode,max(fClassDate) fClassDate from tcourse group by fclassroomcode ) a
+                                where fClassDate<dateadd(day,-7,getdate()))
                                 and fStatus<>'结算' 
-                                and fClassType<>'OnLine'";
+                                and fClassType<>'OnLine'
+                                and ftype='Live'";
                     daSMS = new SqlDataAdapter(strSql, conn);
                     dsSms = new DataSet();
 
@@ -396,7 +398,6 @@ namespace TiKuService
                             string strClassRoomCode = dsSms.Tables[0].Rows[i]["fClassRoomCode"].ToString();
                             try
                             {
-
                                 SaveLog("The ClassRoomSettlement is Begin" + DateTime.Now.ToString() + "\t" + strClassRoomCode);
                                 ClassRoomSettlement(strClassRoomCode);
 
@@ -412,6 +413,38 @@ namespace TiKuService
                         }
                     }
 
+                    //录播课程结算
+                    strSql = @" select * from tClassRoom 
+                                where fStatus='下线'
+                                and fClassType<>'OnLine'
+                                and ftype='Recorded'";
+                    daSMS = new SqlDataAdapter(strSql, conn);
+                    dsSms = new DataSet();
+
+                    daSMS.Fill(dsSms);
+
+
+                    if (dsSms.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= dsSms.Tables[0].Rows.Count - 1; i++)
+                        {
+                            string strClassRoomCode = dsSms.Tables[0].Rows[i]["fClassRoomCode"].ToString();
+                            try
+                            {
+                                SaveLog("The ClassRoomRecordedSettlement is Begin" + DateTime.Now.ToString() + "\t" + strClassRoomCode);
+                                ClassRoomRecordedSettlement(strClassRoomCode);
+
+                                SaveLog("The ClassRoomRecordedSettlement is end\t" + DateTime.Now.ToString() + "\t" + strClassRoomCode);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                SaveLog("The  ClassRoomRecordedSettlement Service is Error\t" + DateTime.Now.ToString() + "\t" + ex.Message);
+                            }
+
+
+                        }
+                    }
 
                     try
                     {
@@ -727,6 +760,12 @@ namespace TiKuService
         {
             string strMsg = "";
             ClassRoomBll.ClassRoomSettlement(strClassRooomCode, "MediaService", ref strMsg);
+        }
+
+        public void ClassRoomRecordedSettlement(string strClassRooomCode)
+        {
+            string strMsg = "";
+            ClassRoomBll.ClassRoomRecordedSettlement(strClassRooomCode, "MediaService", ref strMsg);
         }
 
         public void CourseSettlement(int iCourseID)

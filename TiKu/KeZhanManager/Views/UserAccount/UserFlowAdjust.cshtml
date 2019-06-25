@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "UserFlowAdjust";
+}
+
+
+
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-member-add" novalidate="novalidate">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" id="txtMobile" value="">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>赠送流量：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="number" class="input-text" id="txtFlow" value="">
+            </div>
+        </div>
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>有效期：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" onfocus="WdatePicker({ maxDate:'#F{\'2099-%M-%d\'}' })" id="txtEffect" value="2099-01-01" class="input-text Wdate" style="width:120px;">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>备注：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" id="txtNote" value="">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="button" onclick="DoFlowAdjust()" value="&nbsp;&nbsp;确定&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+
+@section Script{
+    <!--请在下方写此页面业务相关的脚本-->
+    <script type="text/javascript" src="~/Content/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+}
+
+
+<script type="text/javascript">
+    function DoFlowAdjust() {
+        if ($("#txtMobile").val() == "") {
+            alert("请输入手机号");
+            return;
+        } else if ($("#txtFlow").val() == "") {
+            alert("请输入流量");
+            return;
+        } else if ($("#txtEffect").val() == "") {
+            alert("请输入有效期");
+            return;
+        } else if ($("#txtNote").val() == "") {
+            alert("请输入备注");
+            return;
+        }
+
+        $.ajax({
+            url: "/UserAccount/DoFlowAdjust",
+            data: { "strMobile": $("#txtMobile").val(), "iFlow": $("#txtFlow").val(), "effectDate": $("#txtEffect").val(), "strNote": $("#txtNote").val() },
+            type: "POST",
+            dataType: "json",
+            success: function (rst) {
+                if (rst.iResult >= 0) {
+                    alert("操作成功");
+                    self.location = document.referrer;
+                } else {
+                    alert(rst.strMsg);
+                }
+            }
+
+        });
+    }
+</script>

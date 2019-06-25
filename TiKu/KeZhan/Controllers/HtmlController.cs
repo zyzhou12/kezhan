@@ -19,7 +19,10 @@ namespace KeZhan.Controllers
         {
             return View();
         }
-
+        public ActionResult TeacherQAInfo()
+        {
+            return View();
+        }
         public ActionResult About()
         {
             return View();
