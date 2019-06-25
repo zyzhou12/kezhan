@@ -21,10 +21,10 @@ namespace KeZhanManager.Controllers
             return View();
         }
 
-        public ActionResult GetBookingList(string strBeginDate, string strEndDate, string strUserName)
+        public ActionResult GetBookingList(string strBeginDate, string strEndDate, string strUserName, string strClassCode)
         {
 
-            List<tBookingEntity> bookingList = tBookingDal.GetBookingList(strBeginDate, strEndDate, strUserName);
+            List<tBookingEntity> bookingList = tBookingDal.GetBookingList(strBeginDate, strEndDate, strUserName, strClassCode);
             BookingListModel model = new BookingListModel();
             if (bookingList != null)
             {
@@ -57,10 +57,10 @@ namespace KeZhanManager.Controllers
             return View();
         }
 
-        public ActionResult GetUserRefundList(string strBeginDate, string strEndDate, string strUserName)
+        public ActionResult GetUserRefundList(string strBeginDate, string strEndDate, string strUserName, string strClassCode)
         {
 
-            List<tUserRefundEntity> refundList = tUserRefundDal.UserRefundListQuery(strBeginDate, strEndDate, strUserName);
+            List<tUserRefundEntity> refundList = tUserRefundDal.UserRefundListQuery(strBeginDate, strEndDate, strUserName, strClassCode);
             UserRefundListModel model = new UserRefundListModel();
             if (refundList != null)
             {

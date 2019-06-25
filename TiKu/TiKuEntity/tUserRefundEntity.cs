@@ -26,6 +26,7 @@ namespace TiKu.Entity
 
     public System.String fClassRoomTitle { get; set; }
     public System.String fNickName { get; set; }
+    public System.String fTypeCode { get; set; }
 
   }
 

@@ -267,24 +267,24 @@
         components: [{
             name: 'PreviewVodComponent',
             type: AliPlayerComponent.PreviewVodComponent,
-            //args: [@Model.FreeDateLength, "#endPreviewTemplate", "#barPreviewTemplate"]
-            args: [@Model.FreeDateLength, null, "#barPreviewTemplate"]
+            args: [@Model.FreeDateLength, "#endPreviewTemplate", "#barPreviewTemplate"]
+            //args: [@Model.FreeDateLength, null, "#barPreviewTemplate"]
             }]
         }, function (player) {
 
             /* 可以在自定义的 Dom 字符串上注册点击事件, 包括可以弹出开启会员的弹窗之类的 */
-            //var vip_limit_btn = document.querySelector('.vip_limit_btn')
-            //vip_limit_btn.addEventListener('click', function () {
-            //    if (confirm('确认去购买吗?')) {
-            //        VideoBuy();
-            //    }
-            //})
+            var vip_limit_btn = document.querySelector('.vip_limit_btn')
+            vip_limit_btn.addEventListener('click', function () {
+                if (confirm('确认去购买吗?')) {
+                    VideoBuy();
+                }
+            })
 
-            //var close_btn = document.querySelector('.vip_limit_close_btn')
-            //close_btn.addEventListener('click', function () {
-            //    /* 可以调用试看组件的 closePreviewLayer 方法来关闭提示 */
-            //    player.getComponent('PreviewVodComponent').closePreviewLayer();
-            //})
+            var close_btn = document.querySelector('.vip_limit_close_btn')
+            close_btn.addEventListener('click', function () {
+                /* 可以调用试看组件的 closePreviewLayer 方法来关闭提示 */
+                player.getComponent('PreviewVodComponent').closePreviewLayer();
+            })
         });
 
         function VideoBuy() {

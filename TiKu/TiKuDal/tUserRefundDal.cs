@@ -94,17 +94,20 @@ namespace TiKu.Dal
         }
 
 
-        public static List<tUserRefundEntity> UserRefundListQuery(string strBeginDate, string strEndDate, string strUserName)
+        public static List<tUserRefundEntity> UserRefundListQuery(string strBeginDate, string strEndDate, string strUserName, string strClassCode)
         {
          StringBuilder bufSQL = new StringBuilder();
         List<DbParameter> lstParam = new List<DbParameter>();
 
-        bufSQL.Append(@"SELECT a.* FROM tUserRefund a
+        bufSQL.Append(@"SELECT a.*,b.fTypeCode FROM tUserRefund a
                       LEFT JOIN tUser u on a.fUserName=u.fUserName
-                     where (fBookingNo like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%')
+                      left join tbooking b on a.fBookingNo=b.fBookingNo
+                     where (a.fBookingNo like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%')
+                        and (b.fTypeCode=@ClassCode or isnull(@ClassCode,'')='')
                         and (a.fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')");
 
         lstParam.Add(new DBParam("@UserName", strUserName));
+        lstParam.Add(new DBParam("@ClassCode", strClassCode));
         lstParam.Add(new DBParam("@BeginDate", strBeginDate));
         lstParam.Add(new DBParam("@EndDate", strEndDate));
 

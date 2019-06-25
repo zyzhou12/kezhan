@@ -10,6 +10,7 @@
         -
         <input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
         <input type="text" class="input-text" style="width:250px" placeholder="输入手机 订单号" id="txtUserName" name="UserName">
+        <input type="text" class="input-text" style="width:250px" placeholder="输入课程Code" id="txtClassCode" name="ClassCode">
         <button type="button" class="btn btn-success radius" onclick="DoQueryClassRoom()" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 开始搜索</button>
     </div>
     @*<div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -35,7 +36,7 @@
             $.ajax({
                 url: "/Booking/GetBookingList",
                 type: this.method,
-                data: { "strBeginDate": $("#datemin").val(), "strEndDate": $("#datemax").val(), "strUserName": $("#txtUserName").val(), "strStatus": "下线" },
+                data: { "strBeginDate": $("#datemin").val(), "strEndDate": $("#datemax").val(), "strUserName": $("#txtUserName").val(), "strClassCode": $("#txtClassCode").val()},
                 success: function (msg) {
                     $('#divBookingList').html(msg);
                     $('.table-sort').dataTable({

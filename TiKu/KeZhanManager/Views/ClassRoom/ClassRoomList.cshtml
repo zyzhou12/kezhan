@@ -3,7 +3,7 @@
     <thead>
         <tr class="text-c">
             <th width="25"><input type="checkbox" name="" value=""></th>
-            <th width="80">ID</th>
+            <th width="50">Code</th>
             <th>课程名称</th>
             <th width="90">类型</th>
             <th width="80">付款方式</th>
@@ -14,7 +14,7 @@
             <th width="100">是否可退</th>
             <th width="40">价格</th>
             <th width="40">状态</th>
-            <th width="100">操作</th>
+            <th width="40">操作</th>
         </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
         {
             <tr class="text-c">
                 <td><input type="checkbox" value="@classRoom.fID" name=""></td>
-                <td>@classRoom.fID</td>
+                <td>@classRoom.fClassRoomCode</td>
                 <td>@classRoom.fClassRoomTitle</td>
                 <td>
                     @if (classRoom.fClassType == "Public")

@@ -144,7 +144,7 @@ namespace TiKu.Dal
       return lstRst;
     }
 
-    public static List<tBookingEntity> GetBookingList(string strBeginDate, string strEndDate, string strUserName)
+    public static List<tBookingEntity> GetBookingList(string strBeginDate, string strEndDate, string strUserName, string strClassCode)
     {
         StringBuilder bufSQL = new StringBuilder();
         List<DbParameter> lstParam = new List<DbParameter>();
@@ -152,9 +152,11 @@ namespace TiKu.Dal
         bufSQL.Append(@"SELECT b.* FROM tBooking b
                       LEFT JOIN tUser u on b.fUserName=u.fUserName
                      where (fBookingNo like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%')
+                        and (b.fTypeCode=@ClassCode or isnull(@ClassCode,'')='')
                         and (b.fCreateDate between @BeginDate and @EndDate or isnull(@BeginDate,'')='')");
 
         lstParam.Add(new DBParam("@UserName", strUserName));
+        lstParam.Add(new DBParam("@ClassCode", strClassCode));
         lstParam.Add(new DBParam("@BeginDate", strBeginDate));
         lstParam.Add(new DBParam("@EndDate", strEndDate));
 
