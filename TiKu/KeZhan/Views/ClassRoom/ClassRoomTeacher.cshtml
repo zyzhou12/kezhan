@@ -101,6 +101,11 @@
                                     <h4><a href="#">@course.fDictTitle</a></h4>
                                     <p>
                                         @course.fCourseTitle
+                                        @if (course.fUpdateClassDate > DateTime.MinValue)
+                                        {
+                                            <br />
+                                            <span>原上课时间：@course.fUpdateClassDate.ToString()</span>
+                                        }
                                         <br />
                                         <span>上课时间：@course.fClassDate.ToString()</span>
                                         <br />

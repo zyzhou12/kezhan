@@ -201,7 +201,7 @@ namespace KeZhan.Controllers
         public JsonResult GerCourseStatus(string strCourseNo)
         {
             ResponseBaseModel response = new ResponseBaseModel();
-            string strCourseID = strCourseNo.Substring(7, strCourseNo.Length - 7);
+            string strCourseID = strCourseNo.Substring(5, strCourseNo.Length - 5);
             GroupModel group = GroupUserBll.GetGroup(strCourseNo);
             if (group != null && group.fIsValid)
             {

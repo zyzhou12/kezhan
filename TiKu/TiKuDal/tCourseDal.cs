@@ -93,6 +93,32 @@ namespace TiKu.Dal
             return lstRst;
         }
 
+        public static List<tCourseEntity> GetMyCourseList(string strUserName)
+        {
+            StringBuilder bufSQL = new StringBuilder();
+            List<DbParameter> lstParam = new List<DbParameter>();
+
+            bufSQL.Append(@"SELECT c.* FROM tCourse c
+                                left join tClassRoom cr on cr.fClassRoomCode=c.fClassRoomCode
+                                left join tUser u on u.fUserName=cr.fTecharUserName
+                                LEFT JOIN tBooking b on cr.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' 
+                                WHERE 1=1  
+                                AND b.fUserName=@UserName
+                                AND cr.fType='Live'
+                                 and b.fStatus in ('已支付','已驳回') 
+                                 AND cr.fStatus='发布' ");
+
+          
+                lstParam.Add(new DBParam("@UserName", strUserName));
+            
+
+            //防止返回数据过多
+            if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+            DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+            List<tCourseEntity> lstRst = PubFun.DataTableToObjects<tCourseEntity>(dtRst);
+            return lstRst;
+        }
+
 
         public static DataTable GetCourseById(int iCourseID, string strUserName)
         {

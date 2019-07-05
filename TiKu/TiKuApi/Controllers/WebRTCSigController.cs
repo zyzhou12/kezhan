@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TiKu.Api.Code;
 
 namespace TiKu.Api.Controllers
 {
@@ -11,9 +12,12 @@ namespace TiKu.Api.Controllers
         //
         // GET: /WebRTCSig/
 
-        public ActionResult Sig()
+        public JsonResult Sig(string strUserName)
         {
-            return View();
+            JsonResult jr = new JsonResult();
+            jr.Data=WebRTCSig.GetSig(strUserName);
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
         }
 
     }

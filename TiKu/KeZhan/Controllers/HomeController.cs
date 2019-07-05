@@ -31,6 +31,9 @@ namespace KeZhan.Controllers
                     if (cr.IsBuy > 0 || cr.fTecharUserName == userInfo.fUserName)//老师本人不用管是否支付
                     {
                         isJoin = true;
+                    }
+                    if (cr.fTecharUserName == userInfo.fUserName)
+                    {
                         strRole = "Teacher";
                     }
                     if (cr.fClassType == "OnLine")
@@ -41,9 +44,10 @@ namespace KeZhan.Controllers
                     if (isJoin)
                     {
                         OpenClassRoomModel model = new OpenClassRoomModel();
-                        model.ClassRoomCode = cr.fClassRoomCode + iCourseID.ToString();//课堂房间号
+                      //  model.ClassRoomCode = cr.fClassRoomCode + iCourseID.ToString();//课堂房间号
+                        model.ClassRoomCode = (10000 + cr.fID).ToString() + iCourseID.ToString();
                         model.CourseID = iCourseID;
-                        model.ClassRoomName = cr.fClassRoomTitle;
+                        model.ClassRoomName = course.fCourseTitle;
                         model.UserName = userInfo.fUserName;
                         model.UserSig = UserSig.GetSig(userInfo.fUserName);//获取签名                        
                         model.Role = strRole;

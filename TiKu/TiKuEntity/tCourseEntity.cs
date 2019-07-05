@@ -13,6 +13,8 @@ namespace TiKu.Entity
     public System.String fDictTitle { get; set; }
     public System.String fCourseTitle { get; set; }
     public System.DateTime fClassDate { get; set; }
+
+    public System.DateTime fUpdateClassDate { get; set; }
     public System.Int32 fClassDateLength { get; set; }
     public System.Decimal fPrice { get; set; }
 

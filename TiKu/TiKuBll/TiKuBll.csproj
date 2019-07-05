@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="BookingBll.cs" />
     <Compile Include="ClassRoomBll.cs" />
+    <Compile Include="ConfigBll.cs" />
     <Compile Include="GroupUserBll.cs" />
     <Compile Include="ManagerBll.cs" />
     <Compile Include="Model\BookingModel.cs" />

@@ -89,6 +89,8 @@
     <Compile Include="Models\OtherBasicModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResponseBase.cs" />
+    <Compile Include="Models\ResponseCourseModel.cs" />
+    <Compile Include="Models\ResponseOnLineClassModel.cs" />
     <Compile Include="Models\SubjectEditionModel.cs" />
     <Compile Include="Models\UserResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -175,6 +177,9 @@
       <Project>{4EFD1340-E4E9-45C6-983D-1BD51DAEC8DE}</Project>
       <Name>TiKuEntity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

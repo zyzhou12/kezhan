@@ -36,8 +36,14 @@ namespace KeZhan.Controllers
         {
             return View();
         }
-
-
+        public ActionResult BookingDesc()
+        {
+            return View();
+        }
+        public ActionResult SendDesc()
+        {
+            return View();
+        }
 
         public ActionResult UpdateRole()
         {

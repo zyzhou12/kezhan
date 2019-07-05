@@ -195,7 +195,11 @@
                                                     <h4><a href="#">@course.fDictTitle</a></h4>
                                                     <p>
                                                         @course.fCourseTitle
-
+                                                        @if (course.fUpdateClassDate > DateTime.MinValue)
+                                                        {
+                                                            <br />
+                                                            <span>原上课时间：@course.fUpdateClassDate.ToString()</span>
+                                                        }
                                                         <br />
                                                         <span>上课时间：@course.fClassDate.ToString("yyyy-MM-dd HH:mm") - @course.fClassDate.AddMinutes(course.fClassDateLength).ToString("yyyy-MM-dd HH:mm")</span>
 
@@ -215,7 +219,7 @@
                                                                     {
                                                                         if (Model.fStatus == "发布")
                                                                         {
-                                                                    <a href="#" onclick="CheckBrowser(@course.fID)" target="_blank" class="awe-btn awe-btn-default">进入课堂</a>
+                                                                    <a href="#" onclick="CheckBrowser(@course.fID)" class="awe-btn awe-btn-default">进入课堂</a>
                                                                         }
                                                                     }
                                                                 else if (course.CourseStatus == 4)

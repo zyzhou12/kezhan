@@ -1330,6 +1330,8 @@
     <Content Include="Views\Open\Query.cshtml" />
     <Content Include="Views\Open\QueryClassRoomList.cshtml" />
     <Content Include="Views\Html\TeacherQAInfo.cshtml" />
+    <Content Include="Views\Html\BookingDesc.cshtml" />
+    <Content Include="Views\Html\SendDesc.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

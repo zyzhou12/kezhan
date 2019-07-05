@@ -31,7 +31,7 @@ namespace KeZhan.Controllers
 
 
 
-        public ActionResult RegsiterLogin(string redirect_uri = null)
+        public ActionResult RegsiterLogin(string openid=null,string redirect_uri = null)
         {
             if (string.IsNullOrEmpty(redirect_uri))
             {
@@ -47,6 +47,7 @@ namespace KeZhan.Controllers
             }
 
             LoginModel model = new LoginModel();
+            model.openid = openid;
             model.redirect_uri = redirect_uri;
 
             return View(model);
@@ -322,27 +323,24 @@ namespace KeZhan.Controllers
 
                 if (token.access_token != null)
                 {
-                    //更新用户信息
-                    //ResponseModel<UserModel> Response = UserBll.getUser(microPublic.fPublicID, token.openid);
-                    string strMsg = "";
-                    UserInfoModel userInfo = UserBll.UserWeiChatLogin(token.openid, state, ref strMsg);
-
-                    // userInfo.User = Response.ResultObj;
+                   
+                   
 
 
-                    //if (!string.IsNullOrEmpty(token.access_token))
-                    //{
-                    //    string strtoken = HotelLife.Bll.ConfigBll.GetToken(strAppID);
+                    if (!string.IsNullOrEmpty(token.access_token))
+                    {
+                        string strtoken = ConfigBll.GetToken(strAppID);
 
-                    //    //获取个人信息
-                    //    sUrl = String.Format(WXApiRequest.GetUrl("getuserinfo"), strtoken, token.openid);
-                    //    strJson = WXApiRequest.GetData(sUrl);
-                    //    PublicUserModel user = jss.Deserialize<PublicUserModel>(strJson);
-                    //    userInfo.User.fNickName = user.nickname;
-                    //    userInfo.User.fHeadImg = user.headimgurl;
-                    //    userInfo.User.fsubscribe = user.subscribe;
-                    //}
-                    Code.Fun.SetSessionUserInfo(this, userInfo);
+                        //获取个人信息
+                        sUrl = String.Format(WXApiRequest.GetUrl("getuserinfo"), strtoken, token.openid);
+                        strJson = WXApiRequest.GetData(sUrl);
+                        PublicUserModel user = jss.Deserialize<PublicUserModel>(strJson);
+
+                        string strMsg = "";
+                        UserInfoModel userInfo = UserBll.UserWeiChatLogin(user.unionid, state, ref strMsg);
+                        Code.Fun.SetSessionUserInfo(this, userInfo);
+
+                    }
 
 
                 }
@@ -389,14 +387,20 @@ namespace KeZhan.Controllers
 
                 if (token.access_token != null)
                 {
-                    //更新用户信息
-                    //ResponseModel<UserModel> Response = UserBll.getUser(microPublic.fPublicID, token.openid);
-                    string strMsg = "";
 
-                    UserInfoModel userInfo = UserBll.GettUserByOpenID(token.openid);
+                        string strtoken = ConfigBll.GetToken(strAppID);
+
+                        //获取个人信息
+                        sUrl = String.Format(WXApiRequest.GetUrl("getuserinfo"), strtoken, token.openid);
+                        strJson = WXApiRequest.GetData(sUrl);
+                        PublicUserModel user = jss.Deserialize<PublicUserModel>(strJson);
+
+                        
+
+                    UserInfoModel userInfo = UserBll.GettUserByOpenID(user.unionid);
                     if (userInfo == null)
                     {
-                        redirect_uri = ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/open/RegsiterLogin?openid=" + token.openid;
+                        redirect_uri = ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/open/RegsiterLogin?openid=" + user.unionid + "&redirect_uri=" + state;
                     }
                     else
                     {

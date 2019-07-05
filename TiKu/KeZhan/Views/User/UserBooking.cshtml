@@ -225,160 +225,18 @@
     function UserPay(bookingNo, leftAmount) {
         var payType = $("input[name='rPayType']:checked").val();
         if (payType == "aizhupay") {
-            AiZhuPay(bookingNo);
+            AiZhuPay("Booking", bookingNo);
         } else {
             if (IsPC()) {
-                PCPay(bookingNo, leftAmount);
+                PCPay(username,bookingNo, leftAmount);
             } else {
                 if (is_weixn()) {
-                    WXPay(bookingNo, leftAmount);
+                    WXPay(openid,username, bookingNo, leftAmount);
                 } else {
-                    WapPay(bookingNo, leftAmount);
+                    WapPay(username,bookingNo, leftAmount);
                 }
             }
         }
-    }
-
-    function PCPay(bookingNo, leftAmount) {
-        var payType = $("input[name='rPayType']:checked").val();
-        if (payType == "weixinpay") {
-
-
-            $.ajax({
-                url: "/weixinpay/UserPay",
-                data: { "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
-                type: "POST",
-                dataType: "json",
-                success: function (rst) {
-                    if (rst.iResult >= 0) {
-                        $("#imgQrCode").attr("src", "http://qr.topscan.com/api.php?text=" + rst.strMsg);
-                        $("#myBGDiv").show();
-                        $("#divPayCode").show();
-
-                        setTimeout("GetBookingNo('" + bookingNo + "')", 2000);//获取支付结果
-                    } else {
-                        alert(rst.strMsg);
-                    }
-                }
-
-            });
-        } else {
-            $.ajax({
-                url: "/alipay/UserPay",
-                data: { "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
-                type: "POST",
-                dataType: "json",
-                success: function (rst) {
-                    if (rst.iResult >= 0) {
-                        $("#divQrCode").html(rst.strMsg);
-                        $("#divQrCode").show();
-                        $("#btnPay").hide();
-                    } else {
-                        alert(rst.strMsg);
-                    }
-                }
-
-            });
-        }
-    }
-
-    function WapPay(bookingNo, leftAmount) {
-        var payType = $("input[name='rPayType']:checked").val();
-        if (payType == "weixinpay") {
-            $.ajax({
-                url: "/weixinpay/UserWapPay",
-                data: { "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
-                type: "POST",
-                dataType: "json",
-                success: function (rst) {
-                    if (rst.iResult >= 0) {
-                        window.location.href = rst.strMsg;
-                    } else {
-                        alert(rst.strMsg);
-                    }
-                }
-
-            });
-        } else {
-            $.ajax({
-                url: "/alipay/UserWapPay",
-                data: { "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
-                type: "POST",
-                dataType: "json",
-                success: function (rst) {
-
-                    if (rst.iResult >= 0) {
-                        $("#divQrCode").html(rst.strMsg);
-                        $("#divQrCode").show();
-                    } else {
-                        alert(rst.strMsg);
-                    }
-                }
-
-            });
-        }
-    }
-
-    function WXPay(bookingNo, leftAmount) {
-
-        $.ajax({
-            url: "/weixinpay/UserWeiXinPay",
-            data: { "openid": openid, "strUserName": username, "strType": "BuyClass", "strBookingNo": bookingNo, "strFee": leftAmount },
-            type: "POST",
-            dataType: "json",
-            success: function (rst) {
-                WeixinJSBridge.invoke(
-                'getBrandWCPayRequest', {
-                    "appId": rst.appId,     //公众号名称，由商户传入
-                    "timeStamp": rst.timeStamp,         //时间戳，自1970年以来的秒数
-                    "nonceStr": rst.nonceStr, //随机串
-                    "package": rst.packageValue,
-                    "signType": "MD5",         //微信签名方式:
-                    "paySign": rst.paySign //微信签名
-                },
-                function (res) {
-                    if (res.err_msg == "get_brand_wcpay_request:ok") {
-                        setTimeout(window.location.reload(), 1000);
-                    } else {
-                        // alert(res.err_msg);
-                        $("#btnPay").attr("disabled", false)
-                        $("#btnPay").val("支付");
-                    }     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
-
-                }
-               );
-            },
-            fail: function (err) {
-                alert(err);
-            }
-
-        });
-
-    }
-
-    function AiZhuPay(bookingNo) {
-        var tradePass = "";
-        tradePass = prompt("请输入交易密码")
-        if (tradePass == "") {
-            alert("请输入交易密码");
-            return;
-        }
-
-        $.ajax({
-            url: "/AiZhuPay/BookingPay",
-            data: { "strBookingType": "Booking", "strBookingNo": bookingNo, "strTradePass": tradePass },
-            type: "POST",
-            dataType: "json",
-            success: function (rst) {
-                if (rst.iResult >= 0) {
-                    alert("支付成功");
-                    window.location.reload();
-                } else {
-                    alert(rst.strMsg);
-                }
-            }
-
-        });
     }
 
 
@@ -391,7 +249,8 @@
             success: function (rst) {
                 if (rst.iResult == 0) {
                     alert("支付成功")
-                    window.location.reload();
+                    $("#myBGDiv").show();
+                    $("#divPublicCode").show();
                 } else {
                     setTimeout("GetBookingNo('" + bookingno + "')", 2000);
                 }
@@ -402,9 +261,7 @@
     }
 
 
-
-    function ClosePayCode() {
-        $("#myBGDiv").hide();
-        $("#divPayCode").hide();
+    function ClosePublicCode() {
+        window.location.reload();
     }
 </script>

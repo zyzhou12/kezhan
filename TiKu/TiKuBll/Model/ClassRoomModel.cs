@@ -97,6 +97,7 @@ namespace TiKuBll.Model
     public System.String fDictTitle { get; set; }
     public System.String fCourseTitle { get; set; }
     public System.DateTime fClassDate { get; set; }
+    public System.DateTime fUpdateClassDate { get; set; }
 
     public System.Decimal fPrice { get; set; }
     public System.String fDocoumentUrl { get; set; }

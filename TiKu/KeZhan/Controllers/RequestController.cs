@@ -202,7 +202,7 @@ namespace KeZhan.Controllers
 
 
         [HttpPost]
-        public JsonResult DoValidPass(string strMobile, string strPass)
+        public JsonResult DoValidPass(string strMobile, string strPass,string strOpenId)
         {
             string strMsg = "";
             ResponseBaseModel response = new ResponseBaseModel();
@@ -221,7 +221,10 @@ namespace KeZhan.Controllers
                 UserInfoModel userInfo = UserBll.UserPassLogin(strMobile, strPass, "Web", ref strMsg);
                 response.strMsg = strMsg;
 
-
+                if (!string.IsNullOrEmpty(strOpenId))
+                {
+                    UserBll.UserWeiChatLogin(strOpenId, userInfo.fUserName, ref strMsg);
+                }
 
                 if (userInfo != null)
                 {

@@ -82,6 +82,14 @@
 
 
                             <h4>订单信息确认</h4>
+                            @if (Model.fPayType == "线下支付") { 
+                            <p>
+                                本课程购买是由学员在线下直接支付给老师的，您报名后和老师联系支付课程费用，老师可控制您进入本课程课堂的许可，为保证您资金的安全，请确认您和老师是认识或可靠的。如果发生您和老师的纠纷，平台是不承担责任的。
+                            </p>
+                            <br />
+    <br />
+
+                            }
 
                             <label>课程名称<sup> </sup></label>
                             <span>@Model.fClassRoomTitle</span>
@@ -111,6 +119,9 @@
                                 <label>是否可退：<sup> </sup></label>
                                 <span>不可退款</span>
                             }
+                            <br />
+                            <br />
+                            <input type="checkbox" /><span>我已阅读和确认<a href="/html/bookingdesc">《课程购买和报名须知》</a></span>
                             <br />
                             <button class="awe-btn awe-btn-13" onclick="SubmitOrder('@Model.fPayType')">确定</button>
 
@@ -193,7 +204,7 @@
                         window.location.href = "/User/UserBooking?strBookingNo=" + rst.strMsg;
                     }
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     alert(rst.strMsg);
                 }

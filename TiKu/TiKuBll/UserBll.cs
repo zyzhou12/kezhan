@@ -166,22 +166,26 @@ namespace TiKu.Bll
 
         public static UserInfoModel GettUserByOpenID(string strOpenID)
         {
-            UserInfoModel model = new UserInfoModel();
+            UserInfoModel model = null;
             tUserEntity user = tUserDal.GettUserByOpenID(strOpenID);
-            model.fCity = user.fCity;
-            model.fEmail = user.fEmail;
-            model.fHeadImg = user.fHeadImg;
-            model.fMobile = user.fMobile;
-            model.fOpenID = user.fOpenID;
-            model.fCode = user.fCode;
-            model.fName = user.fName;
-            model.fNickName = user.fNickName;
-            model.fRegSystem = user.fRegSystem;
-            model.fRole = user.fRole;
-            model.fStatus = user.fStatus;
-            model.fUID = user.fUID;
-            model.fUserName = user.fUserName;
-            model.NowRole = user.fRole;
+            if (user != null)
+            {
+                model = new UserInfoModel();
+                model.fCity = user.fCity;
+                model.fEmail = user.fEmail;
+                model.fHeadImg = user.fHeadImg;
+                model.fMobile = user.fMobile;
+                model.fOpenID = user.fOpenID;
+                model.fCode = user.fCode;
+                model.fName = user.fName;
+                model.fNickName = user.fNickName;
+                model.fRegSystem = user.fRegSystem;
+                model.fRole = user.fRole;
+                model.fStatus = user.fStatus;
+                model.fUID = user.fUID;
+                model.fUserName = user.fUserName;
+                model.NowRole = user.fRole;
+            }
             return model;
         }
 

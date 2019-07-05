@@ -97,6 +97,18 @@ namespace KeZhanManager.Controllers
             return jr;
         }
 
+        public JsonResult DoApplyRefuse(int iApplyID, string strApplyNote)
+        {
+            tUserEntity userInfo = Code.Fun.GetSessionUserInfo(this);
+            ResponseBaseModel response = new ResponseBaseModel();
+            string strMsg = null;
+            response.iResult = tClassRoomApplyDal.ClassRoomApplyRefuse(iApplyID, strApplyNote, userInfo.fUserName, DateTime.Now, ref strMsg);
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
         public JsonResult DoDestroyClass(string strGroupId)
         {
             ResponseBaseModel response = new ResponseBaseModel();

@@ -137,6 +137,9 @@
                                     </p>
                                     @if (Model.fStatus == "保存")
                                     {
+                                        <br />
+                                        <br />
+                                        <input type="checkbox" /><span>我已阅读和确认<a href="/html/senddesc">《课程发布须知》</a></span>
                                     <button class="awe-btn awe-btn-13" onclick="ClassRoomUpdate('@Model.fClassRoomCode','发布')">发布</button>
                                     }
 

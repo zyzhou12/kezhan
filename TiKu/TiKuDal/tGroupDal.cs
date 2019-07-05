@@ -80,7 +80,7 @@ namespace TiKu.Dal
 
             bufSQL.Append(@" select g.*,
 (select count(*) from tgroupuserinfo where fgroupid=g.fgroupid) fUserCount,
-(select sum(datediff(ss,fLastJoinTime,fLastQuitTime)) from tgroupuserinfo where fgroupid=g.fgroupid) fSumLength
+( select sum(datediff(ss,fJoinTime,fQuitTime)) from tGroupUserJoinHistory where fgroupid=g.fgroupid) fSumLength
  from tGroup g
                             left join tuser u on u.fUserName=g.fTeacherId
                         where (fTeacherId like '%'+@UserName+'%' or fGroupName like '%'+@UserName+'%' or fMobile like '%'+@UserName+'%' or fEmail like '%'+@UserName+'%')

@@ -91,7 +91,8 @@
             </div>
         </section>
 <script type="text/javascript">
-  var redirect_uri = "@Model.redirect_uri";
+    var redirect_uri = "@Model.redirect_uri";
+    var openid = "@Model.openid";
   var isNewUser = 0;
   var loginType = "code";
 
@@ -366,7 +367,7 @@
 
     $.ajax({
         url: "/Request/DoValidPass",
-      data: { "strMobile": $("#txtMobile").val(), "strPass": $("#txtPass").val() },
+        data: { "strMobile": $("#txtMobile").val(), "strPass": $("#txtPass").val(),"strOpenId":openid },
       type: "POST",
       dataType: "json",
       success: function (rst) {

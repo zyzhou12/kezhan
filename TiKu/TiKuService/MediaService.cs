@@ -140,7 +140,7 @@ namespace TiKuService
                                 _smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                                 _smtpClient.Host = "smtp.exmail.qq.com";
                                 _smtpClient.Port = 587;
-                                _smtpClient.Credentials = new System.Net.NetworkCredential("service@aizhusoft.com", "Zhou900712");
+                                _smtpClient.Credentials = new System.Net.NetworkCredential("service@aizhusoft.com", "Aizhu@777");
 
 
                                 MailMessage _mailMessage = new MailMessage("service@aizhusoft.com", sTo);

@@ -238,7 +238,10 @@ namespace KeZhan.Controllers
             else
             {
                 model.fClassDate = DateTime.Now;
-                response.iResult = ClassRoomBll.DoSaveClassRoomCourse(model);
+                int iCourseID = ClassRoomBll.DoSaveClassRoomCourse(model);
+                ClassRoomModel cr= ClassRoomBll.GetClassRoomByCode(model.fClassRoomCode,userInfo.fUserName);
+                response.iResult = iCourseID;
+                response.strMsg = (10000 + cr.fID).ToString() + iCourseID.ToString();
             }
 
             JsonResult jr = new JsonResult();
@@ -1286,9 +1289,9 @@ namespace KeZhan.Controllers
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseCourseModel response = new ResponseCourseModel();
-            if (strCourseNo.Length > 8)
+            if (strCourseNo.Length > 7)
             {
-                string strCourseID = strCourseNo.Substring(7, strCourseNo.Length - 7);
+                string strCourseID = strCourseNo.Substring(5, strCourseNo.Length - 5);
                 ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(Convert.ToInt32(strCourseID), userInfo.fUserName);
                 if (cr.fClassType == "OnLine")
                 {
