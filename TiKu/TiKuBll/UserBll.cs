@@ -50,6 +50,7 @@ namespace TiKu.Bll
                 model.fHeadImg = user.fHeadImg;
                 model.fMobile = user.fMobile;
                 model.fOpenID = user.fOpenID;
+                model.fWeiXinUnionID = user.fWeiXinUnionID;
                 model.fName = user.fName;
                 model.fNickName = user.fNickName;
                 model.fRegSystem = user.fRegSystem;
@@ -57,6 +58,7 @@ namespace TiKu.Bll
                 model.fStatus = user.fStatus;
                 model.fUID = user.fUID;
                 model.fUserName = user.fUserName;
+                model.fUserToken = user.fUserToken;
                 model.NowRole = user.fRole;
                 if (!string.IsNullOrEmpty(user.fPassWord))
                 {
@@ -78,6 +80,7 @@ namespace TiKu.Bll
                 model.fHeadImg = user.fHeadImg;
                 model.fMobile = user.fMobile;
                 model.fOpenID = user.fOpenID;
+                model.fWeiXinUnionID = user.fWeiXinUnionID;
                 model.fName = user.fName;
                 model.fNickName = user.fNickName;
                 model.fRegSystem = user.fRegSystem;
@@ -85,15 +88,16 @@ namespace TiKu.Bll
                 model.fStatus = user.fStatus;
                 model.fUID = user.fUID;
                 model.fUserName = user.fUserName;
+                model.fUserToken = user.fUserToken;
                 model.NowRole = user.fRole;
             }
             return model;
         }
 
-        public static UserInfoModel UserWeiChatLogin(string strOpenID,string strUserName, ref string strMsg)
+        public static UserInfoModel UserWeiChatLogin(string strOpenID, string strUnionID, string strUserName, ref string strMsg)
         {
             UserInfoModel model = null;
-            tUserEntity user = tUserDal.UserWeiChatLogin(strOpenID, strUserName,  ref strMsg);
+            tUserEntity user = tUserDal.UserWeiChatLogin(strOpenID, strUnionID, strUserName, ref strMsg);
             if (user != null)
             {
                 model = new UserInfoModel();
@@ -102,6 +106,7 @@ namespace TiKu.Bll
                 model.fHeadImg = user.fHeadImg;
                 model.fMobile = user.fMobile;
                 model.fOpenID = user.fOpenID;
+                model.fWeiXinUnionID = user.fWeiXinUnionID;
                 model.fName = user.fName;
                 model.fNickName = user.fNickName;
                 model.fRegSystem = user.fRegSystem;
@@ -109,6 +114,7 @@ namespace TiKu.Bll
                 model.fStatus = user.fStatus;
                 model.fUID = user.fUID;
                 model.fUserName = user.fUserName;
+                model.fUserToken = user.fUserToken;
                 model.NowRole = user.fRole;
                 if (!string.IsNullOrEmpty(user.fPassWord))
                 {
@@ -127,6 +133,7 @@ namespace TiKu.Bll
             model.fHeadImg = user.fHeadImg;
             model.fMobile = user.fMobile;
             model.fOpenID = user.fOpenID;
+            model.fWeiXinUnionID = user.fWeiXinUnionID;
             model.fCode = user.fCode;
             model.fEmailCode = user.fEmailCode;
             model.fEmailCodeEffectDate = user.fEmailCodeEffectDate;
@@ -137,6 +144,7 @@ namespace TiKu.Bll
             model.fStatus = user.fStatus;
             model.fUID = user.fUID;
             model.fUserName = user.fUserName;
+            model.fUserToken = user.fUserToken;
             model.NowRole = user.fRole;
             return model;
         }
@@ -152,6 +160,7 @@ namespace TiKu.Bll
             model.fHeadImg = user.fHeadImg;
             model.fMobile = user.fMobile;
             model.fOpenID = user.fOpenID;
+            model.fWeiXinUnionID = user.fWeiXinUnionID;
             model.fCode = user.fCode;
             model.fName = user.fName;
             model.fNickName = user.fNickName;
@@ -160,6 +169,7 @@ namespace TiKu.Bll
             model.fStatus = user.fStatus;
             model.fUID = user.fUID;
             model.fUserName = user.fUserName;
+            model.fUserToken = user.fUserToken;
             model.NowRole = user.fRole;
             return model;
         }
@@ -176,6 +186,7 @@ namespace TiKu.Bll
                 model.fHeadImg = user.fHeadImg;
                 model.fMobile = user.fMobile;
                 model.fOpenID = user.fOpenID;
+                model.fWeiXinUnionID = user.fWeiXinUnionID;
                 model.fCode = user.fCode;
                 model.fName = user.fName;
                 model.fNickName = user.fNickName;
@@ -184,6 +195,7 @@ namespace TiKu.Bll
                 model.fStatus = user.fStatus;
                 model.fUID = user.fUID;
                 model.fUserName = user.fUserName;
+                model.fUserToken = user.fUserToken;
                 model.NowRole = user.fRole;
             }
             return model;
@@ -507,6 +519,12 @@ namespace TiKu.Bll
                 i = tStudentInfoDal.Modify(list, "update", null, null);//修改字段
             }
 
+            return i;
+        }
+
+        public static int UpdateUserToken(string strUserName,string strToken)
+        {
+            int i = tUserDal.UserUpdateToken(strUserName, strToken);
             return i;
         }
 

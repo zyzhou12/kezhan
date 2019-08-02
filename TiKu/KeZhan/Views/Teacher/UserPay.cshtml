@@ -56,13 +56,11 @@
                                     <p>
                                         购买须知：所购买的流量不可退，有效期自购买之日起12个月内有效。流量是老师和学员在课堂的合计时长（分钟），请购买合适数量的流量。
                                     </p>
-                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10)">10分钟<br />￥ @Convert.ToString(Model.ClassFee * 10)</button>
-                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,30)">30分钟<br />￥ @Convert.ToString(Model.ClassFee * 30)</button>
-                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,45)">45分钟<br />￥ @Convert.ToString(Model.ClassFee * 45)</button>
-                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,100)">100分钟<br />￥ @Convert.ToString(Model.ClassFee * 100)</button>
-                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,1000)">1000分钟<br />￥ @Convert.ToString(Model.ClassFee * 1000)</button>
-                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10000)">10000分钟<br />￥ @Convert.ToString(Model.ClassFee * 10000)</button>
-                                <button class="awe-btn awe-btn-2" onclick="InputAmount(this)">自定义 <br />每分钟￥ @Model.ClassFee</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,10000,0.12)">10000分钟<br />每分钟￥ 0.12</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,50000,0.1)">50000分钟<br />每分钟￥  0.1</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,200000,0.08)">200000<br />每分钟￥  0.08</button>
+                                <button class="awe-btn awe-btn-2" onclick="ChooseAmount(this,500000,0.06)">500000<br />每分钟￥ 0.07</button>
+                                <button class="awe-btn awe-btn-2" onclick="InputAmount(this,@Model.ClassFee)">自定义 <br />每分钟￥ @Model.ClassFee</button>
                                 <br /><br />
                                 <input type="number" style=" display:none" id="hidAmount" value="" placeholder="请输入购买分钟数" class="input-text" />
                             </div>
@@ -128,17 +126,18 @@
         }
     })
 
-    function ChooseAmount(obj, iAmount) {
+    function ChooseAmount(obj, iAmount,fee) {
         $(".awe-btn").removeClass("awe-btn-8");
         $(obj).addClass("awe-btn-8");
+        classfee=fee;
         $("#hidAmount").hide();
         $("#hidAmount").val(iAmount);
     }
 
-    function InputAmount(obj) {
+    function InputAmount(obj,fee) {
         $(".awe-btn").removeClass("awe-btn-8");
         $(obj).addClass("awe-btn-8");
-
+        classfee=fee;
         $("#hidAmount").show();
         $("#hidAmount").val("");
     }

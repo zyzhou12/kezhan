@@ -211,9 +211,9 @@ namespace TiKu.Dal
             List<DbParameter> lstParam = new List<DbParameter>();
 
             bufSQL.Append(@"SELECT cr.*,fNickName TeacherName,fHeadImg TeacherHead FROM tClassRoom cr 
-left join tUser u on u.fUserName=cr.fTecharUserName
-                      LEFT JOIN tBooking b on cr.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' and b.fStatus in ('已支付','已驳回') 
-WHERE 1=1  ");
+                            Left join tUser u on u.fUserName=cr.fTecharUserName
+                            LEFT JOIN tBooking b on cr.fClassRoomCode=b.fTypeCode and b.fType='ClassRoom' and b.fStatus in ('已支付','已驳回') 
+                            WHERE 1=1  ");
 
 
             if (!string.IsNullOrEmpty(strUserName))
@@ -233,10 +233,21 @@ WHERE 1=1  ");
             else if (strType == "正在上")
             {
                 bufSQL.Append(" AND cr.fClassRoomDate<getdate() AND cr.fStatus='发布' ");
+                if (strClassType == "Recorded")
+                {
+                    bufSQL.Append(" AND dateadd(day,cr.fEffectDay,b.fBuyDate)>getdate() ");
+                }
             }
             else if (strType == "已结束")
-            {
-                bufSQL.Append(" AND (cr.fStatus='结算' or cr.fStatus='下线中' or cr.fStatus='下线') ");
+            {                
+                if (strClassType == "Recorded")
+                {
+                    bufSQL.Append(" AND dateadd(day,cr.fEffectDay,b.fBuyDate)<getdate() ");
+                }
+                else
+                {
+                    bufSQL.Append(" AND (cr.fStatus='结算' or cr.fStatus='下线中' or cr.fStatus='下线') ");
+                }
             }
             bufSQL.Append(" order by cr.fCreateDate desc ");
             //防止返回数据过多

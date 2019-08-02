@@ -306,5 +306,70 @@ namespace TiKuBll
             int i = tGroupUserInfoDal.Modify(list, "update", "fID," + strUpdateFiels, "fUserId,fGroupId");
             return i;
         }
+
+
+        public static int UpdateGroupUserInfo(string strUserId, string strType)
+        {
+
+
+            tGroupUserInfoEntity entity = tGroupUserInfoDal.GetGroupUserInfoLast(strUserId);
+            string strUpdateFiels = "";
+            if (strType == "online")
+            {
+                strUpdateFiels = "fIsOnLine,fLastJoinTime";
+                entity.fIsOnLine = true;
+                entity.fLastJoinTime = DateTime.Now;
+
+                List<tGroupUserJoinHistoryEntity> hisList = new List<tGroupUserJoinHistoryEntity>();
+                tGroupUserJoinHistoryEntity his = tGroupUserJoinHistoryDal.GettGroupUserJoinHistory(strUserId, entity.fGroupID);
+                if (his.fQuitTime == DateTime.MinValue)
+                {
+                    his.fQuitTime = DateTime.Now;
+                    hisList.Add(his);
+                    tGroupUserJoinHistoryDal.Modify(hisList, "update", "fID,fQuitTime", null);
+                }
+
+                tGroupUserJoinHistoryEntity histoty = new tGroupUserJoinHistoryEntity();
+                histoty.fGroupID = entity.fGroupID;
+                histoty.fJoinTime = DateTime.Now;
+                histoty.fUserId = strUserId;
+                histoty.fUserName = strUserId;
+                hisList = new List<tGroupUserJoinHistoryEntity>();
+                hisList.Add(histoty);
+                tGroupUserJoinHistoryDal.Modify(hisList, "insert", null, null);
+            }
+            else if (strType == "offline")
+            {
+                if (entity.fIsOnLine)
+                {
+                    strUpdateFiels = "fIsOnLine,fIsPush,fIsVideo,fIsAudio,fIsBorad,fLastQuitTime";
+                    entity.fIsOnLine = false;
+                    entity.fIsPush = false;
+                    entity.fIsVideo = false;
+                    entity.fIsAudio = false;
+                    entity.fIsBorad = false;
+                    entity.fLastQuitTime = DateTime.Now;
+
+                    tGroupUserJoinHistoryEntity histoty = tGroupUserJoinHistoryDal.GettGroupUserJoinHistory(strUserId, entity.fGroupID);
+                    histoty.fQuitTime = DateTime.Now;
+                    List<tGroupUserJoinHistoryEntity> hisList = new List<tGroupUserJoinHistoryEntity>();
+                    hisList.Add(histoty);
+                    tGroupUserJoinHistoryDal.Modify(hisList, "update", "fID,fQuitTime", null);
+                }
+                else
+                {
+                    strUpdateFiels = "fIsPush,fIsVideo,fIsAudio,fIsBorad";
+                    entity.fIsPush = false;
+                    entity.fIsVideo = false;
+                    entity.fIsAudio = false;
+                    entity.fIsBorad = false;
+                }
+            }
+
+            List<tGroupUserInfoEntity> list = new List<tGroupUserInfoEntity>();
+            list.Add(entity);
+            int i = tGroupUserInfoDal.Modify(list, "update", "fID," + strUpdateFiels, "fUserId,fGroupId");
+            return i;
+        }
     }
 }

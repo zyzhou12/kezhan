@@ -39,6 +39,7 @@ namespace TiKuBll.Model
     public System.String fStatus { get; set; }
 
     public System.Int32 IsBuy { get; set; }
+    public System.DateTime fBuyDate { get; set; }
 
     public System.String fCreateOpr { get; set; }
 
@@ -94,6 +95,7 @@ namespace TiKuBll.Model
     public System.Int32 fID { get; set; }
     public System.String fClassType { get; set; }
     public System.String fClassRoomCode { get; set; }
+    public System.String fClassId { get; set; }
     public System.String fDictTitle { get; set; }
     public System.String fCourseTitle { get; set; }
     public System.DateTime fClassDate { get; set; }
@@ -116,5 +118,6 @@ namespace TiKuBll.Model
 
     public System.Int32 CourseStatus { get; set; }
     public System.Int32 IsBuy { get; set; }
+    public System.String ClassDate { get { return fClassDate.ToString(); } }
   }
 }

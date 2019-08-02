@@ -196,6 +196,7 @@
     <Compile Include="Code\Alipay\MD5.cs" />
     <Compile Include="Code\Alipay\RSA.cs" />
     <Compile Include="Code\Fun.cs" />
+    <Compile Include="Code\TICRequest.cs" />
     <Compile Include="Code\UserSig.cs" />
     <Compile Include="Code\WXApiRequest.cs" />
     <Compile Include="Code\wxpay\HttpUtil.cs" />
@@ -218,6 +219,7 @@
     <Compile Include="Controllers\SharedController.cs" />
     <Compile Include="Controllers\StartController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
+    <Compile Include="Controllers\TICResponseController.cs" />
     <Compile Include="Controllers\UserApiController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\WeiXinPayController.cs" />
@@ -233,6 +235,11 @@
     <Compile Include="Handel\UpLoad.ashx.cs">
       <DependentUpon>UpLoad.ashx</DependentUpon>
     </Compile>
+    <Compile Include="Models\CallbackAfterCreateGroup.cs" />
+    <Compile Include="Models\CallbackAfterGroupDestroyed.cs" />
+    <Compile Include="Models\CallbackAfterMemberExit.cs" />
+    <Compile Include="Models\CallbackAfterNewMemberJoin.cs" />
+    <Compile Include="Models\CallbackBeforeCreateGroup.cs" />
     <Compile Include="Models\DateModel.cs" />
     <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\GroupUserStatusModel.cs" />
@@ -240,6 +247,12 @@
     <Compile Include="Models\OpenClassRoomModel.cs" />
     <Compile Include="Models\PublicTokenModel.cs" />
     <Compile Include="Models\ResponseCourseModel.cs" />
+    <Compile Include="Models\SaasResponseBaseModel.cs" />
+    <Compile Include="Models\StateChange.cs" />
+    <Compile Include="Models\TICBaseModel.cs" />
+    <Compile Include="Models\TICClassResponseModel.cs" />
+    <Compile Include="Models\TICMember.cs" />
+    <Compile Include="Models\TICUserResponseModel.cs" />
     <Compile Include="Models\xml.cs" />
     <Compile Include="Models\ResponseBaseModel.cs" />
     <Compile Include="Models\TeacherClassRoomListModel.cs" />

@@ -78,6 +78,23 @@ namespace TiKu.Dal
             return rst;
         }
 
+        public static tGroupUserInfoEntity GetGroupUserInfoLast(string strUserId)
+        {
+            tGroupUserInfoEntity rst = null;
+            List<DbParameter> lstParam = new List<DbParameter>();
+            string strSQL = @"SELECT top 1  isnull(fNickName,gu.fUserName) fNickName,fHeadImg,gu.* FROM tGroupUserInfo gu
+                                left join tuser u on u.fUserName=gu.fUserId WHERE fUserId=@UserId order  by gu.fLastJoinTime desc  ";
+
+            lstParam.Add(new DBParam("@UserId", strUserId));
+            DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
+            if (dt.Rows.Count > 0)
+            {
+                rst = new tGroupUserInfoEntity();
+                Trip8H.Common.PubFun.DataRowToObject(dt.Rows[0], rst);
+            }
+            return rst;
+        }
+
 
         public static List<tGroupUserInfoEntity> GetGroupUserList(string strGroupId)
         {

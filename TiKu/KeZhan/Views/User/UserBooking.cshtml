@@ -231,6 +231,7 @@
                 PCPay(username,bookingNo, leftAmount);
             } else {
                 if (is_weixn()) {
+                    alert(leftAmount);
                     WXPay(openid,username, bookingNo, leftAmount);
                 } else {
                     WapPay(username,bookingNo, leftAmount);

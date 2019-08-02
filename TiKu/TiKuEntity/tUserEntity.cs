@@ -23,6 +23,9 @@ namespace TiKu.Entity
     public System.String fWeiXinUnionID { get; set; }
     public System.String fName { get; set; }
     public System.String fUID { get; set; }
+    public System.String fUserSig { get; set; }
+    public System.DateTime fSigExpiretime { get; set; }
+    public System.String fUserToken { get; set; }
     public System.String fCity { get; set; }
     public System.String fRole { get; set; }
     public System.String fRegSystem { get; set; }

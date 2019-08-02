@@ -10,6 +10,7 @@ namespace TiKuBll.Model
     public System.String fUserName { get; set; }
     public System.String fMobile { get; set; }
     public System.String fOpenID { get; set; }
+    public System.String fUserToken { get; set; }
 
     public System.String fCode { get; set; }
     public System.String fEmailCode { get; set; }
@@ -20,6 +21,8 @@ namespace TiKuBll.Model
     public System.String fHeadImg { get; set; }
     public System.String fName { get; set; }
     public System.String fUID { get; set; }
+
+    public System.String fWeiXinUnionID { get; set; }
     public System.String fCity { get; set; }
     public System.String fRole { get; set; }
     public System.String fRegSystem { get; set; }

@@ -487,7 +487,7 @@
             $("#myBGDiv").show();
             $("#myMessage").show();
             $("#myTitle").text(title);
-            $("#myContent").text(content);
+            $("#myContent").html(content);
         }
         function CloseMessage() {
             $("#myBGDiv").hide();
@@ -641,6 +641,33 @@
         function ClosePayCode() {
             $("#myBGDiv").hide();
             $("#divPayCode").hide();
+        }
+
+        function OpenClassRoomClient(strType, strClassId) {
+            var newWindow = window.open();
+            $.ajax({
+                url: "/LoginRequest/GetOpenUrl",
+                data: { "strOpenType": strType, "iClassID": strClassId },
+                type: "Post",
+                success: function (rst) {
+
+                    if (rst.iResult >= 0) {
+
+                        newWindow.location.href = rst.strMsg;
+
+                    } else if (rst.iResult == -9999) {
+                        alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                    } else if (rst.iResult == -2) {
+                        newWindow.close();
+                        ShowMessage("提示", "请先安装客户端再进入课堂，<a href='http://dldir1.qq.com/hudongzhibo/saas/TClass_Setup_0.9.4.286_Saas.exe'>点击下载</a><br/><br/><br/><a href='" + rst.strMsg + "'>直接使用网页版</a>");
+
+                    } else {
+                        newWindow.close();
+                        alert(rst.strMsg);
+                    }
+                }
+
+            });
         }
     </script>
     <script type="text/javascript">

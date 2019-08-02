@@ -146,6 +146,7 @@ namespace TiKuBll
                     cm.fClassDateLength = ce.fClassDateLength;
                     cm.fPrice = ce.fPrice;
                     cm.fClassRoomCode = ce.fClassRoomCode;
+                    cm.fClassId = ce.fClassId;
                     cm.fClassType = ce.fClassType;
                     cm.fCourseTitle = ce.fCourseTitle;
                     cm.fDictTitle = ce.fDictTitle;
@@ -206,6 +207,7 @@ namespace TiKuBll
                     cm.fClassDate = ce.fClassDate;
                     cm.fUpdateClassDate = ce.fUpdateClassDate;
                     cm.fClassRoomCode = ce.fClassRoomCode;
+                    cm.fClassId = ce.fClassId;
                     cm.fPrice = ce.fPrice;
                     cm.fClassType = ce.fClassType;
                     cm.fCourseTitle = ce.fCourseTitle;
@@ -282,7 +284,38 @@ namespace TiKuBll
                 model.fClassDateLength = entity.fClassDateLength;
                 model.fPrice = entity.fPrice;
                 model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassId = entity.fClassId;
                 model.fClassType = entity.fClassType;
+                model.fCourseTitle = entity.fCourseTitle;
+                model.fDictTitle = entity.fDictTitle;
+                model.fFileCoverUrl = entity.fFileCoverUrl;
+                model.fFileSize = entity.fFileSize;
+                model.fFileType = entity.fFileType;
+                model.fID = entity.fID;
+                model.fOrder = entity.fOrder;
+                model.fResourceUrl = entity.fResourceUrl;
+                model.fSource = entity.fSource;
+                model.fStatus = entity.fStatus;
+                model.fIsPay = entity.fIsPay;
+                model.fUploadDate = entity.fUploadDate;
+                model.fUploadOpr = entity.fUploadOpr;
+            }
+            return model;
+        }
+
+        public static CourseModel GetCourseByClassID(string strClassId)
+        {
+            tCourseEntity entity = tCourseDal.GetCourseByClassID(strClassId);
+            CourseModel model = new CourseModel();
+            if (entity != null)
+            {
+                model.fAuthor = entity.fAuthor;
+                model.fClassDate = entity.fClassDate;
+                model.fUpdateClassDate = entity.fUpdateClassDate;
+                model.fClassDateLength = entity.fClassDateLength;
+                model.fPrice = entity.fPrice;
+                model.fClassRoomCode = entity.fClassRoomCode;
+                model.fClassId = entity.fClassId;
                 model.fClassType = entity.fClassType;
                 model.fCourseTitle = entity.fCourseTitle;
                 model.fDictTitle = entity.fDictTitle;
@@ -314,6 +347,11 @@ namespace TiKuBll
             }
 
             return model;
+        }
+
+        public static int UpdateClassID(int iCourseID, string strClassID)
+        {
+            return tCourseDal.UpdateClassID(iCourseID, strClassID);
         }
 
         public static decimal GetClassRoomFlow(int iCourseID)
@@ -661,6 +699,7 @@ namespace TiKuBll
                 cm.fClassDateLength = ce.fClassDateLength;
                 cm.fPrice = ce.fPrice;
                 cm.fClassRoomCode = ce.fClassRoomCode;
+                cm.fClassId = ce.fClassId;
                 cm.fClassType = ce.fClassType;
                 cm.fCourseTitle = ce.fCourseTitle;
                 cm.fDictTitle = ce.fDictTitle;

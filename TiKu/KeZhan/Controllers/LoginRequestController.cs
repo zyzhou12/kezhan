@@ -1,6 +1,8 @@
 ﻿using Aliyun.OSS;
+using KeZhan.Code;
 using KeZhan.Filters;
 using KeZhan.Models;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +24,46 @@ namespace KeZhan.Controllers
 
 
         #region ClassRoom
+        public JsonResult GetOpenUrl(string strOpenType, string iClassID)
+        {
+            string strUrl = "";
+            string strWebUrl = "https://tedu.qcloudtrtc.com/#/class/{0}/{1}/{2}/{3}/{4}";
+            string strPCUrl = "tc-videochat://tclass/{0}/{1}?user_id={2}&user_token={3}&user_sig={4}";
+
+            string configurl = "{\"title\": \"2kezhan\",\"logo\": \"https://test.2kezhan.com/Content/images/header_logo.jpg\"}";
+            configurl = "http://www.2kezhan.com/logo.json";
+
+            UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
+            string usersig = UserSig.GetSig(userInfo.fUserName);
+            string sdkappid = "189277";
+            ResponseBaseModel response = new ResponseBaseModel();
+            if (strOpenType == "WEB")
+            {
+                strUrl = string.Format(strWebUrl, sdkappid, iClassID, userInfo.fUserName, usersig, userInfo.fUserToken);
+
+                response.iResult = 1;
+                response.strMsg = strUrl;
+            }
+            else if (strOpenType == "PC")
+            {
+
+                strUrl = string.Format(strPCUrl, sdkappid, iClassID, userInfo.fUserName, userInfo.fUserToken, usersig, configurl);
+                response.iResult = 1;
+                response.strMsg = strUrl;
+
+            }
+            else
+            {
+                response.iResult = -1;
+                response.strMsg = "进入课堂失败";
+            }
+
+
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            return jr;
+        }
+
         [HttpPost]
         public JsonResult DoSaveClassRoomInfo(string strClassRoomCode, string strType, string strInfo)
         {
@@ -31,6 +73,22 @@ namespace KeZhan.Controllers
 
             JsonResult jr = new JsonResult();
             jr.Data = response;
+            return jr;
+        }
+
+        /// <summary>
+        /// 预约课堂
+        /// </summary>
+        /// <param name="iCourseID"></param>
+        /// <returns></returns>
+        public JsonResult DoCreateClass(int iCourseID)
+        {
+            ResponseBaseModel response = new ResponseBaseModel();
+            response.strMsg = TICRequest.CreateClass(iCourseID);
+            response.iResult = 0;
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
         }
 
@@ -239,9 +297,11 @@ namespace KeZhan.Controllers
             {
                 model.fClassDate = DateTime.Now;
                 int iCourseID = ClassRoomBll.DoSaveClassRoomCourse(model);
-                ClassRoomModel cr= ClassRoomBll.GetClassRoomByCode(model.fClassRoomCode,userInfo.fUserName);
+                ClassRoomModel cr = ClassRoomBll.GetClassRoomByCode(model.fClassRoomCode, userInfo.fUserName);
                 response.iResult = iCourseID;
-                response.strMsg = (10000 + cr.fID).ToString() + iCourseID.ToString();
+                //response.strMsg = (10000 + cr.fID).ToString() + iCourseID.ToString();
+
+                response.strMsg = TICRequest.CreateClass(iCourseID);
             }
 
             JsonResult jr = new JsonResult();
@@ -292,11 +352,11 @@ namespace KeZhan.Controllers
                     else
                     {
                         ConfigModel config = ManagerBll.GetSystemConfig("上海");
-                        decimal iDateLength = ResourceBll.GetResourceInfoByClassRoomCode(strClassRoomCode).fDateLength/60;
-                        if(model.fPrice<iDateLength*config.fSourceFee)
+                        decimal iDateLength = ResourceBll.GetResourceInfoByClassRoomCode(strClassRoomCode).fDateLength / 60;
+                        if (model.fPrice < iDateLength * config.fSourceFee)
                         {
                             response.iResult = -1;
-                            
+
                             response.strMsg = "根据本课程所有课时的视频时长，平台收费是（￥" + Math.Round(iDateLength * config.fSourceFee, 2).ToString() + "），因您当前设置的录播销售价小于平台收费，不能发布本课程，请修改销售价格后再发布。";
                         }
                     }
@@ -307,7 +367,7 @@ namespace KeZhan.Controllers
                     response.strMsg = "退款处理完成才能下线";
                 }
 
-                if (response.iResult>=0)
+                if (response.iResult >= 0)
                 {
                     response.iResult = ClassRoomBll.ClassRoomSubmitSend(strClassRoomCode, strStatus, strNote, userInfo.fUserName);
                 }
@@ -588,7 +648,7 @@ namespace KeZhan.Controllers
 
 
         #region User
-      
+
 
 
         public JsonResult DoSaveTeacherInfo(TeacherBaseModel model)
@@ -720,6 +780,17 @@ namespace KeZhan.Controllers
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseBaseModel response = new ResponseBaseModel();
             int i = UserBll.SaveUserInfo(userInfo.fUserName, strType, strInfo);
+
+            //  TICRequest.CreateUser(userInfo);
+
+            TICRequest.UpdateUserInfo(userInfo.fUserName, strType, strInfo);
+            //更新账号票据
+            TICRequest.UpdateUserToken(userInfo);
+
+
+            userInfo = UserBll.GetUserInfo(userInfo.fUserName);
+            Code.Fun.SetSessionUserInfo(this, userInfo);
+
 
             JsonResult jr = new JsonResult();
             jr.Data = response;
@@ -867,8 +938,8 @@ namespace KeZhan.Controllers
         {
             ResponseBaseModel response = new ResponseBaseModel();
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
-            ResourseModel resource= ResourceBll.GetResource(strResourceCode);
-            ResourceInfoModel info= ResourceBll.GetResourceInfo(userInfo.fUserName);
+            ResourseModel resource = ResourceBll.GetResource(strResourceCode);
+            ResourceInfoModel info = ResourceBll.GetResourceInfo(userInfo.fUserName);
             if ((resource.fSize + info.fSize) > 20971520)
             {
                 response.iResult = -1;
@@ -884,12 +955,12 @@ namespace KeZhan.Controllers
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
         }
-        public JsonResult DoChangeFileType(string strResourceCode,string strType)
+        public JsonResult DoChangeFileType(string strResourceCode, string strType)
         {
             ResponseBaseModel response = new ResponseBaseModel();
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
 
-            response.iResult = ResourceBll.ChangeFileType(strResourceCode,strType);
+            response.iResult = ResourceBll.ChangeFileType(strResourceCode, strType);
 
             JsonResult jr = new JsonResult();
             jr.Data = response;
@@ -921,7 +992,7 @@ namespace KeZhan.Controllers
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             JsonResult jr = new JsonResult();
-            jr.Data = UserBll.SubmitBuyFlowOrder(userInfo.fUserName, iNum, dPrice, "购买", Convert.ToDateTime("2099-12-31"), userInfo.fUserName);
+            jr.Data = UserBll.SubmitBuyFlowOrder(userInfo.fUserName, iNum, dPrice, "购买", DateTime.Now.AddDays(365), userInfo.fUserName);
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             return jr;
         }
@@ -1184,7 +1255,7 @@ namespace KeZhan.Controllers
             HttpBrowserCapabilitiesBase hbc = HttpContext.Request.Browser;
             string browserType = hbc.Browser.ToString();     //获取浏览器类型
             string browserVersion = hbc.Version.ToString();    //获取版本号
-         
+
             ResponseBaseModel response = new ResponseBaseModel();
             if (browserType == "Chrome" || browserType == "Saifer" || browserType == "QQ")
             {
@@ -1193,7 +1264,7 @@ namespace KeZhan.Controllers
             else
             {
                 response.iResult = -1;
-                response.strMsg ="您当前使用的浏览器版本为："+ browserType + browserVersion+",在线课堂可能会出现音视频问题，推荐使用Chrome、Saifer、QQ浏览器，确认要继续吗？";
+                response.strMsg = "您当前使用的浏览器版本为：" + browserType + browserVersion + ",在线课堂可能会出现音视频问题，推荐使用Chrome、Saifer、QQ浏览器，确认要继续吗？";
             }
 
             JsonResult jr = new JsonResult();
@@ -1207,7 +1278,7 @@ namespace KeZhan.Controllers
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(iCourseID, userInfo.fUserName);
             ResponseBaseModel response = new ResponseBaseModel();
-            GroupModel group = GroupUserBll.GetGroup(cr.fClassRoomCode + iCourseID.ToString());
+            GroupModel group = GroupUserBll.GetGroup((10000 + cr.fID).ToString() + iCourseID.ToString());
             if (group == null || (group != null && group.fIsValid))//判断是否已销毁课堂
             {
                 if (cr.IsBuy > 0 || cr.fTecharUserName == userInfo.fUserName)
@@ -1289,73 +1360,68 @@ namespace KeZhan.Controllers
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseCourseModel response = new ResponseCourseModel();
-            if (strCourseNo.Length > 7)
+            //if (strCourseNo.Length > 7)
+            //{
+            //    string strCourseID = strCourseNo.Substring(5, strCourseNo.Length - 5);
+            string strCourseID = ClassRoomBll.GetCourseByClassID(strCourseNo).fID.ToString();
+            ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(Convert.ToInt32(strCourseID), userInfo.fUserName);
+            if (cr.fClassType == "OnLine")
             {
-                string strCourseID = strCourseNo.Substring(5, strCourseNo.Length - 5);
-                ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(Convert.ToInt32(strCourseID), userInfo.fUserName);
-                if (cr.fClassType == "OnLine")
+                GroupUserInfoListModel ListModel = GroupUserBll.GetGroupUserInfiList(strCourseNo);
+                if (ListModel.infoList != null && ListModel.infoList.Count > cr.fMaxNumber)
                 {
-                    GroupUserInfoListModel ListModel = GroupUserBll.GetGroupUserInfiList(strCourseNo);
-                    if (ListModel.infoList != null && ListModel.infoList.Count > cr.fMaxNumber)
+                    response.iResult = -1;
+                    response.strMsg = "课堂已达到最大人数，不能进入！";
+                }
+                else
+                {
+                    decimal userAccount = UserBll.GetUserAccountAmount(userInfo.fUserName);
+                    decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(Convert.ToInt32(strCourseID));
+                    decimal leftFlow = UserBll.GetUserLeftFlow(userInfo.fUserName);
+
+                    if (userAccount < classRoomFlow && strRole == "Teacher")
                     {
                         response.iResult = -1;
-                        response.strMsg = "课堂已达到最大人数，不能进入！";
+                        if (leftFlow > 0)
+                        {
+                            response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量欠费" + leftFlow.ToString() + "分钟。请先去购买流量";
+                        }
+                        else
+                        {
+                            response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString() + "分钟。请先去购买流量";
+                        }
                     }
                     else
                     {
-                        decimal userAccount = UserBll.GetUserAccountAmount(userInfo.fUserName);
-                        decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(Convert.ToInt32(strCourseID));
-                        decimal leftFlow = UserBll.GetUserLeftFlow(userInfo.fUserName);
 
-                        if (userAccount < classRoomFlow && strRole == "Teacher")
+
+                        CourseModel course = ClassRoomBll.GetCourseById(Convert.ToInt32(strCourseID), userInfo.fUserName);
+
+                        if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
                         {
-                            response.iResult = -1;
-                            if (leftFlow > 0)
+                            if (course != null && strRole == "Student" && course.fPrice > 0 && course.IsBuy == 0)
                             {
-                                response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量欠费" + leftFlow.ToString() + "分钟。请先去购买流量";
+                                response.iResult = 0;
+                                response.strMsg = "未购买";
+                                response.CourseID = course.fID;
+                                response.CourseNo = strCourseNo;
+                                response.ClassTitle = course.fCourseTitle;
+                                response.ClassDate = course.fClassDate.ToString();
+                                response.ClassLength = course.fClassDateLength.ToString();
+                                response.Price = course.fPrice.ToString();
                             }
                             else
                             {
-                                response.strMsg = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString() + "分钟。请先去购买流量";
+                                response.iResult = Convert.ToInt32(strCourseID);
+                                response.strMsg = "";
                             }
                         }
                         else
                         {
-
-
-                            CourseModel course = ClassRoomBll.GetCourseById(Convert.ToInt32(strCourseID), userInfo.fUserName);
-
-                            if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
-                            {
-                                if (course != null && strRole == "Student" && course.fPrice > 0 && course.IsBuy == 0)
-                                {
-                                    response.iResult = 0;
-                                    response.strMsg = "未购买";
-                                    response.CourseID = course.fID;
-                                    response.CourseNo = strCourseNo;
-                                    response.ClassTitle = course.fCourseTitle;
-                                    response.ClassDate = course.fClassDate.ToString();
-                                    response.ClassLength = course.fClassDateLength.ToString();
-                                    response.Price = course.fPrice.ToString();
-                                }
-                                else
-                                {
-                                    response.iResult = Convert.ToInt32(strCourseID);
-                                    response.strMsg = "";
-                                }
-                            }
-                            else
-                            {
-                                response.iResult = -1;
-                                response.strMsg = "课程已结束！";
-                            }
+                            response.iResult = -1;
+                            response.strMsg = "课程已结束！";
                         }
                     }
-                }
-                else
-                {
-                    response.iResult = -1;
-                    response.strMsg = "课堂号错误！";
                 }
             }
             else
@@ -1363,6 +1429,12 @@ namespace KeZhan.Controllers
                 response.iResult = -1;
                 response.strMsg = "课堂号错误！";
             }
+            //}
+            //else
+            //{
+            //    response.iResult = -1;
+            //    response.strMsg = "课堂号错误！";
+            //}
             JsonResult jr = new JsonResult();
             jr.Data = response;
             jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
@@ -1374,9 +1446,9 @@ namespace KeZhan.Controllers
 
         #region File
 
-      
 
-        public JsonResult UploadFileSuccess(string strkey, string strFileType,string strFileName)
+
+        public JsonResult UploadFileSuccess(string strkey, string strFileType, string strFileName)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
             ResponseCourseModel response = new ResponseCourseModel();
@@ -1424,7 +1496,7 @@ namespace KeZhan.Controllers
             return jr;
         }
 
-#endregion
+        #endregion
 
         public static object Deserialize(Type type, string xml)
         {

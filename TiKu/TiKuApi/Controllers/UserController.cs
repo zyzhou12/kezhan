@@ -34,7 +34,7 @@ namespace TiKu.Api.Controllers
 
             UserLoginModel loginInfo = jss.Deserialize<UserLoginModel>(strJson);
 
-            tUserEntity user = tUserDal.GettUserByOpenID(loginInfo.unionid);
+            tUserEntity user = tUserDal.GettUserByOpenID(loginInfo.openid);
 
 
 

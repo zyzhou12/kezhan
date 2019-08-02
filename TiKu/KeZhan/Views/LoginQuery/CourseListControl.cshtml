@@ -75,6 +75,19 @@
                                 <button class="awe-btn awe-btn-default" onclick="DeleteCurse(@course.fID)">删除</button>
 
                             }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(course.fClassId))
+                                {
+                                    <button class="awe-btn awe-btn-default" onclick="DoCreateClass(@course.fID)">预约课堂</button>
+                                }
+                                @*else
+                                {
+                                    <a class="awe-btn awe-btn-default" href="https://tedu.qcloudtrtc.com/#/class/1400178589/@course.fClassId/113301736455/eJxNjV1PgzAYRv9LbzXa0haKiRdLNyLqEmDuw8WkQShbR2Sl6xxo-O8yxGTv5Tk5z-sNXp5nN2mW7Y*VFbbVEtwBCK57rHJZWVUoaTqIEMYQedgllA4*1VrlIrUCm-wiO*Sl6NW5IrCLGGX*IGWjlZEiLezfKvVcBs83*E9pDmpfdcqBiCIHX0qrPmQfuRhRCj38-1FtOjydzHkY84k2q*Wujhf6fZ4tcC2bsMA4ihK3LBkLotH4tXX8p6-1KQ4306vaj99ui5UO*JEvi4r49GH8SJI1bWm5PTk8YDuybWTCR-fg5xfAKFgc/182384">网页</a>
+                                    <a class="awe-btn awe-btn-default" href="tc-videochat://tclass/1400178589/@course.fClassId?user_id=113301736455&user_token=182384&user_sig=eJxNjV1PgzAYRv9LbzXa0haKiRdLNyLqEmDuw8WkQShbR2Sl6xxo-O8yxGTv5Tk5z-sNXp5nN2mW7Y*VFbbVEtwBCK57rHJZWVUoaTqIEMYQedgllA4*1VrlIrUCm-wiO*Sl6NW5IrCLGGX*IGWjlZEiLezfKvVcBs83*E9pDmpfdcqBiCIHX0qrPmQfuRhRCj38-1FtOjydzHkY84k2q*Wujhf6fZ4tcC2bsMA4ihK3LBkLotH4tXX8p6-1KQ4306vaj99ui5UO*JEvi4r49GH8SJI1bWm5PTk8YDuybWTCR-fg5xfAKFgc&config_url=">客户端</a>
+
+                                }*@
+                            }
                             
                         </div>
                     </div>

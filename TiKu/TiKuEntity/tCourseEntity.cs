@@ -10,6 +10,7 @@ namespace TiKu.Entity
     public System.Int32 fID { get; set; }
     public System.String fClassType { get; set; }
     public System.String fClassRoomCode { get; set; }
+    public System.String fClassId { get; set; }
     public System.String fDictTitle { get; set; }
     public System.String fCourseTitle { get; set; }
     public System.DateTime fClassDate { get; set; }

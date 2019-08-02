@@ -59,12 +59,27 @@ namespace TiKu.Dal
             }
             return rst.Result;
         }
-
+        
         public static tCourseEntity GettCourse(int id)
         {
             tCourseEntity rst = null;
             string strSQL = "SELECT * FROM tCourse WHERE fID=" + id.ToString();
             DataTable dt = DBHelper.QueryToTable("TiKu", strSQL);
+            if (dt.Rows.Count > 0)
+            {
+                rst = new tCourseEntity();
+                Trip8H.Common.PubFun.DataRowToObject(dt.Rows[0], rst);
+            }
+            return rst;
+        }
+
+        public static tCourseEntity GetCourseByClassID(string strClassID)
+        {
+            tCourseEntity rst = null;
+            string strSQL = "SELECT * FROM tCourse WHERE fClassID=@ClassID";
+            List<DbParameter> lstParam = new List<DbParameter>();
+            lstParam.Add(new DBParam("@ClassID", strClassID));
+            DataTable dt = DBHelper.QueryToTable("TiKu", strSQL, lstParam);
             if (dt.Rows.Count > 0)
             {
                 rst = new tCourseEntity();
@@ -136,6 +151,16 @@ namespace TiKu.Dal
             DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
             return dtRst;
         }
+        public static int UpdateClassID(int iCourseID, string strClassID)
+        {
+            string strSql = "update tCourse set fClassID=@ClassID where fID=@CourseID";
+            List<DbParameter> lstParam = new List<DbParameter>();
+            lstParam.Add(new DBParam("@CourseID", iCourseID));
+            lstParam.Add(new DBParam("@ClassID", strClassID));
+            object obj = DBHelper.ExecuteScalar("TiKu", strSql, lstParam);
+            return Convert.ToInt32(obj);
+        }
+
 
         public static int UpdateConver(string strResourceCode, string strCoverUrl)
         {

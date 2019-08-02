@@ -133,7 +133,7 @@ namespace TiKu.Api.Controllers
                 model.fClassDate = DateTime.Now;
                 int iCourseID = ClassRoomBll.DoSaveClassRoomCourse(model);
 
-                string strCourseNo = model.fClassRoomCode + iCourseID;
+                string strCourseNo = (10000 + model.fID).ToString() + iCourseID.ToString();
                 ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(iCourseID, strUserName);
                 if (cr.fClassType == "OnLine")
                 {
@@ -293,6 +293,93 @@ namespace TiKu.Api.Controllers
             return jr;
         }
 
+        public JsonResult CheckClass(string strUserName, int strCourseID, string strRole = "Student")
+        {
+            ResponseOnLineClassModel response = new ResponseOnLineClassModel();
+            if (strCourseID > 0)
+            {
+                ClassRoomModel cr = ClassRoomBll.GetClassRoomByCourseId(strCourseID, strUserName);
+                string strCourseNo = (10000 + cr.fID).ToString() + strCourseID.ToString();
+
+                GroupUserInfoListModel ListModel = GroupUserBll.GetGroupUserInfiList(strCourseNo);
+                if (ListModel.infoList != null && ListModel.infoList.Count > cr.fMaxNumber)
+                {
+                    response.resultCode = -1;
+                    response.resultMessage = "课堂已达到最大人数，不能进入！";
+                }
+                else
+                {
+                    decimal userAccount = UserBll.GetUserAccountAmount(strUserName);
+                    decimal classRoomFlow = ClassRoomBll.GetClassRoomFlow(Convert.ToInt32(strCourseID));
+                    decimal leftFlow = UserBll.GetUserLeftFlow(strUserName);
+
+                    if (userAccount < classRoomFlow && strRole == "Teacher")
+                    {
+                        response.resultCode = -1;
+                        if (leftFlow > 0)
+                        {
+                            response.resultMessage = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量欠费" + leftFlow.ToString() + "分钟。请先去购买流量";
+                        }
+                        else
+                        {
+                            response.resultMessage = "该课时最少需要" + classRoomFlow.ToString() + "分钟流量，您的账户流量剩余" + userAccount.ToString() + "分钟。请先去购买流量";
+                        }
+                    }
+                    else
+                    {
+
+
+                        CourseModel course = ClassRoomBll.GetCourseById(Convert.ToInt32(strCourseID), strUserName);
+                        if (course != null && course.fClassDate < DateTime.Now)
+                        {
+                            if (course != null && course.fClassDate.AddMinutes(course.fClassDateLength) > DateTime.Now)
+                            {
+                                if (course != null && strRole == "Student" && course.fPrice > 0 && course.IsBuy == 0)
+                                {
+                                    response.resultCode = 0;
+                                    response.resultMessage = "未购买";
+                                    //response.CourseID = course.fID;
+                                    //response.CourseNo = strCourseNo;
+                                    //response.ClassTitle = course.fCourseTitle;
+                                    //response.ClassDate = course.fClassDate.ToString();
+                                    //response.ClassLength = course.fClassDateLength.ToString();
+                                    //response.Price = course.fPrice.ToString();
+                                }
+                                else
+                                {
+                                    response.resultCode = Convert.ToInt32(strCourseID);
+                                    response.resultMessage = "进入成功";
+                                    response.strRole = "0";
+                                    response.strRoomID = strCourseNo;
+                                    response.strSig = WebRTCSig.GetSig(strUserName);
+                                    response.strUserName = strUserName;
+                                }
+                            }
+                            else
+                            {
+                                response.resultCode = -1;
+                                response.resultMessage = "课程已结束！";
+                            }
+                        }
+                        else
+                        {
+                            response.resultCode = -1;
+                            response.resultMessage = "课程还未开始！";
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                response.resultCode = -1;
+                response.resultMessage = "课堂号错误！";
+            }
+            JsonResult jr = new JsonResult();
+            jr.Data = response;
+            jr.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jr;
+        }
 
 
 

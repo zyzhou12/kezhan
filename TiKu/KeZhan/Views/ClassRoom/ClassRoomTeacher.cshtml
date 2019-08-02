@@ -69,93 +69,97 @@
                                                 <!-- ITEM PACKAGE -->
                                 foreach (var course in Model.courseList)
                                 {
-                            <div class="reservation-package_item">
-                                @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                    <div class="reservation-package_item">
+                                        @if (!string.IsNullOrEmpty(course.fResourceUrl))
                                         {
                                             if (!string.IsNullOrEmpty(course.fFileCoverUrl))
                                             {
-                                        <div class="reservation-package_img">
-                                            <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal" alt="">
+                                                <div class="reservation-package_img">
+                                                    <img style=" width:100px; height:60px;" src="@course.fFileCoverUrl" data-reveal-id="myModal" alt="">
 
-                                        </div>
+                                                </div>
                                             }
                                             else
                                             {
-                                        <div class="reservation-package_img">
-                                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" alt="" />
-                                        </div>
+                                                <div class="reservation-package_img">
+                                                    <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" alt="" />
+                                                </div>
                                             }
                                         }
                                         else
                                         {
-                                            if(course.fClassDate.AddMinutes(course.fClassDateLength)<DateTime.Now)
+                                            if (course.fClassDate.AddMinutes(course.fClassDateLength) < DateTime.Now)
                                             {
-                                        <div class="reservation-package_img">
-                                            <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fCreateOpr','ClassRoom',@course.fID)" alt="" />
-                                        </div>
+                                                <div class="reservation-package_img">
+                                                    <img style=" width:100px; height:60px;" src="https://aizhu-ducation.oss-cn-hangzhou.aliyuncs.com/WebImage/MediaUpload.jpg?x-oss-process=style/fang" data-reveal-id="myModal" onclick="UploadMediaFile('@Model.fCreateOpr','ClassRoom',@course.fID)" alt="" />
+                                                </div>
                                             }
                                         }
 
-                                <div class="reservation-package_text">
+                                        <div class="reservation-package_text">
 
-                                    <h4><a href="#">@course.fDictTitle</a></h4>
-                                    <p>
-                                        @course.fCourseTitle
-                                        @if (course.fUpdateClassDate > DateTime.MinValue)
-                                        {
-                                            <br />
-                                            <span>原上课时间：@course.fUpdateClassDate.ToString()</span>
-                                        }
-                                        <br />
-                                        <span>上课时间：@course.fClassDate.ToString()</span>
-                                        <br />
-                                        <span>时长（分钟）：@course.fClassDateLength</span>
-                                    </p>
+                                            <h4><a href="#">@course.fDictTitle</a></h4>
+                                            <p>
+                                                @course.fCourseTitle
+                                                @if (course.fUpdateClassDate > DateTime.MinValue)
+                                                {
+                                                    <br />
+                                                    <span>原上课时间：@course.fUpdateClassDate.ToString()</span>
+                                                }
+                                                <br />
+                                                <span>上课时间：@course.fClassDate.ToString()</span>
+                                                <br />
+                                                <span>时长（分钟）：@course.fClassDateLength</span>
+                                            </p>
 
-                                    <div class="reservation-package_book-price">
-                                        @if (!string.IsNullOrEmpty(course.fResourceUrl))
+                                            <div class="reservation-package_book-price">
+                                                @if (!string.IsNullOrEmpty(course.fResourceUrl))
                                                 {
                                                     if (!string.IsNullOrEmpty(course.fFileCoverUrl))
                                                     {
-                                                <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
-                                                <a href="#" class="awe-btn awe-btn-default" onclick="DelResource(@course.fID)">删除视频</a>
+                                                        <a href="/ClassRoom/OpenClassRoom?iCourseID=@course.fID" class="awe-btn awe-btn-default">查看视频</a>
+                                                        <a href="#" class="awe-btn awe-btn-default" onclick="DelResource(@course.fID)">删除视频</a>
                                                     }
                                                     else
                                                     {
-                                                <a href="#" class="awe-btn awe-btn-default">转码中</a>
+                                                        <a href="#" class="awe-btn awe-btn-default">转码中</a>
                                                     }
                                                 }
-                                        @if (course.CourseStatus == 1)
+                                                @if (course.CourseStatus == 1)
                                                 {
-                                                <a href="#" class="awe-btn awe-btn-default">未开始</a>
+                                                    <a href="#" class="awe-btn awe-btn-default">未开始</a>
                                                 }
                                                 else if (course.CourseStatus == 2)
                                                 {
-                                                <a href="#" class="awe-btn awe-btn-default">已结束</a>
+                                                    <a href="#" class="awe-btn awe-btn-default">已结束</a>
                                                 }
                                                 else if (course.CourseStatus == 3)
                                                 {
                                                     if (Model.fStatus == "发布")
                                                     {
 
-                                                <a href="#" onclick="OpenClassRoom(@course.fID)" class="awe-btn awe-btn-default">开始上课</a>
+                                                        @*<a href="#" onclick="OpenClassRoom(@course.fID)" class="awe-btn awe-btn-default">开始上课</a>*@
+                                                        if (!string.IsNullOrEmpty(course.fClassId))
+                                                        {
+                                                            <button class="awe-btn awe-btn-default" onclick='OpenClassRoom(@course.fID,"@course.fClassId")'>开始上课</button>
+                                                        }
                                                     }
                                                 }
-                                        @if (string.IsNullOrEmpty(course.fDocoumentUrl))
+                                                @if (string.IsNullOrEmpty(course.fDocoumentUrl))
                                                 {
-                                                <button class="awe-btn awe-btn-default" onclick="UploadDocument(@course.fID)">上传资料</button>
+                                                    <button class="awe-btn awe-btn-default" onclick="UploadDocument(@course.fID)">上传资料</button>
                                                 }
                                                 else
                                                 {
-                                                <button class="awe-btn awe-btn-default" onclick="DelDocument(@course.fID)">删除资料</button>
+                                                    <button class="awe-btn awe-btn-default" onclick="DelDocument(@course.fID)">删除资料</button>
                                                 }
-                                        <img style=" display:none;" src="#" data-reveal-id="myModal" id="imgUploadDocument-@course.fID" onclick="UploadCourseDocumentFile('@Model.fTecharUserName','CourseDocument',@course.fID)" alt="" />
+                                                <img style=" display:none;" src="#" data-reveal-id="myModal" id="imgUploadDocument-@course.fID" onclick="UploadCourseDocumentFile('@Model.fTecharUserName','CourseDocument',@course.fID)" alt="" />
+
+                                            </div>
+
+                                        </div>
 
                                     </div>
-
-                                </div>
-
-                            </div>
                                 }
 
 
@@ -168,7 +172,7 @@
                                 var httpurl = System.Configuration.ConfigurationManager.AppSettings["PayCallBack"].ToString();
                                 <label>链接</label>
                                 <p>@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode</p>
-    <img src="http://qr.topscan.com/api.php?text=@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode" />
+                                <img src="http://qr.topscan.com/api.php?text=@httpurl/Open/ClassRoomDetail?strClassRoomCode=@Model.fClassRoomCode" />
                             }
                         </div>
 
@@ -196,7 +200,7 @@
                 data: { "strClassRoomCode": ClassRoomCode },
                 success: function (msg) {
                     if (msg.iResult == "-9999") {
-                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                        alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     } else {
                         $('#panelBooking').html(msg);
                     }
@@ -235,7 +239,7 @@
                     alert("修改成功");
 
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 }
             }
 
@@ -257,14 +261,14 @@
                         data: { "strClassRoomCode": ClassRoomCode },
                         success: function (msg) {
                             if (msg.iResult == "-9999") {
-                                alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                                alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                             } else {
                                 $('#panelBooking').html(msg);
                             }
                         }
                     });
                 } else if (rst.iResult == -9999) {
-                    alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 }
             }
 
@@ -277,9 +281,8 @@
         $("#imgUploadDocument-" + id).click();
     }
 
-    function DelDocument(id)
-    {
-        if(confirm("确认删除上传的资料文档吗")){
+    function DelDocument(id) {
+        if (confirm("确认删除上传的资料文档吗")) {
 
             $.ajax({
                 url: "/LoginRequest/DoDelCourseDocument",
@@ -291,7 +294,7 @@
                         alert("删除成功");
                         window.location.reload();
                     } else if (rst.iResult == -9999) {
-                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                        alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     }
                 }
 
@@ -299,9 +302,8 @@
         }
     }
 
-    function DelResource(id)
-    {
-        if(confirm("确认删除上传的视频吗")){
+    function DelResource(id) {
+        if (confirm("确认删除上传的视频吗")) {
 
             $.ajax({
                 url: "/LoginRequest/DoDelCourseResource",
@@ -313,7 +315,7 @@
                         alert("删除成功");
                         window.location.reload();
                     } else if (rst.iResult == -9999) {
-                        alert("请重新登录");window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                        alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                     }
                 }
 
@@ -321,7 +323,7 @@
         }
     }
 
-    function OpenClassRoom(iCourdeID) {
+    function OpenClassRoom(iCourdeID,classID) {
 
         $.ajax({
             url: "/LoginRequest/GetBrowserVersions",
@@ -329,13 +331,13 @@
             success: function (rst) {
 
                 if (rst.iResult >= 0) {
-                    ConfirmOpenClassRoom(iCourdeID)
+                    ConfirmOpenClassRoom(iCourdeID,classID)
 
                 } else if (rst.iResult == -9999) {
                     alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {
                     if (confirm(rst.strMsg)) {
-                        ConfirmOpenClassRoom(iCourdeID)
+                        ConfirmOpenClassRoom(iCourdeID,classID)
                     } else {
                         newWindow.close();
                     }
@@ -343,11 +345,10 @@
             }
 
         });
-       
+
     }
 
-    function ConfirmOpenClassRoom(iCourdeID)
-    {
+    function ConfirmOpenClassRoom(iCourdeID,classId) {
         //打开一个不被拦截的新窗口
         var newWindow = window.open();
         $.ajax({
@@ -358,8 +359,8 @@
 
                 if (rst.iResult >= 0) {
                     //window.open("/Home/Index?iCourseID=" + iCourdeID+"&strRole=Teacher", '_blank').location;
-                    newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
-
+                    //newWindow.location.href = "/Home/Index?iCourseID=" + iCourdeID + "&strRole=Teacher";
+                    OpenClassRoomClient("WEB", classId)
                 } else if (rst.iResult == -9999) {
                     alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {

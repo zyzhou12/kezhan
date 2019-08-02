@@ -1,4 +1,5 @@
-﻿using KeZhan.Models;
+﻿using KeZhan.Code;
+using KeZhan.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -175,6 +176,8 @@ namespace KeZhan.Controllers
 
                 if (userInfo != null)
                 {
+                    //创建账号
+                    TICRequest.CreateUser(userInfo);
                     UserBll.SaveUserInfo(userInfo.fUserName, "fNickName", strNickName);
                     //设置密码
                     UserBll.SaveUserInfo(userInfo.fUserName, "fPassWord", strPass);
@@ -223,7 +226,7 @@ namespace KeZhan.Controllers
 
                 if (!string.IsNullOrEmpty(strOpenId))
                 {
-                    UserBll.UserWeiChatLogin(strOpenId, userInfo.fUserName, ref strMsg);
+                    UserBll.UserWeiChatLogin("",strOpenId, userInfo.fUserName, ref strMsg);
                 }
 
                 if (userInfo != null)
@@ -239,6 +242,7 @@ namespace KeZhan.Controllers
                     {
                         response.iResult = 1;
                     }
+                    TICRequest.UpdateUserInfo(userInfo.fUserName, "role", userInfo.fRole.ToLower());
                 }
                 else
                 {

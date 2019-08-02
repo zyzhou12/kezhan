@@ -322,11 +322,7 @@ namespace KeZhan.Controllers
                 PublicTokenModel token = jss.Deserialize<PublicTokenModel>(strJson);
 
                 if (token.access_token != null)
-                {
-                   
-                   
-
-
+                {       
                     if (!string.IsNullOrEmpty(token.access_token))
                     {
                         string strtoken = ConfigBll.GetToken(strAppID);
@@ -337,8 +333,16 @@ namespace KeZhan.Controllers
                         PublicUserModel user = jss.Deserialize<PublicUserModel>(strJson);
 
                         string strMsg = "";
-                        UserInfoModel userInfo = UserBll.UserWeiChatLogin(user.unionid, state, ref strMsg);
-                        Code.Fun.SetSessionUserInfo(this, userInfo);
+                        UserInfoModel userInfo = UserBll.UserWeiChatLogin(user.openid,user.unionid, state, ref strMsg);
+                        if (userInfo != null)
+                        {
+                            Code.Fun.SetSessionUserInfo(this, userInfo);
+
+                        }
+                        else
+                        {
+                            redirecturi = "http://www.baidu.com?1=" + user.openid + "|" + user.unionid + "|" + state;
+                        }
 
                     }
 
@@ -346,10 +350,10 @@ namespace KeZhan.Controllers
                 }
 
 
-                string redirect_uri = ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/user/userBooking?strBookingNo=" + strParams;
+                 redirecturi = ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/user/userBooking?strBookingNo=" + strParams;
 
 
-                return Redirect(redirect_uri);
+                return Redirect(redirecturi);
             }
             catch (Exception ex)
             {
@@ -397,7 +401,7 @@ namespace KeZhan.Controllers
 
                         
 
-                    UserInfoModel userInfo = UserBll.GettUserByOpenID(user.unionid);
+                    UserInfoModel userInfo = UserBll.GettUserByOpenID(user.openid);
                     if (userInfo == null)
                     {
                         redirect_uri = ConfigurationManager.AppSettings["PayCallBack"].ToString() + "/open/RegsiterLogin?openid=" + user.unionid + "&redirect_uri=" + state;

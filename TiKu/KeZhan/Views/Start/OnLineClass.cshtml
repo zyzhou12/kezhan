@@ -216,8 +216,8 @@
                     $("#divCourse").show();
                 }
                 else if (rst.iResult > 0) {
-                    window.location.href = "/home/index?iCourseID=" + rst.iResult;
-
+                    //window.location.href = "/home/index?iCourseID=" + rst.iResult;
+                    OpenClassRoomClient("WEB", $("#txtCourseNo").val())
                 } else if (rst.iResult == -9999) {
                     alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
                 } else {

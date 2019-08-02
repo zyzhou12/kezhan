@@ -41,6 +41,7 @@ namespace KeZhan.Controllers
                         isJoin = true;
                     }
 
+
                     if (isJoin)
                     {
                         OpenClassRoomModel model = new OpenClassRoomModel();

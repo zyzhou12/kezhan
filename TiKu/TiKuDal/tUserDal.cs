@@ -148,6 +148,16 @@ namespace TiKu.Dal
         return dtRst;
     }
 
+      public static int UserUpdateToken(string strUserName,string strToken)
+    {
+        string strSql = "update tUser set fUserToken=@Token where fUserName=@UserName";
+        List<DbParameter> lstParam = new List<DbParameter>();
+        lstParam.Add(new DBParam("@Token", strToken));
+        lstParam.Add(new DBParam("@UserName", strUserName));
+        object obj = DBHelper.ExecuteScalar("TiKu", strSql, lstParam);
+        return Convert.ToInt32(obj);
+    }
+
 
     public static int UserSendCode(string strMobile,string strCode,ref string strMsg)
     {
@@ -193,10 +203,11 @@ namespace TiKu.Dal
       return user;
     }
 
-    public static tUserEntity UserWeiChatLogin(string strOpenID, string strUserName, ref string strMsg)
+    public static tUserEntity UserWeiChatLogin(string strOpenID,string strUnionID, string strUserName, ref string strMsg)
     {
         List<DbParameter> lstParam = new List<DbParameter>();
         lstParam.Add(new DBParam("@OpenID", strOpenID));
+        lstParam.Add(new DBParam("@UnionID", strUnionID));
         lstParam.Add(new DBParam("@UserName", strUserName));
 
         DBHelper.ProcRstInfo rst = DBHelper.ExecuteProc("TiKu", "User_WeiChatLogin", lstParam, DBHelper.ProcRstTypes.All);

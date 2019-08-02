@@ -999,6 +999,23 @@
     }
 </script>
 <script type="text/javascript">
+    //预约课堂
+    function DoCreateClass(courseID)
+    {
+        $.ajax({
+            url: "/LoginRequest/DoCreateClass",
+            type: this.method,
+            data: { "iCourseID": courseID },
+            success: function (msg) {
+                if (msg.iResult == "-9999") {
+                    alert("请重新登录"); window.location.href = "/open/RegsiterLogin?redirect_uri=@Request.Url.ToString()";
+                } else {
+                    alert("预约成功");
+                    window.location.reload();
+                }
+            }
+        });
+    }
 
     function AddCurse(courseID) {
         $("#hidCourseID").val(0);
