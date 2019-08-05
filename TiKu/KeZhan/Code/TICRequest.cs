@@ -64,7 +64,7 @@ namespace KeZhan.Code
 
         public static Int64 GetTimeStamp(DateTime time)
         {
-            
+
             //TimeSpan ts = time - new DateTime(1970, 1, 1, 0, 0, 0, 0,DateTimeKind.Utc);
             return Convert.ToInt64((time.ToUniversalTime().Ticks - 621355968000000000) / 10000000);
         }
@@ -110,7 +110,8 @@ namespace KeZhan.Code
 
             if (response.error_code == 0)
             {
-                foreach(TICUser ticUser in response.user_list){
+                foreach (TICUser ticUser in response.user_list)
+                {
                     UserBll.UpdateUserToken(ticUser.user_id, ticUser.user_token);
                 }
             }
@@ -137,7 +138,7 @@ namespace KeZhan.Code
                 strType = "avatar";
             }
 
-            string strBody = "{\"user_id\":\""+strUserName+"\",\""+strType+"\":\""+strValue+"\"}";
+            string strBody = "{\"user_id\":\"" + strUserName + "\",\"" + strType + "\":\"" + strValue + "\"}";
 
             string strResult = PostData(strUrl, strBody);
             JavaScriptSerializer jss = new JavaScriptSerializer();
@@ -154,7 +155,7 @@ namespace KeZhan.Code
         public static string UpdateUserToken(UserInfoModel user)
         {
             string strUrl = GetUrl("usertokenupdate");
-            string strBody = "{\"user_id\":\""+user.fUserName+"\"}";
+            string strBody = "{\"user_id\":\"" + user.fUserName + "\"}";
 
             string strResult = PostData(strUrl, strBody);
             JavaScriptSerializer jss = new JavaScriptSerializer();
@@ -165,7 +166,7 @@ namespace KeZhan.Code
             {
 
                 UserBll.UpdateUserToken(user.fUserName, response.user_token);
-                
+
             }
             return "";
         }
@@ -177,8 +178,25 @@ namespace KeZhan.Code
 
 
             string strUrl = GetUrl("classcreate");
-            string strBody = "{\"teacher_id\":\"" + classroom.fTecharUserName + "\",\"class_topic\": \"" + course.fDictTitle + "\",\"class_type\":\"public\",\"start_time\": " + GetTimeStamp(course.fClassDate) + ", \"stop_time\": " + GetTimeStamp(course.fClassDate.AddMinutes(course.fClassDateLength)) + ",\"admin_id\":\"administrator\",\"admin_sig\":\"eJxNjV1PgzAUhv8Ltxil42Pg3cbMQN20bsxhTJoCZTs4Si3dBI3-XSQs2bl8nvd9z4*2flxd0zStjlwR1Qqm3WqGdtVjyBhXkAOTHaRZCRxqJamq5BCgQkBGqCKmzC56dfZBetUxZBkGGru26w2SNQIkIzRX-Syyx45r-N-gT0zWUPFOjQxko5F5KRWUrC85JrItB6HzR9h1eHEX*yH2vThZvMlT0fDX*33Ii0lh4adoE6PgwZlZOjt4JV5XsvVLHO4ny3aG02Q5P77fJLDNi-Ql0sVhug2*vp-taRNF88-AS1a0xfpO*-0DDrxcrQ__\"}";
-            
+            string strBody = "{\"teacher_id\":\"" + classroom.fTecharUserName + "\",\"class_topic\": \"" + course.fDictTitle + "\",\"class_type\":\"public\",\"start_time\": " + GetTimeStamp(course.fClassDate) + ", \"stop_time\": " + GetTimeStamp(course.fClassDate.AddMinutes(course.fClassDateLength)) + ",\"admin_id\":\"administrator\",\"admin_sig\":\"eJxNjV1PgzAUhv8Ltxil42Pg3cbMQN20bsxhTJoCZTs4Si3dBI3-XSQs2bl8nvd9z4*2flxd0zStjlwR1Qqm3WqGdtVjyBhXkAOTHaRZCRxqJamq5BCgQkBGqCKmzC56dfZBetUxZBkGGru26w2SNQIkIzRX-Syyx45r-N-gT0zWUPFOjQxko5F5KRWUrC85JrItB6HzR9h1eHEX*yH2vThZvMlT0fDX*33Ii0lh4adoE6PgwZlZOjt4JV5XsvVLHO4ny3aG02Q5P77fJLDNi-Ql0sVhug2*vp-taRNF88-AS1a0xfpO*-0DDrxcrQ__\"";
+
+
+            UserListModel userList = UserBll.GetClassUser(classroom.fClassRoomCode);
+
+            if (course.fClassType.Trim() != "OnLine")
+            {
+                strBody += ",\"members\": [";
+                if (userList.userList != null && userList.userList.Count > 0)
+                    foreach (UserInfoModel user in userList.userList)
+                    {
+                        strBody += " {\"role\": \"student\",\"user_id\": \"" + user.fUserName + "\"},";
+                    }
+
+                strBody += "{\"role\": \"teacher\",\"user_id\": \"" + classroom.fTecharUserName + "\"}]";
+            }
+            strBody += "}";
+
+
             string strResult = PostData(strUrl, strBody);
             //            {
             //  "error_code":0,
@@ -201,13 +219,13 @@ namespace KeZhan.Code
 
         public static string AddDocument(int iCourseID)
         {
-         
+
 
             string strUrl = GetUrl("documentadd");
             string strBody = "{\"doc_url\": \"课件地址\",\"doc_name\":\"课件名字\",\"doc_ext\": \"ppt\",\"doc_size\":1024,\"doc_md5\": \"c4ca4238a0b923820dcc509a6f75849b\",\"permission\":\"private\",\"owner\":\"xxx\",\"is_transcode\":false}";
 
             string strResult = PostData(strUrl, strBody);
-          
+
 
             JavaScriptSerializer jss = new JavaScriptSerializer();
 
@@ -215,7 +233,7 @@ namespace KeZhan.Code
 
             if (response.error_code == 0)
             {
-                
+
             }
 
             return response.class_id;

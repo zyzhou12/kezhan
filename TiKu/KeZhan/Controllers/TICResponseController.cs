@@ -255,7 +255,7 @@ namespace KeZhan.Controllers
             try
             {
                 StreamWriter sw = new StreamWriter(@"\TICResponseLog\" + DateTime.Now.ToString("yyyyMMdd") + ".txt", true);
-                sw.WriteLine(content + "\r\n----------------------------------------\r\n");
+                sw.WriteLine(content + "\r\n"+DateTime.Now.ToString()+"----------------------------------------\r\n");
                 sw.Close();//写入
             }
             catch

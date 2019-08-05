@@ -85,7 +85,7 @@
       <publishTime>01/02/2019 09:38:50</publishTime>
     </File>
     <File Include="bin/KeZhan.dll">
-      <publishTime>07/31/2019 16:47:29</publishTime>
+      <publishTime>08/02/2019 16:55:59</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.Data.Edm.resources.dll">
       <publishTime>01/02/2019 09:38:53</publishTime>
@@ -175,10 +175,10 @@
       <publishTime>01/02/2019 09:38:30</publishTime>
     </File>
     <File Include="bin/TiKuBll.dll">
-      <publishTime>07/30/2019 10:52:49</publishTime>
+      <publishTime>08/02/2019 16:42:49</publishTime>
     </File>
     <File Include="bin/TiKuDal.dll">
-      <publishTime>07/30/2019 10:52:48</publishTime>
+      <publishTime>08/02/2019 16:42:49</publishTime>
     </File>
     <File Include="bin/TiKuEntity.dll">
       <publishTime>07/15/2019 11:24:29</publishTime>
@@ -3256,7 +3256,7 @@
       <publishTime>06/27/2019 14:30:41</publishTime>
     </File>
     <File Include="Views/ClassRoom/ClassRoomTeacher.cshtml">
-      <publishTime>07/29/2019 10:15:24</publishTime>
+      <publishTime>08/02/2019 16:42:02</publishTime>
     </File>
     <File Include="Views/ClassRoom/CourseListControl.cshtml">
       <publishTime>04/22/2019 11:10:44</publishTime>
@@ -3334,7 +3334,7 @@
       <publishTime>05/12/2019 16:50:28</publishTime>
     </File>
     <File Include="Views/LoginQuery/CourseListControl.cshtml">
-      <publishTime>07/15/2019 16:45:00</publishTime>
+      <publishTime>08/02/2019 16:14:19</publishTime>
     </File>
     <File Include="Views/LoginQuery/FileListControl.cshtml">
       <publishTime>06/03/2019 13:29:06</publishTime>

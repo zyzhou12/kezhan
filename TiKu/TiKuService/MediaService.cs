@@ -278,7 +278,7 @@ namespace TiKuService
                     //获取群自动解散
                     strSql = @" select * from tgroup 
                                  where fgroupid in (
-                                 select fClassRoomCode+Convert(varchar(10),fid) from tCourse where dateadd(minute,fClassDateLength+5,fClassDate)<getdate())
+                                 select fclassid from tCourse where dateadd(minute,fClassDateLength+5,fClassDate)<getdate())
                                  and fIsValid=1";
                     daSMS = new SqlDataAdapter(strSql, conn);
                     dsSms = new DataSet();
@@ -314,7 +314,7 @@ namespace TiKuService
                     strSql = @" select c.* from tCourse c
                                 left join tClassRoom r on r.fClassRoomCode=c.fClassRoomCode
                                  where isnull(fispay,0)=0 and r.fClassType='OnLine'
-                                 and dateadd(minute,fClassDateLength,fClassDate)<dateadd(minute,5,getdate())";
+                                 and dateadd(minute,fClassDateLength,fClassDate)<dateadd(minute,-6,getdate())";
                     daSMS = new SqlDataAdapter(strSql, conn);
                     dsSms = new DataSet();
 

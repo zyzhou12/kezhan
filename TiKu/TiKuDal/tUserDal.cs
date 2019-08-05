@@ -106,6 +106,25 @@ namespace TiKu.Dal
         return rst;
     }
 
+    public static List<tUserEntity> GetClassUser(string strClassRoomCode)
+    {
+        StringBuilder bufSQL = new StringBuilder();
+        List<DbParameter> lstParam = new List<DbParameter>();
+
+        bufSQL.Append(@"select * from tuser where fusername in (
+select fusername from tbooking where fStatus='已支付' and fType='ClassRoom' and fTypeCode=@ClassRoomCode) ");
+
+        lstParam.Add(new DBParam("ClassRoomCode", strClassRoomCode));
+
+
+        //防止返回数据过多
+        if (lstParam.Count <= 0) throw new Exception("没有查询条件");
+        DataTable dtRst = DBHelper.QueryToTable("TiKu", bufSQL.ToString(), lstParam);
+        List<tUserEntity> lstRst = PubFun.DataTableToObjects<tUserEntity>(dtRst);
+        return lstRst;
+    }
+
+
     public static List<tUserEntity> GetFocusTeacherList(string strUserName)
     {
       StringBuilder bufSQL = new StringBuilder();

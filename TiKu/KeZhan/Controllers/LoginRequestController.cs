@@ -46,11 +46,9 @@ namespace KeZhan.Controllers
             }
             else if (strOpenType == "PC")
             {
-
                 strUrl = string.Format(strPCUrl, sdkappid, iClassID, userInfo.fUserName, userInfo.fUserToken, usersig, configurl);
                 response.iResult = 1;
                 response.strMsg = strUrl;
-
             }
             else
             {
@@ -1273,6 +1271,12 @@ namespace KeZhan.Controllers
             return jr;
         }
 
+        /// <summary>
+        /// 开始上课 进入课堂
+        /// </summary>
+        /// <param name="iCourseID"></param>
+        /// <returns></returns>
+
         public JsonResult OpenClassRoom(int iCourseID)
         {
             UserInfoModel userInfo = Code.Fun.GetSessionUserInfo(this);
@@ -1316,7 +1320,17 @@ namespace KeZhan.Controllers
                                 int i = ClassRoomBll.ClassRoomCoursePay(iCourseID, userInfo.fUserName, "Web");
                                 if (i == 0)
                                 {
-                                    response.iResult = 0;
+                                    if (string.IsNullOrEmpty(course.fClassId))
+                                    {
+                                        //预约课堂
+                                        response.iResult = 999999;
+                                        response.strMsg=TICRequest.CreateClass(iCourseID);
+                                    }
+                                    else
+                                    {
+                                        response.iResult = 0;
+                                    }
+
                                 }
                                 else
                                 {

@@ -149,7 +149,23 @@ namespace TiKu.Bll
             return model;
         }
 
-    
+        public static UserListModel GetClassUser(string strClassRoomCode)
+        {
+            List<tUserEntity> list = tUserDal.GetClassUser(strClassRoomCode);
+            UserListModel model = new UserListModel();
+            List<UserInfoModel> userList = new List<UserInfoModel>();
+            foreach (tUserEntity user in list)
+            {
+                UserInfoModel info = new UserInfoModel();
+                info.fUserName = user.fUserName;
+                info.fHeadImg = user.fHeadImg;
+                info.fRole = user.fRole;
+                info.fNickName = user.fNickName;
+                userList.Add(info);
+            }
+            model.userList = userList;
+            return model;
+        }
 
         public static UserInfoModel GetUserInfoByMobile(string strMobile)
         {
